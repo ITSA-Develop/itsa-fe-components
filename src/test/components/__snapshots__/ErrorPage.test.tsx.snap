@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ErrorPage component > renders error and message texts 1`] = `
+<div>
+  <div
+    class="flex flex-col justify-center items-center h-screen bg-white-100"
+  >
+    <div
+      class="text-center"
+    >
+      <h1
+        class="ant-typography css-dev-only-do-not-override-l9pxc0"
+      >
+        404
+      </h1>
+      <p
+        class="text-lg"
+      >
+        Página no encontrada
+      </p>
+    </div>
+    <div
+      class="flex justify-center mt-8"
+    >
+      <button
+        class="ant-btn css-dev-only-do-not-override-l9pxc0 ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
+        type="button"
+      >
+        <span>
+          Ir al Inicio
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

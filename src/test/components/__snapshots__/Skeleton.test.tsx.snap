@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Skeleton component > passes extra props to AntSkeleton 1`] = `
+<div>
+  <div
+    class="ant-skeleton ant-skeleton-active css-dev-only-do-not-override-l9pxc0"
+  >
+    <div
+      class="ant-skeleton-content"
+    >
+      <h3
+        class="ant-skeleton-title"
+        style="width: 38%;"
+      />
+      <ul
+        class="ant-skeleton-paragraph"
+      >
+        <li />
+        <li />
+        <li
+          style="width: 61%;"
+        />
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Skeleton component > renders the Skeleton with active class by default 1`] = `
+<div>
+  <div
+    class="ant-skeleton ant-skeleton-active css-dev-only-do-not-override-l9pxc0"
+  >
+    <div
+      class="ant-skeleton-content"
+    >
+      <h3
+        class="ant-skeleton-title"
+        style="width: 38%;"
+      />
+      <ul
+        class="ant-skeleton-paragraph"
+      >
+        <li />
+        <li />
+        <li
+          style="width: 61%;"
+        />
+      </ul>
+    </div>
+  </div>
+</div>
+`;

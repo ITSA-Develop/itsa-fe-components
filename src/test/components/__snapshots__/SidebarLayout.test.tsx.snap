@@ -1,0 +1,1032 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SidebarLayout > Collapse functionality > calls setCollapsed when collapse button is clicked 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Component integration > handles all modeSidebar options 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Component integration > handles all modeSidebar options 2`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Component integration > handles all modeSidebar options 3`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Component integration > renders content area correctly 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="custom-content"
+        >
+          Custom content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Edge cases and error handling > handles empty currentModule gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Edge cases and error handling > handles invalid search terms gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+          value="   "
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Edge cases and error handling > handles undefined currentModule gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Props handling > handles missing props gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Props handling > handles null currentModule gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Props handling > handles undefined currentModule gracefully 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Props handling > passes correct props to MenuOptions 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Rendering > hides sidebar elements when collapsed 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="sidebar-children"
+        >
+          Test content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Rendering > renders sidebar elements when not collapsed 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="sidebar-children"
+        >
+          Test content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Search functionality > filters menu items based on search input 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Search functionality > shows all items when search is cleared 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Search state edge cases > handles various search input scenarios including empty values 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Width and styling > applies custom width when provided 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 300px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SidebarLayout > Width and styling > applies default width when not provided 1`] = `
+<div>
+  <div
+    data-testid="layout"
+  >
+    <div
+      class="flex flex-col pt-3 rounded-lg bg-gray-200"
+      style="width: 235px;"
+    >
+      <div
+        class="flex items-center justify-center pr-3 pl-3"
+      >
+        <input
+          data-testid="search-input"
+          placeholder="Buscar en el menú"
+        />
+      </div>
+      <div
+        class="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"
+      >
+        <div
+          data-testid="menu-options"
+        />
+      </div>
+      <div
+        class="w-full flex justify-end pr-3 pl-3"
+      >
+        <button
+          data-testid="collapse-button"
+          type="button"
+        >
+          <span
+            data-testid="double-left-icon"
+          >
+            ⬅️
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      data-testid="layout"
+    >
+      <main
+        data-testid="content"
+      >
+        <div
+          data-testid="default-children"
+        >
+          Default content
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;

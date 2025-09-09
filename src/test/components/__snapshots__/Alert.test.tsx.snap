@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Alert component > renders with description 1`] = `
+<div>
+  <p>
+    Alert!
+  </p>
+  <div
+    class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-l9pxc0"
+    data-show="true"
+    role="alert"
+  >
+    <div
+      class="ant-alert-content"
+    >
+      <div
+        class="ant-alert-message"
+      >
+        Mensaje
+      </div>
+      <div
+        class="ant-alert-description"
+      >
+        Descripción detallada
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Alert component > renders with message 1`] = `
+<div>
+  <p>
+    Alert!
+  </p>
+  <div
+    class="ant-alert ant-alert-info ant-alert-no-icon css-dev-only-do-not-override-l9pxc0"
+    data-show="true"
+    role="alert"
+  >
+    <div
+      class="ant-alert-content"
+    >
+      <div
+        class="ant-alert-message"
+      >
+        Este es un mensaje
+      </div>
+    </div>
+  </div>
+</div>
+`;

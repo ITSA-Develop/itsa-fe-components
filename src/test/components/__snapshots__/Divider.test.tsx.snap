@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Divider component > renders dashed divider when dashed=true 1`] = `
+<div>
+  <div
+    class="ant-divider css-dev-only-do-not-override-l9pxc0 ant-divider-horizontal ant-divider-dashed"
+    role="separator"
+  />
+</div>
+`;
+
+exports[`Divider component > renders vertical divider when type="vertical" 1`] = `
+<div>
+  <div
+    class="ant-divider css-dev-only-do-not-override-l9pxc0 ant-divider-vertical"
+    role="separator"
+  />
+</div>
+`;
+
+exports[`Divider component > renders with text when children provided 1`] = `
+<div>
+  <div
+    class="ant-divider css-dev-only-do-not-override-l9pxc0 ant-divider-horizontal ant-divider-with-text ant-divider-with-text-center"
+    role="separator"
+  >
+    <span
+      class="ant-divider-inner-text"
+    >
+      Test Text
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Divider component > renders without crashing 1`] = `
+<div>
+  <div
+    class="ant-divider css-dev-only-do-not-override-l9pxc0 ant-divider-horizontal"
+    role="separator"
+  />
+</div>
+`;

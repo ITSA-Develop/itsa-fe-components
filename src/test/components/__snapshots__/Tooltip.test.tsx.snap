@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tooltip component > renders tooltip content when open is true 1`] = `
+<div>
+  <button
+    aria-describedby="test-id"
+    class="ant-tooltip-open"
+  >
+    Hover me
+  </button>
+</div>
+`;

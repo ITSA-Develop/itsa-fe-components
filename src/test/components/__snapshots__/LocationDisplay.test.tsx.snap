@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LocationDisplay > shows concatenated label when isEcuador is true 1`] = `
+<div>
+  <div
+    class="flex justify-between gap-2"
+  >
+    <span
+      class="font-semibold"
+    >
+      Ubicación
+    </span>
+    <span
+      class="text-right"
+    >
+      Option 1, Option 2, Option 3
+    </span>
+  </div>
+</div>
+`;
+
+exports[`LocationDisplay > shows only country when isEcuador is false 1`] = `
+<div>
+  <div
+    class="flex justify-between gap-2"
+  >
+    <span
+      class="font-semibold"
+    >
+      País
+    </span>
+    <span
+      class="text-right"
+    >
+      Option 2
+    </span>
+  </div>
+</div>
+`;
+
+exports[`LocationDisplay > shows only country when isEcuador is false 2`] = `
+<div>
+  <div
+    class="flex justify-between gap-2"
+  >
+    <span
+      class="font-semibold"
+    >
+      Ubicación
+    </span>
+    <span
+      class="text-right"
+    >
+      , , 
+    </span>
+  </div>
+</div>
+`;

@@ -1,0 +1,137 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MenuOptions > handles complex menu items with nested structure 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":false,"items":[{"key":"main1","label":"Main Section 1","children":[{"key":"sub1-1","label":"Subsection 1.1"},{"key":"sub1-2","label":"Subsection 1.2","children":[{"key":"deep1","label":"Deep Item 1"},{"key":"deep2","label":"Deep Item 2"}]}]},{"key":"main2","label":"Main Section 2"}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":false,"items":[{"key":"main1","label":"Main Section 1","children":[{"key":"sub1-1","label":"Subsection 1.1"},{"key":"sub1-2","label":"Subsection 1.2","children":[{"key":"deep1","label":"Deep Item 1"},{"key":"deep2","label":"Deep Item 2"}]}]},{"key":"main2","label":"Main Section 2"}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > passes correct props to Antd Menu component 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":false,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/dashboard"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":false,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/dashboard"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > renders correctly when all props are provided 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/test-path"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/test-path"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > renders correctly with default props 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":false,"items":[],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":false,"items":[],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > renders when collapsed state changes 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/dashboard"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/dashboard"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > renders with empty items array 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":false,"items":[],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":false,"items":[],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > sets inlineCollapsed to true when collapsed prop is true 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":true,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MenuOptions > uses currentPath as defaultSelectedKeys 1`] = `
+<div>
+  <div
+    class="menu-options"
+  >
+    <div
+      data-props="{"mode":"inline","inlineCollapsed":false,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/users/profile"],"openKeys":[]}"
+      data-testid="menu"
+    >
+      <pre>
+        {"mode":"inline","inlineCollapsed":false,"items":[{"key":"1","label":"Dashboard"},{"key":"2","label":"Users"},{"key":"sub1","label":"Settings","children":[{"key":"3","label":"Profile"},{"key":"4","label":"Security"}]}],"className":"overflow-auto scrollbar-none border-none min-w-full","defaultSelectedKeys":["/users/profile"],"openKeys":[]}
+      </pre>
+    </div>
+  </div>
+</div>
+`;

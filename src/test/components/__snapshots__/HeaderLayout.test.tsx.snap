@@ -1,0 +1,109 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HeaderLayout > should render correctly with basic props 1`] = `
+<div>
+  <header
+    class="h-16"
+  >
+    <div
+      class="flex flex-row text-white-100 items-center justify-between w-full rounded-xl h-16 pr-4 pl-6 bg-primary-700"
+    >
+      <div
+        class="w-full flex flex-row items-center justify-start gap-4"
+      >
+        <img
+          alt="Logo"
+          data-testid="company-logo"
+          height="24"
+          src="https://example.com/logo.png"
+          width="150.46"
+        />
+      </div>
+      <div
+        class="hidden sm:flex flex-row w-auto items-center gap-4"
+      >
+        <div
+          class="flex md:hidden flex-row items-center gap-4"
+        >
+          <div
+            data-props="{"options":{"items":[]},"loading":false,"icon":"ReactElement"}"
+            data-testid="dropdown-icon"
+          >
+            DropdownIcon Mock
+          </div>
+          <div
+            data-props="{"options":{"items":[]},"loading":false,"icon":"ReactElement"}"
+            data-testid="dropdown-icon"
+          >
+            DropdownIcon Mock
+          </div>
+        </div>
+        <div
+          class="hidden md:flex flex-row items-center gap-4"
+        >
+          <div
+            data-props="{"options":{"items":[]},"loading":false,"emptyLabel":"Sin módulos asignados","icon":"ReactElement"}"
+            data-testid="dropdown-custom-label"
+          >
+            DropdownCustomLabel Mock - 
+            Sin módulos asignados
+          </div>
+          <div
+            data-props="{"options":{"items":[]},"loading":false,"emptyLabel":"Sin agencias asignadas","icon":"ReactElement"}"
+            data-testid="dropdown-custom-label"
+          >
+            DropdownCustomLabel Mock - 
+            Sin agencias asignadas
+          </div>
+          <div
+            class="flex flex-col"
+          >
+            <span
+              class="text-4 whitespace-nowrap"
+            />
+            <span
+              class="text-primary-900 font-bold text-end text-xs whitespace-nowrap"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex flex-row pl-4"
+      >
+        <div
+          data-props="{"menu":{"items":[{"key":"u1","label":"Perfil"},{"key":"u2","label":"Cerrar sesión"}]},"placement":"bottomRight","disabled":false}"
+          data-testid="dropdown"
+        >
+          <button
+            data-testid="antd-button"
+            type="text"
+          >
+            <div
+              class="text-white-100 w-6 h-6"
+              data-testid="user-icon"
+            >
+              UserIcon
+            </div>
+          </button>
+        </div>
+        <div
+          data-props="{"menu":{"items":[{"key":"n1","label":"Nueva notificación"}]},"placement":"bottomRight","disabled":false}"
+          data-testid="dropdown"
+        >
+          <button
+            data-testid="antd-button"
+            type="text"
+          >
+            <div
+              class="text-white-100 w-6 h-6"
+              data-testid="active-notification-icon"
+            >
+              ActiveNotificationIcon
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+`;

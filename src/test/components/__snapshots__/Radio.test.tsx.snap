@@ -1,0 +1,93 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Radio component > renders label when provided 1`] = `
+<div>
+  <div>
+    <p>
+      Choose option
+    </p>
+    <div
+      class="ant-radio-group ant-radio-group-outline css-dev-only-do-not-override-l9pxc0"
+    >
+      <label
+        class="ant-radio-wrapper css-dev-only-do-not-override-l9pxc0"
+      >
+        <span
+          class="ant-radio ant-wave-target"
+        >
+          <input
+            class="ant-radio-input"
+            name="test-id"
+            type="radio"
+            value="1"
+          />
+          <span
+            class="ant-radio-inner"
+          />
+        </span>
+        <span
+          class="ant-radio-label"
+        >
+          Option 1
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Radio component > renders radio options and allows selection 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-radio-group ant-radio-group-outline css-dev-only-do-not-override-l9pxc0"
+    >
+      <label
+        class="ant-radio-wrapper css-dev-only-do-not-override-l9pxc0"
+      >
+        <span
+          class="ant-radio ant-wave-target"
+        >
+          <input
+            checked=""
+            class="ant-radio-input"
+            name="test-id"
+            type="radio"
+            value="1"
+          />
+          <span
+            class="ant-radio-inner"
+          />
+        </span>
+        <span
+          class="ant-radio-label"
+        >
+          Option 1
+        </span>
+      </label>
+      <label
+        class="ant-radio-wrapper ant-radio-wrapper-checked css-dev-only-do-not-override-l9pxc0"
+      >
+        <span
+          class="ant-radio ant-wave-target ant-radio-checked"
+        >
+          <input
+            class="ant-radio-input"
+            name="test-id"
+            type="radio"
+            value="2"
+          />
+          <span
+            class="ant-radio-inner"
+          />
+        </span>
+        <span
+          class="ant-radio-label"
+        >
+          Option 2
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,103 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Checkbox component > calls onChange when clicked 1`] = `
+<div>
+  <label
+    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+  >
+    <span
+      class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-checked"
+    >
+      <input
+        class="ant-checkbox-input"
+        type="checkbox"
+      />
+      <span
+        class="ant-checkbox-inner"
+      />
+    </span>
+    <span
+      class="ant-checkbox-label"
+    >
+      Click me
+    </span>
+  </label>
+</div>
+`;
+
+exports[`Checkbox component > can be disabled 1`] = `
+<div>
+  <label
+    class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled css-dev-only-do-not-override-l9pxc0"
+  >
+    <span
+      class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-disabled"
+    >
+      <input
+        class="ant-checkbox-input"
+        disabled=""
+        type="checkbox"
+      />
+      <span
+        class="ant-checkbox-inner"
+      />
+    </span>
+    <span
+      class="ant-checkbox-label"
+    >
+      Disabled
+    </span>
+  </label>
+</div>
+`;
+
+exports[`Checkbox component > is checked when defaultChecked is true 1`] = `
+<div>
+  <label
+    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+  >
+    <span
+      class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-checked"
+    >
+      <input
+        checked=""
+        class="ant-checkbox-input"
+        type="checkbox"
+      />
+      <span
+        class="ant-checkbox-inner"
+      />
+    </span>
+    <span
+      class="ant-checkbox-label"
+    >
+      Checked
+    </span>
+  </label>
+</div>
+`;
+
+exports[`Checkbox component > renders with label text 1`] = `
+<div>
+  <label
+    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+  >
+    <span
+      class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0"
+    >
+      <input
+        class="ant-checkbox-input"
+        type="checkbox"
+      />
+      <span
+        class="ant-checkbox-inner"
+      />
+    </span>
+    <span
+      class="ant-checkbox-label"
+    >
+      Check me
+    </span>
+  </label>
+</div>
+`;

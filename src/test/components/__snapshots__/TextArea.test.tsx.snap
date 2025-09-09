@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Textarea component > accepts and passes extra props 1`] = `
+<div>
+  <textarea
+    class="ant-input css-dev-only-do-not-override-l9pxc0 ant-input-outlined"
+    data-testid="textarea"
+    maxlength="10"
+  />
+</div>
+`;
+
+exports[`Textarea component > renders with given props and allows typing 1`] = `
+<div>
+  <textarea
+    class="ant-input css-dev-only-do-not-override-l9pxc0 ant-input-outlined"
+    data-testid="textarea"
+    placeholder="Escribe algo..."
+  >
+    Hola mundo
+  </textarea>
+</div>
+`;

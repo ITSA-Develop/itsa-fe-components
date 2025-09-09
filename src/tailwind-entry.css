@@ -1,0 +1,146 @@
+/* Importar Public Sans de Google Fonts como fallback */
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+		"Segoe UI Emoji", "Noto Color Emoji";
+}
+
+html,
+body,
+#storybook-root,
+#root {
+	font-family: var(--font-sans);
+}
+
+.MuiFormControl-root {
+	margin: revert-layer !important;
+}
+
+.MuiTextField-root {
+	width: 100% !important;
+}
+
+.MuiTableCell-root {
+	padding: 4px 16px !important;
+}
+
+.menu-options .ant-menu .ant-menu-title-content {
+	padding-left: 2px !important;
+}
+
+.menu-options .ant-menu {
+	overflow-x: hidden !important;
+}
+
+.menu-options .ant-menu-submenu .ant-menu-submenu>.ant-menu-submenu-title {
+	padding-left: 38px !important;
+}
+
+
+
+.menu-options .ant-menu-submenu .ant-menu-submenu>.ant-menu .ant-menu-item {
+	padding-left: 50px !important;
+	font-size: 12px !important;
+}
+
+.scrollbar-none {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+	display: none;
+}
+
+.label-text {
+	font-size: 14px;
+}
+
+
+.itsa-checkbox--default .ant-checkbox .ant-checkbox-inner {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-checkbox--default .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.itsa-checkbox--default .ant-checkbox:hover .ant-checkbox-inner,
+.itsa-checkbox--default .ant-checkbox-input:focus + .ant-checkbox-inner {
+	border-color: #ea3d48 !important;
+}
+
+.mi-clase-checkbox .ant-checkbox .ant-checkbox-inner {
+	border-color: #ea3d48 !important;
+}
+
+.mi-clase-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.mi-clase-checkbox .ant-checkbox:hover .ant-checkbox-inner,
+.mi-clase-checkbox .ant-checkbox-input:focus + .ant-checkbox-inner {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-checkbox--default .ant-checkbox-checked .ant-checkbox-inner,
+.mi-clase-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+	background-color: #ea3d48 !important;
+	border-color: #ea3d48 !important;
+}
+
+.itsa-checkbox--default .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner,
+.itsa-checkbox--default .ant-checkbox-checked:hover .ant-checkbox-inner,
+.mi-clase-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner,
+.mi-clase-checkbox .ant-checkbox-checked:hover .ant-checkbox-inner {
+	background-color: #ea3d48 !important;
+	border-color: #ea3d48 !important;
+}
+
+/* Radio default variant */
+.itsa-radio--default {
+	--ant-colorPrimary: #ea3d48;
+	--ant-primary-color: #ea3d48;
+}
+
+.itsa-radio--default .ant-radio .ant-radio-inner {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-wrapper:hover .ant-radio-inner,
+.itsa-radio--default .ant-radio:hover .ant-radio-inner,
+.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-checked .ant-radio-inner {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-checked .ant-radio-inner::after {
+	background-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-wrapper-checked .ant-radio .ant-radio-inner::after {
+	background-color: #ea3d48 !important;
+}
+
+/* Fondo del círculo interno siempre blanco al estar checked */
+.itsa-radio--default .ant-radio-checked .ant-radio-inner,
+.itsa-radio--default .ant-radio-wrapper-checked .ant-radio .ant-radio-inner {
+	background-color: #ffffff !important;
+}
+
+/* Anillo exterior (pseudo-elemento) y focus outline */
+.itsa-radio--default .ant-radio-checked::after {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-wrapper:hover .ant-radio-checked::after {
+	border-color: #ea3d48 !important;
+}
+
+.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
+	box-shadow: 0 0 0 3px rgba(234, 61, 72, 0.24) !important;
+}
+
+

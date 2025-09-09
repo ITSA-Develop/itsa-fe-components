@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ActionPanel > renders button with icon 1`] = `
+<div>
+  <button
+    class="ant-btn css-dev-only-do-not-override-l9pxc0 ant-btn-circle ant-btn-text ant-btn-color-default ant-btn-variant-text ant-btn-icon-only ant-dropdown-trigger"
+    type="button"
+  >
+    <span
+      class="ant-btn-icon"
+    >
+      <svg
+        role="presentation"
+        style="width: 1.5rem; height: 1.5rem;"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+          style="fill: currentColor;"
+        />
+      </svg>
+    </span>
+  </button>
+</div>
+`;
+
+exports[`ActionPanel > shows menu items when button is clicked 1`] = `
+<div>
+  <button
+    class="ant-btn css-dev-only-do-not-override-l9pxc0 ant-btn-circle ant-btn-text ant-btn-color-default ant-btn-variant-text ant-btn-icon-only ant-dropdown-trigger ant-dropdown-open"
+    type="button"
+  >
+    <span
+      class="ant-btn-icon"
+    >
+      <svg
+        role="presentation"
+        style="width: 1.5rem; height: 1.5rem;"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+          style="fill: currentColor;"
+        />
+      </svg>
+    </span>
+  </button>
+</div>
+`;

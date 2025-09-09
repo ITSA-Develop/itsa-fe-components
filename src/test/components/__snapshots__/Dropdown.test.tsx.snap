@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Dropdown component > renders without crashing 1`] = `
+<div>
+  <button
+    class="ant-dropdown-trigger"
+  >
+    Open Menu
+  </button>
+</div>
+`;
+
+exports[`Dropdown component > shows menu items when clicked 1`] = `
+<div>
+  <button
+    class="ant-dropdown-trigger ant-dropdown-open"
+  >
+    Open Menu
+  </button>
+</div>
+`;

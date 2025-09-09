@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FilterSearchContainer > renders children and buttons 1`] = `
+<div>
+  <form>
+    <div
+      class="p-4 w-full bg-grey-100 rounded-md"
+    >
+      <div
+        class="flex flex-wrap gap-4 items-center justify-between"
+      >
+        <div>
+          Child content
+        </div>
+        <button
+          class="ant-btn css-dev-only-do-not-override-l9pxc0 ant-btn-default ant-btn-color-default ant-btn-variant-outlined"
+          type="button"
+        >
+          <span>
+            Limpiar Filtros
+          </span>
+        </button>
+        <button
+          class="ant-btn css-dev-only-do-not-override-l9pxc0 ant-btn-default ant-btn-color-default ant-btn-variant-outlined !hidden"
+          type="submit"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;

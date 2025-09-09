@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Popconfirm component > renders the Popconfirm and shows confirmation text on click 1`] = `
+<div>
+  <button
+    aria-describedby="test-id"
+  >
+    Delete
+  </button>
+</div>
+`;

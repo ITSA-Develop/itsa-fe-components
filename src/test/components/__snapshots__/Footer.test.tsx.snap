@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Footer component > renders the text and version correctly 1`] = `
+<div>
+  <footer
+    class="fixed bottom-0 left-0 w-full text-black-100 py-4 flex items-center justify-center text-sm gap-3"
+  >
+    <p
+      class="text-center"
+    >
+      Copyright 2025
+    </p>
+    <p
+      class="text-center"
+    >
+      v1.2.3
+    </p>
+  </footer>
+</div>
+`;

@@ -1,0 +1,42 @@
+{
+	"compilerOptions": {
+		"target": "ES2023",
+		"useDefineForClassFields": true,
+		"lib": ["ES2024", "DOM", "DOM.Iterable"],
+		"types": ["node", "vite/client", "vite-plugin-svgr/client", "vitest/globals", "@testing-library/jest-dom"],
+		"module": "ESNext",
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+		"outDir": "dist",
+		"skipLibCheck": true,
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["*"]
+		},
+
+		/* Bundler mode */
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"allowImportingTsExtensions": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+
+		/* Linting & Type Safety */
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["src/storybook/**/*.stories.tsx", "src/test/**/*.test.tsx"]
+}
