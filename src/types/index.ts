@@ -160,3 +160,9 @@ export type ControlledModeProps<TValue> = {
 export type RHFInputProps<TFieldValues extends FieldValues> = Omit<InputProps, 'value' | 'onChange'> &
 	BaseFieldProps &
 	(RHFModeProps<TFieldValues> | ControlledModeProps<string>);
+
+export type TNotificationProps ={
+	type: TNotificationType;
+	message: string;
+	description: string;
+}
