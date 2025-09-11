@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Space, notification } from 'antd';
 import { TNotificationType } from '../../../types';
-import { useNotifications } from '../../../HOC/NotificationsProviders';
+import { useNotification } from '../../../hooks';
 
 const meta = {
 	title: 'Helpers/Functions/openNotificationWithIcon',
@@ -120,7 +120,7 @@ export const SuccessNotification = () => {
 };
 
 export const AllNotificationTypes = () => {
-	const { openNotificationWithIcon } = useNotifications();
+	const { openNotificationWithIcon } = useNotification();
 
 	const showNotification = (type: TNotificationType) => {
 		const configs = {

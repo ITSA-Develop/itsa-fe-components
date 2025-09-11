@@ -2,7 +2,6 @@ import { EErrorCodes, EStatus } from '@/enums';
 import { isArray, isString, isUndefined } from '@/helpers';
 import { UNKNOWN_ERROR } from '@/utils/constants';
 import ApiError from '@/utils/errors/ApiError';
-import { useNotification } from '../useNotification/useNotification';
 
 export type TErrorTypes = string[] | ApiError | Error | string | unknown;
 type TLevel = EStatus;
@@ -38,7 +37,7 @@ const getExtErrorCode = (prefix: EErrorCodes, error?: TErrorTypes) => {
 };
 
 export const useErrors = () => {
-	const { openNotification } = useNotification();
+	// const { openNotification } = useNotification();
 
 	let _level: TLevel = EStatus.error;
 	let _fieldKey: string;
@@ -54,7 +53,7 @@ export const useErrors = () => {
 
 			if (!isUndefined(possibleMessage)) {
 				if (isString(possibleMessage)) {
-					openNotification(EStatus.error, 'Error', possibleMessage || 'Error Indefinido');
+					// openNotification(EStatus.error, 'Error', possibleMessage || 'Error Indefinido');
 
 					result.overridden = possibleMessage;
 				}
@@ -64,11 +63,11 @@ export const useErrors = () => {
 		}
 
 		if (isArray(result.error)) {
-			result.error.forEach(error => {
-				openNotification(EStatus.error, 'Error', error);
-			});
+			// result.error.forEach(error => {
+			// 	// openNotification(EStatus.error, 'Error', error);
+			// });
 		} else {
-			openNotification(EStatus.error, 'Error', result.error);
+			// openNotification(EStatus.error, 'Error', result.error);
 		}
 	};
 
