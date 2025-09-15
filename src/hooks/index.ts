@@ -5,3 +5,4 @@ export { useTable } from './useTable/useTable';
 // TODO: double check this later open
 export { useModalStore } from './useModalStore';
 export { useSidebarStore } from './useSidebar';
+export { useModalResponsive } from './useModalResponsive';

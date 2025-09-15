@@ -2,7 +2,7 @@ import { Select as AntSelect, SelectProps } from 'antd';
 import { RefCallBack } from 'react-hook-form';
 
 export interface ISelectProps extends SelectProps {
-	status: 'error' | 'warning' | undefined;
+	status?: 'error' | 'warning' | undefined;
 	ref?: RefCallBack;
 }
 
