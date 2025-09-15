@@ -41,6 +41,8 @@ export { Skeleton } from './components/Skeleton/Skeleton';
 export { Switch } from './components/Switch/Switch';
 export { Table } from './components/Table';
 export { Tabs } from './components/Tabs/Tabs';
+export { TabsMaintenance } from './components/TabsMaintenance';
+export { TabsItemContent } from './components/TabsItemContent';
 export { Textarea } from './components/Textarea/Textarea';
 export { Tooltip } from './components/Tooltip/Tooltip';
 

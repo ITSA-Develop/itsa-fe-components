@@ -230,3 +230,10 @@ export interface IModalResponsiveProps {
 	content: ReactNode;
 	setContent: (content: ReactNode) => void;
 }
+
+export interface ITabsMaintenanceItem {
+	key: string;
+	label: string;
+	children: ReactNode;
+	icon?: ReactNode;
+}

@@ -66,3 +66,5 @@ export * from './agencies';
 export const API_VERSIONS_MODULE = {
 	security: 'sec/v1/security/',
 };
+
+export const TABS_ITEM_CONTENT_WIDTH = '512px';

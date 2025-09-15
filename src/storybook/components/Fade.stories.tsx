@@ -1,6 +1,7 @@
+import React from 'react';
 import type { StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Button } from '../../components/Button/Button';
+import { Button } from '../../components/Button';
 import { Fade } from '../../components/Fade/Fade';
 
 const meta = {
@@ -30,10 +31,10 @@ export const Default: Story = {
 				<Fade
 					showTransition={!showFade}
 					duration={500}
-					transitionChildren={<Button onClick={() => setShowFade(true)}>show fade effect</Button>}
+					transitionChildren={<Button onClick={() => setShowFade(true)} label="show fade effect" />}
 				>
 					<p>Fade Effect</p>
-					<Button onClick={() => setShowFade(false)}>show again</Button>
+					<Button onClick={() => setShowFade(false)} label="show again" />
 				</Fade>
 			);
 		};
