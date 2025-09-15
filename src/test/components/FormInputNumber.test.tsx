@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { useForm, FormProvider } from 'react-hook-form';
-import { FormInput } from '../../components/FormInputNumber';
+import { FormInputNumber as FormInput } from '../../components/FormInputNumber';
 
 // Test wrapper with direct control access
 function TestFormWrapperWithControl({

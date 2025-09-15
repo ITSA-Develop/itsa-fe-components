@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormLabelError component > renders error label text 1`] = `
+<div>
+  <label
+    class="text-red-500"
+  >
+    Campo requerido
+  </label>
+</div>
+`;

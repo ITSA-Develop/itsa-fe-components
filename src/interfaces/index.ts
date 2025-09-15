@@ -35,7 +35,7 @@ export interface ISubmodule {
 }
 
 export interface IActions {
-	all_actions: number;
+	allActions: number;
 	read: number;
 	create: number;
 	update: number;
@@ -161,7 +161,7 @@ export interface IPermissionActions {
 	delete: number;
 	create: number;
 	read: number;
-	all_actions: number;
+	allActions: number;
 }
 
 export interface IPermissionProgram extends IPermissionBasic {

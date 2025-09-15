@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormLabel component > renders label text 1`] = `
+<div>
+  <label
+    class="font-bold"
+  >
+    Nombre
+  </label>
+</div>
+`;

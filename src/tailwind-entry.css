@@ -234,9 +234,9 @@ body,
 	/* Reglas específicas para Ant Design (mayor especificidad) */
 	.ant-btn.itsa-btn--secondary:hover,
 	.ant-btn.itsa-btn--secondary:focus {
-		color: var(--itsa-primary) !important; /* primary-800 */
-		background-color: #FCEEEE !important; /* primary-50 */
-		border-color: var(--itsa-primary) !important; /* primary-800 */
+		color: var(--itsa-primary) !important;
+		background-color: #FCEEEE !important;
+		border-color: var(--itsa-primary) !important;
 	}
 
 	/* AntD overrides para secundario default gris */
@@ -254,7 +254,8 @@ body,
 	}
 
 	.ant-btn.itsa-btn--secondary.itsa-btn--default:active {
-		color: #404040 !important; /* tono más oscuro al active */
+		color: #404040 !important;
+		/* tono más oscuro al active */
 		border-color: #404040 !important;
 	}
 
@@ -291,36 +292,20 @@ body,
 
 	/* Primario AntD: usa tokens CSS para hover/active (reduce duplicación) */
 	.ant-btn.itsa-btn--primary {
-		--ant-colorPrimary: var(--itsa-primary); /* base */
-		--ant-colorPrimaryHover: #D90022; /* hover/focus */
-		--ant-colorPrimaryActive: #CF0021; /* active */
+		--ant-colorPrimary: var(--itsa-primary);
+		--ant-colorPrimaryHover: #D90022;
+		--ant-colorPrimaryActive: #CF0021;
 		color: #FFFFFF !important;
+
 	}
 
-	/* Estado deshabilitado AntD: compacto */
-	.ant-btn.itsa-btn--disabled,
-	.ant-btn:disabled,
-	.ant-btn.ant-btn-disabled {
-		background-color: #D9D9D9 !important; /* gray-150 */
-		border-color: #D9D9D9 !important; /* gray-150 */
+	.ant-btn.itsa-btn--disabled {
+		background-color: #D9D9D9 !important;
+		border-color: #D9D9D9 !important;
 		color: #ffffff !important;
 		cursor: not-allowed !important;
 		box-shadow: none !important;
 		pointer-events: none !important;
-	}
-
-	.ant-btn.itsa-btn--disabled:hover,
-	.ant-btn.itsa-btn--disabled:focus,
-	.ant-btn.itsa-btn--disabled:active,
-	.ant-btn:disabled:hover,
-	.ant-btn:disabled:focus,
-	.ant-btn:disabled:active,
-	.ant-btn.ant-btn-disabled:hover,
-	.ant-btn.ant-btn-disabled:focus,
-	.ant-btn.ant-btn-disabled:active {
-		background-color: #D9D9D9 !important;
-		border-color: #D9D9D9 !important;
-		color: #ffffff !important;
 	}
 }
 
