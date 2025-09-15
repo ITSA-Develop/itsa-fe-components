@@ -13,7 +13,7 @@ export const InputPassword = ({ ref, type, ...rest }: IInputPasswordProps) => {
 			{...rest}
 			ref={ref}
 			type={type}
-			iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+			iconRender={visible => (visible ? <EyeTwoTone className="text-gray-400" /> : <EyeInvisibleOutlined className="text-gray-400" />)}
 		/>
 	);
 };

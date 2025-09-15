@@ -3,16 +3,17 @@ import { ReactNode } from 'react';
 
 export interface IButtonProps {
 	size?: 'small' | 'middle' | 'large';
-	type?: 'primary' | 'secondary';
-	title?: ReactNode;
+	type?: 'primary' | 'secondary' | 'submit';
+	label?: ReactNode;
 	disabled?: boolean;
 	onClick?: () => void;
-	/** Cuando es true en tipo secondary, aplica estilo gris (#595959) */
 	default?: boolean;
+	width?: number;
 }
 
 export const Button = (props: IButtonProps) => {
-	const { size = 'small', type = 'primary', title, disabled = false, onClick } = props;
+	const { width } = props;
+	const { size = 'small', type = 'primary', label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
 	const disabledClass = disabled ? 'itsa-btn--disabled' : '';
@@ -21,8 +22,8 @@ export const Button = (props: IButtonProps) => {
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
 
 	return (
-		<ButtonAntd className={className} size={size} type={antdType} disabled={disabled} onClick={onClick}>
-			{title}
+		<ButtonAntd className={className} size={size} type={antdType} disabled={disabled} onClick={onClick} style={{ width: width ? `${width}%` : undefined }}>
+			{label}
 		</ButtonAntd>
 	);
 };

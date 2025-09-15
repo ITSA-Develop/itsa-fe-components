@@ -16,7 +16,7 @@ export const ErrorPage = ({ error, message, handleClick }: ErrorPageProps) => {
 				<p className="text-lg">{message}</p>
 			</div>
 			<div className="flex justify-center mt-8">
-				<Button onClick={handleClick} title="Ir al Inicio" />
+				<Button onClick={handleClick} label="Ir al Inicio" />
 			</div>
 		</div>
 	);

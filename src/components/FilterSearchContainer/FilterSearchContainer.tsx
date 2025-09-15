@@ -19,9 +19,9 @@ export const FilterSearchContainer = ({ handleSubmit, reset, children }: IFilter
 			<div className="p-4 w-full bg-grey-100 rounded-md">
 				<div className="flex flex-wrap gap-4 items-center justify-between">
 					{children}
-						<Button onClick={handleClear} title="Limpiar Filtros" />
+						<Button onClick={handleClear} label="Limpiar Filtros" />
 					{/* To trigger the onsubmit */}
-					<Button title="Submit" />
+					<Button label="Submit" />
 				</div>
 			</div>
 		</form>

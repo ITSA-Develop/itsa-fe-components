@@ -23,7 +23,11 @@ export const ItemList = ({ title, description, time, onDelete }: ListItemProps) 
 				</div>
 				<Text className="text-gray-400 text-xs truncate">{description}</Text>
 			</div>
-			<div>{onDelete && <Button type="primary" title={<DeleteOutlined />} />}</div>
+			<div>
+				{onDelete && (
+					<Button type="primary" label={<DeleteOutlined />} onClick={onDelete} />
+				)}
+			</div>
 		</div>
-	);
+	);	
 };
