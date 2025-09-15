@@ -1,6 +1,7 @@
+import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Button } from '../../components/Button/Button';
+import { Button } from '../../components/Button';
 import { Modal } from '../../components/Modal/Modal';
 
 const meta: Meta = {
@@ -48,9 +49,7 @@ export const Default: Story = {
 		const ModalHistory = () => {
 			return (
 				<div>
-					<Button type="primary" onClick={showModal}>
-						Open Modal with async logic
-					</Button>
+					<Button type="primary" title="Open Modal with async logic" onClick={showModal}/>
 					<Modal
 						title="Title"
 						open={open}

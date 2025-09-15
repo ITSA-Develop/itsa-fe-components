@@ -2,7 +2,7 @@ export { Alert } from './components/Alert/Alert';
 export { AppLayout } from './components/AppLayout/AppLayout';
 export { Avatar } from './components/Avatar/Avatar';
 export { Badge } from './components/Badge/Badge';
-export { Button } from './components/Button/Button';
+export { ButtonAntd } from './components/ButtonAntd/';
 export { Card } from './components/Card/Card';
 export { Checkbox } from './components/Checkbox/Checkbox';
 export { Collapse } from './components/Collapse/Collapse';

@@ -1,4 +1,4 @@
-import { Button } from '@/components/Button/Button';
+import { Button } from '@/components/ButtonAntd';
 import { Typography } from 'antd';
 export interface ErrorPageProps {
 	error: string;

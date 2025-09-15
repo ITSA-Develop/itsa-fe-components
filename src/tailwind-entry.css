@@ -68,7 +68,7 @@ body,
 
 .itsa-checkbox--default .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .itsa-checkbox--default .ant-checkbox:hover .ant-checkbox-inner,
-.itsa-checkbox--default .ant-checkbox-input:focus + .ant-checkbox-inner {
+.itsa-checkbox--default .ant-checkbox-input:focus+.ant-checkbox-inner {
 	border-color: #ea3d48 !important;
 }
 
@@ -78,7 +78,7 @@ body,
 
 .mi-clase-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .mi-clase-checkbox .ant-checkbox:hover .ant-checkbox-inner,
-.mi-clase-checkbox .ant-checkbox-input:focus + .ant-checkbox-inner {
+.mi-clase-checkbox .ant-checkbox-input:focus+.ant-checkbox-inner {
 	border-color: #ea3d48 !important;
 }
 
@@ -108,7 +108,7 @@ body,
 
 .itsa-radio--default .ant-radio-wrapper:hover .ant-radio-inner,
 .itsa-radio--default .ant-radio:hover .ant-radio-inner,
-.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
+.itsa-radio--default .ant-radio-input:focus+.ant-radio-inner {
 	border-color: #ea3d48 !important;
 }
 
@@ -139,8 +139,182 @@ body,
 	border-color: #ea3d48 !important;
 }
 
-.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
+.itsa-radio--default .ant-radio-input:focus+.ant-radio-inner {
 	box-shadow: 0 0 0 3px rgba(234, 61, 72, 0.24) !important;
 }
 
+/* Botones genéricos ITSA */
+@layer components {
+	.itsa-btn {
+		@apply inline-flex items-center justify-center font-medium transition-colors;
+	}
 
+	/* Variantes */
+	.itsa-btn--primary {
+		@apply !bg-primary-800 text-white-100;
+	}
+
+	.itsa-btn--primary:hover {
+		@apply !bg-primary-900;
+	}
+
+	/* Fallback para cuando no es AntD */
+	.itsa-btn--primary:active {
+		background-color: #CF0021;
+	}
+
+	.itsa-btn--secondary {
+		@apply text-primary-800 bg-white-100 border border-primary-800;
+	}
+
+	/* Secundario con variante default (gris #595959) */
+	.itsa-btn--secondary.itsa-btn--default {
+		color: #595959;
+		background-color: #ffffff;
+		border-color: #595959;
+	}
+
+	.itsa-btn--secondary.itsa-btn--default:hover {
+		background-color: #f5f5f5;
+		color: #595959;
+		border-color: #595959;
+	}
+
+	/* Disabled fallback: secundario default */
+	.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled {
+		color: #D9D9D9;
+		border-color: #D9D9D9;
+		background-color: #ffffff;
+		cursor: not-allowed;
+	}
+
+	.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:hover {
+		color: #D9D9D9;
+		border-color: #D9D9D9;
+		background-color: #ffffff;
+	}
+
+	.itsa-btn--secondary:hover {
+		@apply bg-primary-50 text-primary-800;
+	}
+
+	/* Fallback para cuando no es AntD */
+	.itsa-btn--secondary:active {
+		color: #CF0021;
+		border-color: #CF0021;
+	}
+
+	/* Tamaños */
+	.itsa-btn--sm {
+		@apply max-h-12 text-xs rounded-[8px];
+	}
+
+	.itsa-btn--md {
+		@apply max-h-16 text-sm rounded-[12px];
+	}
+
+	.itsa-btn--lg {
+		@apply h-[44px] text-base rounded-[16px];
+	}
+
+	/* Estado deshabilitado */
+	.itsa-btn--disabled {
+		@apply bg-gray-150 text-gray-500 cursor-not-allowed;
+	}
+
+	.itsa-btn--disabled:hover {
+		@apply bg-gray-150;
+	}
+
+	/* Reglas específicas para Ant Design (mayor especificidad) */
+	.ant-btn.itsa-btn--secondary:hover,
+	.ant-btn.itsa-btn--secondary:focus {
+		color: #EA3B48 !important; /* primary-800 */
+		background-color: #FCEEEE !important; /* primary-50 */
+		border-color: #EA3B48 !important; /* primary-800 */
+	}
+
+	/* AntD overrides para secundario default gris */
+	.ant-btn.itsa-btn--secondary.itsa-btn--default,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:focus {
+		color: #595959 !important;
+		background-color: #ffffff !important;
+		border-color: #595959 !important;
+	}
+
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:hover {
+		color: #595959 !important;
+		background-color: #f5f5f5 !important;
+		border-color: #595959 !important;
+	}
+
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:active {
+		color: #404040 !important; /* tono más oscuro al active */
+		border-color: #404040 !important;
+	}
+
+	/* AntD disabled: secundario default (gris) */
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled {
+		color: #D9D9D9 !important;
+		border-color: #D9D9D9 !important;
+		background-color: #ffffff !important;
+		cursor: not-allowed !important;
+		box-shadow: none !important;
+		pointer-events: none !important;
+	}
+
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:hover,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled:hover,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled:hover,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:focus,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled:focus,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled:focus,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:active,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled:active,
+	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled:active {
+		color: #D9D9D9 !important;
+		border-color: #D9D9D9 !important;
+		background-color: #ffffff !important;
+	}
+
+	.ant-btn.itsa-btn--secondary:active {
+		color: #CF0021 !important;
+		border-color: #CF0021 !important;
+	}
+
+	/* Primario AntD: usa tokens CSS para hover/active (reduce duplicación) */
+	.ant-btn.itsa-btn--primary {
+		--ant-colorPrimary: #EA3B48; /* base */
+		--ant-colorPrimaryHover: #D90022; /* hover/focus */
+		--ant-colorPrimaryActive: #CF0021; /* active */
+		color: #FFFFFF !important;
+	}
+
+	/* Estado deshabilitado AntD: compacto */
+	.ant-btn.itsa-btn--disabled,
+	.ant-btn:disabled,
+	.ant-btn.ant-btn-disabled {
+		background-color: #D9D9D9 !important; /* gray-150 */
+		border-color: #D9D9D9 !important; /* gray-150 */
+		color: #ffffff !important;
+		cursor: not-allowed !important;
+		box-shadow: none !important;
+		pointer-events: none !important;
+	}
+
+	.ant-btn.itsa-btn--disabled:hover,
+	.ant-btn.itsa-btn--disabled:focus,
+	.ant-btn.itsa-btn--disabled:active,
+	.ant-btn:disabled:hover,
+	.ant-btn:disabled:focus,
+	.ant-btn:disabled:active,
+	.ant-btn.ant-btn-disabled:hover,
+	.ant-btn.ant-btn-disabled:focus,
+	.ant-btn.ant-btn-disabled:active {
+		background-color: #D9D9D9 !important;
+		border-color: #D9D9D9 !important;
+		color: #ffffff !important;
+	}
+}

@@ -3,7 +3,7 @@
 import { mdiClose, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 
-import { Button } from '@/components/Button/Button';
+import { Button } from '@/components/ButtonAntd';
 import { Checkbox } from '@/components/Checkbox/Checkbox';
 import { EButtonVariant } from '@/enums';
 

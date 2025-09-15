@@ -1,5 +1,4 @@
-import { Button } from '@/components/Button/Button';
-import { EButtonColor } from '@/enums';
+import { Button } from '@/components/Button';
 import { clearURLParams } from '@/helpers';
 import { ReactNode } from 'react';
 
@@ -20,11 +19,9 @@ export const FilterSearchContainer = ({ handleSubmit, reset, children }: IFilter
 			<div className="p-4 w-full bg-grey-100 rounded-md">
 				<div className="flex flex-wrap gap-4 items-center justify-between">
 					{children}
-					<Button onClick={handleClear} color={EButtonColor.primary}>
-						Limpiar Filtros
-					</Button>
+						<Button onClick={handleClear} title="Limpiar Filtros" />
 					{/* To trigger the onsubmit */}
-					<Button htmlType="submit" className="!hidden" />
+					<Button title="Submit" />
 				</div>
 			</div>
 		</form>
