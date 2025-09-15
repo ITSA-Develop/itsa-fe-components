@@ -2,9 +2,9 @@ import { InputProps } from 'antd';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
-import { Input } from '@/components/Input/Input';
 import { memo, useId } from 'react';
 import { EInput } from '@/enums';
+import { InputPassword } from '../InputPassword';
 
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
@@ -12,13 +12,11 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	showCaracteres?: boolean;
 	control: Control<TFieldValues>;
 	placeholder?: string;
-	
 }
 
-const FormInputComponent = <TFieldValues extends FieldValues>({
+const FormInputPasswordComponent = <TFieldValues extends FieldValues>({
 	name,
 	label,
-	showCaracteres,
 	control,
 	placeholder,
 }: IInputProps<TFieldValues>) => {
@@ -33,7 +31,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 				return (
 					<div className="flex flex-col gap-1">
 						<FormLabel label={label} htmlFor={id} />
-						<Input
+						<InputPassword
 							id={id as string}
 							type={EInput.text}
 							value={(field.value as string | undefined) ?? ''}
@@ -44,7 +42,6 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							status={errorMsg ? 'error' : undefined}
 							aria-invalid={!!errorMsg}
 							aria-describedby={errorMsg ? errId : undefined}
-							showCountCharacters={showCaracteres}
 							placeholder={placeholder}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
@@ -55,8 +52,8 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	);
 };
 
-export const FormInput = memo(FormInputComponent) as typeof FormInputComponent & {
+export const FormInputPassword = memo(FormInputPasswordComponent) as typeof FormInputPasswordComponent & {
 	displayName?: string;
 };
 
-FormInput.displayName = 'FormInput';
+FormInputPassword.displayName = 'FormInputPassword';

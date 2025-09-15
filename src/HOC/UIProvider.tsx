@@ -3,6 +3,7 @@ import { ConfigProvider } from 'antd';
 import { ReactNode } from 'react';
 import { COLORS } from '../constants/colors';
 import { NotificationsProvider } from './NotificationsProviders';
+import { ResponsiveModalProvider } from './ResponsiveModalProvider';
 
 interface UIProviderProps {
 	children: ReactNode;
@@ -37,7 +38,9 @@ export const UIProvider = ({ children }: UIProviderProps) => {
 				},
 			}}
 		>
-			<NotificationsProvider>{children}</NotificationsProvider>
+			<NotificationsProvider>
+				<ResponsiveModalProvider>{children}</ResponsiveModalProvider>
+			</NotificationsProvider>
 		</ConfigProvider>
 	);
 };

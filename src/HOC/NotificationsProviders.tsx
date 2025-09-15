@@ -1,12 +1,12 @@
 import { TNotificationProps } from '@/types';
 import { notification } from 'antd';
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, ReactNode } from 'react';
 
-interface NotificationsContextType {
+export interface NotificationsContextType {
 	openNotificationWithIcon: (notificationProps: TNotificationProps) => void;
 }
 
-const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined);
+export const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined);
 
 export const NotificationsProvider = ({ children }: { children: ReactNode }) => {
 	const [api, contextHolder] = notification.useNotification();
@@ -26,10 +26,3 @@ export const NotificationsProvider = ({ children }: { children: ReactNode }) => 
 	);
 };
 
-export const useNotifications = () => {
-	const context = useContext(NotificationsContext);
-	if (!context) {
-		throw new Error('useNotifications debe usarse dentro de NotificationsProvider');
-	}
-	return context;
-};

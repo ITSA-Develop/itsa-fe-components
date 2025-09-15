@@ -152,7 +152,6 @@ export interface IActionPanelOption {
 	target?: string;
 }
 
-
 export interface IPermissionBasic {
 	id: number;
 	name: string;
@@ -215,4 +214,19 @@ export interface IControllerProps {
 	isForm?: boolean;
 	isEditable?: boolean;
 	isDetail?: boolean;
+}
+
+export interface IModalResponsiveProps {
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	onOk: () => void;
+	setOnOk: (onOk: () => void) => void;
+	onCancel: () => void;
+	setOnCancel: (onCancel: () => void) => void;
+	title: string;
+	setTitle: (title: string) => void;
+	footer: ReactNode;
+	setFooter: (footer: ReactNode) => void;
+	content: ReactNode;
+	setContent: (content: ReactNode) => void;
 }
