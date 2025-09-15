@@ -23,13 +23,7 @@ export const ItemList = ({ title, description, time, onDelete }: ListItemProps) 
 				</div>
 				<Text className="text-gray-400 text-xs truncate">{description}</Text>
 			</div>
-			<div>
-				{onDelete && (
-					<Button type="primary" danger>
-						<DeleteOutlined />
-					</Button>
-				)}
-			</div>
+			<div>{onDelete && <Button type="primary" title={<DeleteOutlined />} />}</div>
 		</div>
 	);
 };

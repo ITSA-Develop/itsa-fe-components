@@ -1,4 +1,4 @@
-import { Button } from '@/components/ButtonAntd';
+import { Button } from '@/components/Button';
 import { Typography } from 'antd';
 export interface ErrorPageProps {
 	error: string;
@@ -16,7 +16,7 @@ export const ErrorPage = ({ error, message, handleClick }: ErrorPageProps) => {
 				<p className="text-lg">{message}</p>
 			</div>
 			<div className="flex justify-center mt-8">
-				<Button onClick={handleClick}>Ir al Inicio</Button>
+				<Button onClick={handleClick} title="Ir al Inicio" />
 			</div>
 		</div>
 	);
