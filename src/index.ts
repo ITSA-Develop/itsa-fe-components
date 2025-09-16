@@ -39,6 +39,8 @@ export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
 export { Skeleton } from './components/Skeleton/Skeleton';
 export { Switch } from './components/Switch/Switch';
+export { Tag } from './components/Tag';
+export { TagCustom } from './components/TagCustom';
 export { Table } from './components/Table';
 export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';

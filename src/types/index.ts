@@ -110,7 +110,7 @@ export type TMenuItemData = {
 	icon: React.ReactNode | null;
 	url?: string | null;
 	actions?: {
-		all_actions: number;
+		allActions: number;
 		read: number;
 		create: number;
 		update: number;

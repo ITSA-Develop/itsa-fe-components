@@ -37,7 +37,7 @@ export const PERMISSIONS_ACTIONS: Record<PermissionAction, PermissionAction> = {
 	read: 'read',
 	update: 'update',
 	delete: 'delete',
-	all_actions: 'all_actions',
+	allActions: 'allActions',
 };
 
 export const SUBDOMAINS = {

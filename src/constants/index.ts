@@ -7,7 +7,6 @@ export const DATE_FORMAT_DAYJS_DEFAULT = 'YYYY-MM-DD';
 
 export const TABLE_HEADER_ACTIONS = 'actions';
 
-
 const AXIOS_INITIAL_CONF = {
 	headers: {
 		'Content-Type': 'application/json',
@@ -68,3 +67,26 @@ export const API_VERSIONS_MODULE = {
 };
 
 export const TABS_ITEM_CONTENT_WIDTH = '512px';
+
+export const COLOR_TAGS = {
+	magenta: {
+		text: '#EB2F96',
+		borde: '#FFADD2',
+		bg: '#FFF0F6',
+	},
+	green: {
+		text: '#52A927',
+		borde: '#9FCA7F',
+		bg: '#F6FFED',
+	},
+	blue: {
+		text: '#2F54EB',
+		borde: '#ADC6FF',
+		bg: '#F0F5FF',
+	},
+	orange: {
+		text: '#FA8C16',
+		borde: '#FFD591',
+		bg: '#FFF7E6',
+	},
+};

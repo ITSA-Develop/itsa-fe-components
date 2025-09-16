@@ -26,7 +26,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								url: '/itsa/security/maintenance/modules',
 								icon: 'IconCamion',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -40,7 +40,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								url: '/vehiculos/gestion-compras-nuevos',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -54,7 +54,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								url: '/vehiculos/gestion-compras-usados',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -67,7 +67,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: '/vehiculos/gestion-transito',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -89,7 +89,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -102,7 +102,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -129,7 +129,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-clientes',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -142,7 +142,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-transportistas',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -155,7 +155,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-colaboradores',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -168,7 +168,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-proveedores',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -189,7 +189,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/constantes-y-parametros',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -202,7 +202,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/feriados',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -223,7 +223,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/peps',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -236,7 +236,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/providencias',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -249,7 +249,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/sancionados-onu',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -262,7 +262,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/ofac',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -283,7 +283,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/politicas-precios',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -296,7 +296,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/presupuesto-venta',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -309,7 +309,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/regalos',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -322,7 +322,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/promociones',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -335,7 +335,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/trade-in',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -356,7 +356,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/modelos',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -369,7 +369,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/rastreo-seguridad',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -403,7 +403,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -416,7 +416,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -438,7 +438,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -451,7 +451,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -478,7 +478,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -491,7 +491,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -504,7 +504,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -517,7 +517,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -551,7 +551,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -588,7 +588,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: '/itsa/security/maintenance/modules',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -601,7 +601,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: '/vehiculos/gestion-compras-nuevos',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -614,7 +614,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: '/vehiculos/gestion-compras-usados',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -627,7 +627,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: '/vehiculos/gestion-transito',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -649,7 +649,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -662,7 +662,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -689,7 +689,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-clientes',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -702,7 +702,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-transportistas',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -715,7 +715,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-colaboradores',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -728,7 +728,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/nucleo/gestion-proveedores',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -749,7 +749,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: '/vehiculos/trade-in',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -783,7 +783,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -796,7 +796,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -818,7 +818,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -831,7 +831,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								path: null,
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -858,7 +858,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -871,7 +871,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -884,7 +884,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -897,7 +897,7 @@ export const AGENCIES_DATA: IAgency[] = [
 										path: null,
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -945,7 +945,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 										path: '/nucleo/gestion-clientes',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -980,7 +980,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								url: '/itsa/spare/origin',
 								icon: 'mdiArchiveArrowDownOutline',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -994,7 +994,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								url: '/itsa/spares',
 								icon: 'mdiCarWrench',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -1007,7 +1007,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								path: '/itsa/spares-equivalents',
 								icon: 'mdiSpaceStation',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -1020,7 +1020,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								path: '/itsa/spares-replacements',
 								icon: 'mdiSpaceStation',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -1056,7 +1056,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 										path: '/itsa/security/maintenance/modules',
 										icon: 'mdiLaptop',
 										actions: {
-											all_actions: 1,
+											allActions: 1,
 											read: 0,
 											create: 0,
 											update: 0,
@@ -1073,7 +1073,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								path: '/itsa/security/maintenance/programs',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
@@ -1086,7 +1086,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 								path: '/itsa/security/maintenance/modules',
 								icon: 'mdiLaptop',
 								actions: {
-									all_actions: 1,
+									allActions: 1,
 									read: 0,
 									create: 0,
 									update: 0,
