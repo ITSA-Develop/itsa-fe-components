@@ -46,7 +46,7 @@ export const Table = <T extends object>({
 			const actionsColumn: TStrictColumnType<T> = {
 				title: 'Acciones',
 				key: 'actions',
-				width: 90,
+				width: 100,
 				align: 'center',
 				render: (record: T) => (
 					<Dropdown

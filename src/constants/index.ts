@@ -54,6 +54,7 @@ export const DEFAULT_PAGINATION_CONFIG = {
 	pageSizeOptions: [10, 20, 50, 100],
 	hideOnSinglePage: false,
 	showLessItems: true,
+	totalBoundaryShowSizeChanger: 100,
 };
 
 export const TABLE_SCROLL = {

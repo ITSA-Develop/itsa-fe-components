@@ -1,3 +1,4 @@
+import React from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Table, type ITableProps } from '../../components/Table';
@@ -253,7 +254,7 @@ const TableWithPaginationState = () => {
 				loading={false}
 				bordered={true}
 				showPagination={true}
-				paginationConfig={pagination}
+				paginationConfig={{ ...pagination, total: 200 }}
 				onChange={onChangePagination}
 				rowKey={'id'}
 				showColumnActions={true}

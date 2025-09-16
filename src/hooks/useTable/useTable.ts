@@ -19,7 +19,6 @@ export const useTable = <T extends object>(paginationConfig?: TablePaginationCon
 	});
 	const [filters, setFilters] = useState<Record<string, FilterValue | null>>({});
 	const [sorter, setSorter] = useState<SorterResult<T> | SorterResult<T>[]>([]);
-	const [total, setTotal] = useState<number>(0);
 
 	const onChangePagination: AntTableProps<T>['onChange'] = (
 		pagination: TablePaginationConfig,
@@ -29,7 +28,6 @@ export const useTable = <T extends object>(paginationConfig?: TablePaginationCon
 		setPagination(pagination);
 		setFilters(filters);
 		setSorter(sorter);
-		setTotal(total);
 	};
 
 	return { pagination, filters, sorter, onChangePagination };
