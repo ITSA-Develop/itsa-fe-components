@@ -152,12 +152,12 @@ export const Default: Story = {
 	},
 };
 
-export const Loading: Story = {
-	args: {
-		...Default.args,
-		loading: true,
-	},
-};
+// export const Loading: Story = {
+// 	args: {
+// 		...Default.args,
+// 		loading: true,
+// 	},
+// };
 
 export const VerticalMenu: Story = {
 	args: {
@@ -166,44 +166,44 @@ export const VerticalMenu: Story = {
 	},
 };
 
-export const NarrowSidebar: Story = {
-	args: {
-		...Default.args,
-		widthSidebar: 220,
-	},
-};
+// export const NarrowSidebar: Story = {
+// 	args: {
+// 		...Default.args,
+// 		widthSidebar: 220,
+// 	},
+// };
 
-export const WideSidebar: Story = {
-	args: {
-		...Default.args,
-		widthSidebar: 350,
-	},
-};
+// export const WideSidebar: Story = {
+// 	args: {
+// 		...Default.args,
+// 		widthSidebar: 350,
+// 	},
+// };
 
-export const WithoutLogo: Story = {
-	args: {
-		...Default.args,
-		logo: '',
-	},
-};
+// export const WithoutLogo: Story = {
+// 	args: {
+// 		...Default.args,
+// 		logo: '',
+// 	},
+// };
 
-export const DifferentPath: Story = {
-	args: {
-		...Default.args,
-		currentPath: '/users/permissions',
-	},
-};
+// export const DifferentPath: Story = {
+// 	args: {
+// 		...Default.args,
+// 		currentPath: '/users/permissions',
+// 	},
+// };
 
-export const MinimalNotifications: Story = {
-	args: {
-		...Default.args,
-		notifications: { items: [] },
-	},
-};
+// export const MinimalNotifications: Story = {
+// 	args: {
+// 		...Default.args,
+// 		notifications: { items: [] },
+// 	},
+// };
 
-export const MinimalUserActions: Story = {
-	args: {
-		...Default.args,
-		userActions: { items: [] },
-	},
-};
+// export const MinimalUserActions: Story = {
+// 	args: {
+// 		...Default.args,
+// 		userActions: { items: [] },
+// 	},
+// };
