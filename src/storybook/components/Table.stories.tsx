@@ -226,7 +226,7 @@ const meta: Meta<ITableProps<ITablePersonData>> = {
 		columns: sampleColumns,
 		data: sampleData,
 		loading: false,
-		bordered: true,
+		bordered: false,
 		showPagination: true,
 		showColumnActions: true,
 		columnActions: sampleColumnsWithActions,
@@ -252,7 +252,7 @@ const TableWithPaginationState = () => {
 				columns={sampleColumns}
 				data={sampleData}
 				loading={false}
-				bordered={true}
+				bordered={false}
 				showPagination={true}
 				paginationConfig={{ ...pagination, total: 200 }}
 				onChange={onChangePagination}
