@@ -13,6 +13,7 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	showCaracteres?: boolean;
 	placeholder?: string;
 	errorIdentificationExists?: string;
+	autoComplete?: string;
 }
 
 const FormInputComponent = <TFieldValues extends FieldValues>({
@@ -22,6 +23,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	control,
 	placeholder,
 	errorIdentificationExists,
+	autoComplete = 'off',
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -57,6 +59,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							aria-describedby={validatMsg ? errId : undefined}
 							showCountCharacters={showCaracteres}
 							placeholder={placeholder}
+							autoComplete={autoComplete}
 						/>
 						{(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
 					</div>

@@ -5,6 +5,7 @@ export { Badge } from './components/Badge/Badge';
 export { Button } from './components/Button/';
 export { ButtonAddItem } from './components/ButtonAddItem/';
 export { ButtonAntd } from './components/ButtonAntd/';
+export { BreadcrumbCustom } from './components/BreadcrumbCustom';
 export { Card } from './components/Card/Card';
 export { Checkbox } from './components/Checkbox/Checkbox';
 export { Collapse } from './components/Collapse/Collapse';
