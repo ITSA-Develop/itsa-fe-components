@@ -36,7 +36,10 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 								format: 'DD-MM-YYYY',
 								type: 'mask',
 							}}
-							onChange={field.onChange}
+							onChange={(value)=> {
+								const formattedValue = value?.format('DD-MM-YYYY');
+								field.onChange(formattedValue);
+							}}
 							onBlur={field.onBlur}
 							ref={field.ref}
 							name={field.name}
@@ -44,6 +47,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 							aria-invalid={!!errorMsg}
 							aria-describedby={errorMsg ? errId : undefined}
 							placeholder={placeholder}
+							
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
 					</div>

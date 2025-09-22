@@ -15,7 +15,9 @@ type FormValues = z.infer<typeof schema>;
 
 // Wrapper que obtiene el control del contexto del formulario
 const BoundFormInputDatePicker = (props: Omit<IInputProps<FormValues>, 'control'>) => {
-	const { control } = useFormContext<FormValues>();
+	const { control, watch } = useFormContext<FormValues>();
+	const date = watch('date');
+	console.log('TOMAS ===> date =>', JSON.stringify(structuredClone(date)));
 	return <FormInputDatePicker {...props} control={control as any} />;
 };
 
@@ -73,7 +75,7 @@ export const Default: Story = {
 	args: {
 		name: 'date',
 		label: 'Fecha',
-		placeholder: 'YYYY-MM-DD',
+		placeholder: 'DD-MM-YYYY',
 	},
 	render: args => (
 		<RHFForm defaultValues={{ date: undefined }}>
@@ -87,10 +89,10 @@ export const WithInitialValue: Story = {
 	args: {
 		name: 'date',
 		label: 'Fecha',
-		placeholder: 'YYYY-MM-DD',
+		placeholder: 'DD-MM-YYYY',
 	},
 	render: args => (
-		<RHFForm defaultValues={{ date: dayjs('2024-01-15') }}>
+		<RHFForm defaultValues={{ date: dayjs('15-12-2024') }}>
 			<BoundFormInputDatePicker {...args} />
 		</RHFForm>
 	),
