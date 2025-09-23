@@ -9,21 +9,31 @@ export interface IModalResponsiveProps {
 	footer: ReactNode;
 	content: ReactNode;
 	height?: string;
+	hideScroll?: boolean;
 }
 
-export const ModalResponsive = ({ title, open, onOk, onCancel, footer, content, height }: IModalResponsiveProps) => {
+export const ModalResponsive = ({
+	title,
+	open,
+	onOk,
+	onCancel,
+	footer,
+	content,
+	height,
+	hideScroll = true,
+}: IModalResponsiveProps) => {
 	const screens = Grid.useBreakpoint();
 	const computedWidth = screens.xxl
 		? '40%'
 		: screens.xl
-		? '50%'
-		: screens.lg
-		? '60%'
-		: screens.md
-		? '70%'
-		: screens.sm
-		? '80%'
-		: '90%';
+			? '50%'
+			: screens.lg
+				? '60%'
+				: screens.md
+					? '70%'
+					: screens.sm
+						? '80%'
+						: '90%';
 
 	return (
 		<Modal
@@ -33,7 +43,7 @@ export const ModalResponsive = ({ title, open, onOk, onCancel, footer, content, 
 			onOk={onOk}
 			onCancel={onCancel}
 			width={computedWidth}
-			styles={{ body: { height, maxHeight: height, overflowY: 'auto' } }}
+			styles={{ body: { height, maxHeight: height, overflowY: hideScroll ? 'hidden' : 'auto' } }}
 			footer={footer}
 		>
 			{content}
