@@ -16,7 +16,6 @@ export const Button = (props: IButtonProps) => {
 	const { size = 'small', type = 'primary', label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
-	// const disabledClass = disabled ? 'itsa-btn--disabled' : '';
 	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';
 	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';

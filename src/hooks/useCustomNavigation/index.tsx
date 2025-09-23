@@ -40,7 +40,7 @@ export const useCustomNavigation = () => {
 
       const targetMicro = getMicroFrontendByPath(withSlash) as MicroSlug | null;
       const currentMicro = (typeof window !== "undefined"
-        ? (localStorage.getItem(ELocalStorageKeys.currentMicroFrontend) || null)
+        ? (localStorage.getItem(ELocalStorageKeys.currentEnvironment) || null)
         : null) as MicroSlug | null;
 
       // Si no se identifica micro o es el mismo, navega en el SPA

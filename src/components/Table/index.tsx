@@ -23,6 +23,9 @@ export interface ITableProps<T extends object> {
 	scroll?: { x?: string | number | true; y?: string | number };
 	showColumnActions?: boolean;
 	columnActions?: ITableColumnAction<T>[];
+	className?: string;
+	rootClassName?: string;
+	rowClassName?: AntTableProps<T>['rowClassName'];
 }
 
 export const Table = <T extends object>({
@@ -38,15 +41,18 @@ export const Table = <T extends object>({
 	scroll = TABLE_SCROLL,
 	showColumnActions = false,
 	columnActions,
+	rootClassName,
 }: ITableProps<T>) => {
 	const finalPagination = showPagination ? paginationConfig : false;
+
+	const tableRootClassName = ['itsa-table--head-rounded', rootClassName].filter(Boolean).join(' ');
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
 		if (showColumnActions) {
 			const actionsColumn: TStrictColumnType<T> = {
-				title: 'Acciones',
+				title: '',
 				key: 'actions',
-				width: 100,
+				width: 64,
 				align: 'center',
 				render: (record: T) => (
 					<Dropdown
@@ -60,8 +66,8 @@ export const Table = <T extends object>({
 							})),
 						}}
 					>
-						<Button type="text" shape="circle" size="small">
-							<MoreOutlined />
+						<Button type="text" shape="round" size="small" className="w-full">
+							<MoreOutlined className="text-gray-400" style={{ fontSize: 24 }} rotate={90} />
 						</Button>
 					</Dropdown>
 				),
@@ -77,11 +83,52 @@ export const Table = <T extends object>({
 			dataSource={data}
 			loading={loading}
 			bordered={bordered}
-			rowSelection={rowSelection}
+			rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
 			onChange={onChange}
 			pagination={finalPagination}
 			scroll={scroll}
 			rowKey={rowKey}
+			rootClassName={tableRootClassName}
+			components={{
+				header: {
+					wrapper: (props: any) => (
+						<thead
+							{...props}
+							style={{
+								...props?.style,
+								overflow: 'hidden',
+								borderTopLeftRadius: 8,
+								borderTopRightRadius: 8,
+							}}
+						/>
+					),
+					cell: (props: any) => {
+						return (
+							<th
+								{...props}
+								style={{
+									...props?.style,
+									background: '#EEF1F3',
+									color: 'black',
+									padding: '0px',
+									fontSize: '12px',
+									height: '40px',
+									paddingLeft: '12px',
+									paddingRight: '12px',
+								}}
+							/>
+						);
+					},
+				},
+				body: {
+					cell: (props: any) => (
+						<td
+							{...props}
+							style={{ background: 'white', color: 'black', padding: '0px', fontSize: '14px', height: '45px' }}
+						/>
+					)
+				},
+			}}
 		/>
 	);
 };

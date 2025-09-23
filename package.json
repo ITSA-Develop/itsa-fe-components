@@ -17,6 +17,9 @@
 	"files": [
 		"dist"
 	],
+	"sideEffects": [
+		"*.css"
+	],
 	"scripts": {
 		"build": "yarn clean && tsc && vite build && yarn build:css",
 		"build:css": "tailwindcss -m -i ./src/tailwind-entry.css -o ./dist/styles.css",

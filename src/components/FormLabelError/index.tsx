@@ -6,7 +6,7 @@ export interface IFormLabelErrorProps {
 
 export const FormLabelError = ({ label, htmlFor, id }: IFormLabelErrorProps) => {
 	return (
-		<label htmlFor={htmlFor} id={id} className="text-red-500">
+		<label htmlFor={htmlFor} id={id} className="text-red-500 text-xs">
 			{label}
 		</label>
 	);

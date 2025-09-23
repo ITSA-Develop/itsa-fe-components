@@ -41,9 +41,13 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 	currentAgency: undefined,
 	setCurrentAgency: (agency: IAgency) => {
 		localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
-
-		const newModule = agency.modules?.[0];
+		const localStorageCurrentEnvironment = localStorage.getItem(ELocalStorageKeys.currentEnvironment);
+		let newModule = agency.modules?.[0];
 		const newSubmodule = newModule?.submodules?.[0];
+
+		if (localStorageCurrentEnvironment) {
+			newModule = agency.modules?.find(module => module.entorno.includes(localStorageCurrentEnvironment));
+		}
 
 		set({
 			currentAgency: agency,
