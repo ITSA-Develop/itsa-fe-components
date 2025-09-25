@@ -5,6 +5,7 @@ import { Table, type ITableProps } from '../../components/Table';
 import { DEFAULT_PAGINATION_CONFIG } from '../../constants';
 import { useTable } from '../../hooks/useTable/useTable';
 import { ITableColumnAction, TStrictTableColumnsType } from '../../types';
+import { TablePaginationConfig } from 'antd/es/table';
 
 export type ITablePersonData = {
 	id: number;
@@ -240,10 +241,14 @@ type Story = StoryObj<typeof meta>;
 const TableWithPaginationState = () => {
 	const { pagination, filters, sorter, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
 
+	const newOnChangePagination = (pagination?: TablePaginationConfig) => {
+		onChangePagination(pagination);
+	}
+
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="flex flex-col gap-2 border-1 border-gray-500 rounded-md">
-				<span>Current Page: {pagination.current}</span>
+				<span>Test Current Page: {pagination.current}</span>
 				<span>Page Size: {pagination.pageSize}</span>
 				<span>Filtered Data: {JSON.stringify(filters)}</span>
 				<span>Sorter: {JSON.stringify(sorter)}</span>
@@ -254,8 +259,8 @@ const TableWithPaginationState = () => {
 				loading={false}
 				bordered={false}
 				showPagination={true}
-				paginationConfig={{ ...pagination, total: 200 }}
-				onChange={onChangePagination}
+				paginationConfig={{ ...pagination, total: sampleData.length }}
+				onChange={newOnChangePagination}
 				rowKey={'id'}
 				showColumnActions={true}
 				columnActions={sampleColumnsWithActions}

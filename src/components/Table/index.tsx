@@ -1,5 +1,5 @@
 import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
-import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
+import { ITableColumnAction, MakeFunctionParamsOptional, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { MoreOutlined } from '@ant-design/icons';
 import {
 	Table as AntTable,
@@ -15,7 +15,7 @@ export interface ITableProps<T extends object> {
 	data: T[];
 	rowKey: Extract<keyof T, string> | ((record: T) => React.Key);
 	loading: boolean;
-	onChange: AntTableProps['onChange'];
+	onChange: MakeFunctionParamsOptional<NonNullable<AntTableProps<T>['onChange']>>;
 	bordered?: boolean;
 	rowSelection?: AntTableProps<T>['rowSelection'];
 	showPagination?: boolean;
