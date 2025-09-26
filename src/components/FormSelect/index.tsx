@@ -13,6 +13,8 @@ export interface IFormSelectProps<TFieldValues extends FieldValues> extends Omit
 	allowClear?: boolean;
 	mode?: 'multiple' | 'tags';
 	placeholder?: string;
+	isLoading?: boolean;
+	disabled?: boolean;
 }
 
 const FormSelectComponent = <TFieldValues extends FieldValues>({
@@ -23,6 +25,8 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 	allowClear,
 	mode,
 	placeholder,
+	isLoading,
+	disabled=false,
 }: IFormSelectProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -54,7 +58,9 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 							aria-describedby={errorMsg ? errId : undefined}
 							options={options}
 							placeholder={placeholder}
+							loading={isLoading}
 							filterOption={(input, option) => filterOption(input, option as { label: string; value: string | number })}
+							disabled={disabled}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
 					</div>

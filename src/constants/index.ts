@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+export * from './icons';
 
 export const DATE_FORMAT_UI = 'DD/MM/YYYY';
 export const DATE_YEAR_FORMAT_UI = 'YYYY';

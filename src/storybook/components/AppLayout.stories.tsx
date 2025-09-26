@@ -101,8 +101,9 @@ const AppLayoutWithMockData = (args: any) => {
 };
 
 const meta: Meta<typeof AppLayout> = {
-	title: 'Components/AppLayout',
-	component: AppLayoutWithMockData,
+    title: 'Components/AppLayout',
+    component: AppLayout,
+    tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
 		docs: {
@@ -141,6 +142,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+    render: args => <AppLayoutWithMockData {...args} />,
 	args: {
 		loading: false,
 		currentPath: '/dashboard',
@@ -160,6 +162,7 @@ export const Default: Story = {
 // };
 
 export const VerticalMenu: Story = {
+    render: args => <AppLayoutWithMockData {...args} />,
 	args: {
 		...Default.args,
 		modeSidebar: 'vertical',

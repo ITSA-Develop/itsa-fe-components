@@ -24,7 +24,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const DemoContent = () => {
-	const { openModal } = useModalResponsive();
+	const { openModal,closeModal, beforeClose } = useModalResponsive();
+
+	const handleCloseModal = () => {
+		beforeClose?.(()=>{
+			console.log('afterClose callback');
+		});
+		closeModal();
+	};
+
 	return (
 		<div style={{ display: 'flex', gap: 12 }}>
 			<Button
@@ -35,6 +43,7 @@ const DemoContent = () => {
 						content: (
 							<div style={{ padding: 16 }}>
 								<FormLabelError label="Contenido del modal" />
+								<Button label="Cerrar modal" onClick={handleCloseModal} />
 							</div>
 						),
 						footer: undefined,
@@ -52,4 +61,34 @@ export const Default: Story = {
 			<DemoContent />
 		</ResponsiveModalProvider>
 	),
+};
+
+const DemoContentWithAfterClose = () => {
+    const { openModal, setBeforeClose } = useModalResponsive();
+    return (
+        <div style={{ display: 'flex', gap: 12 }}>
+            <Button
+                label="Abrir modal (X dispara callback)"
+                onClick={() => {
+                    setBeforeClose(() => () => alert('Close icon callback'));
+                    openModal({
+                        title: 'Modal con callback',
+                        content: (
+                            <div style={{ padding: 16 }}>
+                                <FormLabelError label="Haz clic en la X para ejecutar callback" />
+                            </div>
+                        ),
+                    });
+                }}
+            />
+        </div>
+    );
+};
+
+export const WithAfterClose: Story = {
+    render: () => (
+        <ResponsiveModalProvider>
+            <DemoContentWithAfterClose />
+        </ResponsiveModalProvider>
+    ),
 };
