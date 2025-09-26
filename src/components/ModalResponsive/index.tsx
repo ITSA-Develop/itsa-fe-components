@@ -1,6 +1,5 @@
 import { Modal, Grid } from 'antd';
 import { ReactNode } from 'react';
-
 export interface IModalResponsiveProps {
 	title: string;
 	open: boolean;
@@ -10,6 +9,7 @@ export interface IModalResponsiveProps {
 	content: ReactNode;
 	height?: string;
 	hideScroll?: boolean;
+	beforeClose?: () => void;
 }
 
 export const ModalResponsive = ({
@@ -21,6 +21,7 @@ export const ModalResponsive = ({
 	content,
 	height,
 	hideScroll = true,
+	beforeClose,
 }: IModalResponsiveProps) => {
 	const screens = Grid.useBreakpoint();
 	const computedWidth = screens.xxl
@@ -45,6 +46,7 @@ export const ModalResponsive = ({
 			width={computedWidth}
 			styles={{ body: { height, maxHeight: height, overflowY: hideScroll ? 'hidden' : 'auto' } }}
 			footer={footer}
+			afterClose={beforeClose}
 		>
 			{content}
 		</Modal>

@@ -166,3 +166,11 @@ export type TNotificationProps ={
 	message: string;
 	description: string;
 }
+
+export type MakeFunctionParamsOptional<F> = F extends (...args: infer P) => infer R ? (...args: Partial<P>) => R : never;
+
+
+
+
+
+

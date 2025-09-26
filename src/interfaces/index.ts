@@ -244,3 +244,8 @@ export interface ITableHookState<T extends object> {
 	filters?: Record<string, FilterValue | null>;
 	sorter?: SorterResult<T> | SorterResult<T>[];
 }
+
+export interface IIcon {
+	icon: ReactNode;
+	iconName: string;
+}
