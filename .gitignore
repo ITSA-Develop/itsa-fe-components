@@ -41,3 +41,5 @@ node_modules/.cache
 .jest
 tmp
 .vercel
+
+.npmrc
