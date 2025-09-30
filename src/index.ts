@@ -49,6 +49,7 @@ export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';
 export { TabsItemContent } from './components/TabsItemContent';
 export { Textarea } from './components/Textarea/Textarea';
+export { Title } from './components/Title';
 export { Tooltip } from './components/Tooltip/Tooltip';
 
 export { ErrorsProvider } from './routing/components/ErrorsProvider';

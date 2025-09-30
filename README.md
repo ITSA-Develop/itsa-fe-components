@@ -1,4 +1,4 @@
-# @ITSA-Nucleo/itsa-fe-components
+# @ITSA-Develop/itsa-fe-components
 
 Deploy Vercel
 
@@ -132,7 +132,7 @@ Construye el paquete en modo producción sin mapas de origen (--no-sourcemap) y 
 Para importar y utilizar los componentes en tu aplicación:
 
 ```bash
-import { MyComponent } from '@ITSA-Nucleo/itsa-fe-components';
+import { MyComponent } from '@ITSA-develop/itsa-fe-components';
 ```
 
 ```bash

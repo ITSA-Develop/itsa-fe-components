@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Title component > applies custom className on level 3 1`] = `
+<div>
+  <h3
+    class="ant-typography custom-class css-dev-only-do-not-override-l9pxc0"
+  >
+    Clase personalizada
+  </h3>
+</div>
+`;
+
+exports[`Title component > renders level 1 heading with text 1`] = `
+<div>
+  <h1
+    class="ant-typography css-dev-only-do-not-override-l9pxc0"
+  >
+    Título nivel 1
+  </h1>
+</div>
+`;
+
+exports[`Title component > renders level 4 with secondary type style 1`] = `
+<div>
+  <h4
+    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-l9pxc0"
+  >
+    Secundario
+  </h4>
+</div>
+`;
+
+exports[`Title component > renders level 5 heading 1`] = `
+<div>
+  <h5
+    class="ant-typography css-dev-only-do-not-override-l9pxc0"
+  >
+    Título nivel 5
+  </h5>
+</div>
+`;

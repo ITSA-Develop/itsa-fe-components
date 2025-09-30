@@ -1,7 +1,7 @@
 {
-	"name": "@ITSA-Nucleo/itsa-fe-components",
+	"name": "@itsa-develop/itsa-fe-components",
 	"private": false,
-	"version": "0.0.32",
+	"version": "0.0.1",
 	"type": "module",
 	"exports": {
 		".": {
@@ -131,9 +131,17 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ITSA-Nucleo/itsa-fe-components.git"
+		"url": "git+https://github.com/ITSA-Develop/itsa-fe-components.git"
 	},
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com"
-	}
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"description": "Deploy Vercel",
+	"main": "tailwind.config.js",
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ITSA-Develop/itsa-fe-components/issues"
+	},
+	"homepage": "https://github.com/ITSA-Develop/itsa-fe-components#readme"
 }

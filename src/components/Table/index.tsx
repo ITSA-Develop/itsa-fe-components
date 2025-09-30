@@ -9,6 +9,7 @@ import {
 	TableColumnsType,
 	TablePaginationConfig,
 } from 'antd';
+import { TableLocale } from 'antd/es/table/interface';
 
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
@@ -26,6 +27,7 @@ export interface ITableProps<T extends object> {
 	className?: string;
 	rootClassName?: string;
 	rowClassName?: AntTableProps<T>['rowClassName'];
+	locale?: TableLocale;
 }
 
 export const Table = <T extends object>({
@@ -42,6 +44,9 @@ export const Table = <T extends object>({
 	showColumnActions = false,
 	columnActions,
 	rootClassName,
+	locale= {
+		emptyText: 'No hay datos',
+	},
 }: ITableProps<T>) => {
 	const finalPagination = showPagination ? paginationConfig : false;
 
@@ -87,6 +92,7 @@ export const Table = <T extends object>({
 			onChange={onChange}
 			pagination={finalPagination}
 			scroll={scroll}
+			locale={locale}
 			rowKey={rowKey}
 			rootClassName={tableRootClassName}
 			components={{
@@ -126,7 +132,7 @@ export const Table = <T extends object>({
 							{...props}
 							style={{ background: 'white', color: 'black', padding: '0px', fontSize: '14px', height: '45px' }}
 						/>
-					)
+					),
 				},
 			}}
 		/>
