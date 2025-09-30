@@ -33,10 +33,13 @@ storybook-static
 # Typescript compilation files
 tsconfig.tsbuildinfo
 
-src/index.css
+# src/index.css
 
 node_modules/.cache
 
 .vitest
 .jest
 tmp
+.vercel
+
+.npmrc

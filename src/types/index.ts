@@ -164,5 +164,13 @@ export type RHFInputProps<TFieldValues extends FieldValues> = Omit<InputProps, '
 export type TNotificationProps ={
 	type: TNotificationType;
 	message: string;
-	description: string;
+	description?: string;
 }
+
+export type MakeFunctionParamsOptional<F> = F extends (...args: infer P) => infer R ? (...args: Partial<P>) => R : never;
+
+
+
+
+
+

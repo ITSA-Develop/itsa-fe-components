@@ -10,7 +10,7 @@ export const AGENCIES_DATA: IAgency[] = [
 				name: 'VEHÍCULOS',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'FRONT',
+				entorno: 'frontoffice',
 				submodules: [
 					{
 						id: 2,
@@ -388,7 +388,7 @@ export const AGENCIES_DATA: IAgency[] = [
 				name: 'LÍNEA PARA EL HOGAR',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'FRONT',
+				entorno: 'frontoffice',
 				submodules: [
 					{
 						id: 5,
@@ -536,7 +536,7 @@ export const AGENCIES_DATA: IAgency[] = [
 				name: 'CARTERA',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'BACK',
+				entorno: 'backoffice',
 				submodules: [
 					{
 						id: 7,
@@ -573,7 +573,7 @@ export const AGENCIES_DATA: IAgency[] = [
 				name: 'VEHÍCULOS',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'FRONT',
+				entorno: 'frontoffice',
 				submodules: [
 					{
 						id: 2,
@@ -768,7 +768,7 @@ export const AGENCIES_DATA: IAgency[] = [
 				name: 'LÍNEA PARA EL HOGAR',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'FRONT',
+				entorno: 'frontoffice',
 				submodules: [
 					{
 						id: 5,
@@ -925,7 +925,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 				name: 'VEHÍCULOS',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
-				entorno: 'FRONT',
+				entorno: 'frontoffice',
 				submodules: [
 					{
 						id: 1,
@@ -964,7 +964,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 				name: 'REPUESTOS',
 				path: null,
 				icon: 'mdiCarSpeedLimiter',
-				entorno: 'BACKOFFICE',
+				entorno: 'backoffice',
 				submodules: [
 					{
 						id: 11,
@@ -1036,7 +1036,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 				name: 'SEGURIDAD',
 				path: 'seguridad',
 				icon: 'mdiSecurity',
-				entorno: 'BACKOFFICE',
+				entorno: 'backoffice',
 				submodules: [
 					{
 						id: 8,

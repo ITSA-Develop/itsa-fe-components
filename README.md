@@ -1,4 +1,13 @@
-# @ITSA-Nucleo/itsa-fe-components
+# @ITSA-Develop/itsa-fe-components
+
+Deploy Vercel
+
+yarn run build-storybook
+
+npm i -g vercel
+vercel login
+vercel link
+npx vercel@latest --prod --yes 
 
 Este paquete contiene componentes de interfaz de usuario reutilizables y personalizables para aplicaciones web basadas en React. Está diseñado para mejorar la productividad y facilitar la implementación de componentes comunes en proyectos que utilizan React y TypeScript.
 
@@ -123,7 +132,7 @@ Construye el paquete en modo producción sin mapas de origen (--no-sourcemap) y 
 Para importar y utilizar los componentes en tu aplicación:
 
 ```bash
-import { MyComponent } from '@ITSA-Nucleo/itsa-fe-components';
+import { MyComponent } from '@ITSA-develop/itsa-fe-components';
 ```
 
 ```bash

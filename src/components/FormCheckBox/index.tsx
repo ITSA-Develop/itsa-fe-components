@@ -4,16 +4,18 @@ import { Checkbox } from '@/components/Checkbox/Checkbox';
 import { CheckboxProps } from 'antd';
 import { FormLabelError } from '@/index';
 
-export interface IInputProps<TFieldValues extends FieldValues> extends Omit<CheckboxProps, 'form' | 'name'> {
+export interface IInputProps<TFieldValues extends FieldValues> extends Omit<CheckboxProps, 'form' | 'onChange' | 'name'> {
 	name: Path<TFieldValues>;
 	label: string;
 	control: Control<TFieldValues>;
+	onChange?: () => void;
 }
 
 const FormCheckBoxComponent = <TFieldValues extends FieldValues>({
 	name,
 	label,
 	control,
+	onChange,
 	...rest
 }: IInputProps<TFieldValues>) => {
 	return (
@@ -28,7 +30,11 @@ const FormCheckBoxComponent = <TFieldValues extends FieldValues>({
 							{...rest}
 							variant="default"
 							checked={field.value}
-							onChange={e => field.onChange(e.target.checked)}
+							onChange={e => {
+								const newValue = e.target.checked;
+								field.onChange(newValue);
+								onChange?.();
+							}}
 							onBlur={field.onBlur}
 						>
 							{label}

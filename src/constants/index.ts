@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+export * from './icons';
 
 export const DATE_FORMAT_UI = 'DD/MM/YYYY';
 export const DATE_YEAR_FORMAT_UI = 'YYYY';
@@ -91,3 +92,15 @@ export const COLOR_TAGS = {
 		bg: '#FFF7E6',
 	},
 };
+
+export const MODAL_HEIGHT = {
+	'90vh': '90vh',
+	'80vh': '80vh',
+	'70vh': '70vh',
+	'60vh': '60vh',
+};
+
+
+
+
+

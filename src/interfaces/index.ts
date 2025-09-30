@@ -59,6 +59,7 @@ export interface IValidateRouteResponse {
 // TODO: clean up this file after implementations starts
 import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
 import { TDate, TInputOptions, TInputRules } from '@/types';
+import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 import { Dayjs } from 'dayjs';
 import { ReactNode } from 'react';
 
@@ -236,4 +237,15 @@ export interface ITabsMaintenanceItem {
 	label: string;
 	children: ReactNode;
 	icon?: ReactNode;
+}
+
+export interface ITableHookState<T extends object> {
+	pagination: TablePaginationConfig;
+	filters?: Record<string, FilterValue | null>;
+	sorter?: SorterResult<T> | SorterResult<T>[];
+}
+
+export interface IIcon {
+	icon: ReactNode;
+	iconName: string;
 }

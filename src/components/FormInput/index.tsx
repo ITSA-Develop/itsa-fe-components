@@ -3,16 +3,17 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Input } from '@/components/Input/Input';
-import { memo, useId } from 'react';
+import { memo, useId, useMemo } from 'react';
 import { EInput } from '@/enums';
 
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
 	label: string;
-	showCaracteres?: boolean;
 	control: Control<TFieldValues>;
+	showCaracteres?: boolean;
 	placeholder?: string;
-	
+	errorIdentificationExists?: string;
+	autoComplete?: string;
 }
 
 const FormInputComponent = <TFieldValues extends FieldValues>({
@@ -21,15 +22,27 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	showCaracteres,
 	control,
 	placeholder,
+	errorIdentificationExists,
+	autoComplete = 'off',
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
+
 	return (
 		<Controller
 			name={name}
 			control={control}
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message as string | undefined;
+				const validatMsg = useMemo(() => {
+					if (errorMsg) {
+						return errorMsg;
+					}
+					if (errorIdentificationExists) {
+						return errorIdentificationExists;
+					}
+					return undefined;
+				}, [errorMsg, errorIdentificationExists]);
 				return (
 					<div className="flex flex-col gap-1">
 						<FormLabel label={label} htmlFor={id} />
@@ -41,13 +54,14 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							onBlur={field.onBlur}
 							ref={field.ref}
 							name={field.name}
-							status={errorMsg ? 'error' : undefined}
-							aria-invalid={!!errorMsg}
-							aria-describedby={errorMsg ? errId : undefined}
+							status={validatMsg ? 'error' : undefined}
+							aria-invalid={!!validatMsg}
+							aria-describedby={validatMsg ? errId : undefined}
 							showCountCharacters={showCaracteres}
 							placeholder={placeholder}
+							autoComplete={autoComplete}
 						/>
-						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
+						{(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
 					</div>
 				);
 			}}

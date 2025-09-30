@@ -269,3 +269,7 @@ export const dataFromLocalStorage = (key: ELocalStorageKeys) => {
 };
 
 export const getValidateStatus = (msg?: string) => (msg ? 'error' : undefined);
+
+export const cleanObj = <T extends Record<string, any>>(obj: T): Partial<T> => {
+	return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined && v !== '')) as Partial<T>;
+};	
