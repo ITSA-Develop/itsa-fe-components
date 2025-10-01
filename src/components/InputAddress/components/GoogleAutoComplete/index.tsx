@@ -8,6 +8,7 @@
 //import { Input } from '@/components/Input/Input';
 import { Input } from '@/components/Input/Input';
 import { RefCallBack } from 'react-hook-form';
+import { Button } from '@/components/Button';
 //import { omit } from 'zod/v4/core/util.d.cts';
 
  //import { Input } from '@/components/Input/Input';
@@ -154,17 +155,15 @@ export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoComplete
  		<div>
  			<div className="flex items-end justify-between">
  				<div className="flex items-center justify-end mb-1 w-full">
- 					<span className="text-black-100 text-sm mr-1">¿No puede encontrar la dirección?</span>
- 					<div
+ 					<span className="text-black-100 text-sm mr-1">¿No se puede encontrar la dirección?</span>
+ 					<Button
  						onClick={() => {
  							setShowManualEntry(true);
  							onLocationChange(null);
  							 setValue('address', '');
  						}}
- 						className="text-sm cursor-pointer pr-4"
- 					>
- 						
- 					</div>
+						label="click aqui"
+ 					/>
  				</div>
  			</div>
  			<div className="relative">
