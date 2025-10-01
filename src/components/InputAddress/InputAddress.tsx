@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GoogleAutoComplete } from "./components/GoogleAutoComplete";
 import { LocationForm } from "./components/LocationForm";
 import {
@@ -23,6 +23,7 @@ export interface ILocationFormProps {
   onChangeProvince: (value: number) => void;
   onChangeCanton: (value: number) => void;
   onChangeParish: (value: number) => void;
+  valueCountryCode?: string;
   valueCountryId?: number;
   valueProvinceId?: number;
   valueCantonId?: number;
@@ -57,7 +58,9 @@ export const InputAddress = ({
   googleAutoCompleteProps,
 }: IInputAddressProps) => {
   const [address, setAddress] = useState("");
-  const [showManualEntry, setShowManualEntry] = useState(false);
+  const [showManualEntry, setShowManualEntry] = useState(
+    googleAutoCompleteProps?.showManualByDefault || false
+  );
 
   const { setValue } = googleAutoCompleteProps || {};
 
@@ -69,12 +72,11 @@ export const InputAddress = ({
     setValue?.(field, value);
   };
 
-  useEffect(() => {
-    if (googleAutoCompleteProps?.showManualByDefault) {
-      setShowManualEntry(true);
-      googleAutoCompleteProps?.setShowManualEntry?.(true);
-    }
-  }, [googleAutoCompleteProps?.showManualByDefault]);
+  // Sync with parent component's showManualEntry state
+  const handleSetShowManualEntry = (value: boolean) => {
+    setShowManualEntry(value);
+    googleAutoCompleteProps?.setShowManualEntry?.(value);
+  };
 
   const primaryContent = showManualEntry ? (
     <LocationForm
@@ -88,6 +90,7 @@ export const InputAddress = ({
       onChangeCanton={locationFormProps.onChangeCanton}
       onChangeParish={locationFormProps.onChangeParish}
       valueCountryId={locationFormProps.valueCountryId}
+      valueCountryCode={locationFormProps.valueCountryCode}
       valueProvinceId={locationFormProps.valueProvinceId}
       valueCantonId={locationFormProps.valueCantonId}
       valueParishId={locationFormProps.valueParishId}
@@ -103,7 +106,7 @@ export const InputAddress = ({
       label={googleAutoCompleteProps?.label}
       googleMapsApiKey={googleAutoCompleteProps?.googleMapsApiKey}
       onLocationChange={googleAutoCompleteProps?.onLocationChange}
-      setShowManualEntry={setShowManualEntry}
+      setShowManualEntry={handleSetShowManualEntry}
       setAddressObject={googleAutoCompleteProps?.setAddressObject}
       defaultValue={googleAutoCompleteProps?.defaultValue}
       error={googleAutoCompleteProps?.errors?.address}
