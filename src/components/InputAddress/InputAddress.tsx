@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GoogleAutoComplete } from "./components/GoogleAutoComplete";
-import { LocationForm } from "./components/LocationForm";
+import { LocationSelector } from "../LocationSelector";
 import {
   IBaseInputProps,
   ILocationFormData,
@@ -79,7 +79,7 @@ export const InputAddress = ({
   };
 
   const primaryContent = showManualEntry ? (
-    <LocationForm
+    <LocationSelector
       locationOptions={locationFormProps.locationOptions}
       isLoadingCountries={locationFormProps.isLoadingCountries}
       isLoadingProvinces={locationFormProps.isLoadingProvinces}
