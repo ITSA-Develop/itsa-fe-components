@@ -83,8 +83,9 @@ export const HeaderLayout = ({
 						errorLabel="Importadora Tomebamba"
 					/>
 				</div>
-				<div className="hidden sm:flex flex-row w-auto items-center gap-4">
-					<div className="flex md:hidden flex-row items-center gap-4">
+				<div className="flex flex-row w-auto items-center gap-4">
+					{/* Vista Móvil (solo iconos) */}
+					<div className="flex tablet:hidden flex-row items-center gap-4">
 						<DropdownIcon
 							options={modulesData}
 							loading={loadingHeader}
@@ -99,7 +100,8 @@ export const HeaderLayout = ({
 						/>
 					</div>
 
-					<div className="hidden md:flex flex-row items-center gap-4">
+					{/* Vista Desktop (custom labels) */}
+					<div className="hidden tablet:flex flex-row items-center gap-4">
 						<DropdownCustomLabel
 							defaultValue={currentModule?.id?.toString()}
 							options={modulesData}
@@ -122,6 +124,7 @@ export const HeaderLayout = ({
 						</div>
 					</div>
 				</div>
+
 				<div className="flex flex-row pl-4">
 					<Dropdown menu={userActions || { items: [] }} placement="bottomRight" disabled={!isActiveUserActions}>
 						<Button type="text" icon={<UserIcon className="text-white-100 w-6 h-6" />} />

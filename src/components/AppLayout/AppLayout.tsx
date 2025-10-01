@@ -79,6 +79,7 @@ export const AppLayout = ({
 					currentPath={currentPath}
 					modeSidebar={modeSidebar}
 					onClickOptionMenu={onClickOptionMenu}
+					loadingMenu={loading}
 				>
 					{children}
 				</SidebarLayout>

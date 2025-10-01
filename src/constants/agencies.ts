@@ -922,7 +922,7 @@ export const AGENCIES_DATA_TOMAS: IAgency[] = [
 		modules: [
 			{
 				id: 1,
-				name: 'VEHÍCULOS',
+				name: 'ESTE ES EL MODULO DEVEHÍCULOS',
 				path: null,
 				icon: 'mdiSquareRoundedOutline',
 				entorno: 'frontoffice',

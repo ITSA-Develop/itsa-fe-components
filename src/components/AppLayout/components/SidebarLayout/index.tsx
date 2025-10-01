@@ -14,6 +14,7 @@ export interface SidebarLayoutProps {
 	width?: number;
 	currentPath?: string;
 	modeSidebar?: TMenuMode;
+	loadingMenu?: boolean;
 }
 export const SidebarLayout = ({
 	children,
@@ -21,6 +22,7 @@ export const SidebarLayout = ({
 	width = 235,
 	currentPath = '',
 	modeSidebar = 'inline',
+	loadingMenu = false,
 }: SidebarLayoutProps) => {
 	const currentModule  = useAppLayoutStore((state) => state.currentModule);
 
@@ -69,6 +71,7 @@ export const SidebarLayout = ({
 							mode={modeSidebar}
 							openKeys={openKeys}
 							onOpenKeysChange={setOpenKeys}
+							loading={loadingMenu}
 						/>
 					</div>
 					<div className="w-full flex justify-end pr-3 pl-3">
