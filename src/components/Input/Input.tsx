@@ -3,7 +3,7 @@ import { RefCallBack } from 'react-hook-form';
 
 export interface IInputProps extends InputProps {
 	showCountCharacters?: boolean;
-	ref?: RefCallBack;
+	ref?: RefCallBack | undefined;
 	type: string;
 }
 

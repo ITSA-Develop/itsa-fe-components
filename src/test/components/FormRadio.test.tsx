@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormRadio } from '../../components/FormRadio';
+import React from 'react';
 
 function RHFWithControl({
     children,
