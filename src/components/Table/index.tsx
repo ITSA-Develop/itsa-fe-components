@@ -24,6 +24,8 @@ export interface ITableProps<T extends object> {
 	scroll?: { x?: string | number | true; y?: string | number };
 	showColumnActions?: boolean;
 	columnActions?: ITableColumnAction<T>[];
+	getActionsDisabled?: (record: T) => boolean;
+	getActionsTriggerDisabled?: (record: T) => boolean;
 	className?: string;
 	rootClassName?: string;
 	rowClassName?: AntTableProps<T>['rowClassName'];
@@ -43,6 +45,8 @@ export const Table = <T extends object>({
 	scroll = TABLE_SCROLL,
 	showColumnActions = false,
 	columnActions,
+	getActionsDisabled,
+	getActionsTriggerDisabled,
 	rootClassName,
 	locale= {
 		emptyText: 'No hay datos',
@@ -61,17 +65,25 @@ export const Table = <T extends object>({
 				align: 'center',
 				render: (record: T) => (
 					<Dropdown
+						disabled={!!getActionsDisabled?.(record)}
 						placement="bottomRight"
 						menu={{
 							items: (columnActions ?? []).map((action, index) => ({
 								label: action.title,
 								key: action.key || `action-${index}`,
 								icon: action.icon,
+								disabled: typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled,
 								onClick: () => action.action(record),
 							})),
 						}}
 					>
-						<Button type="text" shape="round" size="small" className="w-full">
+						<Button
+							type="text"
+							shape="round"
+							size="small"
+							className="w-full"
+							disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
+						>
 							<MoreOutlined className="text-gray-400" style={{ fontSize: 24 }} rotate={90} />
 						</Button>
 					</Dropdown>

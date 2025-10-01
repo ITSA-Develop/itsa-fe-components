@@ -104,6 +104,7 @@ export interface ITableColumnAction<T = any> {
 	title: string;
 	icon?: ReactNode;
 	action: (record: T) => void;
+    disabled?: boolean | ((record: T) => boolean);
 }
 export type TMenuItemData = {
 	path: string | null;
