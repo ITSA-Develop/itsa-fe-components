@@ -6,3 +6,4 @@ export { useTable } from './useTable/useTable';
 export { useModalStore } from './useModalStore';
 export { useSidebarStore } from './useSidebar';
 export { useModalResponsive } from './useModalResponsive';
+export { useDebouncedCallback } from './useDebouncedCallback';

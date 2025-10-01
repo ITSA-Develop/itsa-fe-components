@@ -29,6 +29,7 @@ export { FormLabel } from './components/FormLabel';
 export { FormLabelError } from './components/FormLabelError';
 export { InputPassword } from './components/InputPassword';
 export { Input } from './components/Input/Input';
+export { InputSearch } from './components/InputSearch';
 export { Image } from './components/Image';
 export { InfoRow } from './components/InfoRow/InfoRow';
 export { ItemList } from './components/ItemList';

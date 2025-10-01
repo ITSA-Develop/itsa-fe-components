@@ -30,12 +30,6 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 		onOk?.();
 		setOpen(false);
 	};
-
-	// const handleCancel = () => {
-	// 	onCancel?.();
-	// 	setOpen(false);
-	// };
-
 	const openModal = ({
 		title,
 		content,
@@ -51,6 +45,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 		onCancel?: () => void;
 		height?: string;
 	}) => {
+		beforeClose?.();
 		setTitle(title ?? '');
 		setContent(content);
 		setFooter(footer ?? null);

@@ -43,6 +43,7 @@ export const ModalResponsive = ({
 			open={open}
 			onOk={onOk}
 			onCancel={onCancel}
+			destroyOnHidden
 			width={computedWidth}
 			styles={{ body: { height, maxHeight: height, overflowY: hideScroll ? 'hidden' : 'auto' } }}
 			footer={footer}
