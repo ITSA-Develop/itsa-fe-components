@@ -821,11 +821,6 @@
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
-.text-gray-250{
-  --tw-text-opacity: 1;
-  color: rgb(244 248 251 / var(--tw-text-opacity, 1));
-}
-
 .text-gray-300{
   --tw-text-opacity: 1;
   color: rgb(176 188 213 / var(--tw-text-opacity, 1));

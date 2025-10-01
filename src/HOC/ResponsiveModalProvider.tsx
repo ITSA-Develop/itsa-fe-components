@@ -61,16 +61,14 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 	};
 
 	const closeModal = () => {
-		// beforeClose?.();
-		onCancel?.();
-		setOpen(false);
-		// limpiar estado para evitar persistencia
 		setTitle('');
 		setContent(null);
 		setFooter(null);
 		setHeight('90vh');
 		setOnOk(() => () => setOpen(false));
 		setOnCancel(() => () => setOpen(false));
+		setOpen(false);
+		onCancel?.();
 	};
 	return (
 		<ResponsiveModalContext.Provider value={{ openModal, closeModal, setBeforeClose }}>

@@ -192,6 +192,23 @@ const sampleColumnsWithActions: ITableColumnAction<ITablePersonData>[] = [
 	},
 ];
 
+const sampleColumnsWithActionsAndDisabled: ITableColumnAction<ITablePersonData>[] = [
+	{
+		key: 'edit',
+		title: 'Editar el elemento actual',
+		icon: <EditOutlined />,
+		action: record => console.log('edit', record),
+		disabled: record => record.age < 30, // Deshabilitar "Editar" si age < 30
+	},
+	{
+		key: 'delete',
+		title: 'Eliminar el elemento actual',
+		icon: <DeleteOutlined />,
+		action: record => console.log('delete', record),
+		disabled: record => record.age >= 45, // Deshabilitar "Eliminar" si age >= 45
+	},
+];
+
 const meta: Meta<ITableProps<ITablePersonData>> = {
 	title: 'Components/Table',
 	component: Table,
@@ -275,6 +292,77 @@ export const WithPaginationAndPageSizeChange: Story = {
 		docs: {
 			description: {
 				story: 'Tabla con paginación habilitada que detecta cambios en el tamaño de página y navegación entre páginas.',
+			},
+		},
+	},
+};
+
+export const WithPerItemDisabled: Story = {
+	render: () => (
+		<Table
+			columns={sampleColumns}
+			data={sampleData}
+			loading={false}
+			bordered={false}
+			showPagination={false}
+			showColumnActions={true}
+			columnActions={sampleColumnsWithActionsAndDisabled}
+			onChange={() => {}}
+			rowKey={'id'}
+		/>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story: 'Ejemplo donde algunos ítems del menú están deshabilitados dinámicamente en función del record.',
+			},
+		},
+	},
+};
+
+export const WithTriggerDisabledPerRow: Story = {
+	render: () => (
+		<Table
+			columns={sampleColumns}
+			data={sampleData}
+			loading={false}
+			bordered={false}
+			showPagination={false}
+			showColumnActions={true}
+			columnActions={sampleColumnsWithActions}
+			getActionsTriggerDisabled={record => record.age < 30}
+			onChange={() => {}}
+			rowKey={'id'}
+		/>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story: 'Deshabilita el trigger (botón de tres puntos) por fila; en este ejemplo, para age < 30.',
+			},
+		},
+	},
+};
+
+export const WithActionsDisabledPerRow: Story = {
+	render: () => (
+		<Table
+			columns={sampleColumns}
+			data={sampleData}
+			loading={false}
+			bordered={false}
+			showPagination={false}
+			showColumnActions={true}
+			columnActions={sampleColumnsWithActions}
+			getActionsDisabled={record => record.age >= 50}
+			onChange={() => {}}
+			rowKey={'id'}
+		/>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story: 'Deshabilita todo el Dropdown de acciones por fila; en este ejemplo, para age ≥ 50.',
 			},
 		},
 	},
