@@ -35,6 +35,7 @@ export { InfoRow } from './components/InfoRow/InfoRow';
 export { ItemList } from './components/ItemList';
 export { Link } from './components/Link/Link';
 export { LocationDisplay } from './components/LocationDisplay/LocationDisplay';
+export { LocationSelector } from './components/LocationSelector';
 export { Modal } from './components/Modal/Modal';
 export { ModalResponsive } from './components/ModalResponsive';
 export { Progress } from './components/Progress/Progress';
