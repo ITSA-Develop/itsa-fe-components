@@ -4,6 +4,7 @@ import { Button } from '../../components/Button';
 import { ResponsiveModalProvider } from '../../HOC/ResponsiveModalProvider';
 import { useModalResponsive } from '../../hooks/useModalResponsive';
 import { FormLabelError } from '../../components/FormLabelError';
+import { Input } from 'antd';
 
 const meta: Meta = {
 	title: 'HOC/ResponsiveModalProvider',
@@ -43,6 +44,10 @@ const DemoContent = () => {
 						content: (
 							<div style={{ padding: 16 }}>
 								<FormLabelError label="Contenido del modal" />
+								<Input
+									placeholder="Ingrese su nombre"
+									onChange={(e) => console.log(e.target.value)}
+								/>
 								<Button label="Cerrar modal" onClick={handleCloseModal} />
 							</div>
 						),
