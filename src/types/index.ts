@@ -105,6 +105,7 @@ export interface ITableColumnAction<T = any> {
 	icon?: ReactNode;
 	action: (record: T) => void;
     disabled?: boolean | ((record: T) => boolean);
+	danger?: boolean;
 }
 export type TMenuItemData = {
 	path: string | null;

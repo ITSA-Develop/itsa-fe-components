@@ -91,6 +91,11 @@ export const COLOR_TAGS = {
 		borde: '#FFD591',
 		bg: '#FFF7E6',
 	},
+	red: {
+		text: '#F5222D',
+		borde: '#FFA39E',
+		bg: '#FFF1F0',
+	},
 };
 
 export const MODAL_HEIGHT = {

@@ -9,6 +9,7 @@ export interface ResponsiveModalContextType {
 		onOk?: () => void;
 		onCancel?: () => void;
 		height?: string;
+		width?: string;
 	}) => void;
 	closeModal: () => void;
 	setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
@@ -24,6 +25,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 	const [onOk, setOnOk] = useState<() => void>(() => () => setOpen(false));
 	const [onCancel, setOnCancel] = useState<() => void>(() => () => setOpen(false));
 	const [height, setHeight] = useState<string>('90vh');
+	const [width, setWidth] = useState<string>('');
 	const [beforeClose, setBeforeClose] = useState<() => void>();
 
 	const handleOk = () => {
@@ -37,6 +39,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 		onOk,
 		onCancel,
 		height,
+		width,
 	}: {
 		content: ReactNode;
 		title?: string;
@@ -44,6 +47,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 		onOk?: () => void;
 		onCancel?: () => void;
 		height?: string;
+		width?: string;
 	}) => {
 		beforeClose?.();
 		setTitle(title ?? '');
@@ -52,6 +56,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 		setOnOk(() => (onOk ? onOk : () => setOpen(false)));
 		setOnCancel(() => (onCancel ? onCancel : () => setOpen(false)));
 		setHeight(height ?? '90vh');
+		setWidth(width ?? '');
 		setOpen(true);
 	};
 
@@ -76,6 +81,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
 				footer={footer}
 				content={content}
 				height={height}
+				width={width}
 				beforeClose={beforeClose}
 			/>
 		</ResponsiveModalContext.Provider>

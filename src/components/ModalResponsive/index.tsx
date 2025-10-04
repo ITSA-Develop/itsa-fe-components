@@ -9,6 +9,7 @@ export interface IModalResponsiveProps {
 	content: ReactNode;
 	height?: string;
 	hideScroll?: boolean;
+	width?: string;
 	beforeClose?: () => void;
 }
 
@@ -21,6 +22,7 @@ export const ModalResponsive = ({
 	content,
 	height,
 	hideScroll = true,
+	width,
 	beforeClose,
 }: IModalResponsiveProps) => {
 	const screens = Grid.useBreakpoint();
@@ -44,12 +46,12 @@ export const ModalResponsive = ({
 			onOk={onOk}
 			onCancel={onCancel}
 			destroyOnHidden
-			width={computedWidth}
+			width={width || computedWidth}
 			styles={{ body: { height, maxHeight: height, overflowY: hideScroll ? 'hidden' : 'auto' } }}
 			footer={footer}
 			afterClose={beforeClose}
 		>
-			{content}
+			<div className='pt-2'>{content}</div>
 		</Modal>
 	);
 };

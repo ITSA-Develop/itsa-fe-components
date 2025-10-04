@@ -74,6 +74,7 @@ export const Table = <T extends object>({
 								icon: action.icon,
 								disabled: typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled,
 								onClick: () => action.action(record),
+								danger: action.danger,
 							})),
 						}}
 					>
@@ -84,7 +85,7 @@ export const Table = <T extends object>({
 							className="w-full"
 							disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
 						>
-							<MoreOutlined className="text-gray-400" style={{ fontSize: 24 }} rotate={90} />
+							<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
 						</Button>
 					</Dropdown>
 				),

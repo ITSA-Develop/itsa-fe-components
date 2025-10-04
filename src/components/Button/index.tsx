@@ -9,10 +9,11 @@ export interface IButtonProps {
 	onClick?: () => void;
 	default?: boolean;
 	width?: number;
+	block?: boolean;
 }
 
 export const Button = (props: IButtonProps) => {
-	const { width } = props;
+	const { width, block = false } = props;
 	const { size = 'small', type = 'primary', label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
@@ -20,7 +21,11 @@ export const Button = (props: IButtonProps) => {
 	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
 
-	const disabledClass = disabled ? sizeClass + 'itsa-btn--disabled rounded-[12px]' : '';
+	const disabledClass = disabled ? sizeClass + ' itsa-btn--disabled rounded-[12px]' : '';
+
+	const labelContent = (
+		<span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>
+	);
 
 	if (disabled === true) {
 		return (
@@ -30,16 +35,25 @@ export const Button = (props: IButtonProps) => {
 				type={antdType}
 				disabled={disabled}
 				onClick={onClick}
-				style={{ width: width ? `${width}%` : undefined }}
+				block={block}
+				style={{ width: block ? '100%' : width ? `${width}%` : undefined }}
 			>
-				{label}
+				{labelContent}
 			</ButtonAntd>
 		);
 	}
 
 	return (
-		<ButtonAntd className={className} size={size} type={antdType} disabled={disabled} onClick={onClick} style={{ width: width ? `${width}%` : undefined }}>
-			{label}
+		<ButtonAntd
+			className={className}
+			size={size}
+			type={antdType}
+			disabled={disabled}
+			onClick={onClick}
+			block={block}
+			style={{ width: block ? '100%' : width ? `${width}%` : undefined }}
+		>
+			{labelContent}
 		</ButtonAntd>
 	);
 };
