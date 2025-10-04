@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
 import { AppLayout } from '../../components/AppLayout/AppLayout';
 import { useAppLayoutStore } from '../../store/appLayout.store';
-import { AGENCIES_DATA_TOMAS } from '../../constants/agencies';
+import { AGENCIES_DATA } from '../../constants/agencies';
 import { IAgency } from '../../interfaces';
 import { TExtendedMenuItem } from '../../types';
 import { useCustomNavigation } from '../../hooks/useCustomNavigation';
 
 // Mock data para las agencias y módulos
-const mockAgencies: IAgency[] = AGENCIES_DATA_TOMAS;
+const mockAgencies: IAgency[] = AGENCIES_DATA;
 
 const mockNotifications = {
 	items: [

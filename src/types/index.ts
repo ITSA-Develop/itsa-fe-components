@@ -108,6 +108,7 @@ export interface ITableColumnAction<T = any> {
 }
 export type TMenuItemData = {
 	path: string | null;
+	pathPadre: string;
 	icon: React.ReactNode | null;
 	url?: string | null;
 	actions?: {

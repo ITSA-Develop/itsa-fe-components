@@ -3,11 +3,13 @@ import { getAllMenuKeys, transformModuleToMenuData } from '@/helpers';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
 import { useSidebarStore } from '@/hooks';
 import { useAppLayoutStore } from '@/store/appLayout.store';
+import { useViewportStore } from '@/store/viewport.store';
 import { TExtendedMenuItem, TMenuMode } from '@/types';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { ReactNode, useEffect, useMemo } from 'react';
+
 export interface SidebarLayoutProps {
 	children: ReactNode;
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
@@ -24,9 +26,11 @@ export const SidebarLayout = ({
 	modeSidebar = 'inline',
 	loadingMenu = false,
 }: SidebarLayoutProps) => {
-	const currentModule  = useAppLayoutStore((state) => state.currentModule);
+	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const windowWidth = useViewportStore(state => state.width);
 
 	const { collapsed, setCollapsed, searchTerm, setSearchTerm, openKeys, setOpenKeys } = useSidebarStore();
+
 	const menuData = useMemo(() => {
 		if (!currentModule) {
 			return [];
@@ -48,6 +52,15 @@ export const SidebarLayout = ({
 			setOpenKeys([]);
 		}
 	}, [searchTerm, menuData, setOpenKeys]);
+
+	useEffect(() => {
+		if (windowWidth < 800) {
+			setCollapsed(true);
+		}
+		if(windowWidth >= 800){
+			setCollapsed(false);
+		}
+	}, [windowWidth, setCollapsed]);
 
 	return (
 		<Layout hasSider className="gap-2">
