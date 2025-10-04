@@ -13,6 +13,7 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	showCaracteres?: boolean;
 	control: Control<TFieldValues>;
 	placeholder?: string;
+	disabled?: boolean;
 }
 
 const FormInputComponent = <TFieldValues extends FieldValues>({
@@ -21,6 +22,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	showCaracteres,
 	control,
 	placeholder,
+	disabled = false,
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -104,6 +106,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							min={0}
 							step="any"
 							placeholder={placeholder}
+							disabled={disabled}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
 					</div>

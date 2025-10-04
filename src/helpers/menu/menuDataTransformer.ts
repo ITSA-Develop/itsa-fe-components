@@ -4,17 +4,11 @@ import { IModule } from '@/interfaces';
 import { IconMenu } from '@/components/IconMenu';
 import { TExtendedMenuItem } from '@/types';
 
-// Interfaz para los datos adicionales de cada item del menú
-
 export const getIcon = (icon: string | null): React.ReactNode => {
 	const iconToUse = icon || '';
 	return React.createElement(IconMenu, { icon: iconToUse });
 };
 
-/**
- * Transforma un módulo específico a MenuItemType para usar en el componente Menu
- * Estructura: Submódulos -> Grupos -> Programas
- */
 export const transformModuleToMenuData = (module: IModule | null): TExtendedMenuItem[] => {
 	if (!module) {
 		return [];
@@ -22,13 +16,13 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 
 	const menuData: TExtendedMenuItem[] = [];
 
-	// Agregar item Home al inicio
 	menuData.push({
 		key: '/home',
 		label: 'INICIO',
 		icon: getIcon('home'),
 		data: {
 			path: '/home',
+			pathPadre: 'home',
 			icon: 'home',
 			type: 'program',
 			parentModule: 'home',
@@ -49,11 +43,12 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 				if (group.programs && group.programs.length > 0) {
 					group.programs.forEach((program, index) => {
 						groupChildren.push({
-							key: `group-${group.id}-program-${program.path ?? index}`,
+							key: program.path ?? `group${index}`,
 							label: program.name,
 							icon: getIcon(program.icon),
 							data: {
-								path: program.path ?? `group${index}`,
+								path: program.path,
+								pathPadre: program.pathPadre,
 								url: program.url,
 								icon: getIcon(program.icon),
 								actions: program.actions,
@@ -73,6 +68,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 					children: groupChildren,
 					data: {
 						path: null,
+						pathPadre: 'group',
 						url: null,
 						icon: getIcon('group'),
 						type: 'group',
@@ -87,11 +83,12 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 		if (submodule.programs && submodule.programs.length > 0) {
 			submodule.programs.forEach((program, index) => {
 				submoduleChildren.push({
-					key: `submodule-${submodule.id}-program-${program.path ?? index}`,
+					key: program.path ?? `program${index}`,
 					label: program.name,
 					icon: getIcon(program.icon),
 					data: {
-						path: program.path ?? `program${index}`,
+						path: program.path,
+						pathPadre: program.pathPadre,
 						url: program.url,
 						icon: getIcon(program.icon),
 						actions: program.actions,
@@ -112,6 +109,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 				children: submoduleChildren,
 				data: {
 					path: null,
+					pathPadre: 'submodule',
 					url: null,
 					icon: getIcon('submodule'),
 					type: 'submodule',
