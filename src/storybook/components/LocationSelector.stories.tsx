@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { LocationSelector, ILocationSelectorProps } from '../../components/LocationSelector';
+import { LocationSelector } from '../../components/LocationSelector';
+import { ILocationSelectorProps } from '../../interfaces';
 
 // Mock data para las opciones de ubicación
 const mockLocationOptions = {
@@ -146,7 +147,7 @@ interface LocationSelectorWrapperProps extends Partial<ILocationSelectorProps> {
 
 const LocationSelectorWrapper: React.FC<LocationSelectorWrapperProps> = (props) => {
 	const [selectedCountry, setSelectedCountry] = React.useState<number | undefined>(props.valueCountryId);
-	const [selectedCountryCode, setSelectedCountryCode] = React.useState<string | undefined>(props.valueCountryCode);
+	//const [selectedCountryCode, setSelectedCountryCode] = React.useState<string | undefined>(props.valueCountryCode);
 	const [selectedProvince, setSelectedProvince] = React.useState<number | undefined>(props.valueProvinceId);
 	const [selectedCanton, setSelectedCanton] = React.useState<number | undefined>(props.valueCantonId);
 	const [selectedParish, setSelectedParish] = React.useState<number | undefined>(props.valueParishId);
@@ -177,7 +178,7 @@ const LocationSelectorWrapper: React.FC<LocationSelectorWrapperProps> = (props) 
 	const handleCountryChange = (value: number) => {
 		console.log('Country changed:', value);
 		setSelectedCountry(value);
-		setSelectedCountryCode(mockLocationOptions.countriesOpts.find(country => country.value === value)?.valueCountryCode);
+		//setSelectedCountryCode(mockLocationOptions.countriesOpts.find(country => country.value === value)?.valueCountryCode);
 		setSelectedProvince(undefined);
 		setSelectedCanton(undefined);
 		setSelectedParish(undefined);
@@ -207,12 +208,10 @@ const LocationSelectorWrapper: React.FC<LocationSelectorWrapperProps> = (props) 
 	};
 
 	const locationSelectorProps: ILocationSelectorProps = {
-		locationOptions: {
-			countriesOpts: mockLocationOptions.countriesOpts,
-			provincesOpts: getFilteredProvinces(),
-			cantonsOpts: getFilteredCantons(),
-			parishesOpts: getFilteredParishes(),
-		},
+		optionsCountries: mockLocationOptions.countriesOpts,
+		optionsProvinces: mockLocationOptions.provincesOpts,
+		optionsCantons: mockLocationOptions.cantonsOpts,
+		optionsParishes: mockLocationOptions.parishesOpts,
 		isLoadingCountries: props.isLoadingCountries || false,
 		isLoadingProvinces: props.isLoadingProvinces || false,
 		isLoadingCantons: props.isLoadingCantons || false,
@@ -222,7 +221,6 @@ const LocationSelectorWrapper: React.FC<LocationSelectorWrapperProps> = (props) 
 		onChangeCanton: handleCantonChange,
 		onChangeParish: handleParishChange,
 		valueCountryId: selectedCountry,
-		valueCountryCode: selectedCountryCode,
 		valueProvinceId: selectedProvince,
 		valueCantonId: selectedCanton,
 		valueParishId: selectedParish,
@@ -239,7 +237,7 @@ const LocationSelectorWrapper: React.FC<LocationSelectorWrapperProps> = (props) 
 				<pre style={{ fontSize: 12 }}>
 					{JSON.stringify({
 						country: selectedCountry,
-						countryCode: selectedCountryCode,
+						//countryCode: selectedCountryCode,
 						province: selectedProvince,
 						canton: selectedCanton,
 						parish: selectedParish,
@@ -343,7 +341,6 @@ export const PreSelectedEcuador: Story = {
 	name: 'Pre-seleccionado Ecuador',
 	args: {
 		valueCountryId: 1,
-		valueCountryCode: 'EC',
 		valueProvinceId: 1,
 		valueCantonId: 1,
 		valueParishId: 1,
@@ -361,7 +358,6 @@ export const PreSelectedGuayas: Story = {
 	name: 'Pre-seleccionado Guayas',
 	args: {
 		valueCountryId: 1,
-		valueCountryCode: 'EC',
 		valueProvinceId: 2,
 		valueCantonId: 9,
 		valueParishId: 31,
@@ -379,7 +375,6 @@ export const NonEcuadorCountry: Story = {
 	name: 'País No Ecuador',
 	args: {
 		valueCountryId: 2,
-		valueCountryCode: 'CO',
 	},
 	parameters: {
 		docs: {

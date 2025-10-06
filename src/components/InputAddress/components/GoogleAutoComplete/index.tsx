@@ -4,11 +4,13 @@
  import { Loader } from '@googlemaps/js-api-loader';
  //import clx from 'classnames';
  import { useEffect, useRef, useState } from 'react';
- import { IInputAddressProps } from '../../InputAddress';
+ import { IInputAddressProps } from '../..';
 //import { Input } from '@/components/Input/Input';
 import { Input } from '@/components/Input/Input';
 import { RefCallBack } from 'react-hook-form';
 import { Button } from '@/components/Button';
+import { FormLabel } from '@/components/FormLabel';
+import { FormLabelError } from '@/components/FormLabelError';
 //import { omit } from 'zod/v4/core/util.d.cts';
 
  //import { Input } from '@/components/Input/Input';
@@ -38,13 +40,15 @@ import { Button } from '@/components/Button';
 export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoCompleteProps"]) => {
 	const {
 		name,
-		//label,
+		label,
 		googleMapsApiKey,
 		error,
 		watch,
 		setValue,
 		onLocationChange,
 		setShowManualEntry,
+		//setAddressObject,
+	
 		//defaultValue,
 	} = props;
 
@@ -62,19 +66,28 @@ export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoComplete
  	};
 
  	 //NOTE: If google maps doesn't recognize an address, it will still let the user input and select it but won't return all the required fields, this is a check for that.
- 	const checkAddressComponents = (addressComponents: any) => {
-		console.log('addressComponents', addressComponents);
- 		if (
- 			addressComponents &&
- 			(	!addressComponents[GOOGLE_MAP_ADDRESS_KEYS.province]?.long_name ||
- 				!addressComponents[GOOGLE_MAP_ADDRESS_KEYS.canton]?.long_name)
- 		) {
-			console.log('checkAddressComponents', true);
- 			setShowManualEntry(true);
- 			return true;
- 		}
- 		return false;
- 	};
+const checkAddressComponents = (addressComponents: any) => {
+	//console.log('addressComponents', addressComponents);
+  if (!addressComponents) return false;
+
+  const province = addressComponents[GOOGLE_MAP_ADDRESS_KEYS.province];
+  const canton = addressComponents[GOOGLE_MAP_ADDRESS_KEYS.canton];
+  const route = addressComponents[GOOGLE_MAP_ADDRESS_KEYS.route];
+  const intersection = addressComponents[GOOGLE_MAP_ADDRESS_KEYS.intersection];
+
+  const hasRequired =
+    !!province &&
+    !!canton &&
+    (!!route || !!intersection);
+
+  if (!hasRequired) {
+    setShowManualEntry(true);
+    console.log("showManualEntry si", true);
+    return true;
+  }
+  console.log("showManualEntry no", false);
+  return false;
+};
 
  	useEffect(() => {
  		const loader = new Loader({
@@ -129,23 +142,27 @@ export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoComplete
 				if (hasError) {
 					onLocationChange(null);
 					setValue('address', '');
- 				} else {
- 					onLocationChange(placeObject);
- 					 setValue('address', {
- 					 	principalStreet: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.route])? 
-						getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.route]) : 
-						getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.intersection]),
- 					 	latitude: placeObject[GOOGLE_MAP_ADDRESS_KEYS.lat],
- 					 	longitude: placeObject[GOOGLE_MAP_ADDRESS_KEYS.long],
- 					 	streetNumber: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.streetNumber]),
- 					 	postalCode: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.postalCode]),
- 					 	isManualAddress: false,
- 					 });
- 					 setValue('addressprovince', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.province]));
- 					 setValue('addresscanton', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.canton]));
- 					 setValue('addressparish', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.parish]));
- 					 setValue('isManualAddress', false);
- 				}
+				} else {
+					const addressData = {
+						principalStreet: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.route]) || 
+						getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.intersection]) || '',
+						latitude: placeObject[GOOGLE_MAP_ADDRESS_KEYS.lat] as number,
+						longitude: placeObject[GOOGLE_MAP_ADDRESS_KEYS.long] as number,
+						streetNumber: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.streetNumber]) || '',
+						postalCode: getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.postalCode]) || '',
+						isManualAddress: false,
+					};
+					
+					onLocationChange(placeObject);
+					setValue('address', addressData);
+					setValue('addressprovince', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.province]));
+					setValue('addresscanton', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.canton]));
+					setValue('addressparish', getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.parish]));
+					setValue('isManualAddress', false);
+					
+					// Llamar a setAddressObject para notificar al componente padre
+					//setAddressObject?.(addressData);
+				}
  			});
  		}
  	}, [isGoogleLoading]);
@@ -153,7 +170,22 @@ export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoComplete
 
  	return (
  		<div>
- 			<div className="flex items-end justify-between">
+ 			<div className="relative">
+			 	<FormLabel label={label} />
+				<Input
+					type="text"
+					name={name}
+					placeholder=" "
+					value={address?.principalStreet}
+					ref={inputRef as unknown as RefCallBack}
+					onChange={e => {
+						setValue('address', e?.target?.value);
+					}}
+					status={error ? 'error' : undefined}
+				/>
+ 				{error && !address && <FormLabelError label={error} />}
+ 			</div>
+			 <div className="flex items-end justify-between mt-2">
  				<div className="flex items-center justify-end mb-1 w-full">
  					<span className="text-black-100 text-sm mr-1">¿No se puede encontrar la dirección?</span>
  					<Button
@@ -165,20 +197,6 @@ export const GoogleAutoComplete = (props: IInputAddressProps["googleAutoComplete
 						label="click aqui"
  					/>
  				</div>
- 			</div>
- 			<div className="relative">
-				<Input
-					type="text"
-					name={name}
-					placeholder=" "
-					value={address?.principalStreet}
-					ref={inputRef as unknown as RefCallBack}
-					onChange={e => {
-						setValue('address', e?.target?.value);
-					}}
-
-				/>
- 				{error && !address && <span className="text-sm mt-2 ml-4 italic text-red-600">{error}</span>}
  			</div>
  		</div>
  	);

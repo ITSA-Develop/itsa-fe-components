@@ -28,6 +28,7 @@ export { FormInputDatePicker } from './components/FormInputDatePicker';
 export { FormLabel } from './components/FormLabel';
 export { FormLabelError } from './components/FormLabelError';
 export { InputPassword } from './components/InputPassword';
+export { InputAddress } from './components/InputAddress';
 export { Input } from './components/Input/Input';
 export { InputSearch } from './components/InputSearch';
 export { Image } from './components/Image';

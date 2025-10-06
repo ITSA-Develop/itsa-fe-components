@@ -59,6 +59,7 @@ export interface IValidateRouteResponse {
 // TODO: clean up this file after implementations starts
 import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
 import { TDate, TInputOptions, TInputRules } from '@/types';
+import { SelectProps } from 'antd';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 import { Dayjs } from 'dayjs';
 import { ReactNode } from 'react';
@@ -249,3 +250,29 @@ export interface IIcon {
 	icon: ReactNode;
 	iconName: string;
 }
+
+
+
+export interface ILocationSelectorProps {
+	optionsCountries: SelectProps["options"];
+	optionsProvinces: SelectProps["options"];
+	optionsCantons: SelectProps["options"];
+	optionsParishes: SelectProps["options"];
+	isLoadingCountries: boolean;
+	isLoadingProvinces: boolean;
+	isLoadingCantons: boolean;
+	isLoadingParishes: boolean;
+	onChangeCountry: (value: number) => void;
+	onChangeProvince: (value: number) => void;
+	onChangeCanton: (value: number) => void;
+	onChangeParish: (value: number) => void;
+	valueCountryId?: number;
+	valueProvinceId?: number;
+	valueCantonId?: number;
+	valueParishId?: number;
+	onChangeOtherCountryDescription: (value: string) => void;
+	otherCountryDescription: string;
+	showParish?: boolean;
+	aloneEcuador?: boolean;
+  }
+  

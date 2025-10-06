@@ -1,36 +1,14 @@
 import { FormLabel } from '@/components/FormLabel';
 import { Select } from '@/components/Select';
 import { filterOptions } from '../InputAddress/helpers';
-import { TInputOptions } from '@/types';
-
-export interface ILocationSelectorProps {
-  locationOptions: {
-    countriesOpts: TInputOptions[];
-    provincesOpts: TInputOptions[];
-    cantonsOpts: TInputOptions[];
-    parishesOpts: TInputOptions[];
-  };
-  isLoadingCountries: boolean;
-  isLoadingProvinces: boolean;
-  isLoadingCantons: boolean;
-  isLoadingParishes: boolean;
-  onChangeCountry: (value: number) => void;
-  onChangeProvince: (value: number) => void;
-  onChangeCanton: (value: number) => void;
-  onChangeParish: (value: number) => void;
-  valueCountryCode?: string;
-  valueCountryId?: number;
-  valueProvinceId?: number;
-  valueCantonId?: number;
-  valueParishId?: number;
-  onChangeOtherCountryDescription: (value: string) => void;
-  otherCountryDescription: string;
-  showParish?: boolean;
-}
+import { ILocationSelectorProps } from '@/interfaces';
 
 export const LocationSelector = (props: ILocationSelectorProps) => {
   const { 
-    locationOptions, 
+    optionsCountries, 
+    optionsProvinces, 
+    optionsCantons, 
+    optionsParishes, 
     onChangeCountry, 
     onChangeProvince, 
     onChangeCanton, 
@@ -44,7 +22,6 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
     isLoadingProvinces, 
     isLoadingCantons, 
     isLoadingParishes, 
-    valueCountryCode 
   } = props;
 
   return (
@@ -52,7 +29,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
       <div className="flex flex-col gap-0 md:col-span-1">
         <FormLabel label="País" />
         <Select
-          options={locationOptions.countriesOpts}
+          options={optionsCountries}
           status={undefined}
           showSearch
           filterOption={(input, option) => filterOptions(input, option)}
@@ -63,12 +40,11 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           className="w-full"
         />
       </div>
-      {valueCountryCode === 'EC' && (
         <div className={`grid grid-cols-1 ${showParish ? "md:grid-cols-3" : "md:grid-cols-2"} gap-2 col-span-3`}>
           <div className="flex flex-col gap-0">
             <FormLabel label="Provincia" />
             <Select
-              options={locationOptions.provincesOpts}
+              options={optionsProvinces}
               status={undefined}
               showSearch
               filterOption={(input, option) => filterOptions(input, option)}
@@ -82,7 +58,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           <div className="flex flex-col gap-0">
             <FormLabel label="Cantón" />
             <Select
-              options={locationOptions.cantonsOpts}
+              options={optionsCantons}
               showSearch
               filterOption={(input, option) => filterOptions(input, option)}
               onChange={onChangeCanton}
@@ -96,7 +72,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
             <div className="flex flex-col gap-0">
               <FormLabel label="Parroquia" />
               <Select
-                options={locationOptions.parishesOpts}
+                options={optionsParishes}
                 status={undefined}
                 showSearch
                 filterOption={(input, option) => filterOptions(input, option)}
@@ -109,7 +85,6 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
             </div>
           )}
         </div>
-      )}
     </div>
   );
 };
