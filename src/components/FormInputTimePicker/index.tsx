@@ -1,10 +1,9 @@
-import { InputProps } from 'antd';
+import { TimePicker, InputProps } from 'antd';
+import dayjs from 'dayjs';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { memo, useId } from 'react';
-import { EInput } from '@/enums';
-import { InputPassword } from '../InputPassword';
 
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
@@ -12,14 +11,17 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	showCaracteres?: boolean;
 	control: Control<TFieldValues>;
 	placeholder?: string;
+	optional?: boolean;
 	disabled?: boolean;
 }
 
-const FormInputPasswordComponent = <TFieldValues extends FieldValues>({
+const FormInputTimePickerComponent = <TFieldValues extends FieldValues>({
 	name,
 	label,
 	control,
 	placeholder,
+	optional = false,
+	allowClear = true,
 	disabled = false,
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
@@ -32,12 +34,22 @@ const FormInputPasswordComponent = <TFieldValues extends FieldValues>({
 				const errorMsg = fieldState.error?.message as string | undefined;
 				return (
 					<div className="flex flex-col gap-1">
-						<FormLabel label={label} htmlFor={id} />
-						<InputPassword
-							id={id as string}
-							type={EInput.text}
-							value={(field.value as string | undefined) ?? ''}
-							onChange={field.onChange}
+						<FormLabel label={label} htmlFor={id} optional={optional} />
+						<TimePicker
+							id={id}
+							format={{
+								format: 'HH:mm',
+								type: 'mask',
+							}}
+							needConfirm
+							value={field.value == null ? null : dayjs(field.value as string, 'HH:mm')}
+							onChange={(value, timeString) => {
+								if (!value) {
+									field.onChange(null);
+									return;
+								}
+								field.onChange(timeString || value.format('HH:mm'));
+							}}
 							onBlur={field.onBlur}
 							ref={field.ref}
 							name={field.name}
@@ -45,6 +57,7 @@ const FormInputPasswordComponent = <TFieldValues extends FieldValues>({
 							aria-invalid={!!errorMsg}
 							aria-describedby={errorMsg ? errId : undefined}
 							placeholder={placeholder}
+							allowClear={allowClear}
 							disabled={disabled}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
@@ -55,8 +68,8 @@ const FormInputPasswordComponent = <TFieldValues extends FieldValues>({
 	);
 };
 
-export const FormInputPassword = memo(FormInputPasswordComponent) as typeof FormInputPasswordComponent & {
+export const FormInputTimePicker = memo(FormInputTimePickerComponent) as typeof FormInputTimePickerComponent & {
 	displayName?: string;
 };
 
-FormInputPassword.displayName = 'FormInputPassword';
+FormInputTimePicker.displayName = 'FormInputTimePicker';

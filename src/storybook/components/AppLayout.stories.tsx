@@ -153,60 +153,33 @@ export const Default: Story = {
 		logo: '',
 	},
 };
-
-// export const Loading: Story = {
-// 	args: {
-// 		...Default.args,
-// 		loading: true,
-// 	},
-// };
-
+export const DifferentPath: Story = {
+	args: {
+		...Default.args,
+		currentPath: '/nucleo/gestion-clientes',
+		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
+			console.log('info =>', info);
+		},
+	},
+};
 export const VerticalMenu: Story = {
-    render: args => <AppLayoutWithMockData {...args} />,
+	render: args => <AppLayoutWithMockData {...args} />,
 	args: {
 		...Default.args,
 		modeSidebar: 'vertical',
+		loading: true,
+		
 	},
 };
 
-// export const NarrowSidebar: Story = {
-// 	args: {
-// 		...Default.args,
-// 		widthSidebar: 220,
-// 	},
-// };
+export const NarrowSidebar: Story = {
+	args: {
+		...Default.args,
+		widthSidebar: 220,
+		loadingMenu: true,
+		
+	},
+};
 
-// export const WideSidebar: Story = {
-// 	args: {
-// 		...Default.args,
-// 		widthSidebar: 350,
-// 	},
-// };
 
-// export const WithoutLogo: Story = {
-// 	args: {
-// 		...Default.args,
-// 		logo: '',
-// 	},
-// };
 
-// export const DifferentPath: Story = {
-// 	args: {
-// 		...Default.args,
-// 		currentPath: '/users/permissions',
-// 	},
-// };
-
-// export const MinimalNotifications: Story = {
-// 	args: {
-// 		...Default.args,
-// 		notifications: { items: [] },
-// 	},
-// };
-
-// export const MinimalUserActions: Story = {
-// 	args: {
-// 		...Default.args,
-// 		userActions: { items: [] },
-// 	},
-// };

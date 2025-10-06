@@ -67,7 +67,7 @@ export const DropdownCustomLabel = ({
 					className:
 						'rounded-l-[8px] max-w-[220px] min-h-[40px] truncate !bg-primary-600 text-white-100 !border-primary-700 !shadow-none',
 					children: (
-						<div key="item-label" className="text-white-100">
+						<div key=" item-label" className="text-white-100 max-w-[180px] truncate text-ellipsis">
 							{selectedLabel}
 						</div>
 					),

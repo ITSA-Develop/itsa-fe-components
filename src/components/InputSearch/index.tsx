@@ -70,10 +70,21 @@ export const InputSearch = ({
 		if (onSearch) onSearch(value);
 	};
 
-	const suffix = (typeof loading === 'boolean' ? loading : enableLoading && isLoading) ? (
-		<Spin indicator={<LoadingOutlined spin className="text-gray-400" />} />
-	) : (
-		rest.suffix
+	const showLoading = typeof loading === 'boolean' ? loading : (enableLoading && isLoading);
+
+	// Keep a stable suffix node to avoid Input focus loss when toggling loading state
+	const mergedSuffix = (
+		<span
+			className="itsa-inputsearch-suffix"
+			style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
+		>
+			<span style={{ visibility: showLoading ? 'visible' : 'hidden', display: 'inline-flex' }}>
+				<Spin indicator={<LoadingOutlined spin className="text-gray-400" />} />
+			</span>
+			<span style={{ visibility: showLoading ? 'hidden' : 'visible', display: 'inline-flex' }}>
+				{rest.suffix}
+			</span>
+		</span>
 	);
 
 	return (
@@ -84,7 +95,7 @@ export const InputSearch = ({
 			value={resolvedValue}
 			onChange={handleChange}
 			onPressEnter={handlePressEnter}
-			suffix={suffix}
+			suffix={mergedSuffix}
 		/>
 	);
 };

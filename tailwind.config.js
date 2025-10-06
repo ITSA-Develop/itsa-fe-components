@@ -20,6 +20,7 @@ export default {
 
 			'gray-25': '#FAFAFA',
 			'gray-50': '#F5F5F5',
+			'gray-75': '#EEF1F3',
 			'gray-100': '#d9dfe3',
 			'gray-150': '#D9D9D9',
 			'gray-200': '#D9DFE3',
@@ -198,6 +199,7 @@ export default {
 			xl: '1280px',
 			'2xl': '1536px',
 			'3xl': '1920px',
+			tablet: '800px',
 		},
 	},
 	container: {

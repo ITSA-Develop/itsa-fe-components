@@ -355,7 +355,7 @@ body,
 
 .itsa-table--head-rounded .ant-table-thead > tr > th:last-child {
 	border-top-right-radius: 8px !important;
-	border-bottom-right-radius: 8px !important;
+	/* border-bottom-right-radius: 8px !important; */
 }
 
 /* White separators between header columns (partial height) */
@@ -376,17 +376,17 @@ body,
 
 /* Hide body scrollbar but keep scrolling */
 .itsa-table--head-rounded .ant-table-body,
-.itsa-table--head-rounded .ant-table-content {
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* IE/Edge */
-}
+/* .itsa-table--head-rounded .ant-table-content {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+} */
 
-.itsa-table--head-rounded .ant-table-body::-webkit-scrollbar,
+/* .itsa-table--head-rounded .ant-table-body::-webkit-scrollbar,
 .itsa-table--head-rounded .ant-table-content::-webkit-scrollbar {
 	width: 0;
 	height: 0;
 	display: none;
-}
+} */
 
 /* Selection checkbox colors scoped to table */
 .itsa-table--head-rounded .ant-table-selection-column .ant-checkbox .ant-checkbox-inner {

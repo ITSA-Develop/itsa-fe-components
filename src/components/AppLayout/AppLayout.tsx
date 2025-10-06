@@ -7,6 +7,7 @@ import { useAppLayoutStore } from '@/store/appLayout.store';
 import { dataFromLocalStorage } from '@/helpers/objects';
 import { ELocalStorageKeys } from '@/enums';
 import { TExtendedMenuItem } from '@/types';
+import { useViewportSize } from '@/hooks';
 
 export interface AppLayoutProps extends LayoutProps {
 	loading: boolean;
@@ -31,6 +32,7 @@ export const AppLayout = ({
 	logo = '',
 	modeSidebar = 'inline',
 }: AppLayoutProps) => {
+	useViewportSize();
 	const { setCurrentAgency, setCurrentModule } = useAppLayoutStore();
 	const agencies = useAppLayoutStore(state => state.agencies);
 	const modulesAgency = useAppLayoutStore(state => state.modulesAgency);
@@ -79,6 +81,7 @@ export const AppLayout = ({
 					currentPath={currentPath}
 					modeSidebar={modeSidebar}
 					onClickOptionMenu={onClickOptionMenu}
+					loadingMenu={loading}
 				>
 					{children}
 				</SidebarLayout>
