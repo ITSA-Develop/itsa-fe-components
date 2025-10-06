@@ -1,11 +1,11 @@
 // InputAddress.stories.tsx
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Space } from 'antd';
+//import { Button, Space } from 'antd';
 import { useForm } from 'react-hook-form';
-import { IInputAddressProps, InputAddress } from '../../components/InputAddress/InputAddress';
+import { InputAddress } from '../../components/InputAddress';
 import { GOOGLE_API_KEY } from '../../utils/constants';
-import { IManualAddressObject, ILocationFormData } from '../../interfaces';
+//import { IManualAddressObject, ILocationFormData } from '../../interfaces';
 
 const mockLocationOptions = {
 	countriesOpts: [
@@ -244,12 +244,10 @@ const InputAddressWrapper: React.FC<InputAddressWrapperProps> = (props) => {
 
 	// Create the props objects for the new interface
 	const locationFormProps = {
-		locationOptions: {
-			countriesOpts: (props.locationOptions || mockLocationOptions).countriesOpts,
-			provincesOpts: getFilteredProvinces(),
-			cantonsOpts: getFilteredCantons(),
-			parishesOpts: getFilteredParishes(),
-		},
+		optionsCountries: (props.locationOptions || mockLocationOptions).countriesOpts,
+		optionsProvinces: (props.locationOptions || mockLocationOptions).provincesOpts,
+		optionsCantons: (props.locationOptions || mockLocationOptions).cantonsOpts,
+		optionsParishes: (props.locationOptions || mockLocationOptions).parishesOpts,
 		isLoadingCountries: false,
 		isLoadingProvinces: false,
 		isLoadingCantons: false,
@@ -259,7 +257,6 @@ const InputAddressWrapper: React.FC<InputAddressWrapperProps> = (props) => {
 		onChangeCanton: handleCantonChange,
 		onChangeParish: handleParishChange,
 		valueCountryId: selectedCountry,
-		valueCountryCode: selectedCountryCode,
 		valueProvinceId: selectedProvince,
 		valueCantonId: selectedCanton,
 		valueParishId: selectedParish,
@@ -283,7 +280,7 @@ const InputAddressWrapper: React.FC<InputAddressWrapperProps> = (props) => {
 		googleMapsApiKey: props.googleMapsApiKey || mockGoogleMapsApiKey,
 		defaultValue: '',
 		onLocationChange: handleLocationChange,
-		setAddressObject: handleSetAddressObject,
+		//setAddressObject: handleSetAddressObject,
 		errors: props.errors,
 		showManualByDefault: props.showManualByDefault,
 		defaultManualValue: undefined,
@@ -292,12 +289,13 @@ const InputAddressWrapper: React.FC<InputAddressWrapperProps> = (props) => {
 		setShowManualEntry,
 		watch: () => ({ address: watch('address') }),
 		setValue: (field: string, value: any) => setValue(field as 'address', value),
+		status: props.errors?.address ? 'error' : undefined,
 	};
 
 	return (
 		<div style={{ width: 400 }}>
 			<InputAddress
-				locationFormProps={locationFormProps}
+				//locationFormProps={locationFormProps}
 				googleAutoCompleteProps={googleAutoCompleteProps}
 			/>
 			{addressData && (
