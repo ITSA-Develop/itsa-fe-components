@@ -50,6 +50,8 @@ import {
 	updateURLParams,
 } from './urls';
 
+import { normalizeStatus } from './functions';
+
 export {
 	addOrderParamIfMissing,
 	buildQueryParams,
@@ -98,6 +100,7 @@ export {
 	isValidMaskFormat,
 	joinUrl,
 	mapPermissionsToMenuFormat,
+	normalizeStatus,
 	securityApi,
 	toTitleCase,
 	transformModuleToMenuData,

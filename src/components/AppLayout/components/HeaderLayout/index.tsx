@@ -5,6 +5,7 @@ import { Image } from '@/components/Image';
 import { LOGO_DIMENSIONS, ROUTES_IMAGES } from '@/constants';
 import { useSidebarStore } from '@/hooks';
 import { ISelectOptionDropdownButton } from '@/interfaces';
+import { useViewportStore } from '@/store';
 import { useAppLayoutStore } from '@/store/appLayout.store';
 import { MenuUnfoldOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps } from 'antd';
@@ -22,6 +23,7 @@ export const HeaderLayout = ({
 	userActions = { items: [] },
 	logo = '',
 }: HeaderLayoutProps) => {
+	const { width } = useViewportStore();
 	const { setCurrentModule, setCurrentAgency } = useAppLayoutStore();
 	const { collapsed, setCollapsed } = useSidebarStore();
 	const { agencies } = useAppLayoutStore();
@@ -75,13 +77,15 @@ export const HeaderLayout = ({
 							onClick={() => setCollapsed(!collapsed)}
 						/>
 					)}
-					<Image
+					{width > 768 && (
+						<Image
 						imgPath={logo || ROUTES_IMAGES.companyLogo}
 						width={LOGO_DIMENSIONS.HEADER_WIDTH}
 						height={LOGO_DIMENSIONS.HEADER_HEIGHT}
 						alt="Logo"
-						errorLabel="Importadora Tomebamba"
-					/>
+							errorLabel="Importadora Tomebamba"
+						/>
+					)}
 				</div>
 				<div className="flex flex-row w-auto items-center gap-4">
 					{/* Vista Móvil (solo iconos) */}

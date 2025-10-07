@@ -167,6 +167,7 @@ export enum ETaxPayerType {
 export enum EItemStatus {
 	active = 'ACTIVE',
 	inactive = 'INACTIVE',
+	all = 'ALL',
 }
 
 export enum EClientType {
@@ -232,4 +233,10 @@ export enum ELocalStorageKeys {
 export enum EMicroFrontends {
 	itsaBackOffice = 'backoffice.127.0.0.1.nip.io:4000',
 	itsaFrontoffice = 'frontoffice.127.0.0.1.nip.io:4000',
+}
+
+export enum EOptionsFilterStatus {
+	inactive = 0,
+	active = 1,
+	undefined = 2,
 }

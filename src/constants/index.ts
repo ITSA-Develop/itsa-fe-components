@@ -1,3 +1,4 @@
+import { EOptionsFilterStatus } from '@/enums';
 import axios from 'axios';
 import dayjs from 'dayjs';
 export * from './icons';
@@ -105,5 +106,8 @@ export const MODAL_HEIGHT = {
 	'60vh': '60vh',
 };
 
-
-
+export const OPTIONS_STATUS = [
+	{ label: 'Todos', value: EOptionsFilterStatus.undefined },
+	{ label: 'Activos', value: EOptionsFilterStatus.active },
+	{ label: 'Inactivos', value: EOptionsFilterStatus.inactive },
+];
