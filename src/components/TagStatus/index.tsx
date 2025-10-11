@@ -2,13 +2,12 @@ import { Tag as AntTag } from 'antd';
 import { EStatus } from '@/enums';
 
 export interface ITagStatusProps {
-	status: EStatus;
-	label: string;
+	status?: boolean;
 }
-export const TagStatus = ({ status, label }: ITagStatusProps) => {
+export const TagStatus = ({ status }: ITagStatusProps) => {
 	return (
 		<div className="flex flex-row justify-center">
-			<AntTag color={status}>{label}</AntTag>
+			<AntTag color={status ? EStatus.success : EStatus.error}>{status === true ? 'Activo' : 'Inactivo'}</AntTag>
 		</div>
 	);
 };

@@ -26,7 +26,7 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 	mode,
 	placeholder,
 	isLoading,
-	disabled=false,
+	disabled = false,
 }: IFormSelectProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -41,6 +41,8 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 			control={control}
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message;
+				const validValues = options.map(o => o.value);
+				const safeValue = validValues.includes(field.value) ? field.value : undefined;
 				return (
 					<div className="flex flex-col gap-1">
 						<FormLabel label={label} htmlFor={id} />
@@ -49,7 +51,7 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 							showSearch
 							mode={mode}
 							allowClear={allowClear}
-							value={field.value}
+							value={safeValue}
 							onChange={field.onChange}
 							onBlur={field.onBlur}
 							ref={field.ref}

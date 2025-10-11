@@ -54,6 +54,7 @@ const RHFForm: React.FC<{
 // ---------- Meta ----------
 const meta: Meta<typeof BoundFormRadio> = {
 	title: 'components/Form/FormRadio',
+	tags: ['autodocs'],
 	component: BoundFormRadio,
 	parameters: { layout: 'centered' },
 	argTypes: {
