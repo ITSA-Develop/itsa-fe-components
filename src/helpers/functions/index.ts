@@ -21,5 +21,3 @@ export const normalizeStatus = (status?: string | boolean | number): EOptionsFil
 	return 2;
 };
 
-
-

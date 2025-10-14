@@ -105,8 +105,10 @@ import UserActiveIcon from './icon-user-active.svg?react';
 import UserRoundedSquareIcon from './icon-user-rounded-square.svg?react';
 import WalletIcon from './icon-wallet.svg?react';
 import WhatsappIcon from './icon-whatsapp.svg?react';
+import WithoutInformationIcon from './icon-without-information.svg?react';
 import XIcon from './icon-x.svg?react';
 import XCircleIcon from './icon-x-circle.svg?react';
+
 
 export {
   ActiveNotificationIcon,
@@ -216,6 +218,7 @@ export {
   UserRoundedSquareIcon,
   WalletIcon,
   WhatsappIcon,
+  WithoutInformationIcon,
   XIcon,
   XCircleIcon,
 };
