@@ -11,6 +11,7 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	control: Control<TFieldValues>;
 	placeholder?: string;
 	optional?: boolean;
+	format?: string;
 }
 
 const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
@@ -19,6 +20,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 	control,
 	placeholder,
 	optional = false,
+	format = 'YYYY-MM-DD',
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -33,11 +35,11 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 						<FormLabel label={label} htmlFor={id} optional={optional} />
 						<DatePicker
 							format={{
-								format: 'DD-MM-YYYY',
+								format: format,
 								type: 'mask',
 							}}
 							onChange={(value)=> {
-								const formattedValue = value?.format('DD-MM-YYYY');
+								const formattedValue = value?.format(format);
 								field.onChange(formattedValue);
 							}}
 							onBlur={field.onBlur}
