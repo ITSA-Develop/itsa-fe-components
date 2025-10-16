@@ -1,0 +1,1 @@
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/components/TabsItemContent/index.tsx"],"names":[],"mappings":"AAEA,OAAO,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAIlC,MAAM,WAAW,gBAAgB;IAChC,QAAQ,EAAE,SAAS,CAAC;IACpB,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,KAAK,CAAC,EAAE,MAAM,CAAC;CACf;AAED,eAAO,MAAM,eAAe,GAAI,4BAAsD,gBAAgB,4CAarG,CAAC"}
