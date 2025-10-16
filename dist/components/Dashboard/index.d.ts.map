@@ -1,1 +1,0 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/components/Dashboard/index.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,cAAc,CAAC;AAKvC,MAAM,WAAW,gBAAgB;IAChC,OAAO,EAAE,OAAO,EAAE,CAAC;IACnB,UAAU,EAAE,CAAC,MAAM,EAAE,OAAO,KAAK,IAAI,CAAC;CACtC;AAED,eAAO,MAAM,SAAS,GAAI,yBAAyB,gBAAgB,4CASlE,CAAC"}

@@ -93,7 +93,7 @@ export const Home = ({ modules, itemAction }: ICardModuleProps) => {
 							>
 								<div className="flex flex-col items-center justify-center gap-0">
 									<div className="flex flex-row gap-2 items-center justify-center w-full">
-										<div className="flex items-center justify-center shrink-0">{getIcon(module.icon)}</div>
+										<div className="flex items-center justify-center shrink-0">{getIcon(module.icon, "w-10 h-10")}</div>
 										<Title className="!m-0" level={4} title={highlight(module.name)} type="secondary" />
 									</div>
 								</div>

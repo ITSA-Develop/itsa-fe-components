@@ -228,6 +228,7 @@ export enum ELocalStorageKeys {
 	submoduleId = 'submoduleId',
 	refreshToken = 'refreshToken',
 	currentEnvironment = 'currentEnvironment',
+	moduleHomeSelectedId = 'moduleHomeSelectedId',
 }
 
 export enum EMicroFrontends {
