@@ -2,8 +2,7 @@ import { IAgency } from '@/interfaces';
 
 
 
-
-        export const AGENCIES_DATA: IAgency[] = [
+export const AGENCIES_DATA: IAgency[] = [
             {
                 "id": 4,
                 "name": "CUENCA",
@@ -11,31 +10,156 @@ import { IAgency } from '@/interfaces';
                     {
                         "id": 7,
                         "name": "SEGURIDAD",
-                        "path": null,
-                        "icon": "PackageIcon",
+                        "icon": "SettingsIcon",
                         "entorno": "BACKOFFICE",
                         "submodules": [
                             {
                                 "id": 8,
                                 "name": "MANTENIMIENTOS",
                                 "icon": "PackageIcon",
-                                "pathPadre": "",
+								"pathPadre": "",
                                 "path": "",
                                 "groups": [],
                                 "programs": [
                                     {
                                         "id": 57,
                                         "name": "ACCESOS",
-                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/modules",
+                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/modules?status=1",
                                         "pathPadre": "security/accesses",
-                                        "path": "modules",
+                                        "path": "security/accesses/modules?status=1",
                                         "icon": "mdiLaptop",
                                         "actions": {
-                                            "allActions": 1,
-                                            "read": 0,
-                                            "create": 0,
-                                            "update": 0,
-                                            "delete": 0
+                                            "allActions": true,
+                                            "read": false,
+                                            "create": false,
+                                            "update": false,
+                                            "delete": false
+                                        }
+                                    },
+                                    {
+                                        "id": 89,
+                                        "name": "ROLES",
+                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/roles?status=1",
+                                        "pathPadre": "security/accesses",
+                                        "path": "security/accesses/roles?status=1",
+                                        "icon": "mdiLaptop",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": false,
+                                            "create": false,
+                                            "update": false,
+                                            "delete": false
+                                        }
+                                    },
+                                    {
+                                        "id": 90,
+                                        "name": "POLITICAS DE ACCESO",
+                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/access-policies?status=1",
+                                        "pathPadre": "security/accesses",
+                                        "path": "security/accesses/access-policies?status=1",
+                                        "icon": "mdiLaptop",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": false,
+                                            "create": false,
+                                            "update": false,
+                                            "delete": false
+                                        }
+                                    },
+                                    {
+                                        "id": 102,
+                                        "name": "ROL AGENCIA PRO. ACCIONES",
+                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/role-agency-program-actions",
+                                        "pathPadre": "security/accesses",
+                                        "path": "security/accesses/role-agency-program-actions",
+                                        "icon": "PackageIcon",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": true,
+                                            "create": false,
+                                            "update": false,
+                                            "delete": false
+                                        }
+                                    },
+                                    {
+                                        "id": 103,
+                                        "name": "USUARIOS",
+                                        "url": "http://backoffice.127.0.0.1.nip.io:4000/security/accesses/users",
+                                        "pathPadre": "security/accesses",
+                                        "path": "security/accesses/users",
+                                        "icon": "PackageIcon",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": true,
+                                            "create": false,
+                                            "update": true,
+                                            "delete": false
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 21,
+                        "name": "NUCLEO",
+                        "icon": "PackageIcon",
+                        "entorno": "FRONTOFFICE",
+                        "submodules": [
+                            {
+                                "id": 34,
+                                "name": "MANTENIMINENTOS",
+                                "icon": "PackageIcon",
+                                "pathPadre": "",
+                                "path": "",
+                                "groups": [],
+                                "programs": [
+                                    {
+                                        "id": 105,
+                                        "name": "CLIENTES REPUESTOS",
+                                        "url": "http://frontoffice.127.0.0.1.nip.io:4001/spares/clients-management",
+                                        "pathPadre": "spares",
+                                        "path": "spares/clients-management",
+                                        "icon": "IconCamion",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": true,
+                                            "create": true,
+                                            "update": true,
+                                            "delete": true
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": 8,
+                        "name": "REPUESTOS",
+                        "icon": "mdiCarSpeedLimiter",
+                        "entorno": "FRONTOFFICE",
+                        "submodules": [
+                            {
+                                "id": 9,
+                                "name": "MANTENIMIENTOS",
+                                "icon": "mdiViewModule",
+                                "pathPadre": "",
+                                "path": "",
+                                "groups": [],
+                                "programs": [
+                                    {
+                                        "id": 80,
+                                        "name": "CLIENTES",
+                                        "url": "http://frontoffice.127.0.0.1.nip.io:4001/spares/clients-management",
+                                        "pathPadre": "spares",
+                                        "path": "spares/clients-management",
+                                        "icon": "PackageIcon",
+                                        "actions": {
+                                            "allActions": true,
+                                            "read": false,
+                                            "create": false,
+                                            "update": false,
+                                            "delete": false
                                         }
                                     }
                                 ]
@@ -45,6 +169,109 @@ import { IAgency } from '@/interfaces';
                 ]
             }
         ]
+
+
+// export const AGENCIES_DATA: IAgency[] = [
+// 	{
+// 		id: 4,
+// 		name: 'CUENCA',
+// 		modules: [
+// 			{
+// 				id: 7,
+// 				name: 'SEGURIDAD',
+// 				path: null,
+// 				icon: 'PackageIcon',
+// 				entorno: 'BACKOFFICE',
+// 				submodules: [
+// 					{
+// 						id: 8,
+// 						name: 'MANTENIMIENTOS SEGURIDAD',
+// 						icon: 'PackageIcon',
+// 						pathPadre: '',
+// 						path: '',
+// 						groups: [],
+// 						programs: [
+// 							{
+// 								id: 57,
+// 								name: 'ACCESOS',
+// 								url: 'http://backoffice.127.0.0.1.nip.io:4000/security/accesses/modules',
+// 								pathPadre: 'security/accesses',
+// 								path: 'modules',
+// 								icon: 'mdiLaptop',
+// 								actions: {
+// 									allActions: 1,
+// 									read: 0,
+// 									create: 0,
+// 									update: 0,
+// 									delete: 0,
+// 								},
+// 							},
+// 						],
+// 					},
+// 					{
+// 						id: 10,
+// 						name: 'MANTENIMIENTOS VEHÍCULOS',
+// 						icon: 'PackageIcon',
+// 						pathPadre: '',
+// 						path: '',
+// 						groups: [],
+// 						programs: [
+// 							{
+// 								id: 58,
+// 								name: 'VEHÍCULOS NUEVOS',
+// 								url: 'http://backoffice.127.0.0.1.nip.io:4000/security/accesses/modules',
+// 								pathPadre: 'security/accesses',
+// 								path: 'modules',
+// 								icon: 'mdiLaptop',
+// 								actions: {
+// 									allActions: 1,
+// 									read: 0,
+// 									create: 0,
+// 									update: 0,
+// 									delete: 0,
+// 								},
+// 							},
+// 						],
+// 					},
+// 				],
+// 			},
+// 			{
+// 				id: 8,
+// 				name: 'VEHÍCULOS',
+// 				path: null,
+// 				icon: 'PackageIcon',
+// 				entorno: 'BACKOFFICE',
+// 				submodules: [
+// 					{
+// 						id: 9,
+// 						name: 'MANTENIMIENTOS',
+// 						icon: 'PackageIcon',
+// 						pathPadre: '',
+// 						path: '',
+// 						groups: [],
+// 						programs: [
+// 							{
+// 								id: 57,
+// 								name: 'VEHÍCULOS',
+// 								url: 'http://backoffice.127.0.0.1.nip.io:4000/security/accesses/modules',
+// 								pathPadre: 'security/accesses',
+// 								path: 'modules',
+// 								icon: 'mdiLaptop',
+// 								actions: {
+// 									allActions: 1,
+// 									read: 0,
+// 									create: 0,
+// 									update: 0,
+// 									delete: 0,
+// 								},
+// 							},
+// 						],
+// 					},
+// 				],
+// 			},
+// 		],
+// 	},
+// ];
 // export const AGENCIES_DATA: IAgency[] = [
 // 	{
 // 		id: 4,

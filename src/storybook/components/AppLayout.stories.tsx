@@ -7,6 +7,7 @@ import { AGENCIES_DATA } from '../../constants/agencies';
 import { IAgency } from '../../interfaces';
 import { TExtendedMenuItem } from '../../types';
 import { useCustomNavigation } from '../../hooks/useCustomNavigation';
+import { Dashboard } from '../../components/Dashboard';
 
 // Mock data para las agencias y módulos
 const mockAgencies: IAgency[] = AGENCIES_DATA;
@@ -178,6 +179,21 @@ export const NarrowSidebar: Story = {
 		widthSidebar: 220,
 		loadingMenu: true,
 		
+	},
+};
+
+export const WithDashboard: Story = {
+	args: {
+		...Default.args,
+		widthSidebar: 220,
+		loadingMenu: true,
+		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
+			console.log('info =>', info);
+		},
+		children: <Dashboard modules={mockAgencies[0].modules} itemAction={(item, entorno) => {
+			console.log('item =>', item);
+			console.log('modulo =>', entorno);
+		}} />,
 	},
 };
 

@@ -17,7 +17,6 @@ export interface IAgency {
 export interface IModule {
 	id: number;
 	name: string;
-	path: string | null;
 	icon: string;
 	entorno: string;
 	submodules: ISubmodule[];
@@ -36,11 +35,11 @@ export interface ISubmodule {
 }
 
 export interface IActions {
-	allActions: number;
-	read: number;
-	create: number;
-	update: number;
-	delete: number;
+	allActions: boolean;
+	read: boolean;
+	create: boolean;
+	update: boolean;
+	delete: boolean;
 }
 
 export interface ISelectOptionDropdownButton {

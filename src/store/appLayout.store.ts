@@ -40,21 +40,31 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 
 	currentAgency: undefined,
 	setCurrentAgency: (agency: IAgency) => {
-		localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
-		const localStorageCurrentEnvironment = localStorage.getItem(ELocalStorageKeys.currentEnvironment);
-		let newModule = agency.modules?.[0];
-		const newSubmodule = newModule?.submodules?.[0];
+		// localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
+		// const currentModuleId = localStorage.getItem(ELocalStorageKeys.moduleId);
+		// const localStorageCurrentEnvironment = localStorage.getItem(ELocalStorageKeys.currentEnvironment) ?? '';
+		// let newModule: IModule | undefined;
+		// let newSubmodule: ISubmodule | undefined;
 
-		if (localStorageCurrentEnvironment) {
-			newModule = agency.modules?.find(module => module.entorno.includes(localStorageCurrentEnvironment));
-		}
-
+		// if (currentModuleId) {
+		// 	newModule = agency.modules.find(module => module.id.toString() === currentModuleId);
+		// 	newSubmodule = newModule?.submodules?.[0];
+		// } else {
+		// 	for (let index = 0; index < agency.modules.length; index++) {
+		// 		const module = agency.modules[index];
+		// 		if (module && module.entorno.toUpperCase() === localStorageCurrentEnvironment.toUpperCase()) {
+		// 			localStorage.setItem(ELocalStorageKeys.moduleId, String(module.id));
+		// 			newModule = module;
+		// 			newSubmodule = module.submodules[0];
+		// 		}
+		// 	}
+		// }
 		set({
 			currentAgency: agency,
 			modulesAgency: agency.modules ?? [],
-			currentModule: newModule,
-			submodulesAgency: newModule?.submodules ?? [],
-			currentSubmodule: newSubmodule,
+			// currentModule: newModule,
+			// submodulesAgency: newModule?.submodules ?? [],
+			// currentSubmodule: newSubmodule,
 		});
 	},
 	currentModule: undefined,

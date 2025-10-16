@@ -1,12 +1,11 @@
 import React from 'react';
 import { ISubmodule } from '@/interfaces';
 import { IModule } from '@/interfaces';
-import { IconMenu } from '@/components/IconMenu';
 import { TExtendedMenuItem } from '@/types';
+import { getIconByName } from '@/helpers/icons';
 
-export const getIcon = (icon: string | null): React.ReactNode => {
-	const iconToUse = icon || '';
-	return React.createElement(IconMenu, { icon: iconToUse });
+export const getIcon = (icon: string | null, className?: string): React.ReactNode => {
+	return getIconByName(icon, { className: className || 'w-4 h-4' });
 };
 
 export const transformModuleToMenuData = (module: IModule | null): TExtendedMenuItem[] => {
@@ -19,11 +18,11 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 	menuData.push({
 		key: '/home',
 		label: 'INICIO',
-		icon: getIcon('home'),
+		icon: getIcon('HomeIcon'),
 		data: {
 			path: '/home',
 			pathPadre: 'home',
-			icon: 'home',
+			icon: 'HomeIcon',
 			type: 'program',
 			parentModule: 'home',
 			parentSubmodule: 'home',
@@ -64,13 +63,13 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 				submoduleChildren.push({
 					key: `group-${group.id}`,
 					label: group.name,
-					icon: getIcon('group'),
+					icon: getIcon('MenuIcon'),
 					children: groupChildren,
 					data: {
 						path: null,
 						pathPadre: 'group',
 						url: null,
-						icon: getIcon('group'),
+						icon: getIcon('MenuIcon'),
 						type: 'group',
 						parentSubmodule: submodule.name,
 						parentModule: module.name,
@@ -105,13 +104,13 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 			menuData.push({
 				key: `submodule-${submodule.id}`,
 				label: submodule.name,
-				icon: getIcon('submodule'),
+				icon: getIcon('MenuIcon'),
 				children: submoduleChildren,
 				data: {
 					path: null,
 					pathPadre: 'submodule',
 					url: null,
-					icon: getIcon('submodule'),
+					icon: getIcon('MenuIcon'),
 					type: 'submodule',
 					parentModule: module.name,
 					parentSubmodule: submodule.name,
