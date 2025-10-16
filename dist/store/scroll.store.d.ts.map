@@ -1,0 +1,1 @@
+{"version":3,"file":"scroll.store.d.ts","sourceRoot":"","sources":["../../src/store/scroll.store.ts"],"names":[],"mappings":"AAEA,KAAK,WAAW,GAAG;IAClB,sBAAsB,EAAE,OAAO,CAAC;IAChC,yBAAyB,EAAE,CAAC,KAAK,EAAE,OAAO,KAAK,IAAI,CAAC;IACpD,iBAAiB,EAAE,MAAM,IAAI,CAAC;CAC9B,CAAC;AAEF,eAAO,MAAM,cAAc,0EAIxB,CAAC"}

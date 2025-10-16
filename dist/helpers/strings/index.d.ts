@@ -1,0 +1,9 @@
+export declare const isRouteActive: (currentPath: string, baseRoute: string) => boolean;
+export declare const capitalize: (str: string) => string;
+export declare const toTitleCase: (str: string) => string;
+export declare const getMicroFrontendByPath: (path: string) => string;
+export declare const joinUrl: (base: string, path: string) => string;
+export declare const isNumericOnly: (value: string) => boolean;
+export declare const filterNumericOnly: (value: string) => number;
+export declare const filterPositiveNumbersOnly: (value: string) => string;
+//# sourceMappingURL=index.d.ts.map

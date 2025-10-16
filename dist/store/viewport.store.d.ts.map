@@ -1,0 +1,1 @@
+{"version":3,"file":"viewport.store.d.ts","sourceRoot":"","sources":["../../src/store/viewport.store.ts"],"names":[],"mappings":"AAEA,KAAK,aAAa,GAAG;IACnB,KAAK,EAAE,MAAM,CAAC;IACd,MAAM,EAAE,MAAM,CAAC;IACf,OAAO,EAAE,CAAC,IAAI,EAAE;QAAE,KAAK,EAAE,MAAM,CAAC;QAAC,MAAM,EAAE,MAAM,CAAA;KAAE,KAAK,IAAI,CAAC;CAC5D,CAAC;AAEF,eAAO,MAAM,gBAAgB,4EAI1B,CAAC"}
