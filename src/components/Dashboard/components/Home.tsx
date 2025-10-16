@@ -3,7 +3,7 @@
 import { Button, Card, Input } from 'antd';
 import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
 import { useMemo, useState } from 'react';
-import { IModule, ISubmodule } from '@/interfaces';
+import { IModule } from '@/interfaces';
 import { Title } from '@/components/Title';
 import { getIcon } from '@/helpers/menu/menuDataTransformer';
 
@@ -27,9 +27,9 @@ export const Home = ({ modules, itemAction }: ICardModuleProps) => {
 		[modules, normalizedQuery],
 	);
 
-	const labelSubmodule = (submodule: ISubmodule[]) => {
-		return submodule.map(s => s.name).join(', ');
-	};
+	// const labelSubmodule = (submodule: ISubmodule[]) => {
+	// 	return submodule.map(s => s.name).join(', ');
+	// };
 
 	const highlight = (text: string): React.ReactNode => {
 		if (!normalizedQuery) return text;

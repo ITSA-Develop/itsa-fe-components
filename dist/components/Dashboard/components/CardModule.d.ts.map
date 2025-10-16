@@ -1,1 +1,0 @@
-{"version":3,"file":"CardModule.d.ts","sourceRoot":"","sources":["../../../../src/components/Dashboard/components/CardModule.tsx"],"names":[],"mappings":"AAGA,OAAO,EAAE,OAAO,EAAE,MAAM,cAAc,CAAC;AAsBvC,MAAM,WAAW,gBAAgB;IAChC,OAAO,EAAE,OAAO,EAAE,CAAC;CACnB;AAED,MAAM,CAAC,OAAO,UAAU,sBAAsB,CAAC,EAAE,OAAO,EAAE,QAAQ,EAAE,EAAE,gBAAgB,2CAoDrF"}
