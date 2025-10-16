@@ -2,34 +2,35 @@ import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { FormInputPassword } from '@/components/FormInputPassword';
 import { Control, Path } from 'react-hook-form';
+import type { FormEventHandler } from 'react';
 
 export type LoginFormValuesBase = { username: string; password: string };
 
 export interface IFormLogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
-    control: Control<TFieldValues>;
-    onSubmit: () => void;
+	control: Control<TFieldValues>;
+	onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 export const FormLogin = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({ control, onSubmit }: IFormLogin<TFieldValues>) => {
 	return (
-		<form className="flex flex-col gap-4 w-full p-8">
-            <FormInput
-                name={"username" as Path<TFieldValues>}
-                label="Usuario"
-                placeholder="Ej. roberto.giler@tomebamba.com.ec"
-                control={control}
-            />
+		<form className="flex flex-col gap-4 w-full p-8" onSubmit={onSubmit}>
+			<FormInput
+				name={"username" as Path<TFieldValues>}
+				label="Usuario"
+				placeholder="Ej. roberto.giler@tomebamba.com.ec"
+				control={control}
+			/>
 			<FormInputPassword
 				type="password"
-                name={"password" as Path<TFieldValues>}
+				name={"password" as Path<TFieldValues>}
 				label="Contraseña"
 				placeholder="**********"
 				control={control}
 			/>
 			<Button
 				type="primary"
+				htmlType="submit"
 				size="middle"
 				label="Iniciar sesión"
-				onClick={onSubmit}
 			/>
 		</form>
 	);

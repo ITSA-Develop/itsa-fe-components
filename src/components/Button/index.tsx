@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 export interface IButtonProps {
 	size?: 'small' | 'middle' | 'large';
 	type?: 'primary' | 'secondary' | 'submit';
+	htmlType?: 'button' | 'submit' | 'reset';
 	label?: ReactNode;
 	disabled?: boolean;
 	onClick?: () => void;
@@ -14,7 +15,7 @@ export interface IButtonProps {
 
 export const Button = (props: IButtonProps) => {
 	const { width, block = false } = props;
-	const { size = 'small', type = 'primary', label, disabled = false, onClick } = props;
+	const { size = 'small', type = 'primary', htmlType, label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
 	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';
@@ -33,6 +34,7 @@ export const Button = (props: IButtonProps) => {
 				className={disabledClass}
 				size={size}
 				type={antdType}
+				htmlType={htmlType}
 				disabled={disabled}
 				onClick={onClick}
 				block={block}
@@ -48,6 +50,7 @@ export const Button = (props: IButtonProps) => {
 			className={className}
 			size={size}
 			type={antdType}
+			htmlType={htmlType}
 			disabled={disabled}
 			onClick={onClick}
 			block={block}

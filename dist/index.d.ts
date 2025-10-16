@@ -13,6 +13,7 @@ export { CustomFooterModal } from './components/CustomFooterModal';
 export { Divider } from './components/Divider/Divider';
 export { Drawer } from './components/Drawer/Drawer';
 export { DropdownCustomLabel } from './components/DropdownCustomLabel';
+export { Dashboard } from './components/Dashboard';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { ErrorPage } from './components/ErrorPage/ErrorPage';
 export { Fade } from './components/Fade/Fade';

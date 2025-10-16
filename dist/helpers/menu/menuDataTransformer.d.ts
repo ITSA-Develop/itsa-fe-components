@@ -2,7 +2,7 @@ import { default as React } from 'react';
 import { IModule } from '../../interfaces';
 import { TExtendedMenuItem } from '../../types';
 
-export declare const getIcon: (icon: string | null) => React.ReactNode;
+export declare const getIcon: (icon: string | null, className?: string) => React.ReactNode;
 export declare const transformModuleToMenuData: (module: IModule | null) => TExtendedMenuItem[];
 /**
  * Función para filtrar items del menú por término de búsqueda

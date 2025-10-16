@@ -4,15 +4,20 @@ import { useViewportStore } from '@/store/viewport.store';
 import { useViewportSize } from '@/hooks/useViewportSize/useViewportSize';
 import { FormLogin, LoginFormValuesBase } from './components/FormLogin';
 import { logoTomebambaNegro, login as loginImage } from '@/assets/images';
+import type { FormEventHandler } from 'react';
 
 export interface ILogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
-    control: Control<TFieldValues>;
-    onSubmit: () => void;
+	control: Control<TFieldValues>;
+	onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
 export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({ control, onSubmit }: ILogin<TFieldValues>) => {
 	useViewportSize(0);
 	const { width } = useViewportStore();
+	const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
+		e.preventDefault();
+		onSubmit?.(e);
+	};
 	return (
 		<div className="w-full h-[100dvh] bg-gray-75 flex items-center justify-center">
 			{width >= 650 && (
@@ -28,7 +33,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 						<div>
 							<Title title="Iniciar sesión" level={4} />
 						</div>
-                        <FormLogin control={control} onSubmit={onSubmit} />
+						<FormLogin control={control} onSubmit={handleSubmit} />
 					</div>
 					<div className="bg-white rounded-tr-2xl rounded-br-2xl overflow-hidden flex-1 max-w-[420px]">
 						<img src={loginImage} alt="logo" className="w-full h-full max-h-[481px] object-cover" />
@@ -51,7 +56,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 						<div>
 							<Title title="Iniciar sesión" level={4} />
 						</div>
-                        <FormLogin control={control} onSubmit={onSubmit} />
+						<FormLogin control={control} onSubmit={handleSubmit} />
 					</div>
 				</div>
 			)}

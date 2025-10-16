@@ -94,11 +94,11 @@ export type TMenuItemData = {
     icon: React.ReactNode | null;
     url?: string | null;
     actions?: {
-        allActions: number;
-        read: number;
-        create: number;
-        update: number;
-        delete: number;
+        allActions: boolean;
+        read: boolean;
+        create: boolean;
+        update: boolean;
+        delete: boolean;
     };
     type: 'program' | 'module' | 'submodule' | 'group';
     parentGroup?: string;

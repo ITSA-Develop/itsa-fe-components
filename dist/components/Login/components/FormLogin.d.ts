@@ -1,4 +1,5 @@
 import { Control } from 'react-hook-form';
+import { FormEventHandler } from 'react';
 
 export type LoginFormValuesBase = {
     username: string;
@@ -6,7 +7,7 @@ export type LoginFormValuesBase = {
 };
 export interface IFormLogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
     control: Control<TFieldValues>;
-    onSubmit: () => void;
+    onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 export declare const FormLogin: <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({ control, onSubmit }: IFormLogin<TFieldValues>) => import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=FormLogin.d.ts.map
