@@ -111,3 +111,8 @@ export const OPTIONS_STATUS = [
 	{ label: 'Activos', value: EOptionsFilterStatus.active },
 	{ label: 'Inactivos', value: EOptionsFilterStatus.inactive },
 ];
+
+export const LIST_MICRO_FRONTENDS = {
+	BACKOFFICE: 'BACKOFFICE',
+	FRONTOFFICE: 'FRONTOFFICE',
+}

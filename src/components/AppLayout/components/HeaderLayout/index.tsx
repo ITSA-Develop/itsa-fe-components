@@ -79,10 +79,10 @@ export const HeaderLayout = ({
 					)}
 					{width > 768 && (
 						<Image
-						imgPath={logo || ROUTES_IMAGES.companyLogo}
-						width={LOGO_DIMENSIONS.HEADER_WIDTH}
-						height={LOGO_DIMENSIONS.HEADER_HEIGHT}
-						alt="Logo"
+							imgPath={logo || ROUTES_IMAGES.companyLogo}
+							width={LOGO_DIMENSIONS.HEADER_WIDTH}
+							height={LOGO_DIMENSIONS.HEADER_HEIGHT}
+							alt="Logo"
 							errorLabel="Importadora Tomebamba"
 						/>
 					)}
