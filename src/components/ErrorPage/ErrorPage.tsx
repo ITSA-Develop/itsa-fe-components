@@ -1,22 +1,24 @@
 import { Button } from '@/components/Button';
-import { Typography } from 'antd';
+import { pageNotFound } from '@/assets/images';
+import { Title } from '../Title';
 export interface ErrorPageProps {
-	error: string;
-	message: string;
 	handleClick: () => void;
+	error?: string;
+	message?: string;
+    imageClassName?: string;
 }
 
-const { Title } = Typography;
 
-export const ErrorPage = ({ error, message, handleClick }: ErrorPageProps) => {
+export const ErrorPage = ({ error, message, handleClick, imageClassName }: ErrorPageProps) => {
 	return (
-		<div className="flex flex-col justify-center items-center h-screen bg-white-100">
-			<div className="text-center">
-				<Title>{error}</Title>
-				<p className="text-lg">{message}</p>
+		<div className="flex flex-col items-center justify-center h-screen bg-white-100 px-4 text-center gap-4">
+			<img src={pageNotFound} alt="Página no encontrada" className={`w-full max-w-[560px] h-auto max-h-[50vh] object-contain ${imageClassName ?? ''}`} />
+			<div className="flex flex-col justify-center items-center">
+				{error && <Title title={error} level={5} />  }
+				{message && <Title title={message} level={5} />  }
 			</div>
-			<div className="flex justify-center mt-8">
-				<Button onClick={handleClick} label="Ir al Inicio" />
+			<div className="flex flex-col justify-center items-center pt-4">
+				<Button onClick={handleClick} size="middle" label={`Regresar al inicio`} />
 			</div>
 		</div>
 	);

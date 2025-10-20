@@ -1,1 +1,0 @@
-{"version":3,"file":"Fade.d.ts","sourceRoot":"","sources":["../../../src/components/Fade/Fade.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAElC,MAAM,WAAW,UAAU;IAC1B,QAAQ,EAAE,SAAS,CAAC;IACpB,kBAAkB,EAAE,SAAS,CAAC;IAC9B,cAAc,CAAC,EAAE,OAAO,CAAC;IACzB,QAAQ,CAAC,EAAE,MAAM,CAAC;CAClB;AAED,eAAO,MAAM,IAAI,GAAI,4DAA0E,UAAU,4CAmBxG,CAAC"}

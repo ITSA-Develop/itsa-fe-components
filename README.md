@@ -1,4 +1,4 @@
-# @ITSA-Develop/itsa-fe-components
+# @itsa-develop/itsa-fe-components
 
 Deploy Vercel
 
@@ -8,6 +8,12 @@ npm i -g vercel
 vercel login
 vercel link
 npx vercel@latest --prod --yes 
+
+
+Publicar la version en NPM
+
+ npm publish --access public
+
 
 Este paquete contiene componentes de interfaz de usuario reutilizables y personalizables para aplicaciones web basadas en React. Está diseñado para mejorar la productividad y facilitar la implementación de componentes comunes en proyectos que utilizan React y TypeScript.
 
@@ -26,13 +32,13 @@ Este paquete contiene componentes de interfaz de usuario reutilizables y persona
 
 ## Tecnología Base:
 
-- React 18.2.0 (as peerDependencies)
+- React 19.1.0 (as peerDependencies)
 - Tailwind 3.4.3
 - Ant Design 5.26.7
-- React hook form 7.54.2
+- React hook form 7.62.0
 - Storybook 8.0.9
 - Zustand 5.0.3
-- Vite 5.0.2
+- Vite 7.1.7
 
 ## Instalación
 
@@ -56,11 +62,11 @@ esto creara un tgz con el nombre y la version del paquete segun este en el packa
 
 paquete generado:
 
-`ITSA-Nucleo-itsa-fe-components-v0.0.1.tgz`
+`itsa-develop-itsa-fe-components-v0.0.6.tgz`
 
 Luego de actualizar algo , localmente hablando, mas en el paquete debemos actualizar el nombre a:
 
-`ITSA-Nucleo-itsa-fe-components-v0.0.1-a.tgz` para que la version local se sobreescriba.
+`itsa-develop-itsa-fe-components-v0.0.6-a.tgz` para que la version local se sobreescriba.
 
 ## Scripts
 
@@ -132,7 +138,7 @@ Construye el paquete en modo producción sin mapas de origen (--no-sourcemap) y 
 Para importar y utilizar los componentes en tu aplicación:
 
 ```bash
-import { MyComponent } from '@ITSA-develop/itsa-fe-components';
+import { MyComponent } from '@itsa-develop/itsa-fe-components';
 ```
 
 ```bash

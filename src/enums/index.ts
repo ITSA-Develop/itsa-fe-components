@@ -228,11 +228,12 @@ export enum ELocalStorageKeys {
 	submoduleId = 'submoduleId',
 	refreshToken = 'refreshToken',
 	currentEnvironment = 'currentEnvironment',
+	moduleHomeSelectedId = 'moduleHomeSelectedId',
 }
 
 export enum EMicroFrontends {
-	itsaBackOffice = 'backoffice.127.0.0.1.nip.io:4000',
-	itsaFrontoffice = 'frontoffice.127.0.0.1.nip.io:4000',
+	itsaBackOffice = 'BACKOFFICE',
+	itsaFrontoffice = 'FRONTOFFICE',
 }
 
 export enum EOptionsFilterStatus {

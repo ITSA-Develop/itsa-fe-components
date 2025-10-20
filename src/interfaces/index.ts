@@ -25,7 +25,7 @@ export interface IModule {
 export interface ISubmodule {
 	id: number;
 	name: string;
-	pathPadre: string;
+	pathPadre: string | null;
 	path: string | null;
 	icon: string | null;
 	url?: string | null;
