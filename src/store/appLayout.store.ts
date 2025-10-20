@@ -37,12 +37,10 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 	setSubmodulesAgency: (submodules: ISubmodule[]) => {
 		set({ submodulesAgency: submodules });
 	},
-
 	currentAgency: undefined,
 	setCurrentAgency: (agency: IAgency) => {
 		set({
 			currentAgency: agency,
-			modulesAgency: agency.modules ?? [],
 		});
 	},
 	currentModule: undefined,

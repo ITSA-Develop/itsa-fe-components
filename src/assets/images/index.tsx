@@ -1,4 +1,6 @@
 import logoTomebambaNegro from './logo-tomebamba-negro.png';
 import login from './login.png';
+import pageNotFound from './page-not-found.png';
+import unauthorizedPage from './unauthorized-page.png'
 
-export { logoTomebambaNegro, login };
+export { logoTomebambaNegro, login, pageNotFound, unauthorizedPage };

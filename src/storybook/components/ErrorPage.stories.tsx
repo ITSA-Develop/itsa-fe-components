@@ -17,8 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const ErrorPage404: Story = {
 	args: {
-		error: '404',
-		message: 'Not Found',
 		handleClick: () => console.log('click'),
 	},
 };
