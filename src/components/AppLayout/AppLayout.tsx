@@ -73,6 +73,18 @@ export const AppLayout = ({
 				}
 			}
 		}
+
+		const newAgency = agencies[0];
+		if (newAgency) {
+			setCurrentAgency(newAgency);
+			const newModule = newAgency.modules[0];
+			if (newModule) {
+				setCurrentModule(newModule);
+				localStorage.setItem(ELocalStorageKeys.agencyId, String(newAgency.id));
+				localStorage.setItem(ELocalStorageKeys.moduleId, String(newModule.id));
+				return;
+			}
+		}
 	}, [agencies]);
 
 	// useEffect(() => {
