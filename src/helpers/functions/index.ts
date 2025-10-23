@@ -113,3 +113,24 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 	}
 	return true;
 };
+
+
+export const uppercaseStrings = <T>(obj: T): T => {
+	if (obj === null || obj === undefined) return obj;
+	if (typeof obj === 'string') {
+		return obj.toUpperCase() as unknown as T;
+	}
+	if (Array.isArray(obj)) {
+		return obj.map(item => uppercaseStrings(item)) as unknown as T;
+	}
+	if (typeof obj === 'object') {
+		const result: any = {};
+		for (const key in obj) {
+			if (Object.prototype.hasOwnProperty.call(obj, key)) {
+				result[key] = uppercaseStrings((obj as any)[key]);
+			}
+		}
+		return result as T;
+	}
+	return obj;
+}

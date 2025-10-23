@@ -51,7 +51,7 @@ import {
 	updateURLParams,
 } from './urls';
 
-import { normalizeStatus } from './functions';
+import { normalizeStatus, uppercaseStrings } from './functions';
 
 export {
 	addOrderParamIfMissing,
@@ -106,5 +106,6 @@ export {
 	securityApi,
 	toTitleCase,
 	transformModuleToMenuData,
+	uppercaseStrings,
 	updateURLParams,
 };

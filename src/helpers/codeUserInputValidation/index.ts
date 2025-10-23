@@ -1,20 +1,13 @@
 import { EUserRoleCodes } from '@/enums';
+import { useAppLayoutStore } from '@/store';
 
-export const codeUserInputValidation = (codeUserRole: string, requiredCode: EUserRoleCodes) => {
-	let isValid: EUserRoleCodes | undefined;
-	switch (requiredCode) {
-		case EUserRoleCodes.adminRepuestos:
-			if (codeUserRole === EUserRoleCodes.adminRepuestos) {
-				isValid = EUserRoleCodes.adminRepuestos;
-			}
-			break;
-		case EUserRoleCodes.adminTalleres:
-			if (codeUserRole === EUserRoleCodes.adminTalleres) {
-				isValid = EUserRoleCodes.adminTalleres;
-			}
-			break;
-		default:
-			isValid = undefined;
+export const codeUserInputValidation = (requiredCodes: EUserRoleCodes[]) => {
+	const userRole = useAppLayoutStore().userRole;
+	const codeUserRole = userRole?.code ?? '';
+	for (const requiredCode of requiredCodes) {
+		if (codeUserRole === requiredCode) {
+			return true;
+		}
 	}
-	return isValid;
+	return false;
 };
