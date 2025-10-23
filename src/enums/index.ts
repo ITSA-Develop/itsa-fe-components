@@ -242,21 +242,15 @@ export enum EOptionsFilterStatus {
 	undefined = 2,
 }
 
-
 export enum EUserRoleCodes {
-	null = 'COD-NULL',
-	admin = 'COD-ADMIN',
-	user = 'COD-USER',
+	adminRepuestos = 'COREP',
+	adminTalleres = 'CORTALL',
 }
 
-
-export const test = {
-	permission: ["repuestos", "ventas", "compras", "inventario", "finanzas", "gerencia"],
-}
-
-
-const test3 = 'VENTAS'
-
-if(test.permission.includes(test3)){
-
+export enum EActionType {
+	create = 1,
+	read = 3,
+	update = 2,
+	delete = 4,
+	allActions = 0,
 }

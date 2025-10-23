@@ -38,6 +38,7 @@ import {
 } from './objects';
 import { transformModuleToMenuData } from './menu/menuDataTransformer';
 import { clearLocalStorage } from './session';
+import { codeUserInputValidation } from './codeUserInputValidation';
 import { capitalize, isRouteActive, toTitleCase, getMicroFrontendByPath, joinUrl, isNumericOnly, filterNumericOnly, filterPositiveNumbersOnly } from './strings';
 import {
 	addOrderParamIfMissing,
@@ -60,6 +61,7 @@ export {
 	cleanPath,
 	clearLocalStorage,
 	clearURLParams,
+	codeUserInputValidation,
 	createValueLabelMap,
 	fillRoute,
 	filterMenuSidebar,

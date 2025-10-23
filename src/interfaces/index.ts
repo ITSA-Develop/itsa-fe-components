@@ -23,7 +23,7 @@ export interface IModule {
 }
 
 export interface ISubmodule {
-	id: number;
+id: number;
 	name: string;
 	pathPadre: string | null;
 	path: string | null;
@@ -287,4 +287,8 @@ export interface IUserInformation {
 	picture: string;
 	email: string;
 	roles: IUserRole[];
+}
+export interface IProgramActions {
+	actions: IActions;
+	program: ISubmodule;
 }

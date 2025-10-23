@@ -1,4 +1,8 @@
 import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
+import { EActionType } from '@/enums';
+import { disabledActionButton } from '@/helpers/functions';
+import { useControlActions } from '@/hooks';
+import { useAppLayoutStore } from '@/store';
 import { ITableColumnAction, MakeFunctionParamsOptional, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { MoreOutlined } from '@ant-design/icons';
 import {
@@ -52,9 +56,31 @@ export const Table = <T extends object>({
 		emptyText: 'No hay datos',
 	},
 }: ITableProps<T>) => {
+	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
+	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const finalPagination = showPagination ? paginationConfig : false;
 
 	const tableRootClassName = ['itsa-table--head-rounded', rootClassName].filter(Boolean).join(' ');
+
+
+	const clickAction = async (action: ITableColumnAction<T>, record: T)=> {
+		const isPermitted = disabledActionButton(action.actionType, actions);
+		if (isPermitted) return;
+		const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+		if (isDisabled) return;
+		if (action.validateWithApiAction) {
+			const agencyId = currentAgency?.id;
+			const actionTypeNumber = action.actionType as EActionType;
+			if (!actionTypeNumber || !programId || !agencyId) return;
+			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
+			if (isValid) {
+				action.action(record);
+			}
+		} else {
+			action.action(record);
+		}
+	}
+
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
 		if (showColumnActions) {
@@ -68,14 +94,19 @@ export const Table = <T extends object>({
 						disabled={!!getActionsDisabled?.(record)}
 						placement="bottomRight"
 						menu={{
-							items: (columnActions ?? []).map((action, index) => ({
-								label: action.title,
-								key: action.key || `action-${index}`,
-								icon: action.icon,
-								disabled: typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled,
-								onClick: () => action.action(record),
-								danger: action.danger,
-							})),
+							items: (columnActions || [])
+								.filter(action => {
+									const hasPermission = disabledActionButton(action.actionType, actions);
+									const actionDisabled = typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+									return !hasPermission && !actionDisabled;
+								})
+								.map((action, index) => ({
+									label: action.title,
+									key: action.key || `action-${index}`,
+									icon: action.icon,
+									onClick: () => clickAction(action, record),
+									danger: action.danger,
+								})),
 						}}
 					>
 						<Button

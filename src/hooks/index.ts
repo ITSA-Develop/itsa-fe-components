@@ -9,3 +9,4 @@ export { useModalResponsive } from './useModalResponsive';
 export { useDebouncedCallback } from './useDebouncedCallback';
 export { useViewportSize } from './useViewportSize/useViewportSize';
 export { useGetUserInformation } from './useGetPermissionsByRol';
+export { useControlActions } from './useControlActions/useControlActions';
