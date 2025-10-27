@@ -74,7 +74,6 @@ export const Table = <T extends object>({
 		record: null,
 	});
 
-
 	const clickAction = async (action: ITableColumnAction<T>, record: T) => {
 		const isPermitted = disabledActionButton(action.actionType, actions);
 		if (isPermitted) return;
@@ -100,7 +99,7 @@ export const Table = <T extends object>({
 		} else {
 			action.action(record);
 		}
-	}
+	};
 
 	const handleConfirmAction = async () => {
 		const { action, record } = confirmModalState;
@@ -119,12 +118,11 @@ export const Table = <T extends object>({
 		} else {
 			action.action(record);
 		}
-	}
+	};
 
 	const handleCancelConfirm = () => {
 		setConfirmModalState({ open: false, action: null, record: null });
-	}
-
+	};
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
 		if (showColumnActions) {
@@ -141,7 +139,8 @@ export const Table = <T extends object>({
 							items: (columnActions || [])
 								.filter(action => {
 									const hasPermission = disabledActionButton(action.actionType, actions);
-									const actionDisabled = typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+									const actionDisabled =
+										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
 									return !hasPermission && !actionDisabled;
 								})
 								.map((action, index) => ({
@@ -235,18 +234,20 @@ export const Table = <T extends object>({
 				}}
 			/>
 
-			<Modal
-				title={confirmModalState.action?.confirmDelete?.title}
-				open={confirmModalState.open}
-				onOk={handleConfirmAction}
-				onCancel={handleCancelConfirm}
-				okText={confirmModalState.action?.confirmDelete?.confirmLabel}
-				cancelText={confirmModalState.action?.confirmDelete?.cancelLabel}
-				okButtonProps={{ danger: confirmModalState.action?.danger }}
-				cancelButtonProps={{ danger: true }}
-			>
-				{getConfirmContent()}
-			</Modal>
+			{confirmModalState.open && (
+				<Modal
+					title={confirmModalState.action?.confirmDelete?.title}
+					open={confirmModalState.open}
+					onOk={handleConfirmAction}
+					onCancel={handleCancelConfirm}
+					okText={confirmModalState.action?.confirmDelete?.confirmLabel}
+					cancelText={confirmModalState.action?.confirmDelete?.cancelLabel}
+					okButtonProps={{ danger: confirmModalState.action?.danger }}
+					cancelButtonProps={{ danger: true }}
+				>
+					{getConfirmContent()}
+				</Modal>
+			)}
 		</>
 	);
 };

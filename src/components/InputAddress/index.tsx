@@ -1,87 +1,88 @@
-import { useState } from "react";
-import { GoogleAutoComplete } from "./components/GoogleAutoComplete";
+import { useState } from 'react';
+import { GoogleAutoComplete } from './components/GoogleAutoComplete';
 //import { LocationSelector } from "../LocationSelector";
 import {
-  IBaseInputProps,
-  ILocationFormData,
- // ILocationSelectorProps,
-  IManualAddressObject,
-} from "@/interfaces";
-import { TInputRules } from "@/types";
-
-/*export interface ILocationFormProps {
-  optionsCountries: TInputOptions[];
-  optionsProvinces: TInputOptions[];
-  optionsCantons: TInputOptions[];
-  optionsParishes: TInputOptions[];
-  isLoadingCountries: boolean;
-  isLoadingProvinces: boolean;
-  isLoadingCantons: boolean;
-  isLoadingParishes: boolean;
-  onChangeCountry: (value: number) => void;
-  onChangeProvince: (value: number) => void;
-  onChangeCanton: (value: number) => void;
-  onChangeParish: (value: number) => void;
-  valueCountryId?: number;
-  valueProvinceId?: number;
-  valueCantonId?: number;
-  valueParishId?: number;
-  onChangeOtherCountryDescription: (value: string) => void;
-  otherCountryDescription: string;
-  showParish?: boolean;
-}*/
+	IBaseInputProps,
+	ILocationFormData,
+	// ILocationSelectorProps,
+	IManualAddressObject,
+} from '@/interfaces';
+import { TInputRules } from '@/types';
 
 export interface IGoogleAutoCompleteProps extends IBaseInputProps {
-  googleMapsApiKey: string;
-  defaultValue: string;
-  onLocationChange: (value: any) => void;
-  //setAddressObject: (addressObject: IManualAddressObject) => void;
-  errors?: any;
-  showManualByDefault?: boolean;
-  defaultManualValue?: IManualAddressObject;
-  defaultLocationValues?: ILocationFormData;
-  isRequired?: TInputRules | null;
-  setShowManualEntry: (opt: boolean) => void;
-  watch: () => { address: any };
-  setValue: (field: string, value: any) => void;
-
+	googleMapsApiKey: string;
+	defaultValue: string;
+	onLocationChange: (value: any) => void;
+	//setAddressObject: (addressObject: IManualAddressObject) => void;
+	errors?: any;
+	showManualByDefault?: boolean;
+	defaultManualValue?: IManualAddressObject;
+	defaultLocationValues?: ILocationFormData;
+	isRequired?: TInputRules | null;
+	setShowManualEntry: (opt: boolean) => void;
+	watch: () => { address: any };
+	setValue: (field: string, value: any) => void;
+	onMapClick?: () => void;
 }
 
 export interface IInputAddressProps {
-  //locationFormProps: ILocationSelectorProps;
-  googleAutoCompleteProps: IGoogleAutoCompleteProps;
+	googleAutoCompleteProps: IGoogleAutoCompleteProps;
+  onMapClick?: () => void;
 }
 
 export const InputAddress = ({
-  //ocationFormProps,
-  googleAutoCompleteProps,
+	googleAutoCompleteProps,
+  onMapClick,
 }: IInputAddressProps) => {
-  const [address, setAddress] = useState("");
- /* const [showManualEntry, setShowManualEntry] = useState(
+	const [address, setAddress] = useState('');
+
+	const { setValue } = googleAutoCompleteProps || {};
+
+	const localWatch = () => ({ address });
+	const localSetValue = (field: string, value: any) => {
+		if (field === 'address') {
+			setAddress(value);
+		}
+		setValue?.(field, value);
+	};
+
+	const handleSetShowManualEntry = (value: boolean) => {
+    googleAutoCompleteProps?.setShowManualEntry?.(value);
+	};
+  
+	const primaryContent = (
+    <GoogleAutoComplete
+			name={googleAutoCompleteProps?.name}
+			label={googleAutoCompleteProps?.label}
+			googleMapsApiKey={googleAutoCompleteProps?.googleMapsApiKey}
+			onLocationChange={googleAutoCompleteProps?.onLocationChange}
+			setShowManualEntry={handleSetShowManualEntry}
+			defaultValue={googleAutoCompleteProps?.defaultValue}
+			error={googleAutoCompleteProps?.errors?.address}
+			watch={localWatch}
+			setValue={localSetValue}
+      onMapClick={onMapClick}
+      />
+    );
+  
+	return primaryContent;
+};
+
+
+	/* const [showManualEntry, setShowManualEntry] = useState(
     googleAutoCompleteProps?.showManualByDefault || false
   );*/
 
-  const { setValue } = googleAutoCompleteProps || {};
 
-  const localWatch = () => ({ address });
-  const localSetValue = (field: string, value: any) => {
-    if (field === "address") {
-      setAddress(value);
-    }
-    setValue?.(field, value);
-  };
 
-  // Sync with parent component's showManualEntry state
-  const handleSetShowManualEntry = (value: boolean) => {
-   // console.log(value);
-    //setShowManualEntry(value);
-    googleAutoCompleteProps?.setShowManualEntry?.(value);
-    //console.log("showManualEntry", showManualEntry);
-  };
+// Sync with parent component's showManualEntry state
+// console.log(value);
+//setShowManualEntry(value);
+//console.log("showManualEntry", showManualEntry);
 
-  const primaryContent = 
-  
-  /*showManualEntry ? (
+//);
+//setAddressObject={googleAutoCompleteProps?.setAddressObject}
+/*showManualEntry ? (
     <LocationSelector
       optionsCountries={locationFormProps.optionsCountries}
       optionsProvinces={locationFormProps.optionsProvinces}
@@ -106,20 +107,25 @@ export const InputAddress = ({
       showParish={locationFormProps.showParish}
     />
   ) : (*/
-    <GoogleAutoComplete
-      name={googleAutoCompleteProps?.name}
-      label={googleAutoCompleteProps?.label}
-      googleMapsApiKey={googleAutoCompleteProps?.googleMapsApiKey}
-      onLocationChange={googleAutoCompleteProps?.onLocationChange}
-      setShowManualEntry={handleSetShowManualEntry}
-      //setAddressObject={googleAutoCompleteProps?.setAddressObject}
-      defaultValue={googleAutoCompleteProps?.defaultValue}
-      error={googleAutoCompleteProps?.errors?.address}
-      watch={localWatch}
-      setValue={localSetValue}
-      
-    />
-  //);
 
-  return primaryContent;
-};
+/*export interface ILocationFormProps {
+  optionsCountries: TInputOptions[];
+  optionsProvinces: TInputOptions[];
+  optionsCantons: TInputOptions[];
+  optionsParishes: TInputOptions[];
+  isLoadingCountries: boolean;
+  isLoadingProvinces: boolean;
+  isLoadingCantons: boolean;
+  isLoadingParishes: boolean;
+  onChangeCountry: (value: number) => void;
+  onChangeProvince: (value: number) => void;
+  onChangeCanton: (value: number) => void;
+  onChangeParish: (value: number) => void;
+  valueCountryId?: number;
+  valueProvinceId?: number;
+  valueCantonId?: number;
+  valueParishId?: number;
+  onChangeOtherCountryDescription: (value: string) => void;
+  otherCountryDescription: string;
+  showParish?: boolean;
+}*/

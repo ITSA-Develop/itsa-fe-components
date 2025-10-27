@@ -254,3 +254,26 @@ export enum EActionType {
 	delete = 4,
 	allActions = 0,
 }
+
+export enum EMapZoom {
+	zoom1 = 1,
+	zoom2 = 2,
+	zoom3 = 3,
+	zoom4 = 4,
+	zoom5 = 5,
+	zoom6 = 6,
+	zoom7 = 7,
+	zoom8 = 8,
+	zoom9 = 9,
+	zoom10 = 10,
+	zoom11 = 11,
+	zoom12 = 12,
+	zoom13 = 13,
+	zoom14 = 14,
+	zoom15 = 15,
+	zoom16 = 16,
+	zoom17 = 17,
+	zoom18 = 18,
+	zoom19 = 19,
+	zoom20 = 20,
+}

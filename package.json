@@ -1,7 +1,7 @@
 {
 	"name": "@itsa-develop/itsa-fe-components",
 	"private": false,
-	"version": "0.0.13",
+	"version": "0.0.15",
 	"type": "module",
 	"exports": {
 		".": {
@@ -75,6 +75,7 @@
 		"@hookform/resolvers": "^5.2.1",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
+		"@vis.gl/react-google-maps": "^1.6.1",
 		"antd": "^5.26.7",
 		"axios": "^1.8.4",
 		"classnames": "^2.5.1",

@@ -23,7 +23,7 @@ export interface IModule {
 }
 
 export interface ISubmodule {
-id: number;
+	id: number;
 	name: string;
 	pathPadre: string | null;
 	path: string | null;
@@ -291,4 +291,14 @@ export interface IUserInformation {
 export interface IProgramActions {
 	actions: IActions;
 	program: ISubmodule;
+}
+
+export interface IMapLocation {
+	lat: number;
+	lng: number;
+}
+
+export interface IMapMarker {
+	location: IMapLocation;
+	label: string;
 }
