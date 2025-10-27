@@ -189,6 +189,13 @@ const sampleColumnsWithActions: ITableColumnAction<ITablePersonData>[] = [
 		title: 'Eliminar el elemento actual',
 		icon: <DeleteOutlined />,
 		action: record => console.log('delete', record),
+		danger: true,
+		confirmDelete: {
+			title: 'Confirmar eliminación',
+			content: record => `¿Estás seguro de eliminar a ${record.name}?`,
+			confirmLabel: 'Confirmar',
+			cancelLabel: 'Cancelar',
+		},
 	},
 ];
 

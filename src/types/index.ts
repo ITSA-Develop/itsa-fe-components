@@ -108,6 +108,12 @@ export interface ITableColumnAction<T = any> {
 	danger?: boolean;
 	actionType?: EActionType;
 	validateWithApiAction?: boolean;
+	confirmDelete?: {
+		title: string;
+		content: string | ((record: T) => string);
+		confirmLabel: string;
+		cancelLabel: string;
+	};
 }
 export type TMenuItemData = {
 	path: string | null;
