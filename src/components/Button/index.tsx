@@ -19,13 +19,14 @@ export interface IButtonProps {
 	actionType?: EActionType;
 	validateWithApiAction?: boolean;
 	viewBtnDisabled?: boolean;
+	loading?: boolean;
 }
 
 export const Button = (props: IButtonProps) => {
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 
-	const { width, block = false, actionType, validateWithApiAction = false, viewBtnDisabled } = props;
+	const { width, block = false, actionType, validateWithApiAction = false, viewBtnDisabled, loading = false } = props;
 	const { size = 'small', type = 'primary', htmlType, label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
@@ -37,7 +38,7 @@ export const Button = (props: IButtonProps) => {
 
 	const labelContent = <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>;
 
-	const isDisabledAction = disabledActionButton(actionType, actions);
+	const isDisabledAction = disabled === true ? true : disabledActionButton(actionType, actions);
 
 
 	const handleClick = async () => {
@@ -70,6 +71,7 @@ export const Button = (props: IButtonProps) => {
 			onClick={handleClick}
 			block={block}
 			style={{ width: block ? '100%' : width ? `${width}%` : undefined }}
+			loading={loading}
 		>
 			{labelContent}
 		</ButtonAntd>

@@ -27,7 +27,7 @@ export const Default: Story = {
 	render: () => {
 		if (!GOOGLE_API_KEY) {
 			return (
-				<div style={{ padding: 16 }}>
+				<div className="flex flex-col h-[50vh] items-center justify-center p-4">
 					<strong>No se puede cargar el mapa.</strong>
 					<p style={{ marginTop: 8 }}>
 						Define la variable de entorno <code>VITE_GOOGLE_MAPS_API_KEY</code> para visualizar Google Maps en Storybook.
@@ -35,7 +35,11 @@ export const Default: Story = {
 				</div>
 			);
 		}
-		return <Map />;
+		return (
+			<div className="flex-1 h-[60vh] w-full">
+				<Map />
+			</div>
+		);
 	},
 };
 
@@ -44,7 +48,7 @@ export const WithUserLocation: Story = {
 	render: () => {
 		if (!GOOGLE_API_KEY) {
 			return (
-				<div style={{ padding: 16 }}>
+				<div className="flex flex-col h-[50vh] items-center justify-center p-4">
 					<strong>No se puede cargar el mapa.</strong>
 					<p style={{ marginTop: 8 }}>
 						Define la variable de entorno <code>VITE_GOOGLE_MAPS_API_KEY</code> para visualizar Google Maps en Storybook.
@@ -52,7 +56,11 @@ export const WithUserLocation: Story = {
 				</div>
 			);
 		}
-		return <Map useUserLocation />;
+		return (
+			<div className="flex-1 h-[60vh] w-full">
+				<Map useUserLocation />
+			</div>
+		);
 	},
 };
 

@@ -10,9 +10,13 @@ import { Button } from '../Button';
 
 export interface IMapProps {
 	location?: IMapLocation;
-	zoom?: EMapZoom | number;
+	zoom?: EMapZoom;
 	useUserLocation?: boolean;
 	googleMapsApiKey?: string;
+	/** Optional class names to customize the outer container */
+	className?: string;
+	/** Optional inline styles for the outer container (e.g., set height) */
+	containerStyle?: CSSProperties;
 	style?: CSSProperties;
 	onLocationChange?: (
 		placeObject: {
@@ -42,6 +46,8 @@ export const Map = ({
 	zoom = EMapZoom.zoom14,
 	useUserLocation = false,
 	googleMapsApiKey = GOOGLE_API_KEY,
+	className,
+	containerStyle,
 	style,
 	onLocationChange,
 }: IMapProps) => {
@@ -152,11 +158,22 @@ export const Map = ({
 		window.open(url, '_blank', 'noopener');
 	};
 
+	// Si no hay API key, mostramos un estado de ayuda
+	if (!googleMapsApiKey) {
+		return (
+			<div className={`relative flex-1 min-h-[350px] ${className ?? ''}`} style={containerStyle}>
+				<div className="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
+					Google Maps API key no configurada
+				</div>
+			</div>
+		);
+	}
+
 	return (
-		<div className="relative flex-1 min-h-[350px]">
-			<APIProvider apiKey={googleMapsApiKey}>
+		<div className={`relative flex-1 bg-red-300 h-full w-full ${className ?? ''}`} style={containerStyle}>
+			<APIProvider apiKey={'AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw'}>
 				<MapComponent
-					style={style ?? { width: '100vw', height: '100vh' }}
+					style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, ...(style || {}) }}
 					defaultCenter={center}
 					defaultZoom={zoom}
 					gestureHandling="greedy"
@@ -175,12 +192,7 @@ export const Map = ({
 			</APIProvider>
 			{clickedPosition && (
 				<div className="absolute right-3 bottom-16 z-10">
-					<Button
-						type="secondary"
-						onClick={openInGoogleMaps}
-						size="middle"
-						label={<EnvironmentOutlined />}
-					/>
+					<Button type="secondary" onClick={openInGoogleMaps} size="middle" label={<EnvironmentOutlined />} />
 				</div>
 			)}
 		</div>
