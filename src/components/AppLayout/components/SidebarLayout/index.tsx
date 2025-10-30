@@ -1,5 +1,6 @@
 import MenuOptions from '@/components/AppLayout/components/MenuOptions';
 import { getAllMenuKeys, transformModuleToMenuData } from '@/helpers';
+import { getStoredCollapsedSidebar, setStoredCollapsedSidebar } from '@/helpers/functions';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
 import { useSidebarStore } from '@/hooks';
 import { useAppLayoutStore } from '@/store/appLayout.store';
@@ -8,7 +9,7 @@ import { TExtendedMenuItem, TMenuMode } from '@/types';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
@@ -25,10 +26,10 @@ export const SidebarLayout = ({
 	currentPath = '',
 	modeSidebar = 'inline',
 	loadingMenu = false,
-}: SidebarLayoutProps) => {
+	}: SidebarLayoutProps) => {
+	const [, setStoredCollapsed] = useState(getStoredCollapsedSidebar());
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const windowWidth = useViewportStore(state => state.width);
-
 	const { collapsed, setCollapsed, searchTerm, setSearchTerm, openKeys, setOpenKeys } = useSidebarStore();
 
 	const menuData = useMemo(() => {
@@ -53,14 +54,23 @@ export const SidebarLayout = ({
 		}
 	}, [searchTerm, menuData, setOpenKeys]);
 
+	// Initialize collapsed from persisted preference on mount
+	useEffect(() => {
+		setCollapsed(getStoredCollapsedSidebar());
+	}, [setCollapsed]);
+
 	useEffect(() => {
 		if (windowWidth < 800) {
 			setCollapsed(true);
 		}
-		if(windowWidth >= 800){
-			setCollapsed(false);
-		}
+		// Do not auto-open when window becomes large; user controls via buttons
 	}, [windowWidth, setCollapsed]);
+
+	const handleCollapseSidebar = () => {
+		setCollapsed(true);
+		setStoredCollapsedSidebar(true);
+		setStoredCollapsed(true);
+	};
 
 	return (
 		<Layout hasSider className="gap-2">
@@ -90,7 +100,7 @@ export const SidebarLayout = ({
 					<div className="w-full flex justify-end pr-3 pl-3">
 						<Button
 							type="link"
-							onClick={() => setCollapsed(true)}
+							onClick={handleCollapseSidebar}
 							icon={<DoubleLeftOutlined className="text-gray-400" />}
 						/>
 					</div>

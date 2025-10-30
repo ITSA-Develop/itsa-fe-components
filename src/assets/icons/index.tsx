@@ -103,11 +103,14 @@ import UserIcon from './icon-user.svg?react';
 import User2Icon from './icon-user2.svg?react';
 import UserActiveIcon from './icon-user-active.svg?react';
 import UserRoundedSquareIcon from './icon-user-rounded-square.svg?react';
+import VehicleIcon from './icon-vehicle.svg?react';
 import WalletIcon from './icon-wallet.svg?react';
 import WhatsappIcon from './icon-whatsapp.svg?react';
 import WithoutInformationIcon from './icon-without-information.svg?react';
+import WorkshopIcon from './icon-workshop.svg?react';
 import XIcon from './icon-x.svg?react';
 import XCircleIcon from './icon-x-circle.svg?react';
+import HouseholdIcon from './icon-household.svg?react';
 
 
 export {
@@ -216,9 +219,12 @@ export {
   User2Icon,
   UserActiveIcon,
   UserRoundedSquareIcon,
+  VehicleIcon,
   WalletIcon,
   WhatsappIcon,
   WithoutInformationIcon,
+  WorkshopIcon,
   XIcon,
   XCircleIcon,
+  HouseholdIcon,
 };

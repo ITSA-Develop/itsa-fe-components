@@ -39,7 +39,9 @@ export const UIProvider = ({ children }: UIProviderProps) => {
 			}}
 		>
 			<NotificationsProvider>
-				<ResponsiveModalProvider>{children}</ResponsiveModalProvider>
+				<ResponsiveModalProvider>
+					{children}
+				</ResponsiveModalProvider>
 			</NotificationsProvider>
 		</ConfigProvider>
 	);

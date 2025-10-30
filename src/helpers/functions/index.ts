@@ -1,8 +1,9 @@
 
 
-import { EOptionsFilterStatus } from '@/enums';
+import { ELocalStorageKeys, EOptionsFilterStatus } from '@/enums';
 import { TNotificationProps } from '@/types';
 import { notification } from 'antd';
+import { dataFromLocalStorage } from '../objects';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
 	notification[type]({
@@ -21,3 +22,11 @@ export const normalizeStatus = (status?: string | boolean | number): EOptionsFil
 	return 2;
 };
 
+export const getStoredCollapsedSidebar = () => {
+	const closeSidebar = dataFromLocalStorage(ELocalStorageKeys.collapsedSidebar);
+	return closeSidebar === 'true' ? true : false;
+};
+
+export const setStoredCollapsedSidebar = (collapsed: boolean) => {
+	localStorage.setItem(ELocalStorageKeys.collapsedSidebar, String(collapsed));
+};

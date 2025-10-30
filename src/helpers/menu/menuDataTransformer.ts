@@ -4,8 +4,8 @@ import { IModule } from '@/interfaces';
 import { TExtendedMenuItem } from '@/types';
 import { getIconByName } from '@/helpers/icons';
 
-export const getIcon = (icon: string | null, className?: string): React.ReactNode => {
-	return getIconByName(icon, { className: className || 'w-4 h-4' });
+export const getIcon = (icon: string | null, className?: string, style?: React.CSSProperties): React.ReactNode => {
+	return getIconByName(icon, { className: className || 'w-4 h-4', style });
 };
 
 export const transformModuleToMenuData = (module: IModule | null): TExtendedMenuItem[] => {
