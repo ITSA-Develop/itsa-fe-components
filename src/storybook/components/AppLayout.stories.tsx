@@ -190,9 +190,8 @@ export const WithDashboard: Story = {
 		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
 			console.log('info =>', info);
 		},
-		children: <Dashboard modules={mockAgencies[0].modules} itemAction={(item, entorno) => {
-			console.log('item =>', item);
-			console.log('modulo =>', entorno);
+		children: <Dashboard modules={mockAgencies[0].modules} handleNavigateProgram={(program) => {
+			console.log('program =>', program);
 		}} />,
 	},
 };

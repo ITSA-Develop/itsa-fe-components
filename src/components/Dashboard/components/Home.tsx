@@ -1,119 +1,176 @@
-'use client';
+import { IModule, ISubmodule } from '@/interfaces';
+import { useAppLayoutStore } from '@/store/appLayout.store';
+import { ButtonActiveModule } from './ButtonActiveModule';
+import { ButtonInactiveModule } from './ButtonInactiveModule';
+import { Input, Popover } from 'antd';
+import { useState } from 'react';
+import { ButtonAntd } from '@/components/ButtonAntd';
+import { useViewportStore } from '@/store';
+import { XIcon } from '@/assets/icons';
 
-import { Button, Card, Input } from 'antd';
-import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
-import { useMemo, useState } from 'react';
-import { IModule } from '@/interfaces';
-import { Title } from '@/components/Title';
-import { getIcon } from '@/helpers/menu/menuDataTransformer';
-
-export interface ICardModuleProps {
+export interface IHomeProps {
 	modules: IModule[];
-	itemAction: (module: IModule) => void;
+	handleNavigateProgram: (program: ISubmodule) => void;
 }
 
-export const Home = ({ modules, itemAction }: ICardModuleProps) => {
-	const [searchQuery, setSearchQuery] = useState('');
+export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
+	const windowWidth = useViewportStore(state => state.width);
+	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const setCurrentModule = useAppLayoutStore(state => state.setCurrentModule);
+	const currentSubmodule = useAppLayoutStore(state => state.currentSubmodule);
+	const setCurrentSubmodule = useAppLayoutStore(state => state.setCurrentSubmodule);
+	const submodules = currentModule?.submodules ?? [];
+	const hasSubmodules = submodules.length > 0;
+	const [openSubmoduleId, setOpenSubmoduleId] = useState<ISubmodule['id'] | null>(null);
+	const [searchBySubmoduleId, setSearchBySubmoduleId] = useState<Record<ISubmodule['id'], string>>({});
 
-	const normalizedQuery = searchQuery.trim().toLowerCase();
-
-	const filteredModules = useMemo(
-		() =>
-			modules.filter(module => {
-				if (!normalizedQuery) return true;
-				if (module.name.toLowerCase().includes(normalizedQuery)) return true;
-				return module.submodules.some(submodule => submodule.name.toLowerCase().includes(normalizedQuery));
-			}),
-		[modules, normalizedQuery],
-	);
-
-	// const labelSubmodule = (submodule: ISubmodule[]) => {
-	// 	return submodule.map(s => s.name).join(', ');
-	// };
-
-	const highlight = (text: string): React.ReactNode => {
-		if (!normalizedQuery) return text;
-		const index = text.toLowerCase().indexOf(normalizedQuery);
-		if (index === -1) return text;
-		const before = text.slice(0, index);
-		const match = text.slice(index, index + normalizedQuery.length);
-		const after = text.slice(index + normalizedQuery.length);
+	const buttonHeader = (module: IModule) => {
+		if (module.id === currentModule?.id) {
+			return (
+				<ButtonActiveModule
+					name={module.name}
+					icon={module.icon}
+					onclick={() => setCurrentModule(module)}
+					type="module"
+				/>
+			);
+		}
 		return (
-			<>
-				{before}
-				<mark className="bg-yellow-100 px-1 rounded-md">{match}</mark>
-				{after}
-			</>
+			<ButtonInactiveModule
+				name={module.name}
+				icon={module.icon}
+				onclick={() => setCurrentModule(module)}
+				type="module"
+			/>
 		);
 	};
 
-	const noLinesAvailable = useMemo(() => {
-		return !filteredModules.length && !normalizedQuery.length;
-	}, [modules, normalizedQuery]);
+	const programs = (programs: ISubmodule[], isNested = false) => {
+		const paddingClass = isNested ? 'pl-3' : '';
+		return programs.map(program => (
+			<div key={program.id} className={paddingClass}>
+				<ButtonAntd type="text" size="small" className="flex justify-start w-full" onClick={() => handleNavigateProgram(program)}>
+					{program.name}
+				</ButtonAntd>
+			</div>
+		));
+	};
 
-	return (
-		<main className="flex-1 h-full">
-			<div className="flex flex-col w-full items-center justify-center">
-				<Title level={2} title="Módulos disponibles" type="secondary" />
-				<div className="w-1/2">
+	const groups = (groups: ISubmodule[]) => {
+		return groups.map(group => (
+			<div key={group.id}>
+				<div className="bg-gray-50 p-2 rounded-lg">
+					<strong>{group.name}</strong>
+				</div>
+				<div className='pt-0.5 pb-0.5'>{programs(group.programs ?? [], true)}</div>
+			</div>
+		));
+	};
+
+	const contentSubmodule = (submodule: ISubmodule) => {
+		const query = (searchBySubmoduleId[submodule.id] ?? '').toLowerCase().trim();
+		const basePrograms = submodule.programs ?? [];
+		const baseGroups = submodule.groups ?? [];
+
+		const visiblePrograms = query
+			? basePrograms.filter(program => program.name.toLowerCase().includes(query))
+			: basePrograms;
+
+		const visibleGroups = query
+			? baseGroups
+					.map(group => {
+						const groupMatches = group.name.toLowerCase().includes(query);
+						const filteredGroupPrograms = (group.programs ?? []).filter(p => p.name.toLowerCase().includes(query));
+						return groupMatches ? { ...group } : { ...group, programs: filteredGroupPrograms };
+					})
+					.filter(group => group.name.toLowerCase().includes(query) || (group.programs?.length ?? 0) > 0)
+			: baseGroups;
+
+		return (
+			<div className="max-h-[40vh] w-full md:w-[50dvw] overflow-y-auto">
+				<div>{programs(visiblePrograms)}</div>
+				<div>{groups(visibleGroups)}</div>
+			</div>
+		);
+	};
+
+	const buttonSubmodule = (submodule: ISubmodule) => {
+		if (submodule.id === currentSubmodule?.id) {
+			return (
+				<ButtonActiveModule
+					name={submodule.name}
+					icon={submodule.icon ?? ''}
+					onclick={() => setCurrentSubmodule(submodule)}
+					type="submodule"
+				/>
+			);
+		}
+		return (
+			<ButtonInactiveModule
+				name={submodule.name}
+				icon={submodule.icon ?? ''}
+				onclick={() => setCurrentSubmodule(submodule)}
+				type="submodule"
+			/>
+		);
+	};
+
+	const titlePopover = (submodule: ISubmodule) => {
+		return (
+			<div className="flex flex-row justify-center items-center gap-2 bg-gray-50 p-2 rounded-lg">
+				<div className="flex-grow">{submodule.name}</div>
+				<div className="w-full">
 					<Input
+						placeholder="Buscar"
 						allowClear
-						type="text"
-						placeholder="Buscar línea"
-						value={searchQuery}
-						onChange={e => setSearchQuery(e.target.value)}
-						addonBefore={<SearchOutlined />}
+						value={searchBySubmoduleId[submodule.id] ?? ''}
+						onChange={e => setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: e.target.value }))}
 					/>
 				</div>
-				{normalizedQuery && (
-					<div className="text-xs text-gray-500 mt-2 flex items-center justify-center gap-2">
-						<span>
-							{filteredModules.length} {filteredModules.length === 1 ? 'resultado' : 'resultados'}
-						</span>
-						<Button
-							aria-label="Limpiar búsqueda"
-							className="inline-flex items-center gap-1 text-gray-400 hover:!text-gray-900 transition-all"
-							onClick={() => setSearchQuery('')}
+				<ButtonAntd
+					type="default"
+					size="small"
+					onClick={() => {
+						setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: '' }));
+						setOpenSubmoduleId(null);
+					}}
+				>
+					<XIcon />
+				</ButtonAntd>
+			</div>
+		);
+	};
+
+	return (
+		<div className="flex flex-col gap-2 max-h-[90vh]">
+			<div className="flex flex-col w-full justify-center items-center gap-2 bg-gray-50 p-2 rounded-lg">
+				<div className="flex flex-row gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 flex-wrap">
+					{modules.map(module => (
+						<div key={module.id}>{buttonHeader(module)}</div>
+					))}
+				</div>
+			</div>
+			<div className="flex max-h-[64vh] overflow-y-auto">
+				<div
+					className={`flex flex-col gap-2 min-w-1/4 w-full md:!w-1/4 md:shrink-0 md:flex-none transition-all duration-300 ${
+						hasSubmodules ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+					}`}
+					aria-hidden={!hasSubmodules}
+				>
+					{submodules.map(submodule => (
+						<Popover
+							placement={windowWidth < 900 ? 'bottom' : 'rightTop'}
+							trigger="focus"
+							open={openSubmoduleId === submodule.id}
+							onOpenChange={newOpen => setOpenSubmoduleId(newOpen ? submodule.id : null)}
+							title={titlePopover(submodule)}
+							content={contentSubmodule(submodule)}
 						>
-							<CloseCircleFilled /> Limpiar
-						</Button>
-					</div>
-				)}
-			</div>
-
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-				{filteredModules.map(module => {
-					return (
-						<div key={module.id} className="flex flex-col">
-							<Card
-								role="button"
-								tabIndex={0}
-								onClick={() => itemAction(module)}
-								className="cursor-pointer transition-all hover:shadow-sm hover:primary-700"
-							>
-								<div className="flex flex-col items-center justify-center gap-0">
-									<div className="flex flex-row gap-2 items-center justify-center w-full">
-										<div className="flex items-center justify-center shrink-0">{getIcon(module.icon, "w-10 h-10")}</div>
-										<Title className="!m-0" level={4} title={highlight(module.name)} type="secondary" />
-									</div>
-								</div>
-							</Card>
-						</div>
-					);
-				})}
-			</div>
-
-			{filteredModules.length === 0 && normalizedQuery.length > 0 && (
-				<div className="text-center py-12">
-					<p className="text-muted-foreground text-lg">No se encontraron líneas que coincidan con "{searchQuery}"</p>
+							<div key={submodule.id}>{buttonSubmodule(submodule)}</div>
+						</Popover>
+					))}
 				</div>
-			)}
-
-			{noLinesAvailable && (
-				<div className="flex-1 h-full flex items-center justify-center">
-					<Title level={2} title="No hay líneas disponibles" type="secondary" />
-				</div>
-			)}
-		</main>
+			</div>
+		</div>
 	);
 };

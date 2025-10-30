@@ -1,7 +1,9 @@
+import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
 import { IActions, IModule, IProgramActions } from '@/interfaces';
 import { TNotificationProps } from '@/types';
 import { notification } from 'antd';
+import { dataFromLocalStorage } from '../objects';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
 	notification[type]({
@@ -20,50 +22,58 @@ export const normalizeStatus = (status?: string | boolean | number): EOptionsFil
 	return 2;
 };
 
+export const getStoredCollapsedSidebar = () => {
+	const closeSidebar = dataFromLocalStorage(ELocalStorageKeys.collapsedSidebar);
+	return closeSidebar === 'true' ? true : false;
+};
+
+export const setStoredCollapsedSidebar = (collapsed: boolean) => {
+	localStorage.setItem(ELocalStorageKeys.collapsedSidebar, String(collapsed));
+};
 export const getProgramActionsbyPath = (path: string, module: IModule): IProgramActions | undefined => {
-    if (!path || !module?.submodules?.length) return undefined;
-    // Normaliza paths para comparar por segmentos y evitar coincidencias parciales (role vs roles)
-    const extractPathname = (input: string): string => {
-        if (!input) return '';
-        let cleaned: string = input.trim();
-        // elimina protocolo y host si vienen en la URL
-        cleaned = cleaned.replace(/^[a-zA-Z]+:\/\/[^/]+/, '');
-        // toma solo el path sin query/hash sin usar indexación insegura
-        const qIndex = cleaned.indexOf('?');
-        const hIndex = cleaned.indexOf('#');
-        let endIndex = cleaned.length;
-        if (qIndex !== -1 && hIndex !== -1) endIndex = Math.min(qIndex, hIndex);
-        else if (qIndex !== -1) endIndex = qIndex;
-        else if (hIndex !== -1) endIndex = hIndex;
-        const withoutQuery: string = cleaned.substring(0, endIndex);
-        // normaliza slashes de inicio/fin
-        let pathname: string = withoutQuery;
-        if (pathname.startsWith('/')) pathname = pathname.slice(1);
-        if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
-        return pathname;
-    };
+	if (!path || !module?.submodules?.length) return undefined;
+	// Normaliza paths para comparar por segmentos y evitar coincidencias parciales (role vs roles)
+	const extractPathname = (input: string): string => {
+		if (!input) return '';
+		let cleaned: string = input.trim();
+		// elimina protocolo y host si vienen en la URL
+		cleaned = cleaned.replace(/^[a-zA-Z]+:\/\/[^/]+/, '');
+		// toma solo el path sin query/hash sin usar indexación insegura
+		const qIndex = cleaned.indexOf('?');
+		const hIndex = cleaned.indexOf('#');
+		let endIndex = cleaned.length;
+		if (qIndex !== -1 && hIndex !== -1) endIndex = Math.min(qIndex, hIndex);
+		else if (qIndex !== -1) endIndex = qIndex;
+		else if (hIndex !== -1) endIndex = hIndex;
+		const withoutQuery: string = cleaned.substring(0, endIndex);
+		// normaliza slashes de inicio/fin
+		let pathname: string = withoutQuery;
+		if (pathname.startsWith('/')) pathname = pathname.slice(1);
+		if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+		return pathname;
+	};
 
-    const matchesPath = (urlString: string, target: string): boolean => {
-        const urlPath = extractPathname(urlString);
-        const targetPathname = extractPathname(target);
-        if (!urlPath || !targetPathname) return false;
-        if (urlPath === targetPathname) return true;
-        // debe coincidir por segmento: target + '/...'
-        return urlPath.startsWith(targetPathname + '/');
-    };
+	const matchesPath = (urlString: string, target: string): boolean => {
+		const urlPath = extractPathname(urlString);
+		const targetPathname = extractPathname(target);
+		if (!urlPath || !targetPathname) return false;
+		if (urlPath === targetPathname) return true;
+		// debe coincidir por segmento: target + '/...'
+		return urlPath.startsWith(targetPathname + '/');
+	};
 
-    const targetPath: string = path;
+	const targetPath: string = path;
 
-    const submodules = module.submodules ?? [];
-    for (const submodule of submodules) {
+	const submodules = module.submodules ?? [];
+	for (const submodule of submodules) {
 		// 1) Buscar en programs del submódulo
 		const programs = submodule.programs;
 		if (programs) {
-            for (const program of programs) {
-                const url = program.url ? program.url : undefined;
-                if (typeof url === 'string' && url.length > 0 && matchesPath(url, targetPath)) {
+			for (const program of programs) {
+				const url = program.url ? program.url : undefined;
+				if (typeof url === 'string' && url.length > 0 && matchesPath(url, targetPath)) {
 					if (program.actions) {
-						return { actions: program.actions, program: program};
+						return { actions: program.actions, program: program };
 					}
 				}
 			}
@@ -75,9 +85,9 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 			for (const group of groups) {
 				const groupPrograms = group.programs;
 				if (groupPrograms) {
-                    for (const program of groupPrograms) {
-                        const url = program.url ? program.url : undefined;
-                        if (typeof url === 'string' && url.length > 0 && matchesPath(url, targetPath)) {
+					for (const program of groupPrograms) {
+						const url = program.url ? program.url : undefined;
+						if (typeof url === 'string' && url.length > 0 && matchesPath(url, targetPath)) {
 							if (program.actions) {
 								return { actions: program.actions, program: program };
 							}
@@ -90,8 +100,6 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 
 	return undefined;
 };
-
-
 
 export const disabledActionButton = (actionExecute?: EActionType, actions?: IActions) => {
 	if (!actionExecute) return false;
@@ -114,7 +122,6 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 	return true;
 };
 
-
 export const uppercaseStrings = <T>(obj: T): T => {
 	if (obj === null || obj === undefined) return obj;
 	if (typeof obj === 'string') {
@@ -133,4 +140,4 @@ export const uppercaseStrings = <T>(obj: T): T => {
 		return result as T;
 	}
 	return obj;
-}
+};
