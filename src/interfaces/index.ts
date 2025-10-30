@@ -251,13 +251,11 @@ export interface IIcon {
 	iconName: string;
 }
 
-
-
 export interface ILocationSelectorProps {
-	optionsCountries: SelectProps["options"];
-	optionsProvinces: SelectProps["options"];
-	optionsCantons: SelectProps["options"];
-	optionsParishes: SelectProps["options"];
+	optionsCountries: SelectProps['options'];
+	optionsProvinces: SelectProps['options'];
+	optionsCantons: SelectProps['options'];
+	optionsParishes: SelectProps['options'];
 	isLoadingCountries: boolean;
 	isLoadingProvinces: boolean;
 	isLoadingCantons: boolean;
@@ -274,5 +272,33 @@ export interface ILocationSelectorProps {
 	otherCountryDescription: string;
 	showParish?: boolean;
 	aloneEcuador?: boolean;
-  }
-  
+}
+
+export interface IUserRole {
+	id: number;
+	code: string | null;
+	name: string;
+	moduleId: number;
+}
+export interface IUserInformation {
+	identification: string;
+	identificationType: string;
+	name: string;
+	picture: string;
+	email: string;
+	roles: IUserRole[];
+}
+export interface IProgramActions {
+	actions: IActions;
+	program: ISubmodule;
+}
+
+export interface IMapLocation {
+	lat: number;
+	lng: number;
+}
+
+export interface IMapMarker {
+	location: IMapLocation;
+	label: string;
+}

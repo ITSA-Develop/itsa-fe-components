@@ -35,12 +35,14 @@ export { InputAddress } from './components/InputAddress';
 export { Input } from './components/Input/Input';
 export { InputSearch } from './components/InputSearch';
 export { Image } from './components/Image';
+export { ImageMaintenance } from './components/ImageMaintenance';
 export { InfoRow } from './components/InfoRow/InfoRow';
 export { ItemList } from './components/ItemList';
 export { Login } from './components/Login';
 export { Link } from './components/Link/Link';
 export { LocationDisplay } from './components/LocationDisplay/LocationDisplay';
 export { LocationSelector } from './components/LocationSelector';
+export { Map } from './components/Map';
 export { Modal } from './components/Modal/Modal';
 export { ModalResponsive } from './components/ModalResponsive';
 export { Progress } from './components/Progress/Progress';
@@ -65,6 +67,7 @@ export { LayoutComponent } from './routing/components/LayoutComponent';
 export type { ProtectedProps, ProtectedRouteProps, PublicRouteProps, TLocation } from './routing/types';
 
 export { UIProvider } from './HOC/UIProvider';
+export { ControlActionsProvider } from './HOC/ControlActions';
 
 export * from './assets/icons';
 export * from './assets/images';

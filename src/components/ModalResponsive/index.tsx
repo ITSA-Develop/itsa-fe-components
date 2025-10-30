@@ -10,7 +10,8 @@ export interface IModalResponsiveProps {
 	height?: string;
 	hideScroll?: boolean;
 	width?: string;
-	beforeClose?: () => void;
+	afterClose?: () => void;
+	closable?: boolean;
 }
 
 export const ModalResponsive = ({
@@ -23,7 +24,8 @@ export const ModalResponsive = ({
 	height,
 	hideScroll = true,
 	width,
-	beforeClose,
+	afterClose,
+	closable = true,
 }: IModalResponsiveProps) => {
 	const screens = Grid.useBreakpoint();
 	const computedWidth = screens.xxl
@@ -49,9 +51,12 @@ export const ModalResponsive = ({
 			width={width || computedWidth}
 			styles={{ body: { height, maxHeight: height, overflowY: hideScroll ? 'hidden' : 'auto' } }}
 			footer={footer}
-			afterClose={beforeClose}
+			afterClose={afterClose}
+			closable={closable}
+			maskClosable={closable}
+			keyboard={closable}
 		>
-			<div className='pt-2'>{content}</div>
+			<div className="pt-2">{content}</div>
 		</Modal>
 	);
 };

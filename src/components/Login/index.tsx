@@ -21,7 +21,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 	return (
 		<div className="w-full h-[100dvh] bg-gray-75 flex items-center justify-center">
 			{width >= 650 && (
-				<div className="flex flex-row rounded-2xl max-h-[481px] max-w-[840px] w-full shadow-xl/20 bg-white">
+				<div className="flex flex-row rounded-2xl max-h-[481px] max-w-[840px] w-full shadow-xl/20 bg-white-100">
 					<div className="flex flex-col gap-4 justify-center items-center rounded-tl-2xl w-1/2 rounded-bl-2xl bg-transparent border-t border-l border-gray-200 shadow-l-md p-16">
 						<div>
 							<img

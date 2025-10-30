@@ -124,7 +124,7 @@ export const HeaderLayout = ({
 						/>
 						<div className="flex flex-col">
 							<span className="text-4 whitespace-nowrap">{userName ?? ''}</span>
-							<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">{userRole ?? ''}</span>
+							<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">{userRole?.name ?? ''}</span>
 						</div>
 					</div>
 				</div>

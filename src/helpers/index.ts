@@ -38,6 +38,7 @@ import {
 } from './objects';
 import { transformModuleToMenuData } from './menu/menuDataTransformer';
 import { clearLocalStorage } from './session';
+import { codeUserInputValidation } from './codeUserInputValidation';
 import { capitalize, isRouteActive, toTitleCase, getMicroFrontendByPath, joinUrl, isNumericOnly, filterNumericOnly, filterPositiveNumbersOnly } from './strings';
 import {
 	addOrderParamIfMissing,
@@ -50,7 +51,7 @@ import {
 	updateURLParams,
 } from './urls';
 
-import { normalizeStatus } from './functions';
+import { normalizeStatus, uppercaseStrings } from './functions';
 
 export {
 	addOrderParamIfMissing,
@@ -60,6 +61,7 @@ export {
 	cleanPath,
 	clearLocalStorage,
 	clearURLParams,
+	codeUserInputValidation,
 	createValueLabelMap,
 	fillRoute,
 	filterMenuSidebar,
@@ -104,5 +106,6 @@ export {
 	securityApi,
 	toTitleCase,
 	transformModuleToMenuData,
+	uppercaseStrings,
 	updateURLParams,
 };

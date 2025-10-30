@@ -1,18 +1,20 @@
 {
 	"name": "@itsa-develop/itsa-fe-components",
 	"private": false,
-	"version": "0.0.7",
+	"version": "0.0.15",
 	"type": "module",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/itsa-fe-components.es.js",
-			"require": "./dist/itsa-fe-components.umd.js"
+			"require": "./dist/itsa-fe-components.cjs.js",
+			"default": "./dist/itsa-fe-components.es.js"
 		},
 		"./styles.css": {
 			"require": "./dist/styles.css",
 			"default": "./dist/styles.css"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist"
@@ -73,6 +75,7 @@
 		"@hookform/resolvers": "^5.2.1",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
+		"@vis.gl/react-google-maps": "^1.6.1",
 		"antd": "^5.26.7",
 		"axios": "^1.8.4",
 		"classnames": "^2.5.1",
@@ -137,7 +140,9 @@
 		"registry": "https://npm.pkg.github.com/"
 	},
 	"description": "Deploy Vercel",
-	"main": "tailwind.config.js",
+	"main": "./dist/itsa-fe-components.cjs.js",
+	"module": "./dist/itsa-fe-components.es.js",
+	"types": "./dist/index.d.ts",
 	"author": "",
 	"license": "ISC",
 	"bugs": {

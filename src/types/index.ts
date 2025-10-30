@@ -1,4 +1,4 @@
-import { EOrientation, ESize, ESortOrder } from '@/enums';
+import { EActionType, EOrientation, ESize, ESortOrder } from '@/enums';
 import { ColumnType } from 'antd/es/table';
 import { ReactNode } from 'react';
 import { MenuItemType, SubMenuType } from 'antd/es/menu/interface';
@@ -106,6 +106,14 @@ export interface ITableColumnAction<T = any> {
 	action: (record: T) => void;
     disabled?: boolean | ((record: T) => boolean);
 	danger?: boolean;
+	actionType?: EActionType;
+	validateWithApiAction?: boolean;
+	confirmDelete?: {
+		title: string;
+		content: string | ((record: T) => string);
+		confirmLabel: string;
+		cancelLabel: string;
+	};
 }
 export type TMenuItemData = {
 	path: string | null;

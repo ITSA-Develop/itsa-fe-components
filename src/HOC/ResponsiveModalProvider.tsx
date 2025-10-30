@@ -2,17 +2,19 @@ import { ModalResponsive } from '@/components/ModalResponsive';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 
 export interface ResponsiveModalContextType {
-    openModal: (params: {
-        content: ReactNode;
-        title?: string;
-        footer?: ReactNode;
-        onOk?: () => void;
-        onCancel?: () => void;
-        height?: string;
-        width?: string;
-    }) => void;
-    closeModal: () => void;
-    setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
+	openModal: (params: {
+		content: ReactNode;
+		title?: string;
+		footer?: ReactNode;
+		onOk?: () => void;
+		onCancel?: () => void;
+		height?: string;
+		width?: string;
+		closable?: boolean;
+		afterClose?: () => void;
+	}) => void;
+	closeModal: () => void;
+	setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
 }
 
 export const ResponsiveModalContext = createContext<ResponsiveModalContextType | undefined>(undefined);
@@ -27,8 +29,9 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
         onCancel?: () => void;
         height?: string;
         width?: string;
-        beforeClose?: () => void;
+        afterClose?: () => void;
         isOpen: boolean;
+        closable?: boolean;
     };
 
     const [modals, setModals] = useState<ModalEntry[]>([]);
@@ -42,6 +45,8 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
         onCancel,
         height,
         width,
+        closable,
+        afterClose,
     }) => {
         const newEntry: ModalEntry = {
             id: nextId,
@@ -52,6 +57,8 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
             onCancel,
             height: height ?? '90vh',
             width: width ?? '',
+            closable,
+            afterClose,
             isOpen: true,
         };
         setModals(prev => [...prev, newEntry]);
@@ -109,19 +116,19 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
             const lastIndex = prev.length - 1;
             return prev.map((m, idx) => {
                 if (idx !== lastIndex) return m;
-                const previousValue = m.beforeClose;
+                const previousValue = m.afterClose;
                 const nextValue = typeof updater === 'function'
                     ? (updater as (prevState: (() => void) | undefined) => (() => void) | undefined)(previousValue)
                     : updater;
-                return { ...m, beforeClose: nextValue };
+                return { ...m, afterClose: nextValue };
             });
         });
     };
-
+    
     return (
         <ResponsiveModalContext.Provider value={{ openModal, closeModal, setBeforeClose }}>
             {children}
-            {modals.map(({ id, title, content, footer, height, width, beforeClose, isOpen }) => (
+            {modals.map(({ id, title, content, footer, height, width, afterClose, isOpen, closable }) => (
                 <ModalResponsive
                     key={id}
                     title={title}
@@ -132,10 +139,11 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
                     content={content}
                     height={height}
                     width={width}
-                    beforeClose={() => {
-                        beforeClose?.();
+                    afterClose={() => {
+                        afterClose?.();
                         removeById(id);
                     }}
+                    closable={closable}
                 />
             ))}
         </ResponsiveModalContext.Provider>

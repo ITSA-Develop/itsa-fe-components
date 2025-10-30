@@ -1,5 +1,5 @@
 import { ELocalStorageKeys } from '@/enums';
-import { IAgency, IModule, ISubmodule } from '@/interfaces';
+import { IAgency, IModule, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
 import { create } from 'zustand';
 
 export interface AppLayoutStore {
@@ -19,9 +19,12 @@ export interface AppLayoutStore {
 	setCurrentSubmodule: (submodule: ISubmodule) => void;
 
 	userName?: string;
-	userRole?: string;
 	setUserName: (userName: string) => void;
-	setUserRole: (userRole: string) => void;
+	userRole?: IUserRole;
+	setUserRole: (userRole: IUserRole) => void;
+
+	userInformation?: IUserInformation;
+	setUserInformation: (userInformation: IUserInformation) => void;
 }
 
 export const useAppLayoutStore = create<AppLayoutStore>(set => ({
@@ -65,7 +68,11 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		set({ userName });
 	},
 	userRole: undefined,
-	setUserRole: (userRole: string) => {
+	setUserRole: (userRole: IUserRole) => {
 		set({ userRole });
+	},
+	userInformation: undefined,
+	setUserInformation: (userInformation: IUserInformation) => {
+		set({ userInformation });
 	},
 }));

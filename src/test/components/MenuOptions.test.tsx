@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import MenuOptions, { MenuOptionsProps } from '../../components/AppLayout/components/MenuOptions';
 
@@ -28,6 +29,7 @@ const renderMenuOptions = (props: Partial<MenuOptionsProps> = {}) => {
 		items: [],
 		collapsed: false,
 		currentPath: '/',
+		onClickOptionMenu: vi.fn(),
 	};
 
 	return render(<MenuOptions {...defaultProps} {...props} />);

@@ -1,4 +1,8 @@
 import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
+import { EActionType } from '@/enums';
+import { disabledActionButton } from '@/helpers/functions';
+import { useControlActions } from '@/hooks';
+import { useAppLayoutStore } from '@/store';
 import { ITableColumnAction, MakeFunctionParamsOptional, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { MoreOutlined } from '@ant-design/icons';
 import {
@@ -8,8 +12,10 @@ import {
 	Dropdown,
 	TableColumnsType,
 	TablePaginationConfig,
+	Modal,
 } from 'antd';
 import { TableLocale } from 'antd/es/table/interface';
+import { useState } from 'react';
 
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
@@ -48,13 +54,75 @@ export const Table = <T extends object>({
 	getActionsDisabled,
 	getActionsTriggerDisabled,
 	rootClassName,
-	locale= {
+	locale = {
 		emptyText: 'No hay datos',
 	},
 }: ITableProps<T>) => {
+	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
+	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const finalPagination = showPagination ? paginationConfig : false;
 
 	const tableRootClassName = ['itsa-table--head-rounded', rootClassName].filter(Boolean).join(' ');
+
+	const [confirmModalState, setConfirmModalState] = useState<{
+		open: boolean;
+		action: ITableColumnAction<T> | null;
+		record: T | null;
+	}>({
+		open: false,
+		action: null,
+		record: null,
+	});
+
+	const clickAction = async (action: ITableColumnAction<T>, record: T) => {
+		const isPermitted = disabledActionButton(action.actionType, actions);
+		if (isPermitted) return;
+		const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+		if (isDisabled) return;
+		if (action.confirmDelete) {
+			setConfirmModalState({
+				open: true,
+				action,
+				record,
+			});
+			return;
+		}
+
+		if (action.validateWithApiAction) {
+			const agencyId = currentAgency?.id;
+			const actionTypeNumber = action.actionType as EActionType;
+			if (!actionTypeNumber || !programId || !agencyId) return;
+			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
+			if (isValid) {
+				action.action(record);
+			}
+		} else {
+			action.action(record);
+		}
+	};
+
+	const handleConfirmAction = async () => {
+		const { action, record } = confirmModalState;
+		if (!action || !record) return;
+
+		setConfirmModalState({ open: false, action: null, record: null });
+
+		if (action.validateWithApiAction) {
+			const agencyId = currentAgency?.id;
+			const actionTypeNumber = action.actionType as EActionType;
+			if (!actionTypeNumber || !programId || !agencyId) return;
+			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
+			if (isValid) {
+				action.action(record);
+			}
+		} else {
+			action.action(record);
+		}
+	};
+
+	const handleCancelConfirm = () => {
+		setConfirmModalState({ open: false, action: null, record: null });
+	};
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
 		if (showColumnActions) {
@@ -68,14 +136,20 @@ export const Table = <T extends object>({
 						disabled={!!getActionsDisabled?.(record)}
 						placement="bottomRight"
 						menu={{
-							items: (columnActions ?? []).map((action, index) => ({
-								label: action.title,
-								key: action.key || `action-${index}`,
-								icon: action.icon,
-								disabled: typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled,
-								onClick: () => action.action(record),
-								danger: action.danger,
-							})),
+							items: (columnActions || [])
+								.filter(action => {
+									const hasPermission = disabledActionButton(action.actionType, actions);
+									const actionDisabled =
+										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+									return !hasPermission && !actionDisabled;
+								})
+								.map((action, index) => ({
+									label: action.title,
+									key: action.key || `action-${index}`,
+									icon: action.icon,
+									onClick: () => clickAction(action, record),
+									danger: action.danger,
+								})),
 						}}
 					>
 						<Button
@@ -95,59 +169,85 @@ export const Table = <T extends object>({
 		return columns;
 	};
 
+	const getConfirmContent = () => {
+		if (!confirmModalState.action?.confirmDelete || !confirmModalState.record) return '';
+		const { content } = confirmModalState.action.confirmDelete;
+		if (typeof content === 'function') {
+			return content(confirmModalState.record);
+		}
+		return content;
+	};
+
 	return (
-		<AntTable<T>
-			columns={finalColumns() as TableColumnsType<T>}
-			dataSource={data}
-			loading={loading}
-			bordered={bordered}
-			rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
-			onChange={onChange}
-			pagination={finalPagination}
-			scroll={scroll}
-			locale={locale}
-			rowKey={rowKey}
-			rootClassName={tableRootClassName}
-			components={{
-				header: {
-					wrapper: (props: any) => (
-						<thead
-							{...props}
-							style={{
-								...props?.style,
-								overflow: 'hidden',
-								borderTopLeftRadius: 8,
-								borderTopRightRadius: 8,
-							}}
-						/>
-					),
-					cell: (props: any) => {
-						return (
-							<th
+		<>
+			<AntTable<T>
+				columns={finalColumns() as TableColumnsType<T>}
+				dataSource={data}
+				loading={loading}
+				bordered={bordered}
+				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
+				onChange={onChange}
+				pagination={finalPagination}
+				scroll={scroll}
+				locale={locale}
+				rowKey={rowKey}
+				rootClassName={tableRootClassName}
+				components={{
+					header: {
+						wrapper: (props: any) => (
+							<thead
 								{...props}
 								style={{
 									...props?.style,
-									background: '#EEF1F3',
-									color: 'black',
-									padding: '0px',
-									fontSize: '12px',
-									height: '40px',
-									paddingLeft: '12px',
-									paddingRight: '12px',
+									overflow: 'hidden',
+									borderTopLeftRadius: 8,
+									borderTopRightRadius: 8,
 								}}
 							/>
-						);
+						),
+						cell: (props: any) => {
+							return (
+								<th
+									{...props}
+									style={{
+										...props?.style,
+										background: '#EEF1F3',
+										color: 'black',
+										padding: '0px',
+										fontSize: '12px',
+										height: '40px',
+										paddingLeft: '12px',
+										paddingRight: '12px',
+									}}
+								/>
+							);
+						},
 					},
-				},
-				body: {
-					cell: (props: any) => (
-						<td
-							{...props}
-							style={{ background: 'white', color: 'black', padding: '0px', fontSize: '14px', height: '45px' }}
-						/>
-					),
-				},
-			}}
-		/>
+					body: {
+						cell: (props: any) => (
+							<td
+								{...props}
+								style={{ background: 'white', color: 'black', padding: '0px', fontSize: '14px', height: '45px' }}
+							/>
+						),
+					},
+				}}
+			/>
+
+			{confirmModalState.open && (
+				<Modal
+					title={confirmModalState.action?.confirmDelete?.title}
+					open={confirmModalState.open}
+					onOk={handleConfirmAction}
+					onCancel={handleCancelConfirm}
+					okText={confirmModalState.action?.confirmDelete?.confirmLabel}
+					cancelText={confirmModalState.action?.confirmDelete?.cancelLabel}
+					okButtonProps={{ danger: confirmModalState.action?.danger }}
+					cancelButtonProps={{ danger: true }}
+				>
+					{getConfirmContent()}
+				</Modal>
+			)}
+		</>
 	);
 };
