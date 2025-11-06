@@ -36,6 +36,7 @@ export interface ITableProps<T extends object> {
 	rootClassName?: string;
 	rowClassName?: AntTableProps<T>['rowClassName'];
 	locale?: TableLocale;
+	rowHoverable?: boolean;
 }
 
 export const Table = <T extends object>({
@@ -57,6 +58,7 @@ export const Table = <T extends object>({
 	locale = {
 		emptyText: 'No hay datos',
 	},
+	rowHoverable = true,
 }: ITableProps<T>) => {
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -213,11 +215,8 @@ export const Table = <T extends object>({
 										...props?.style,
 										background: '#EEF1F3',
 										color: 'black',
-										padding: '0px',
 										fontSize: '12px',
 										height: '40px',
-										paddingLeft: '12px',
-										paddingRight: '12px',
 									}}
 								/>
 							);
@@ -227,11 +226,12 @@ export const Table = <T extends object>({
 						cell: (props: any) => (
 							<td
 								{...props}
-								style={{ background: 'white', color: 'black', padding: '0px', fontSize: '14px', height: '45px' }}
+									style={{ color: 'black', fontSize: '14px', height: '45px' }}
 							/>
 						),
 					},
 				}}
+				rowHoverable={rowHoverable}
 			/>
 
 			{confirmModalState.open && (

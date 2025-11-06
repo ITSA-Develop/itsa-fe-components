@@ -25,6 +25,7 @@ export const GOOGLE_MAP_ADDRESS_KEYS = {
 };
 
 export const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+export const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_ID;
 export const ENVIRONMENT = import.meta.env.VITE_ENV;
 
 export const REQUIRED = { required: 'Requerido' };

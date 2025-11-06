@@ -38,6 +38,7 @@ export { Image } from './components/Image';
 export { ImageMaintenance } from './components/ImageMaintenance';
 export { InfoRow } from './components/InfoRow/InfoRow';
 export { ItemList } from './components/ItemList';
+export { List } from './components/List';
 export { Login } from './components/Login';
 export { Link } from './components/Link/Link';
 export { LocationDisplay } from './components/LocationDisplay/LocationDisplay';

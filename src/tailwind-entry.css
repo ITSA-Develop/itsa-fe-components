@@ -443,6 +443,10 @@ body,
 	--itsa-pagination-active-text: #ffffff;
 	--itsa-pagination-item-size: 26px;
 	--itsa-pagination-font-size: 12px;
+	/* Default hover background for table rows */
+	--itsa-table-row-hover-bg: #F5F5F5;
+	/* Horizontal padding for table cells */
+	--itsa-table-cell-padding-x: 12px;
 }
 
 /* Current page as outline */
@@ -506,5 +510,17 @@ body,
 
 .itsa-table--head-rounded .ant-table-pagination .ant-pagination-options .ant-select .ant-select-arrow {
 	font-size: 12px !important;
+}
+
+/* Row hover background color */
+.itsa-table--head-rounded .ant-table-tbody > tr:hover > td {
+	background-color: var(--itsa-table-row-hover-bg) !important;
+}
+
+/* Apply horizontal padding to header and body cells */
+.itsa-table--head-rounded .ant-table-thead > tr > th,
+.itsa-table--head-rounded .ant-table-tbody > tr > td {
+	padding-left: var(--itsa-table-cell-padding-x) !important;
+	padding-right: var(--itsa-table-cell-padding-x) !important;
 }
 
