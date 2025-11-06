@@ -1,21 +1,21 @@
 import { LOCATION_DEFAULT } from '@/constants';
 import { EMapZoom } from '@/enums';
 import { IMapLocation } from '@/interfaces';
-import { AdvancedMarker, APIProvider, Map as MapComponent, MapMouseEvent } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, APIProvider, Map as MapComponent, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { CSSProperties, useEffect, useState } from 'react';
 import { useGeolocation } from '@/hooks';
-import { GOOGLE_API_KEY, GOOGLE_MAP_ADDRESS_KEYS } from '@/utils/constants';
+import { GOOGLE_API_KEY, GOOGLE_MAP_ADDRESS_KEYS, GOOGLE_MAP_ID } from '@/utils/constants';
 import { Button } from '../Button';
+import { InputSearchAddress } from './components/InputSearchAddress';
 
 export interface IMapProps {
 	location?: IMapLocation;
 	zoom?: EMapZoom;
 	useUserLocation?: boolean;
 	googleMapsApiKey?: string;
-	/** Optional class names to customize the outer container */
+	mapId?: string;
 	className?: string;
-	/** Optional inline styles for the outer container (e.g., set height) */
 	containerStyle?: CSSProperties;
 	style?: CSSProperties;
 	onLocationChange?: (
@@ -39,13 +39,12 @@ export interface IMapProps {
 	) => void;
 }
 
-export const MI_MAP_ID = 'MI_MAP_ID';
-
 export const Map = ({
 	location = LOCATION_DEFAULT,
 	zoom = EMapZoom.zoom14,
 	useUserLocation = false,
 	googleMapsApiKey = GOOGLE_API_KEY,
+	mapId = GOOGLE_MAP_ID,
 	className,
 	containerStyle,
 	style,
@@ -54,6 +53,17 @@ export const Map = ({
 	const [geoState, requestLocation] = useGeolocation();
 	const [center, setCenter] = useState<IMapLocation>(location);
 	const [clickedPosition, setClickedPosition] = useState<IMapLocation | null>(null);
+
+const MapCamera = ({ target }: { target?: IMapLocation }) => {
+	const mapInstance = useMap();
+	useEffect(() => {
+		if (mapInstance && target) {
+			(mapInstance as any).panTo(target);
+			(mapInstance as any).setZoom(EMapZoom.zoom17);
+		}
+	}, [mapInstance, target]);
+	return null;
+};
 
 	useEffect(() => {
 		setCenter(location);
@@ -169,9 +179,31 @@ export const Map = ({
 		);
 	}
 
+	const handleLocationChangeBySearch = (placeObject?: any, addressData?: any) => {
+		const lat = typeof placeObject?.lat === 'number' ? placeObject.lat : addressData?.latitude;
+		const lng = typeof placeObject?.long === 'number' ? placeObject.long : addressData?.longitude;
+
+		if (typeof lat === 'number' && typeof lng === 'number') {
+			const pos = { lat, lng } as IMapLocation;
+			setClickedPosition(pos);
+			setCenter(pos);
+			// Si ya tenemos addressData desde el Autocomplete, reenviamos;
+			// en caso contrario, geocodificación inversa para obtener placeObject/addressData
+			if (addressData) {
+				onLocationChange?.(placeObject, addressData);
+			} else {
+				reverseGeocode(lat, lng);
+			}
+		} else {
+			// Si no hay coordenadas claras, reenvía lo que venga o null
+			onLocationChange?.(placeObject ?? null, addressData);
+		}
+	};
+	//AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw
+	//82446f60eba4a92316dbec8c
 	return (
 		<div className={`relative flex-1 bg-red-300 h-full w-full ${className ?? ''}`} style={containerStyle}>
-			<APIProvider apiKey={'AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw'}>
+			<APIProvider apiKey={googleMapsApiKey} libraries={['places']}>
 				<MapComponent
 					style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, ...(style || {}) }}
 					defaultCenter={center}
@@ -179,7 +211,7 @@ export const Map = ({
 					gestureHandling="greedy"
 					disableDefaultUI
 					onClick={onClick}
-					mapId={MI_MAP_ID}
+					mapId={mapId}
 				>
 					{useUserLocation && geoState.coords && (
 						<AdvancedMarker
@@ -188,7 +220,13 @@ export const Map = ({
 						/>
 					)}
 					{clickedPosition && <AdvancedMarker position={clickedPosition} title="Marcador" />}
+					<MapCamera target={center} />
 				</MapComponent>
+				<InputSearchAddress
+					floatingInputPlaceholder={'Buscar ubicación'}
+					googleMapsApiKey={googleMapsApiKey}
+					onLocationChange={handleLocationChangeBySearch}
+				/>
 			</APIProvider>
 			{clickedPosition && (
 				<div className="absolute right-3 bottom-16 z-10">
