@@ -22,7 +22,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const sampleModules: IModule[] = AGENCIES_DATA[0].modules;
+const sampleModules: IModule[] = []; //AGENCIES_DATA[0].modules;
 // [
 // 	{
 // 		id: 1,
@@ -60,14 +60,12 @@ const sampleModules: IModule[] = AGENCIES_DATA[0].modules;
 
 export const Default: Story = {
 	args: {
-		modules: sampleModules,
 		handleNavigateProgram: () => {},
 	},
 };
 
 export const Empty: Story = {
 	args: {
-		modules: [],
 		handleNavigateProgram: () => {},
 	},
 	parameters: {
@@ -82,7 +80,6 @@ export const Empty: Story = {
 export const ManyModules: Story = {
 	args: {
 		handleNavigateProgram: () => {},
-		modules: sampleModules,
 	},
 	parameters: {
 		docs: {

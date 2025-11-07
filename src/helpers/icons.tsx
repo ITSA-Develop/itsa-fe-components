@@ -7,18 +7,36 @@ export type IconName = keyof typeof Icons;
 interface GetIconOptions {
 	className?: string;
 	style?: React.CSSProperties;
+	/**
+	 * Tamaño del icono. Acepta número (px) o cualquier valor CSS válido (por ejemplo, '1.25rem').
+	 */
+	size?: number | string;
 }
 
 export const getIconByName = (name: string | null | undefined, options: GetIconOptions = {}) => {
-	const { className = 'w-4 h-4', style } = options;
+	const { className, style, size } = options;
 	const iconsMap = Icons as unknown as Record<string, React.ComponentType<any>>;
 	const IconComponent = name ? iconsMap[name] : undefined;
 
-	if (IconComponent) {
-		return <IconComponent className={className} style={style} />;
-	}
+	const normalizeSize = (value?: number | string) => {
+		if (value === undefined || value === null) return undefined;
+		return typeof value === 'number' ? `${value}px` : value;
+	};
 
-	return <AppstoreOutlined className={className} style={style} />;
+	const wrapperStyle: React.CSSProperties = {
+		lineHeight: 1,
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		fontSize: normalizeSize(size),
+		...style,
+	};
+
+	return (
+		<span className={className} style={wrapperStyle}>
+			{IconComponent ? <IconComponent /> : <AppstoreOutlined />}
+		</span>
+	);
 };
 
 export const resolveIconComponent = (name: string | null | undefined): React.ComponentType<any> | null => {

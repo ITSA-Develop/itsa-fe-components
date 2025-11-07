@@ -917,7 +917,7 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 6,
 				name: 'CARTERA',
-				icon: 'HouseholdIcon',
+				icon: 'WalletIcon2',
 				entorno: 'BACKOFFICE',
 				submodules: [
 					{
@@ -981,42 +981,9 @@ export const AGENCIES_DATA: IAgency[] = [
 				],
 			},
 			{
-				id: 8,
-				name: 'CARTERA',
-				icon: 'HouseholdIcon',
-				entorno: 'BACKOFFICE',
-				submodules: [
-					{
-						id: 7,
-						name: 'GESTIÓN DE COBRANZA',
-						icon: 'mdiViewModule',
-						groups: [],
-						pathPadre: null,
-						path: null,
-						programs: [
-							{
-								id: 56,
-								name: 'ABONOS',
-								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
-								pathPadre: null,
-								path: 'None/None',
-								icon: 'mdiLaptop',
-								actions: {
-									allActions: true,
-									read: false,
-									create: false,
-									update: false,
-									delete: false,
-								},
-							},
-						],
-					},
-				],
-			},
-			{
 				id: 9,
 				name: 'SEGURIDAD',
-				icon: 'HouseholdIcon',
+				icon: 'SecurityIcon',
 				entorno: 'BACKOFFICE',
 				submodules: [],
 			},
