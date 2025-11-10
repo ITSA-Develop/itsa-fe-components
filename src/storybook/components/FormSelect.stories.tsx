@@ -35,20 +35,20 @@ const RHFForm: React.FC<{
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit(data => {
-// eslint-disable-next-line no-console
-console.log(onSubmitLogLabel, data);
-})}
-style={{ width: 360 }}
->
-<Space direction="vertical" style={{ width: '100%' }} size="middle">
-{children}
-<Button htmlType="submit" type="primary">
-	Enviar
-</Button>
-</Space>
-</form>
- </FormProvider>
- );
+					// eslint-disable-next-line no-console
+					console.log(onSubmitLogLabel, data);
+				})}
+				style={{ width: 360 }}
+			>
+				<Space direction="vertical" style={{ width: '100%' }} size="middle">
+					{children}
+					<Button htmlType="submit" type="primary">
+						Enviar
+					</Button>
+				</Space>
+			</form>
+		</FormProvider>
+	);
 };
 
 // ---------- Meta ----------
@@ -66,56 +66,55 @@ const meta: Meta<typeof BoundFormSelect> = {
 		},
 	},
 	argTypes: {
- 		label: { control: 'text' },
- 		placeholder: { control: 'text' },
- 		allowClear: { control: 'boolean' },
- 		mode: { control: 'text' },
- 		isLoading: { control: 'boolean' },
- 	},
+		label: { control: 'text' },
+		placeholder: { control: 'text' },
+		allowClear: { control: 'boolean' },
+		mode: { control: 'text' },
+		isLoading: { control: 'boolean' },
+	},
 };
 export default meta;
 
 type Story = StoryObj<typeof BoundFormSelect>;
 
 const sampleOptions = [
- 	{ label: 'Apple', value: 'apple' },
- 	{ label: 'Banana', value: 'banana' },
- 	{ label: 'Cherry', value: 'cherry' },
- 	{ label: 'Date', value: 'date' },
+	{ label: 'Apple', value: 'apple' },
+	{ label: 'Banana', value: 'banana' },
+	{ label: 'Cherry', value: 'cherry' },
+	{ label: 'Date', value: 'date' },
 ];
 
 // ---------- Historias ----------
 export const Default: Story = {
- 	name: 'Default',
- 	args: {
- 		name: 'fruit',
- 		label: 'Fruta',
- 		placeholder: 'Seleccione una fruta',
- 		allowClear: true,
- 		options: sampleOptions,
- 	},
- 	render: args => (
- 		<RHFForm defaultValues={{ fruit: undefined as unknown as string }}>
- 			<BoundFormSelect {...args} />
- 		</RHFForm>
- 	),
+	name: 'Default',
+	args: {
+		name: 'fruit',
+		label: 'Fruta',
+		placeholder: 'Seleccione una fruta',
+		allowClear: true,
+		options: sampleOptions,
+		value: 1
+	},
+	render: args => (
+		<RHFForm defaultValues={{ fruit: undefined as unknown as string }}>
+			<BoundFormSelect {...args} />
+		</RHFForm>
+	),
 };
 
 export const Loading: Story = {
- 	name: 'Cargando (isLoading)',
- 	args: {
- 		name: 'fruit',
- 		label: 'Fruta',
- 		placeholder: 'Cargando opciones...',
- 		allowClear: true,
- 		options: sampleOptions,
- 		isLoading: true,
- 	},
- 	render: args => (
- 		<RHFForm defaultValues={{ fruit: undefined as unknown as string }}>
- 			<BoundFormSelect {...args} />
- 		</RHFForm>
- 	),
+	name: 'Cargando (isLoading)',
+	args: {
+		name: 'fruit',
+		label: 'Fruta',
+		placeholder: 'Cargando opciones...',
+		allowClear: true,
+		options: sampleOptions,
+		isLoading: true,
+	},
+	render: args => (
+		<RHFForm defaultValues={{ fruit: undefined as unknown as string }}>
+			<BoundFormSelect {...args} />
+		</RHFForm>
+	),
 };
-
-

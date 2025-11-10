@@ -261,7 +261,7 @@ export const AGENCIES_DATA: IAgency[] = [
 					{
 						id: 2,
 						name: 'GESTIÓN DE COMPRAS',
-						icon: 'mdiViewModule',
+						icon: 'VehicleIcon',
 						groups: [],
 						pathPadre: null,
 						path: null,
@@ -272,7 +272,7 @@ export const AGENCIES_DATA: IAgency[] = [
 								url: 'http://frontoffice.127.0.0.1.nip.io:4001/None/',
 								pathPadre: null,
 								path: 'None/',
-								icon: 'mdiLaptop',
+								icon: 'PackageIcon',
 								actions: {
 									allActions: true,
 									read: false,

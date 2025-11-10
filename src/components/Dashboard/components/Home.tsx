@@ -56,7 +56,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 					onClick={() => handleNavigateProgram(program)}
 				>
 					<div className="flex flex-row gap-1 items-center justify-start">
-						{getIcon(program.icon, 'w-10 h-10')}
+						{getIcon(program.icon, 'w-5 h-5')}
 						{program.name}
 					</div>
 				</ButtonAntd>

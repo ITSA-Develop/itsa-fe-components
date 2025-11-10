@@ -8,10 +8,10 @@ export interface IButtonInactiveSubmoduleProps {
 }
 
 export const ButtonInactiveSubmodule = ({ name, icon, onclick }: IButtonInactiveSubmoduleProps) => {
-	const newClassName = `flex min-w-[168px] flex-row items-center justify-start gap-0 hover:!bg-gray-75 hover:!text-gray-400 hover:!border-gray-100 h-auto w-full`;
+	const newClassName = `flex min-w-[168px] p-2 flex-row items-center justify-start gap-1 hover:!bg-gray-75 hover:!text-gray-400 hover:!border-gray-100 h-auto w-full`;
 	return (
 		<ButtonAntd type="default" variant="filled" className={newClassName} size="small" onClick={onclick}>
-			{getIcon(icon, 'w-10 h-10 text-gray-400')}
+			{getIcon(icon, 'w-5 h-5 text-gray-400')}
 			<strong className="text-xs truncate line-clamp-1 text-left leading-none text-gray-400">{name}</strong>
 		</ButtonAntd>
 	);

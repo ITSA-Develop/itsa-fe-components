@@ -7,5 +7,7 @@ export interface ISelectProps extends SelectProps {
 }
 
 export const Select = ({ ref, status, ...rest }: ISelectProps) => {
-	return <AntSelect {...rest} ref={ref} status={status} className="w-full rounded-lg" />;
+	const validValues = rest.options?.map(o => o.value);
+	const safeValue = validValues?.includes(rest.value) ? rest.value : undefined;
+	return <AntSelect {...rest} value={safeValue} ref={ref} status={status} className="w-full rounded-lg" />;
 };
