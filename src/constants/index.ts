@@ -64,6 +64,7 @@ export const TABLE_SCROLL = {
 };
 
 export * from './agencies';
+export * from './iconOptions';
 
 export const API_VERSIONS_MODULE = {
 	security: 'sec/v1/security/',

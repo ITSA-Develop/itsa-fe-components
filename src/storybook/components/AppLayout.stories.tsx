@@ -181,7 +181,7 @@ export const NarrowSidebar: Story = {
 		
 	},
 };
-
+//mockAgencies[0].modules
 export const WithDashboard: Story = {
 	args: {
 		...Default.args,
@@ -190,7 +190,7 @@ export const WithDashboard: Story = {
 		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
 			console.log('info =>', info);
 		},
-		children: <Dashboard modules={mockAgencies[0].modules} handleNavigateProgram={(program) => {
+		children: <Dashboard handleNavigateProgram={(program) => {
 			console.log('program =>', program);
 		}} />,
 	},

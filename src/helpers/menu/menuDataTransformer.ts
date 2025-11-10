@@ -5,7 +5,7 @@ import { TExtendedMenuItem } from '@/types';
 import { getIconByName } from '@/helpers/icons';
 
 export const getIcon = (icon: string | null, className?: string, style?: React.CSSProperties): React.ReactNode => {
-	return getIconByName(icon, { className: className || 'w-4 h-4', style });
+	return getIconByName(icon, { className, style, size: 16 });
 };
 
 export const transformModuleToMenuData = (module: IModule | null): TExtendedMenuItem[] => {

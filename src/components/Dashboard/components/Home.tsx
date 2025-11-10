@@ -2,26 +2,26 @@ import { IModule, ISubmodule } from '@/interfaces';
 import { useAppLayoutStore } from '@/store/appLayout.store';
 import { ButtonActiveModule } from './ButtonActiveModule';
 import { ButtonInactiveModule } from './ButtonInactiveModule';
-import { Input, Popover } from 'antd';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ButtonAntd } from '@/components/ButtonAntd';
-import { useViewportStore } from '@/store';
-import { XIcon } from '@/assets/icons';
+import { ButtonActiveSubmodule } from './ButtonActiveSubmodule';
+import { ButtonInactiveSubmodule } from './ButtonInactiveSubmodule';
+import { getIcon } from '@/helpers/menu/menuDataTransformer';
+import { Input } from 'antd';
 
 export interface IHomeProps {
-	modules: IModule[];
 	handleNavigateProgram: (program: ISubmodule) => void;
 }
 
-export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
-	const windowWidth = useViewportStore(state => state.width);
+export const Home = ({ handleNavigateProgram }: IHomeProps) => {
+	// const windowWidth = useViewportStore(state => state.width);
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const setCurrentModule = useAppLayoutStore(state => state.setCurrentModule);
 	const currentSubmodule = useAppLayoutStore(state => state.currentSubmodule);
 	const setCurrentSubmodule = useAppLayoutStore(state => state.setCurrentSubmodule);
+	const agencies = useAppLayoutStore(state => state.currentAgency);
+	const modules = agencies?.modules ?? [];
 	const submodules = currentModule?.submodules ?? [];
-	const hasSubmodules = submodules.length > 0;
-	const [openSubmoduleId, setOpenSubmoduleId] = useState<ISubmodule['id'] | null>(null);
 	const [searchBySubmoduleId, setSearchBySubmoduleId] = useState<Record<ISubmodule['id'], string>>({});
 
 	const buttonHeader = (module: IModule) => {
@@ -49,8 +49,16 @@ export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
 		const paddingClass = isNested ? 'pl-3' : '';
 		return programs.map(program => (
 			<div key={program.id} className={paddingClass}>
-				<ButtonAntd type="text" size="small" className="flex justify-start w-full" onClick={() => handleNavigateProgram(program)}>
-					{program.name}
+				<ButtonAntd
+					type="text"
+					size="small"
+					className="flex justify-start w-full !text-gray-400 hover:!text-gray-900"
+					onClick={() => handleNavigateProgram(program)}
+				>
+					<div className="flex flex-row gap-1 items-center justify-start">
+						{getIcon(program.icon, 'w-5 h-5')}
+						{program.name}
+					</div>
 				</ButtonAntd>
 			</div>
 		));
@@ -62,7 +70,7 @@ export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
 				<div className="bg-gray-50 p-2 rounded-lg">
 					<strong>{group.name}</strong>
 				</div>
-				<div className='pt-0.5 pb-0.5'>{programs(group.programs ?? [], true)}</div>
+				<div className="pt-0.5 pb-0.5">{programs(group.programs ?? [], true)}</div>
 			</div>
 		));
 	};
@@ -87,7 +95,7 @@ export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
 			: baseGroups;
 
 		return (
-			<div className="max-h-[40vh] w-full md:w-[50dvw] overflow-y-auto">
+			<div className="flex-1 p-2 min-h-0 h-full w-full overflow-y-auto">
 				<div>{programs(visiblePrograms)}</div>
 				<div>{groups(visibleGroups)}</div>
 			</div>
@@ -97,28 +105,29 @@ export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
 	const buttonSubmodule = (submodule: ISubmodule) => {
 		if (submodule.id === currentSubmodule?.id) {
 			return (
-				<ButtonActiveModule
+				<ButtonActiveSubmodule
 					name={submodule.name}
 					icon={submodule.icon ?? ''}
-					onclick={() => setCurrentSubmodule(submodule)}
-					type="submodule"
+					onclick={() => {
+						setCurrentSubmodule(submodule);
+					}}
 				/>
 			);
 		}
 		return (
-			<ButtonInactiveModule
+			<ButtonInactiveSubmodule
 				name={submodule.name}
 				icon={submodule.icon ?? ''}
-				onclick={() => setCurrentSubmodule(submodule)}
-				type="submodule"
+				onclick={() => {
+					setCurrentSubmodule(submodule);
+				}}
 			/>
 		);
 	};
 
 	const titlePopover = (submodule: ISubmodule) => {
 		return (
-			<div className="flex flex-row justify-center items-center gap-2 bg-gray-50 p-2 rounded-lg">
-				<div className="flex-grow">{submodule.name}</div>
+			<div className="flex flex-row justify-center items-center gap-2 bg-gray-50 rounded-lg">
 				<div className="w-full">
 					<Input
 						placeholder="Buscar"
@@ -127,49 +136,42 @@ export const Home = ({ modules, handleNavigateProgram }: IHomeProps) => {
 						onChange={e => setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: e.target.value }))}
 					/>
 				</div>
-				<ButtonAntd
-					type="default"
-					size="small"
-					onClick={() => {
-						setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: '' }));
-						setOpenSubmoduleId(null);
-					}}
-				>
-					<XIcon />
-				</ButtonAntd>
 			</div>
 		);
 	};
 
+	const currentSubmoduleContent = useMemo(() => {
+		if (!currentSubmodule) return null;
+		return contentSubmodule(currentSubmodule);
+	}, [currentSubmodule, submodules]);
+
 	return (
-		<div className="flex flex-col gap-2 max-h-[90vh]">
-			<div className="flex flex-col w-full justify-center items-center gap-2 bg-gray-50 p-2 rounded-lg">
-				<div className="flex flex-row gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 flex-wrap">
+		<div className="flex-1 h-full w-full flex flex-col">
+			<div className="h-22  w-full ">
+				<div className="flex flex-col w-full overflow-x-auto overflow-y-hidden md:justify-center md:items-center">
+					<div className="flex flex-row flex-nowrap gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 justify-start items-center">
+						{modules.map(module => (
+							<div key={module.id}>{buttonHeader(module)}</div>
+						))}
+					</div>
+				</div>
+			</div>
+			<div className="flex-1 flex flex-col md:flex-row min-h-0 w-full pt-2 pb-2 max-h-[64vh] overflow-y-auto">
+				<div className="flex flex-col gap-1 w-full max-h-[24vh] overflow-y-auto md:w-52 md:max-h-none md:!h-full md:overflow-y-hidden shrink-0">
+					{submodules.map(submodule => (
+						<div key={submodule.id}>{buttonSubmodule(submodule)}</div>
+					))}
+				</div>
+				<div className="flex-1 min-h-0">{currentSubmoduleContent}</div>
+			</div>
+			<div className="h-auto w-full">
+				<div>Ultimos programas visitados</div>
+				{currentSubmodule && titlePopover(currentSubmodule)}
+				{/* <div className="flex flex-row gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 flex-wrap">
 					{modules.map(module => (
 						<div key={module.id}>{buttonHeader(module)}</div>
 					))}
-				</div>
-			</div>
-			<div className="flex max-h-[64vh] overflow-y-auto">
-				<div
-					className={`flex flex-col gap-2 min-w-1/4 w-full md:!w-1/4 md:shrink-0 md:flex-none transition-all duration-300 ${
-						hasSubmodules ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-					}`}
-					aria-hidden={!hasSubmodules}
-				>
-					{submodules.map(submodule => (
-						<Popover
-							placement={windowWidth < 900 ? 'bottom' : 'rightTop'}
-							trigger="focus"
-							open={openSubmoduleId === submodule.id}
-							onOpenChange={newOpen => setOpenSubmoduleId(newOpen ? submodule.id : null)}
-							title={titlePopover(submodule)}
-							content={contentSubmodule(submodule)}
-						>
-							<div key={submodule.id}>{buttonSubmodule(submodule)}</div>
-						</Popover>
-					))}
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

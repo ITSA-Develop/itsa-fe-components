@@ -64,6 +64,8 @@ export { Tooltip } from './components/Tooltip/Tooltip';
 export { WithoutInformation } from './components/WithoutInformation';
 export { ErrorsProvider } from './routing/components/ErrorsProvider';
 export { LayoutComponent } from './routing/components/LayoutComponent';
+export { Iconos } from './components/IconSelector';
+export { IconSelectAntd } from './components/IconSelectAntd';
 
 export type { ProtectedProps, ProtectedRouteProps, PublicRouteProps, TLocation } from './routing/types';
 

@@ -283,6 +283,7 @@ export interface IUserRole {
 export interface IUserInformation {
 	identification: string;
 	identificationType: string;
+	businessLineId: number;
 	name: string;
 	picture: string;
 	email: string;

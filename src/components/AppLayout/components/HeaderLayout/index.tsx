@@ -138,7 +138,7 @@ export const HeaderLayout = ({
 							type="text"
 							icon={
 								isActiveNotifications ? (
-									<ActiveNotificationIcon className="text-white-100 w-6 h-6" />
+									<ActiveNotificationIcon className="fill-white-100 w-6 h-6" />
 								) : (
 									<NotificationIcon className="text-white-100 w-6 h-6" />
 								)
