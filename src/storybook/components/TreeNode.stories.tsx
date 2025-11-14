@@ -86,7 +86,7 @@ const TreePlayground: React.FC<{ initialRoot: ClassItem }> = ({ initialRoot }) =
 	}, []);
 
 	return (
-		<div style={{ width: 420 }}>
+		<div  className='w-[520px]'>
 			<TreeNode item={root} level={0} onAdd={handleAdd} onToggleActive={handleToggleActive} onLoadSubclasses={handleLoadSubclasses} />
 		</div>
 	);

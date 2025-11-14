@@ -303,3 +303,12 @@ export interface IMapMarker {
 	location: IMapLocation;
 	label: string;
 }
+
+export interface ITreeNodeItem {
+	id: string | number;
+	name: string;
+	isActive: boolean;
+	handleAdd: () => void;
+	handleUpdate: () => void;
+	children: ITreeNodeItem[];
+}

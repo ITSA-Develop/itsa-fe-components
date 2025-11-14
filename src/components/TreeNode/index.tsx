@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 // import { ChevronRight, Plus, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { CaretRightOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { DownOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
+import { Button } from '../Button';
+import { Button as ButtonAntd } from 'antd';
 
 interface ClassItem {
 	id: string;
@@ -26,7 +27,7 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 	const [isLoading, setIsLoading] = useState(false);
 
 	const hasSubclasses = item.subclasses && item.subclasses.length > 0;
-	const canHaveSubclasses = level < 5; // Limitar profundidad
+	const canHaveSubclasses = level < 20; // Limitar profundidad
 
 	const handleExpand = async () => {
 		if (isExpanded) {
@@ -41,26 +42,31 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 		}
 	};
 
-	const bgColor = level === 0 ? 'bg-gray-25' : 'bg-gray-50';
+	const handleAdd = () => {
+		onAdd(item.id);
+		setIsExpanded(true);
+	};
+
+	const baseBgColor = level === 0 ? 'bg-gray-25' : 'bg-gray-50';
+	const rowBgColor = isExpanded ? 'bg-gray-200' : baseBgColor;
 	const borderColor = 'border-gray-200';
 	const hoverColor = 'hover:!bg-gray-75';
 
 	return (
-		<div className="space-y-1">
+		<div className="flex-1 nbg w-full h-full min-w-0 min-h-0">
 			<div
-				className={`${bgColor} ${borderColor} border rounded-lg p-2 transition-all duration-200 ${hoverColor}`}
-				style={{ marginLeft: `${level * 12}px` }}
+				className={`${rowBgColor} ${borderColor} border rounded-lg pr-2 pl-2 transition-all duration-200 ${hoverColor}`}
+				style={{ marginLeft: `${level * 32}px` }}
 			>
 				<div className="flex items-center gap-1.5">
 					{/* Expand Button */}
-                     <Button type="text" icon={<PlusSquareOutlined />} disabled={isLoading} onClick={handleExpand} />
-					{/* <button
-						onClick={handleExpand}
+					<ButtonAntd
+						size="small"
+						type="default"
 						disabled={isLoading}
-						
-					>
-						{isLoading ? <PlusSquareOutlined /> : <PlusSquareOutlined />}
-					</button> */}
+						onClick={handleExpand}
+						icon={isExpanded ? <DownOutlined /> : <RightOutlined />}
+					/>
 
 					{/* Item Content */}
 					<div className="flex-1 min-w-0">
@@ -75,33 +81,18 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 					<div className="flex items-center gap-0.5">
 						{/* Add Subclass Button */}
 						{canHaveSubclasses && (
-							<button
-								onClick={() => onAdd(item.id)}
-								className={`p-1 rounded transition-colors flex-shrink-0 ${
-									isExpanded ? `${hoverColor} text-slate-600 hover:text-slate-900` : 'opacity-30 cursor-not-allowed'
-								}`}
-								disabled={!isExpanded}
-								title={isExpanded ? 'Agregar subclase' : 'Expande el nodo primero'}
-							>
-								<CaretRightOutlined />
-							</button>
+							<ButtonAntd type="default" icon={<PlusOutlined />} size="small" onClick={handleAdd} />
 						)}
 
 						{/* Toggle Active Button */}
-						<button
-							onClick={() => onToggleActive(item.id)}
-							className={`p-1 rounded transition-colors ${hoverColor} flex-shrink-0 text-slate-600 hover:text-slate-900`}
-							title={item.active ? 'Desactivar' : 'Activar'}
-						>
-							{item.active ? <CaretRightOutlined /> : <CaretRightOutlined />}
-						</button>
+						<Button type="text" label="Editar" size="small" />
 					</div>
 				</div>
 			</div>
 
 			{/* Subclasses */}
 			{isExpanded && hasSubclasses && (
-				<div className="space-y-1">
+				<div className="space-y-1 mt-1">
 					{item.subclasses!.map(subitem => (
 						<TreeNode
 							key={subitem.id}

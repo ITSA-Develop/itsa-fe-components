@@ -135,7 +135,7 @@ export function TreeClassifier() {
 	};
 
 	return (
-		<div className="space-y-2 p-4">
+		<div className="space-y-2 w-full h-full">
 			<div className="flex justify-between items-center pb-2 border-b !border-gray-200">
 				<h2 className="text-sm font-semibold text-slate-900">Estructura de Clases</h2>
 				<button
