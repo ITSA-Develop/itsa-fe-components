@@ -2,27 +2,20 @@
 
 import { useState } from 'react';
 import { TreeNode } from '../index';
-
-interface ClassItem {
-	id: string;
-	name: string;
-	active: boolean;
-	subclasses?: ClassItem[];
-	loaded?: boolean;
-}
+import { IClassItemTreeNode } from '@/interfaces';
 
 export function TreeClassifier() {
-	const [items, setItems] = useState<ClassItem[]>([
+	const [items, setItems] = useState<IClassItemTreeNode[]>([
 		{
 			id: '1',
-			name: 'Clase Principal 1',
+			description: 'Clase Principal 1',
 			active: true,
 			subclasses: [],
 			loaded: false,
 		},
 		{
 			id: '2',
-			name: 'Clase Principal 2',
+			description: 'Clase Principal 2',
 			active: true,
 			subclasses: [],
 			loaded: false,
@@ -37,7 +30,7 @@ export function TreeClassifier() {
 				...items,
 				{
 					id: newId,
-					name: `Nueva Clase ${items.length + 1}`,
+					description: `Nueva Clase ${items.length + 1}`,
 					active: true,
 					subclasses: [],
 					loaded: false,
@@ -48,7 +41,7 @@ export function TreeClassifier() {
 		}
 	};
 
-	const addItemToTree = (items: ClassItem[], parentId: string, newId: string): ClassItem[] => {
+	const addItemToTree = (items: IClassItemTreeNode[], parentId: string, newId: string): IClassItemTreeNode[] => {
 		return items.map(item => {
 			if (item.id === parentId) {
 				return {
@@ -57,7 +50,7 @@ export function TreeClassifier() {
 						...(item.subclasses || []),
 						{
 							id: newId,
-							name: `Nueva Subclase ${(item.subclasses?.length || 0) + 1}`,
+							description: `Nueva Subclase ${(item.subclasses?.length || 0) + 1}`,
 							active: true,
 							subclasses: [],
 							loaded: false,
@@ -76,7 +69,7 @@ export function TreeClassifier() {
 		setItems(toggleActiveInTree(items, itemId));
 	};
 
-	const toggleActiveInTree = (items: ClassItem[], itemId: string): ClassItem[] => {
+	const toggleActiveInTree = (items: IClassItemTreeNode[], itemId: string): IClassItemTreeNode[] => {
 		return items.map(item => {
 			if (item.id === itemId) {
 				return { ...item, active: !item.active };
@@ -93,7 +86,7 @@ export function TreeClassifier() {
 		setItems(loadSubclassesInTree(items, itemId));
 	};
 
-	const loadSubclassesInTree = (items: ClassItem[], itemId: string): ClassItem[] => {
+	const loadSubclassesInTree = (items: IClassItemTreeNode[], itemId: string): IClassItemTreeNode[] => {
 		return items.map(item => {
 			if (item.id === itemId) {
 				if (!item.loaded) {
@@ -103,21 +96,21 @@ export function TreeClassifier() {
 						subclasses: [
 							{
 								id: `${itemId}-sub-1`,
-								name: 'Subclase A',
+								description: 'Subclase A',
 								active: true,
 								subclasses: [],
 								loaded: false,
 							},
 							{
 								id: `${itemId}-sub-2`,
-								name: 'Subclase B',
+								description: 'Subclase B',
 								active: true,
 								subclasses: [],
 								loaded: false,
 							},
 							{
 								id: `${itemId}-sub-3`,
-								name: 'Subclase C',
+								description: 'Subclase C',
 								active: true,
 								subclasses: [],
 								loaded: false,

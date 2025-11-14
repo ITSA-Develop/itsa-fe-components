@@ -1,21 +1,13 @@
-'use client';
-
 import { useState } from 'react';
-// import { ChevronRight, Plus, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { DownOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { Button } from '../Button';
 import { Button as ButtonAntd } from 'antd';
+import { IClassItemTreeNode } from '@/interfaces';
 
-interface ClassItem {
-	id: string;
-	name: string;
-	active: boolean;
-	subclasses?: ClassItem[];
-	loaded?: boolean;
-}
+
 
 interface TreeNodeProps {
-	item: ClassItem;
+	item: IClassItemTreeNode;
 	level: number;
 	onAdd: (parentId: string) => void;
 	onToggleActive: (itemId: string) => void;
@@ -27,7 +19,7 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 	const [isLoading, setIsLoading] = useState(false);
 
 	const hasSubclasses = item.subclasses && item.subclasses.length > 0;
-	const canHaveSubclasses = level < 20; // Limitar profundidad
+	const canHaveSubclasses = level < 20;
 
 	const handleExpand = async () => {
 		if (isExpanded) {
@@ -73,7 +65,7 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 						<p
 							className={`text-slate-900 font-medium text-xs truncate ${!item.active ? 'opacity-40 line-through' : ''}`}
 						>
-							{item.name}
+							{item.description}
 						</p>
 					</div>
 

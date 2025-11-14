@@ -1,14 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { TreeNode } from '../../components/TreeNode';
-
-interface ClassItem {
-	id: string;
-	name: string;
-	active: boolean;
-	subclasses?: ClassItem[];
-	loaded?: boolean;
-}
+import { IClassItemTreeNode } from '../../interfaces';
 
 type Story = StoryObj<typeof TreeNode>;
 
@@ -20,7 +13,7 @@ const meta: Meta<typeof TreeNode> = {
 
 export default meta;
 
-function updateNodeById(root: ClassItem, targetId: string, updater: (node: ClassItem) => ClassItem): ClassItem {
+function updateNodeById(root: IClassItemTreeNode, targetId: string, updater: (node: IClassItemTreeNode) => IClassItemTreeNode): IClassItemTreeNode {
 	if (root.id === targetId) {
 		return updater(root);
 	}
@@ -33,15 +26,15 @@ function updateNodeById(root: ClassItem, targetId: string, updater: (node: Class
 	};
 }
 
-const TreePlayground: React.FC<{ initialRoot: ClassItem }> = ({ initialRoot }) => {
-	const [root, setRoot] = useState<ClassItem>(initialRoot);
+const TreePlayground: React.FC<{ initialRoot: IClassItemTreeNode }> = ({ initialRoot }) => {
+	const [root, setRoot] = useState<IClassItemTreeNode>(initialRoot);
 
 	const handleAdd = useCallback((parentId: string) => {
 		setRoot(prev =>
 			updateNodeById(prev, parentId, node => {
-				const newChild: ClassItem = {
+				const newChild: IClassItemTreeNode = {
 					id: `${node.id}-${(node.subclasses?.length || 0) + 1}`,
-					name: `Nueva subclase ${(node.subclasses?.length || 0) + 1}`,
+					description: `Nueva subclase ${(node.subclasses?.length || 0) + 1}`,
 					active: true,
 					subclasses: [],
 					loaded: true,
@@ -76,9 +69,21 @@ const TreePlayground: React.FC<{ initialRoot: ClassItem }> = ({ initialRoot }) =
 					subclasses: alreadyHas
 						? node.subclasses
 						: [
-								{ id: `${node.id}-a`, name: `${node.name} A`, active: true, subclasses: [], loaded: true },
-								{ id: `${node.id}-b`, name: `${node.name} B`, active: true, subclasses: [], loaded: true },
-						  ],
+								{
+									id: `${node.id}-a`,
+									description: `${node.description} A`,
+									active: true,
+									subclasses: [],
+									loaded: true,
+								},
+								{
+									id: `${node.id}-b`,
+									description: `${node.description} B`,
+									active: true,
+									subclasses: [],
+									loaded: true,
+								},
+							],
 					loaded: true,
 				};
 			}),
@@ -95,25 +100,25 @@ const TreePlayground: React.FC<{ initialRoot: ClassItem }> = ({ initialRoot }) =
 export const Basic: Story = {
 	name: 'Básico',
 	render: () => {
-		const initial: ClassItem = {
+		const initial: IClassItemTreeNode = {
 			id: 'root',
-			name: 'Clasificador raíz',
+			description: 'Clasificador raíz',
 			active: true,
 			loaded: true,
 			subclasses: [
 				{
 					id: 'root-1',
-					name: 'Nivel 1 - A',
+					description: 'Nivel 1 - A',
 					active: true,
 					loaded: true,
 					subclasses: [
-						{ id: 'root-1-1', name: 'Nivel 2 - A1', active: true, loaded: true, subclasses: [] },
-						{ id: 'root-1-2', name: 'Nivel 2 - A2', active: false, loaded: true, subclasses: [] },
+						{ id: 'root-1-1', description: 'Nivel 2 - A1', active: true, loaded: true, subclasses: [] },
+						{ id: 'root-1-2', description: 'Nivel 2 - A2', active: false, loaded: true, subclasses: [] },
 					],
 				},
 				{
 					id: 'root-2',
-					name: 'Nivel 1 - B',
+					description: 'Nivel 1 - B',
 					active: true,
 					loaded: true,
 					subclasses: [],
@@ -127,9 +132,9 @@ export const Basic: Story = {
 export const LazyLoading: Story = {
 	name: 'Carga diferida',
 	render: () => {
-		const initial: ClassItem = {
+		const initial: IClassItemTreeNode	 = {
 			id: 'root-lazy',
-			name: 'Raíz (lazy)',
+			description: 'Raíz (lazy)',
 			active: true,
 			loaded: false,
 			subclasses: [],
