@@ -180,7 +180,7 @@ export type TNotificationProps ={
 
 export type MakeFunctionParamsOptional<F> = F extends (...args: infer P) => infer R ? (...args: Partial<P>) => R : never;
 
-
+export type TTextTransform = 'capitalize' | 'full-size-kana' | 'full-width' | 'lowercase' | 'none' | 'uppercase';
 
 
 

@@ -5,6 +5,8 @@ import { FormLabelError } from '@/components/FormLabelError';
 import { Input } from '@/components/Input/Input';
 import { memo, useId, useMemo } from 'react';
 import { EInput } from '@/enums';
+import { TTextTransform } from '@/types';
+
 
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
@@ -15,6 +17,7 @@ export interface IInputProps<TFieldValues extends FieldValues> extends Omit<Inpu
 	errorIdentificationExists?: string;
 	autoComplete?: string;
 	disabled?: boolean;
+	textTransform?: TTextTransform;
 }
 
 const FormInputComponent = <TFieldValues extends FieldValues>({
@@ -26,6 +29,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	errorIdentificationExists,
 	autoComplete = 'off',
 	disabled = false,
+	textTransform = 'uppercase',
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -45,13 +49,21 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 					}
 					return undefined;
 				}, [errorMsg, errorIdentificationExists]);
+
+				const normalizedValueUppercase = useMemo(() => {
+					if (field.value === undefined || field.value === null) {
+						return undefined;
+					}
+					return field.value.toUpperCase();
+				}, [field.value]);
+
 				return (
 					<div className="flex flex-col gap-1">
 						<FormLabel label={label} htmlFor={id} />
 						<Input
 							id={id as string}
 							type={EInput.text}
-							value={(field.value as string | undefined) ?? ''}
+							value={normalizedValueUppercase ?? ''}
 							onChange={field.onChange}
 							onBlur={field.onBlur}
 							ref={field.ref}
@@ -63,6 +75,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							placeholder={placeholder}
 							autoComplete={autoComplete}
 							disabled={disabled}
+							style={{ textTransform: textTransform }}
 						/>
 						{(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
 					</div>
