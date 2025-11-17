@@ -4,9 +4,7 @@ import { Button } from '../Button';
 import { Button as ButtonAntd } from 'antd';
 import { IClassItemTreeNode } from '@/interfaces';
 
-
-
-interface TreeNodeProps {
+export interface ITreeNodeProps {
 	item: IClassItemTreeNode;
 	level: number;
 	onAdd: (parentId: string) => void;
@@ -14,11 +12,11 @@ interface TreeNodeProps {
 	onLoadSubclasses: (itemId: string) => Promise<void>;
 }
 
-export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses }: TreeNodeProps) {
+export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses }: ITreeNodeProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const hasSubclasses = item.subclasses && item.subclasses.length > 0;
+	const hasSubclasses = item.children && item.children.length > 0;
 	const canHaveSubclasses = level < 20;
 
 	const handleExpand = async () => {
@@ -85,7 +83,7 @@ export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses 
 			{/* Subclasses */}
 			{isExpanded && hasSubclasses && (
 				<div className="space-y-1 mt-1">
-					{item.subclasses!.map(subitem => (
+					{item.children!.map(subitem => (
 						<TreeNode
 							key={subitem.id}
 							item={subitem}

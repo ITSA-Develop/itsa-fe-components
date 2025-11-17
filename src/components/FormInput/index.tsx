@@ -7,7 +7,6 @@ import { memo, useId, useMemo } from 'react';
 import { EInput } from '@/enums';
 import { TTextTransform } from '@/types';
 
-
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
 	label: string;
@@ -53,6 +52,12 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 				const normalizedValueUppercase = useMemo(() => {
 					if (field.value === undefined || field.value === null) {
 						return undefined;
+					}
+					if (textTransform === 'none') {
+						return field.value;
+					}
+					if (textTransform === 'lowercase') {
+						return field.value.toLowerCase();
 					}
 					return field.value.toUpperCase();
 				}, [field.value]);

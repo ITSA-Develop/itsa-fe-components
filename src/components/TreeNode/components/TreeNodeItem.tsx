@@ -5,22 +5,7 @@ import { TreeNode } from '../index';
 import { IClassItemTreeNode } from '@/interfaces';
 
 export function TreeClassifier() {
-	const [items, setItems] = useState<IClassItemTreeNode[]>([
-		{
-			id: '1',
-			description: 'Clase Principal 1',
-			active: true,
-			subclasses: [],
-			loaded: false,
-		},
-		{
-			id: '2',
-			description: 'Clase Principal 2',
-			active: true,
-			subclasses: [],
-			loaded: false,
-		},
-	]);
+	const [items, setItems] = useState<IClassItemTreeNode[]>([]);
 
 	const handleAddItem = (parentId: string | null) => {
 		const newId = `${Date.now()}-${Math.random()}`;
@@ -32,7 +17,7 @@ export function TreeClassifier() {
 					id: newId,
 					description: `Nueva Clase ${items.length + 1}`,
 					active: true,
-					subclasses: [],
+					children: [],
 					loaded: false,
 				},
 			]);
@@ -46,13 +31,13 @@ export function TreeClassifier() {
 			if (item.id === parentId) {
 				return {
 					...item,
-					subclasses: [
-						...(item.subclasses || []),
+					children: [
+						...(item.children || []),
 						{
 							id: newId,
-							description: `Nueva Subclase ${(item.subclasses?.length || 0) + 1}`,
+							description: `Nueva Subclase ${(item.children?.length || 0) + 1}`,
 							active: true,
-							subclasses: [],
+							children: [],
 							loaded: false,
 						},
 					],
@@ -60,7 +45,7 @@ export function TreeClassifier() {
 			}
 			return {
 				...item,
-				subclasses: item.subclasses ? addItemToTree(item.subclasses, parentId, newId) : undefined,
+				children: item.children ? addItemToTree(item.children, parentId, newId) : undefined,
 			};
 		});
 	};
@@ -76,7 +61,7 @@ export function TreeClassifier() {
 			}
 			return {
 				...item,
-				subclasses: item.subclasses ? toggleActiveInTree(item.subclasses, itemId) : undefined,
+				children: item.children ? toggleActiveInTree(item.children, itemId) : undefined,
 			};
 		});
 	};
@@ -93,36 +78,14 @@ export function TreeClassifier() {
 					return {
 						...item,
 						loaded: true,
-						subclasses: [
-							{
-								id: `${itemId}-sub-1`,
-								description: 'Subclase A',
-								active: true,
-								subclasses: [],
-								loaded: false,
-							},
-							{
-								id: `${itemId}-sub-2`,
-								description: 'Subclase B',
-								active: true,
-								subclasses: [],
-								loaded: false,
-							},
-							{
-								id: `${itemId}-sub-3`,
-								description: 'Subclase C',
-								active: true,
-								subclasses: [],
-								loaded: false,
-							},
-						],
+						children: item.children ?? [],
 					};
 				}
 				return item;
 			}
 			return {
 				...item,
-				subclasses: item.subclasses ? loadSubclassesInTree(item.subclasses, itemId) : undefined,
+				children: item.children ? loadSubclassesInTree(item.children, itemId) : undefined,
 			};
 		});
 	};

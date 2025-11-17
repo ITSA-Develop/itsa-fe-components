@@ -17,12 +17,12 @@ function updateNodeById(root: IClassItemTreeNode, targetId: string, updater: (no
 	if (root.id === targetId) {
 		return updater(root);
 	}
-	if (!root.subclasses || root.subclasses.length === 0) {
+	if (!root.children || root.children.length === 0) {
 		return root;
 	}
 	return {
 		...root,
-		subclasses: root.subclasses.map(child => updateNodeById(child, targetId, updater)),
+		children: root.children.map(child => updateNodeById(child, targetId, updater)),
 	};
 }
 
@@ -33,15 +33,15 @@ const TreePlayground: React.FC<{ initialRoot: IClassItemTreeNode }> = ({ initial
 		setRoot(prev =>
 			updateNodeById(prev, parentId, node => {
 				const newChild: IClassItemTreeNode = {
-					id: `${node.id}-${(node.subclasses?.length || 0) + 1}`,
-					description: `Nueva subclase ${(node.subclasses?.length || 0) + 1}`,
+					id: `${node.id}-${(node.children?.length || 0) + 1}`,
+					description: `Nueva subclase ${(node.children?.length || 0) + 1}`,
 					active: true,
-					subclasses: [],
+					children: [],
 					loaded: true,
 				};
 				return {
 					...node,
-					subclasses: [...(node.subclasses || []), newChild],
+					children: [...(node.children || []), newChild],
 					loaded: true,
 				};
 			}),
@@ -63,24 +63,24 @@ const TreePlayground: React.FC<{ initialRoot: IClassItemTreeNode }> = ({ initial
 		setRoot(prev =>
 			updateNodeById(prev, itemId, node => {
 				// Solo poblar si no tenía subclases
-				const alreadyHas = node.subclasses && node.subclasses.length > 0;
+				const alreadyHas = node.children && node.children.length > 0;
 				return {
 					...node,
-					subclasses: alreadyHas
-						? node.subclasses
+					children: alreadyHas
+						? node.children
 						: [
 								{
 									id: `${node.id}-a`,
 									description: `${node.description} A`,
 									active: true,
-									subclasses: [],
+									children: [],
 									loaded: true,
 								},
 								{
 									id: `${node.id}-b`,
 									description: `${node.description} B`,
 									active: true,
-									subclasses: [],
+									children: [],
 									loaded: true,
 								},
 							],
@@ -105,15 +105,15 @@ export const Basic: Story = {
 			description: 'Clasificador raíz',
 			active: true,
 			loaded: true,
-			subclasses: [
+			children: [
 				{
 					id: 'root-1',
 					description: 'Nivel 1 - A',
 					active: true,
 					loaded: true,
-					subclasses: [
-						{ id: 'root-1-1', description: 'Nivel 2 - A1', active: true, loaded: true, subclasses: [] },
-						{ id: 'root-1-2', description: 'Nivel 2 - A2', active: false, loaded: true, subclasses: [] },
+					children: [
+						{ id: 'root-1-1', description: 'Nivel 2 - A1', active: true, loaded: true, children: [] },
+						{ id: 'root-1-2', description: 'Nivel 2 - A2', active: false, loaded: true, children: [] },
 					],
 				},
 				{
@@ -121,7 +121,7 @@ export const Basic: Story = {
 					description: 'Nivel 1 - B',
 					active: true,
 					loaded: true,
-					subclasses: [],
+					children: [],
 				},
 			],
 		};
@@ -137,7 +137,7 @@ export const LazyLoading: Story = {
 			description: 'Raíz (lazy)',
 			active: true,
 			loaded: false,
-			subclasses: [],
+			children: [],
 		};
 		return <TreePlayground initialRoot={initial} />;
 	},

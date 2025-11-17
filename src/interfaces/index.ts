@@ -308,6 +308,6 @@ export interface IClassItemTreeNode {
 	id: string;
 	description: ReactNode;
 	active: boolean;
-	subclasses?: IClassItemTreeNode[];
+	children?: IClassItemTreeNode[];
 	loaded?: boolean;
 }
