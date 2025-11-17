@@ -304,10 +304,11 @@ export interface IMapMarker {
 	label: string;
 }
 
-export interface IClassItemTreeNode {
-	id: string;
+export interface IItemTreeNode {
+	id: number;
 	description: ReactNode;
 	active: boolean;
-	children?: IClassItemTreeNode[];
-	loaded?: boolean;
+	children: IItemTreeNode[];
+	onAdd?: (parent: IItemTreeNode) => void;
+	onToggleActive?: (itemId: number) => void;
 }

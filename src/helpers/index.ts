@@ -52,6 +52,7 @@ import {
 } from './urls';
 
 import { normalizeStatus, uppercaseStrings } from './functions';
+import { attachHandlersToTree } from './treeNode';
 
 export {
 	addOrderParamIfMissing,
@@ -108,4 +109,5 @@ export {
 	transformModuleToMenuData,
 	uppercaseStrings,
 	updateURLParams,
+	attachHandlersToTree,
 };
