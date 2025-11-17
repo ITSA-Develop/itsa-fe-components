@@ -1,100 +1,170 @@
-import { useState } from 'react';
-import { DownOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
-import { Button } from '../Button';
+import React, { useEffect } from 'react';
+import { IItemTreeNode } from '@/interfaces';
+import { PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { Button as ButtonAntd } from 'antd';
-import { IClassItemTreeNode } from '@/interfaces';
+import { Button } from '@/components/Button';
+import { TagStatus } from '@/components/TagStatus';
+import { ETreeNodeTypeComponent } from '@/enums';
+import { TTreeNodeTypeComponent } from '@/types';
 
 export interface ITreeNodeProps {
-	item: IClassItemTreeNode;
-	level: number;
-	onAdd: (parentId: string) => void;
-	onToggleActive: (itemId: string) => void;
-	onLoadSubclasses: (itemId: string) => Promise<void>;
+	items: IItemTreeNode[];
+	onEdit: (node: IItemTreeNode, parentId?: number) => void;
+	onAddChild: (parent: IItemTreeNode) => void;
+	onExpandParent?: (parent: IItemTreeNode, isExpanded: boolean) => void;
+	onSelectNode?: (node: IItemTreeNode) => void;
+	defaultExpandedIds?: number[];
+	type?: TTreeNodeTypeComponent;
 }
 
-export function TreeNode({ item, level, onAdd, onToggleActive, onLoadSubclasses }: ITreeNodeProps) {
-	const [isExpanded, setIsExpanded] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
+export const TreeNode: React.FC<ITreeNodeProps> = ({
+	items,
+	onEdit,
+	onAddChild,
+	onExpandParent,
+	onSelectNode,
+	defaultExpandedIds,
+	type = 'CRUD',
+}) => {
+	const [expandedIds, setExpandedIds] = React.useState<Set<number>>(() => new Set(defaultExpandedIds ?? []));
+	const prevChildrenCountRef = React.useRef<Map<number, number> | null>(null);
 
-	const hasSubclasses = item.children && item.children.length > 0;
-	const canHaveSubclasses = level < 20;
+	const buildChildrenCountMap = (nodes: IItemTreeNode[]): Map<number, number> => {
+		const map = new Map<number, number>();
+		const walk = (n: IItemTreeNode) => {
+			map.set(n.id, n.children?.length ?? 0);
+			n.children?.forEach(walk);
+		};
+		nodes.forEach(walk);
+		return map;
+	};
 
-	const handleExpand = async () => {
-		if (isExpanded) {
-			setIsExpanded(false);
-		} else {
-			if (!item.loaded) {
-				setIsLoading(true);
-				await onLoadSubclasses(item.id);
-				setIsLoading(false);
+	useEffect(() => {
+		const currentMap = buildChildrenCountMap(items);
+		const prevMap = prevChildrenCountRef.current;
+		if (prevMap) {
+			const parentsToExpand: number[] = [];
+			currentMap.forEach((count, id) => {
+				const prevCount = prevMap.get(id) ?? 0;
+				if (count > prevCount) {
+					parentsToExpand.push(id);
+				}
+			});
+			if (parentsToExpand.length > 0) {
+				setExpandedIds(prev => {
+					const next = new Set(prev);
+					parentsToExpand.forEach(id => next.add(id));
+					return next;
+				});
 			}
-			setIsExpanded(true);
 		}
+		prevChildrenCountRef.current = currentMap;
+	}, [items]);
+
+	const toggleExpanded = (id: number) => {
+		setExpandedIds(prev => {
+			const next = new Set(prev);
+			if (next.has(id)) next.delete(id);
+			else next.add(id);
+			return next;
+		});
 	};
 
-	const handleAdd = () => {
-		onAdd(item.id);
-		setIsExpanded(true);
+	const handleEdit = (node: IItemTreeNode, parentId?: number) => {
+		onEdit(node, parentId);
+	};
+	const handleAddChild = (node: IItemTreeNode) => {
+		onAddChild?.(node);
+	};
+	const handleExpandParent = (node: IItemTreeNode, isExpanded: boolean) => {
+		if (onExpandParent) {
+			onExpandParent(node, !isExpanded);
+		}
+		toggleExpanded(node.id);
 	};
 
-	const baseBgColor = level === 0 ? 'bg-gray-25' : 'bg-gray-50';
-	const rowBgColor = isExpanded ? 'bg-gray-200' : baseBgColor;
-	const borderColor = 'border-gray-200';
-	const hoverColor = 'hover:!bg-gray-75';
+	const renderNode = (node: IItemTreeNode, parentId?: number): React.ReactNode => {
+		const level = node.level ?? 0;
+		const baseBgColor = level === 0 ? 'bg-gray-25' : 'bg-gray-50';
+		const borderColor = 'border-gray-200';
+		const hoverColor = 'hover:!bg-gray-75';
+		const isExpanded = expandedIds.has(node.id);
+		const hasChildren = (node.children?.length ?? 0) > 0;
 
-	return (
-		<div className="flex-1 nbg w-full h-full min-w-0 min-h-0">
-			<div
-				className={`${rowBgColor} ${borderColor} border rounded-lg pr-2 pl-2 transition-all duration-200 ${hoverColor}`}
-				style={{ marginLeft: `${level * 32}px` }}
-			>
-				<div className="flex items-center gap-1.5">
-					{/* Expand Button */}
-					<ButtonAntd
-						size="small"
-						type="default"
-						disabled={isLoading}
-						onClick={handleExpand}
-						icon={isExpanded ? <DownOutlined /> : <RightOutlined />}
-					/>
+		const classNameNode = `nbg w-full min-w-0 ${type === ETreeNodeTypeComponent.select ? 'cursor-pointer' : ''}`;
 
-					{/* Item Content */}
-					<div className="flex-1 min-w-0">
-						<p
-							className={`text-slate-900 font-medium text-xs truncate ${!item.active ? 'opacity-40 line-through' : ''}`}
-						>
-							{item.description}
-						</p>
-					</div>
-
-					{/* Action Buttons */}
-					<div className="flex items-center gap-0.5">
-						{/* Add Subclass Button */}
-						{canHaveSubclasses && (
-							<ButtonAntd type="default" icon={<PlusOutlined />} size="small" onClick={handleAdd} />
+		return (
+			<div key={node.id} className={classNameNode}>
+				<div
+					className={`${baseBgColor} ${isExpanded ? '!bg-gray-75' : ''} ${borderColor} border rounded-lg p-2 transition-all duration-200 ${hoverColor}`}
+					style={{ marginLeft: `${level * 32}px` }}
+					onClick={() => onSelectNode?.(node)}
+				>
+					<div className="flex items-center gap-1.5">
+						{hasChildren && (
+							<ButtonAntd
+								size="small"
+								type="default"
+								onClick={e => {
+									e.stopPropagation();
+									handleExpandParent(node, isExpanded);
+								}}
+								icon={
+									<RightOutlined
+										style={{
+											transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+										}}
+									/>
+								}
+							/>
 						)}
-
-						{/* Toggle Active Button */}
-						<Button type="text" label="Editar" size="small" />
+						<div className="flex-1 min-w-0">
+							<p
+								className={`text-slate-900 font-medium text-xs truncate ${!node.active ? 'opacity-40 line-through' : ''}`}
+							>
+								{node.name}
+							</p>
+						</div>
+						<div className="flex items-center gap-0.5">
+							<TagStatus status={node.active} />
+							{level < 20 && type === 'CRUD' && (
+								<ButtonAntd
+									type="default"
+									disabled={!node.active}
+									icon={<PlusOutlined />}
+									size="small"
+									onClick={e => {
+										e.stopPropagation();
+										handleAddChild(node);
+									}}
+								/>
+							)}
+							{type === 'CRUD' && (
+								<div
+									onClick={e => {
+										e.stopPropagation();
+									}}
+								>
+									<Button
+										type="text"
+										label="Editar"
+										size="small"
+										onClick={() => {
+											handleEdit(node, parentId);
+										}}
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* Subclasses */}
-			{isExpanded && hasSubclasses && (
-				<div className="space-y-1 mt-1">
-					{item.children!.map(subitem => (
-						<TreeNode
-							key={subitem.id}
-							item={subitem}
-							level={level + 1}
-							onAdd={onAdd}
-							onToggleActive={onToggleActive}
-							onLoadSubclasses={onLoadSubclasses}
-						/>
-					))}
-				</div>
-			)}
-		</div>
-	);
-}
+				{node.children && node.children.length > 0 && isExpanded && (
+					<div className="space-y-1 mt-1">{node.children.map(child => renderNode(child, node.id))}</div>
+				)}
+			</div>
+		);
+	};
+
+	return <div className="space-y-1">{items.map(n => renderNode(n))}</div>;
+};

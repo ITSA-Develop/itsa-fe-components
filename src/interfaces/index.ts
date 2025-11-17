@@ -303,11 +303,30 @@ export interface IMapMarker {
 	location: IMapLocation;
 	label: string;
 }
-
-export interface IClassItemTreeNode {
-	id: string;
-	description: ReactNode;
+export interface IItemTreeNode {
+	id: number;
+	name: string;
 	active: boolean;
-	children?: IClassItemTreeNode[];
-	loaded?: boolean;
+	children: IItemTreeNode[];
+	level?: number;
+	parentId?: number;
+	fatherAllName?: string;
+	fatherAllId?: number;
+}
+
+export type RawValueType = string | number;
+
+export interface FlattenOptionData<OptionType> {
+	label?: React.ReactNode;
+	data: OptionType;
+	key: React.Key;
+	value?: RawValueType;
+	groupOption?: boolean;
+	group?: boolean;
+}
+
+export interface DebounceSelectProps<ValueType = any>
+	extends Omit<SelectProps<ValueType | ValueType[]>, 'options' | 'children'> {
+	fetchOptions: (search: string) => Promise<ValueType[]>;
+	debounceTimeout?: number;
 }

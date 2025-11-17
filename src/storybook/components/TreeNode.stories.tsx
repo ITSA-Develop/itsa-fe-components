@@ -1,146 +1,248 @@
-import React, { useCallback, useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import type { StoryObj } from '@storybook/react';
 import { TreeNode } from '../../components/TreeNode';
-import { IClassItemTreeNode } from '../../interfaces';
+import type { IItemTreeNode } from '../../interfaces';
+import {
+	addChildByParentId,
+	addChildrenByParentId,
+	updateChildUnderParent,
+} from '../../helpers/treeNode';
 
-type Story = StoryObj<typeof TreeNode>;
-
-const meta: Meta<typeof TreeNode> = {
-	title: 'components/TreeNode',
+const meta = {
+	title: 'Components/TreeNode',
 	component: TreeNode,
-	parameters: { layout: 'centered' },
+	tags: ['autodocs'],
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				component:
+					'Estructura en árbol básica. Acepta una lista de nodos raíz en la prop "items", cada uno con sus "children".',
+			},
+		},
+	},
+	argTypes: {
+		items: {
+			control: 'object',
+			description:
+				'Lista de nodos raíz. Cada nodo incluye id, description, active, level y children.',
+		},
+		onEdit: {
+			action: 'onEdit',
+			description:
+				'Callback al presionar el botón "Editar" de un nodo. Recibe el nodo y el id del padre (opcional).',
+		},
+	},
 };
 
 export default meta;
 
-function updateNodeById(root: IClassItemTreeNode, targetId: string, updater: (node: IClassItemTreeNode) => IClassItemTreeNode): IClassItemTreeNode {
-	if (root.id === targetId) {
-		return updater(root);
-	}
-	if (!root.children || root.children.length === 0) {
-		return root;
-	}
-	return {
-		...root,
-		children: root.children.map(child => updateNodeById(child, targetId, updater)),
-	};
-}
+type Story = StoryObj<typeof meta>;
 
-const TreePlayground: React.FC<{ initialRoot: IClassItemTreeNode }> = ({ initialRoot }) => {
-	const [root, setRoot] = useState<IClassItemTreeNode>(initialRoot);
-
-	const handleAdd = useCallback((parentId: string) => {
-		setRoot(prev =>
-			updateNodeById(prev, parentId, node => {
-				const newChild: IClassItemTreeNode = {
-					id: `${node.id}-${(node.children?.length || 0) + 1}`,
-					description: `Nueva subclase ${(node.children?.length || 0) + 1}`,
-					active: true,
-					children: [],
-					loaded: true,
-				};
-				return {
-					...node,
-					children: [...(node.children || []), newChild],
-					loaded: true,
-				};
-			}),
-		);
-	}, []);
-
-	const handleToggleActive = useCallback((itemId: string) => {
-		setRoot(prev =>
-			updateNodeById(prev, itemId, node => ({
-				...node,
-				active: !node.active,
-			})),
-		);
-	}, []);
-
-	const handleLoadSubclasses = useCallback(async (itemId: string) => {
-		// Simula carga remota
-		await new Promise(resolve => setTimeout(resolve, 600));
-		setRoot(prev =>
-			updateNodeById(prev, itemId, node => {
-				// Solo poblar si no tenía subclases
-				const alreadyHas = node.children && node.children.length > 0;
-				return {
-					...node,
-					children: alreadyHas
-						? node.children
-						: [
-								{
-									id: `${node.id}-a`,
-									description: `${node.description} A`,
-									active: true,
-									children: [],
-									loaded: true,
-								},
-								{
-									id: `${node.id}-b`,
-									description: `${node.description} B`,
-									active: true,
-									children: [],
-									loaded: true,
-								},
-							],
-					loaded: true,
-				};
-			}),
-		);
-	}, []);
-
-	return (
-		<div  className='w-[520px]'>
-			<TreeNode item={root} level={0} onAdd={handleAdd} onToggleActive={handleToggleActive} onLoadSubclasses={handleLoadSubclasses} />
-		</div>
-	);
-};
-
-export const Basic: Story = {
-	name: 'Básico',
-	render: () => {
-		const initial: IClassItemTreeNode = {
-			id: 'root',
-			description: 'Clasificador raíz',
+const sampleItems: IItemTreeNode[] = [
+		{
+			id: 123,
+			name: 'NEW SUBCLAS 2',
 			active: true,
-			loaded: true,
+			fatherAllName: 'NEW CLASS TOYOTA TEST',
+			fatherAllId: 47,
 			children: [
 				{
-					id: 'root-1',
-					description: 'Nivel 1 - A',
+					id: 126,
+					name: 'NEW SUBCLAS N 3',
 					active: true,
-					loaded: true,
-					children: [
-						{ id: 'root-1-1', description: 'Nivel 2 - A1', active: true, loaded: true, children: [] },
-						{ id: 'root-1-2', description: 'Nivel 2 - A2', active: false, loaded: true, children: [] },
-					],
-				},
-				{
-					id: 'root-2',
-					description: 'Nivel 1 - B',
-					active: true,
-					loaded: true,
+					parentId: 123,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
 					children: [],
 				},
 			],
-		};
-		return <TreePlayground initialRoot={initial} />;
-	},
-};
-
-export const LazyLoading: Story = {
-	name: 'Carga diferida',
-	render: () => {
-		const initial: IClassItemTreeNode	 = {
-			id: 'root-lazy',
-			description: 'Raíz (lazy)',
+		},
+		{
+			id: 122,
+			name: 'NEW SUCLAS 1',
 			active: true,
-			loaded: false,
-			children: [],
-		};
-		return <TreePlayground initialRoot={initial} />;
+			fatherAllName: 'NEW CLASS TOYOTA TEST',
+			fatherAllId: 47,
+			children: [
+				{
+					id: 125,
+					name: 'NEW SUBCLAS NIVEL 1.2 UPDATe',
+					active: true,
+					parentId: 122,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
+					children: [],
+				},
+				{
+					id: 124,
+					name: 'NEW SUBCLAS NIVEL 2 UPDAT2',
+					active: true,
+					parentId: 122,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
+					children: [],
+				},
+		],
+	},
+	// {
+	// 	id: 1,
+	// 	name: 'Root 1',
+	// 	active: true,
+	// 	level: 0,
+	// 	children: [
+	// 		{
+	// 			id: 11,
+	// 			name: 'Child 1.1',
+	// 			active: true,
+	// 			level: 1,
+	// 			children: [],
+	// 		},
+	// 		{
+	// 			id: 12,
+	// 			name: 'Child 1.2',
+	// 			active: false,
+	// 			level: 1,
+	// 			children: [
+	// 				{
+	// 					id: 121,
+	// 					name: 'Child 1.2.1',
+	// 					active: true,
+	// 					level: 2,
+	// 					children: [],
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// },
+	// {
+	// 	id: 2,
+	// 	name: 'Root 2',
+	// 	active: false,
+	// 	level: 0,
+	// 	children: [
+	// 		{
+	// 			id: 21,
+	// 			name: 'Child 2.1',
+	// 			active: true,
+	// 			level: 1,
+	// 			children: [
+	// 				{
+	// 					id: 211,
+	// 					name: 'Child 2.1.1',
+	// 					active: true,
+	// 					level: 2,
+	// 					children: [],
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// },
+];
+
+export const Basic: Story = {
+	args: {
+		items: sampleItems,
+		onEdit: (_node, _parentId) => {},
+		onAddChild: () => {},
+		onExpandParent: () => {},
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Ejemplo con una estructura de 2 raíces y varios niveles de anidación.',
+			},
+		},
 	},
 };
 
 
+export const InteractiveHelpersDemo: Story = {
+	args: {
+		items: sampleItems,
+		onEdit: (_node, _parentId) => {},
+		onAddChild: () => {},
+		onExpandParent: () => {},
+	},
+	render: args => {
+		const [items, setItems] = React.useState<IItemTreeNode[]>(args.items);
+		return (
+			<div className="flex flex-col gap-4 h-[60dvh]">
+				<div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+					<button
+						onClick={() =>
+							setItems(prev =>
+								addChildByParentId(prev, 1, {
+									id: Math.floor(Math.random() * 10000),
+									description: <span>Child (added via demo)</span>,
+									active: true,
+									level: 1,
+									children: [],
+								}),
+							)
+						}
+					>
+						Add child under Root 1
+					</button>
+					<button
+						onClick={() =>
+							setItems(prev =>
+								addChildrenByParentId(prev, 12, [
+									{
+										id: Math.floor(Math.random() * 10000),
+										description: <span>Child 1.2.X (added via demo)</span>,
+										active: true,
+										level: 2,
+										children: [],
+									},
+									{
+										id: Math.floor(Math.random() * 10000),
+										description: <span>Child 1.2.Y (added via demo)</span>,
+										active: false,
+										level: 2,
+										children: [],
+									},
+								]),
+							)
+						}
+					>
+						Add children under Child 1.2
+					</button>
+					<button
+						onClick={() =>
+							setItems(prev =>
+								updateChildUnderParent(prev, 1, {
+									id: 11,
+									description: <span>Child 1.1 (updated via demo)</span>,
+									active: false,
+									level: 1,
+									children: [],
+								}),
+							)
+						}
+					>
+						Update Child 1.1 under Root 1
+					</button>
+				</div>
+				<TreeNode
+					type="SELECT"
+					items={items}
+					defaultExpandedIds={[1, 12]}
+					onEdit={args.onEdit}
+					onAddChild={args.onAddChild}
+					onExpandParent={args.onExpandParent}
+				/>
+			</div>
+		);
+	},
+	argTypes: { items: { control: false } },
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Demostración interactiva: usa botones externos para invocar las funciones helper y actualizar el árbol en vivo. Los botones internos del componente son no-ops.',
+			},
+		},
+	},
+};

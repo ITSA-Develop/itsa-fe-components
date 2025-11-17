@@ -10,13 +10,12 @@ import {
 	TableProps as AntTableProps,
 	Button,
 	Dropdown,
-	TableColumnsType,
 	TablePaginationConfig,
 	Modal,
 } from 'antd';
-import { TableLocale } from 'antd/es/table/interface';
+import { ColumnsType, TableLocale } from 'antd/es/table/interface';
 import { useState } from 'react';
-
+import type { TableProps as RcTableProps } from 'rc-table';
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
@@ -27,7 +26,9 @@ export interface ITableProps<T extends object> {
 	rowSelection?: AntTableProps<T>['rowSelection'];
 	showPagination?: boolean;
 	paginationConfig?: TablePaginationConfig;
-	scroll?: { x?: string | number | true; y?: string | number };
+	scroll?: RcTableProps<T>['scroll'] & {
+		scrollToFirstRowOnChange?: boolean;
+	};
 	showColumnActions?: boolean;
 	columnActions?: ITableColumnAction<T>[];
 	getActionsDisabled?: (record: T) => boolean;
@@ -126,49 +127,80 @@ export const Table = <T extends object>({
 		setConfirmModalState({ open: false, action: null, record: null });
 	};
 
-	const finalColumns = (): TStrictTableColumnsType<T> => {
-		if (showColumnActions) {
-			const actionsColumn: TStrictColumnType<T> = {
-				title: '',
-				key: 'actions',
-				width: 64,
-				align: 'center',
-				render: (record: T) => (
-					<Dropdown
-						disabled={!!getActionsDisabled?.(record)}
-						placement="bottomRight"
-						menu={{
-							items: (columnActions || [])
-								.filter(action => {
-									const hasPermission = disabledActionButton(action.actionType, actions);
-									const actionDisabled =
-										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
-									return !hasPermission && !actionDisabled;
-								})
-								.map((action, index) => ({
-									label: action.title,
-									key: action.key || `action-${index}`,
-									icon: action.icon,
-									onClick: () => clickAction(action, record),
-									danger: action.danger,
-								})),
-						}}
+const finalColumns = (): TStrictTableColumnsType<T> => {
+	if (showColumnActions) {
+		const actionsColumn: TStrictColumnType<T> = {
+			title: '',
+			key: 'actions',
+			width: 64,
+			align: 'center',
+			fixed: 'right',
+			render: (record: T) => (
+				<Dropdown
+					disabled={!!getActionsDisabled?.(record)}
+					placement="bottomRight"
+					menu={{
+						items: (columnActions || [])
+							.filter(action => {
+								const hasPermission = disabledActionButton(action.actionType, actions);
+								const actionDisabled =
+									typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+								return !hasPermission && !actionDisabled;
+							})
+							.map((action, index) => ({
+								label: action.title,
+								key: action.key || `action-${index}`,
+								icon: action.icon,
+								onClick: () => clickAction(action, record),
+								danger: action.danger,
+							})),
+					}}
+				>
+					<Button
+						type="text"
+						shape="round"
+						size="small"
+						className="w-full"
+						disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
 					>
-						<Button
-							type="text"
-							shape="round"
-							size="small"
-							className="w-full"
-							disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
-						>
-							<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
-						</Button>
-					</Dropdown>
-				),
-			};
-			return [...columns, actionsColumn];
+						<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
+					</Button>
+				</Dropdown>
+			),
+		};
+		return [...columns, actionsColumn];
+	}
+	return columns;
+};
+
+	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
+	const getFinalScroll = () => {
+		const columnsWithFixed = finalColumns().some(col => col.fixed === 'left' || col.fixed === 'right');
+		
+		if (!columnsWithFixed) {
+			return scroll;
 		}
-		return columns;
+
+		// Si hay columnas fijas, asegurar que scroll.x esté definido y sea un valor válido
+		if (scroll && typeof scroll === 'object' && 'x' in scroll && scroll.x !== undefined && scroll.x !== null) {
+			return scroll;
+		}
+
+		// Calcular el ancho total de las columnas o usar el valor por defecto
+		const totalWidth = finalColumns().reduce((sum, col) => {
+			const width = typeof col.width === 'number' ? col.width : 0;
+			return sum + width;
+		}, 0);
+
+		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
+		const baseScroll = scroll && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
+		
+		return {
+			...baseScroll,
+			x: (scroll && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null) 
+				? scroll.x 
+				: (totalWidth > 0 ? totalWidth : TABLE_SCROLL.x),
+		};
 	};
 
 	const getConfirmContent = () => {
@@ -183,14 +215,14 @@ export const Table = <T extends object>({
 	return (
 		<>
 			<AntTable<T>
-				columns={finalColumns() as TableColumnsType<T>}
+				columns={finalColumns() as ColumnsType<T>}
 				dataSource={data}
 				loading={loading}
 				bordered={bordered}
 				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
 				onChange={onChange}
 				pagination={finalPagination}
-				scroll={scroll}
+				scroll={getFinalScroll()}
 				locale={locale}
 				rowKey={rowKey}
 				rootClassName={tableRootClassName}
@@ -226,7 +258,12 @@ export const Table = <T extends object>({
 						cell: (props: any) => (
 							<td
 								{...props}
-									style={{ color: 'black', fontSize: '14px', height: '45px' }}
+								style={{
+									...props?.style,
+									color: 'black',
+									fontSize: '14px',
+									height: '45px',
+								}}
 							/>
 						),
 					},

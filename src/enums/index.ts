@@ -84,6 +84,23 @@ export enum EInputMaskFormat {
 	ruc = '#############',
 }
 
+export enum EDateMaskFormat {
+	DDMMYYYY = 'DD/MM/YYYY',
+	MMDDYYYY = 'MM/DD/YYYY',
+	YYYYMMDD = 'YYYY-MM-DD',
+	DDMMYY = 'DD/MM/YY',
+	MMDDYY = 'MM/DD/YY',
+	YYYY = 'YYYY',
+	MMYYYY = 'MM/YYYY',
+	DDMM = 'DD/MM',
+	ISO = 'YYYY-MM-DDTHH:mm:ssZ',
+	ISO_DATE = 'YYYY-MM-DD',
+	TIME = 'HH:mm:ss',
+	TIME_SHORT = 'HH:mm',
+	FULL_DATETIME = 'DD/MM/YYYY HH:mm:ss',
+	FULL_DATETIME_SHORT = 'DD/MM/YYYY HH:mm',
+}
+
 export enum EPosition {
 	top = 'top',
 	left = 'left',
@@ -243,10 +260,6 @@ export enum EOptionsFilterStatus {
 	undefined = 2,
 }
 
-export enum EUserRoleCodes {
-	adminRepuestos = 'COREP',
-	adminTalleres = 'CORTALL',
-}
 
 export enum EActionType {
 	create = 1,
@@ -277,4 +290,9 @@ export enum EMapZoom {
 	zoom18 = 18,
 	zoom19 = 19,
 	zoom20 = 20,
+}
+
+export enum ETreeNodeTypeComponent {
+	select = 'SELECT',
+	crud = 'CRUD',
 }

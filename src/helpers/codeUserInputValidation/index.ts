@@ -1,7 +1,7 @@
-import { EUserRoleCodes } from '@/enums';
+// import { EUserRoleCodes } from '@/enums';
 import { useAppLayoutStore } from '@/store';
 
-export const codeUserInputValidation = (requiredCodes: EUserRoleCodes[]) => {
+export const codeUserInputValidation = (requiredCodes: string[]) => {
 	const userRole = useAppLayoutStore.getState().userRole;
 	const codeUserRole = userRole?.code ?? '';
 	for (const requiredCode of requiredCodes) {

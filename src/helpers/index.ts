@@ -21,6 +21,7 @@ import {
 	getSchemaFields,
 	getNumberFromStorage,
 	getStringFromStorage,
+	parseValidDateITSA,
 } from './formats';
 import {
 	cleanObject,
@@ -52,6 +53,7 @@ import {
 } from './urls';
 
 import { normalizeStatus, uppercaseStrings } from './functions';
+import { handleAddChildTreeNode, updateItemTreeNodeById, addChildByParentId, addChildrenByParentId, updateChildUnderParent } from './treeNode';
 
 export {
 	addOrderParamIfMissing,
@@ -72,6 +74,7 @@ export {
 	getNumberFromStorage,
 	getStringFromStorage,
 	getInstance,
+	parseValidDateITSA,
 	generateFilteredMenu,
 	getAllMenuKeys,
 	getCurrentDate,
@@ -90,6 +93,7 @@ export {
 	getSchemaFields,
 	getMicroFrontendByPath,
 	hasAllRequiredFields,
+	handleAddChildTreeNode,
 	isArray,
 	isEmpty,
 	isNumber,
@@ -108,4 +112,8 @@ export {
 	transformModuleToMenuData,
 	uppercaseStrings,
 	updateURLParams,
+	updateItemTreeNodeById,
+	addChildByParentId,
+	addChildrenByParentId,
+	updateChildUnderParent,
 };

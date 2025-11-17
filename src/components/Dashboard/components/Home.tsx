@@ -2,19 +2,19 @@ import { IModule, ISubmodule } from '@/interfaces';
 import { useAppLayoutStore } from '@/store/appLayout.store';
 import { ButtonActiveModule } from './ButtonActiveModule';
 import { ButtonInactiveModule } from './ButtonInactiveModule';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { ButtonAntd } from '@/components/ButtonAntd';
 import { ButtonActiveSubmodule } from './ButtonActiveSubmodule';
 import { ButtonInactiveSubmodule } from './ButtonInactiveSubmodule';
-import { getIcon } from '@/helpers/menu/menuDataTransformer';
 import { Input } from 'antd';
+import { getIcon } from '@/helpers/menu/menuDataTransformer';
+import { RightOutlined, SearchOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
 
 export interface IHomeProps {
 	handleNavigateProgram: (program: ISubmodule) => void;
 }
 
 export const Home = ({ handleNavigateProgram }: IHomeProps) => {
-	// const windowWidth = useViewportStore(state => state.width);
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const setCurrentModule = useAppLayoutStore(state => state.setCurrentModule);
 	const currentSubmodule = useAppLayoutStore(state => state.currentSubmodule);
@@ -23,56 +23,104 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 	const modules = agencies?.modules ?? [];
 	const submodules = currentModule?.submodules ?? [];
 	const [searchBySubmoduleId, setSearchBySubmoduleId] = useState<Record<ISubmodule['id'], string>>({});
+	const [openGroupIds, setOpenGroupIds] = useState<Record<ISubmodule['id'], Record<string | number, boolean>>>({});
+	const tabsContainerRef = useRef<HTMLDivElement | null>(null);
+	const tabRefs = useRef<Record<ISubmodule['id'], HTMLDivElement | null>>({} as any);
+	const [indicator, setIndicator] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
+
+	const recomputeIndicator = () => {
+		if (!currentSubmodule) return;
+		const el = tabRefs.current[currentSubmodule.id];
+		const container = tabsContainerRef.current;
+		if (!el || !container) return;
+		setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+	};
+
+	useEffect(() => {
+		const id = requestAnimationFrame(recomputeIndicator);
+		const onResize = () => recomputeIndicator();
+		window.addEventListener('resize', onResize);
+		return () => {
+			window.removeEventListener('resize', onResize);
+			cancelAnimationFrame(id);
+		};
+	}, [currentSubmodule, submodules]);
 
 	const buttonHeader = (module: IModule) => {
 		if (module.id === currentModule?.id) {
-			return (
-				<ButtonActiveModule
-					name={module.name}
-					icon={module.icon}
-					onclick={() => setCurrentModule(module)}
-					type="module"
-				/>
-			);
+			return <ButtonActiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module)} />;
 		}
-		return (
-			<ButtonInactiveModule
-				name={module.name}
-				icon={module.icon}
-				onclick={() => setCurrentModule(module)}
-				type="module"
-			/>
-		);
+
+		return <ButtonInactiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module)} />;
+	};
+
+	const uniqueById = (items: ISubmodule[] = []) => {
+		const seen = new Set<number>();
+		return items.filter(item => {
+			if (seen.has(item.id)) return false;
+			seen.add(item.id);
+			return true;
+		});
 	};
 
 	const programs = (programs: ISubmodule[], isNested = false) => {
 		const paddingClass = isNested ? 'pl-3' : '';
-		return programs.map(program => (
-			<div key={program.id} className={paddingClass}>
-				<ButtonAntd
-					type="text"
-					size="small"
-					className="flex justify-start w-full !text-gray-400 hover:!text-gray-900"
-					onClick={() => handleNavigateProgram(program)}
-				>
-					<div className="flex flex-row gap-1 items-center justify-start">
-						{getIcon(program.icon, 'w-5 h-5')}
-						{program.name}
-					</div>
-				</ButtonAntd>
-			</div>
-		));
+		return programs.map(program => {
+			const iconNode = program.icon
+				? getIcon(program.icon, 'w-5 h-5 text-gray-600')
+				: <span className="inline-block w-5 h-5 rounded-sm bg-gray-100 border border-gray-300" />;
+			return (
+				<div key={`${isNested ? 'nested' : 'root'}-${program.id}`} className={`${paddingClass} border-b border-gray-200 last:border-b-0`}>
+					<ButtonAntd
+						type="text"
+						size="small"
+						className="group flex items-center justify-start w-full gap-3 px-3 py-2 !h-auto !border-b-1 !border-b-gray-200 !bg-transparent hover:!bg-gray-50 rounded-none shadow-none"
+						onClick={() => handleNavigateProgram(program)}
+					>
+						<span className="flex items-center justify-center w-5 h-5 text-gray-700">
+							{iconNode}
+						</span>
+						<span className="text-sm text-gray-800 truncate">{program.name}</span>
+					</ButtonAntd>
+				</div>
+			);
+		});
 	};
 
 	const groups = (groups: ISubmodule[]) => {
-		return groups.map(group => (
-			<div key={group.id}>
-				<div className="bg-gray-50 p-2 rounded-lg">
-					<strong>{group.name}</strong>
+		return groups.map((group, idx) => {
+			const open = openGroupIds[currentSubmodule?.id as any]?.[group.id] ?? idx === 0;
+			const toggle = () => {
+				setOpenGroupIds(prev => ({
+					...prev,
+					[currentSubmodule?.id as any]: {
+						...(prev[currentSubmodule?.id as any] ?? {}),
+						[group.id]: !open,
+					},
+				}));
+			};
+			return (
+				<div key={group.id}>
+					<ButtonAntd
+						type="text"
+						size="small"
+						className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 border border-gray-100 rounded-md"
+						onClick={toggle}
+					>
+						<div className="flex items-center gap-2 text-gray-800">
+							<SettingOutlined className="text-gray-600" />
+							<strong className="text-sm">{group.name}</strong>
+						</div>
+						{open ? (
+							<DownOutlined className="text-gray-400 text-xs" />
+						) : (
+							<RightOutlined className="text-gray-400 text-xs" />
+						)}
+					</ButtonAntd>
+					{open && <div className="pt-1 pb-2">{programs(uniqueById(group.programs ?? []), true)}</div>}
 				</div>
-				<div className="pt-0.5 pb-0.5">{programs(group.programs ?? [], true)}</div>
-			</div>
-		));
+			);
+		});
 	};
 
 	const contentSubmodule = (submodule: ISubmodule) => {
@@ -84,19 +132,25 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 			? basePrograms.filter(program => program.name.toLowerCase().includes(query))
 			: basePrograms;
 
+		const visibleProgramsUnique = uniqueById(visiblePrograms);
+
 		const visibleGroups = query
 			? baseGroups
 					.map(group => {
 						const groupMatches = group.name.toLowerCase().includes(query);
 						const filteredGroupPrograms = (group.programs ?? []).filter(p => p.name.toLowerCase().includes(query));
-						return groupMatches ? { ...group } : { ...group, programs: filteredGroupPrograms };
+						return groupMatches ? { ...group, programs: uniqueById(group.programs ?? []) } : { ...group, programs: uniqueById(filteredGroupPrograms) };
 					})
 					.filter(group => group.name.toLowerCase().includes(query) || (group.programs?.length ?? 0) > 0)
 			: baseGroups;
 
+		const groupedIds = new Set<NonNullable<ISubmodule['id']>>();
+		visibleGroups.forEach(g => (g.programs ?? []).forEach(p => groupedIds.add(p.id as any)));
+		const visibleProgramsDedup = visibleProgramsUnique.filter(p => !groupedIds.has(p.id as any));
+
 		return (
 			<div className="flex-1 p-2 min-h-0 h-full w-full overflow-y-auto">
-				<div>{programs(visiblePrograms)}</div>
+				<div>{programs(visibleProgramsDedup)}</div>
 				<div>{groups(visibleGroups)}</div>
 			</div>
 		);
@@ -127,15 +181,14 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 
 	const titlePopover = (submodule: ISubmodule) => {
 		return (
-			<div className="flex flex-row justify-center items-center gap-2 bg-gray-50 rounded-lg">
-				<div className="w-full">
-					<Input
-						placeholder="Buscar"
-						allowClear
-						value={searchBySubmoduleId[submodule.id] ?? ''}
-						onChange={e => setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: e.target.value }))}
-					/>
-				</div>
+			<div className="w-full">
+				<Input
+					placeholder="Buscar Módulo"
+					allowClear
+					suffix={<SearchOutlined className="text-gray-400" />}
+					value={searchBySubmoduleId[submodule.id] ?? ''}
+					onChange={e => setSearchBySubmoduleId(prev => ({ ...prev, [submodule.id]: e.target.value }))}
+				/>
 			</div>
 		);
 	};
@@ -143,11 +196,11 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 	const currentSubmoduleContent = useMemo(() => {
 		if (!currentSubmodule) return null;
 		return contentSubmodule(currentSubmodule);
-	}, [currentSubmodule, submodules]);
+	}, [currentSubmodule, submodules, openGroupIds, searchBySubmoduleId]);
 
 	return (
 		<div className="flex-1 h-full w-full flex flex-col">
-			<div className="h-22  w-full ">
+			<div className="h-22 w-full">
 				<div className="flex flex-col w-full overflow-x-auto overflow-y-hidden md:justify-center md:items-center">
 					<div className="flex flex-row flex-nowrap gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 justify-start items-center">
 						{modules.map(module => (
@@ -156,22 +209,36 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 					</div>
 				</div>
 			</div>
-			<div className="flex-1 flex flex-col md:flex-row min-h-0 w-full pt-2 pb-2 max-h-[64vh] overflow-y-auto">
-				<div className="flex flex-col gap-1 w-full max-h-[24vh] overflow-y-auto md:w-52 md:max-h-none md:!h-full md:overflow-y-hidden shrink-0">
+
+			<div className="w-full pt-2 ">
+				<div
+					ref={tabsContainerRef}
+					onScroll={recomputeIndicator}
+					className="relative flex flex-row flex-nowrap justify-center items-center overflow-x-auto pb-1"
+				>
 					{submodules.map(submodule => (
-						<div key={submodule.id}>{buttonSubmodule(submodule)}</div>
+						<div
+							key={submodule.id}
+							ref={el => (tabRefs.current[submodule.id] = el)}
+							className="shrink-0"
+						>
+							{buttonSubmodule(submodule)}
+						</div>
 					))}
+					<div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1px] bg-gray-200 z-0" />
+					<div
+						className="pointer-events-none absolute bottom-0 h-[1.5px] bg-primary-700 transition-all duration-300 ease-out z-10"
+						style={{ left: indicator.left, width: indicator.width }}
+					/>
 				</div>
-				<div className="flex-1 min-h-0">{currentSubmoduleContent}</div>
 			</div>
-			<div className="h-auto w-full">
-				<div>Ultimos programas visitados</div>
-				{currentSubmodule && titlePopover(currentSubmodule)}
-				{/* <div className="flex flex-row gap-1 md:!gap-2 lg:!gap-3 xl:!gap-4 flex-wrap">
-					{modules.map(module => (
-						<div key={module.id}>{buttonHeader(module)}</div>
-					))}
-				</div> */}
+
+			<div className="w-full border-t border-gray-200">
+				<div className="mt-2">{currentSubmodule && titlePopover(currentSubmodule)}</div>
+
+				<div className="flex-1 min-h-0 w-full pt-2 pb-2 max-h-[64vh] overflow-y-auto">
+					<div className="flex-1 min-h-0">{currentSubmoduleContent}</div>
+				</div>
 			</div>
 		</div>
 	);

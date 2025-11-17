@@ -1,6 +1,8 @@
 import type { StoryObj } from '@storybook/react';
-import type { IModule } from '../../interfaces';
+import type { ISubmodule } from '../../interfaces';
 import { Dashboard } from '../../components/Dashboard';
+import { useAppLayoutStore } from '../../store/appLayout.store';
+import { useEffect } from 'react';
 import { AGENCIES_DATA } from '../../constants/agencies';
 
 const meta = {
@@ -11,56 +13,47 @@ const meta = {
 		layout: 'fullscreen',
 		docs: {
 			description: {
-				component: 'Muestra la lista de módulos disponibles.',
+				component: 'Dashboard principal con navegación por módulos, submódulos y programas. Incluye búsqueda contextual, agrupación de programas, y prevención de duplicados.',
 			},
 		},
 	},
-	argTypes: {},
+	argTypes: {
+		handleNavigateProgram: {
+			description: 'Función llamada cuando se selecciona un programa',
+			action: 'program-selected',
+		},
+	},
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const sampleModules: IModule[] = []; //AGENCIES_DATA[0].modules;
-// [
-// 	{
-// 		id: 1,
-// 		name: 'Administración',
-// 		icon: 'settings',
-// 		entorno: 'web',
-// 		submodules: [
-// 			{
-// 				id: 11,
-// 				name: 'Usuarios',
-// 				pathPadre: '/admin',
-// 				path: '/admin/users',
-// 				icon: 'user',
-// 				url: null,
-// 				groups: [],
-// 				programs: [],
-// 				actions: {
-// 					allActions: true,
-// 					read: true,
-// 					create: true,
-// 					update: true,
-// 					delete: true,
-// 				},
-// 			},
-// 		],
-// 	},
-// 	{
-// 		id: 2,
-// 		name: 'Reportes',
-// 		icon: 'file',
-// 		entorno: 'web',
-// 		submodules: [],
-// 	},
-// ];
+const withRealData = (Story: any, context: any) => {
+	const setCurrentAgency = useAppLayoutStore(state => state.setCurrentAgency);
+	
+	useEffect(() => {
+		if (AGENCIES_DATA.length > 0) {
+			setCurrentAgency(AGENCIES_DATA[0]);
+		}
+	}, [setCurrentAgency]);
+	
+	return <Story {...context} />;
+};
 
 export const Default: Story = {
+	decorators: [withRealData],
 	args: {
-		handleNavigateProgram: () => {},
+		handleNavigateProgram: (program: ISubmodule) => {
+			console.log('Navegando a programa:', program);
+		},
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Dashboard con datos reales de la agencia CUENCA. Navega entre VEHÍCULOS > MANTENIMIENTOS para ver grupos expandibles y programas. Incluye deduplicación automática y estilos refinados.',
+			},
+		},
 	},
 };
 
@@ -71,20 +64,7 @@ export const Empty: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Sin módulos.',
-			},
-		},
-	},
-};
-
-export const ManyModules: Story = {
-	args: {
-		handleNavigateProgram: () => {},
-	},
-	parameters: {
-		docs: {
-			description: {
-				story: 'Lista grande para ver el conteo, resaltado y expandibles.',
+				story: 'Dashboard sin datos - estado inicial cuando no hay agencia seleccionada.',
 			},
 		},
 	},

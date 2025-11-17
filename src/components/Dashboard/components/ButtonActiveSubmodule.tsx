@@ -1,5 +1,4 @@
 import { ButtonAntd } from '@/components/ButtonAntd';
-import { getIcon } from '@/helpers/menu/menuDataTransformer';
 
 export interface IButtonActiveSubmoduleProps {
 	name: string;
@@ -7,13 +6,25 @@ export interface IButtonActiveSubmoduleProps {
 	onclick: () => void;
 }
 
-export const ButtonActiveSubmodule = ({ name, icon, onclick }: IButtonActiveSubmoduleProps) => {
-	const newClassName = `flex min-w-[168px] p-2 flex-row items-center justify-start gap-1 border border-primary-700 h-auto w-full`;
+export const ButtonActiveSubmodule = ({ name, onclick }: IButtonActiveSubmoduleProps) => {
 
 	return (
-		<ButtonAntd type="primary" variant="filled" color="danger" className={newClassName} size="small" onClick={onclick}>
-			{getIcon(icon, 'w-5 h-5')}
-			<strong className="text-xs truncate line-clamp-1 text-left leading-none">{name}</strong>
+		<ButtonAntd
+			type="text"
+					className="
+						px-3 py-2 h-9 -mb-px 
+						flex items-center justify-center 
+						font-medium text-sm rounded-none
+						text-primary-700 
+						border-0 
+						hover:!text-primary-700 hover:!border-b-primary-700
+						hover:!bg-[transparent]
+						transition-colors duration-200 ease-out
+					"
+			size="small"
+			onClick={onclick}
+		>
+					<strong className="text-sm leading-none">{name}</strong>
 		</ButtonAntd>
 	);
 };
