@@ -52,7 +52,7 @@ import {
 } from './urls';
 
 import { normalizeStatus, uppercaseStrings } from './functions';
-import { attachHandlersToTree } from './treeNode';
+import { handleAddChildTreeNode, updateItemTreeNodeById, addChildByParentId, addChildrenByParentId, updateChildUnderParent } from './treeNode';
 
 export {
 	addOrderParamIfMissing,
@@ -91,6 +91,7 @@ export {
 	getSchemaFields,
 	getMicroFrontendByPath,
 	hasAllRequiredFields,
+	handleAddChildTreeNode,
 	isArray,
 	isEmpty,
 	isNumber,
@@ -109,5 +110,8 @@ export {
 	transformModuleToMenuData,
 	uppercaseStrings,
 	updateURLParams,
-	attachHandlersToTree,
+	updateItemTreeNodeById,
+	addChildByParentId,
+	addChildrenByParentId,
+	updateChildUnderParent,
 };

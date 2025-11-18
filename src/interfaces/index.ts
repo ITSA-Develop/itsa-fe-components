@@ -304,11 +304,21 @@ export interface IMapMarker {
 	label: string;
 }
 
+export interface IItemTreeNodeUNo {
+	id: number;
+	description: ReactNode;
+	active: boolean;
+	children: IItemTreeNode[];
+	level: number;
+	onAddChild?: (parent: IItemTreeNode, newChild: IItemTreeNode) => void;
+	onUpdateChild?: (parent: IItemTreeNode, updatedChild: IItemTreeNode) => void;
+	onExpandParent?: (parent: IItemTreeNode) => void;
+	isLoadingExpand?: boolean;
+}
 export interface IItemTreeNode {
 	id: number;
 	description: ReactNode;
 	active: boolean;
 	children: IItemTreeNode[];
-	onAdd?: (parent: IItemTreeNode) => void;
-	onToggleActive?: (itemId: number) => void;
+	level: number;
 }

@@ -183,5 +183,5 @@ export type MakeFunctionParamsOptional<F> = F extends (...args: infer P) => infe
 
 export type TTextTransform = 'capitalize' | 'full-size-kana' | 'full-width' | 'lowercase' | 'none' | 'uppercase';
 
-export type TTreeNode = ITreeNodeProps;
+export type TTreeNodeItemProps = ITreeNodeProps;
 

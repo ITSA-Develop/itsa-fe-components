@@ -1,57 +1,100 @@
-import { Dispatch, SetStateAction } from 'react';
 import { IItemTreeNode } from '@/interfaces';
+import { Dispatch, SetStateAction } from 'react';
 
-function updateNodeById(root: IItemTreeNode, targetId: number, updater: (node: IItemTreeNode) => IItemTreeNode): IItemTreeNode {
-	if (root.id === targetId) {
-		return updater(root);
-	}
-	if (!root.children || root.children.length === 0) {
-		return root;
-	}
-	return {
-		...root,
-		children: root.children.map(child => updateNodeById(child, targetId, updater)),
-	};
-}
+export const updateItemTreeNodeById = (
+	node: IItemTreeNode,
+	targetId: number,
+	updater: (n: IItemTreeNode) => IItemTreeNode,
+): IItemTreeNode => {
+	if (node.id === targetId) return updater(node);
+	if (!node.children || node.children.length === 0) return node;
+	return { ...node, children: node.children.map(child => updateItemTreeNodeById(child, targetId, updater)) };
+};
 
-export function attachHandlersToTree(
-	root: IItemTreeNode,
+export const handleAddChildTreeNode = (
+	parent: IItemTreeNode,
+	newChild: IItemTreeNode,
 	setRoot: Dispatch<SetStateAction<IItemTreeNode>>,
-): IItemTreeNode {
-	const attach = (node: IItemTreeNode): IItemTreeNode => {
-		const withChildren = (node.children || []).map(attach);
-		return {
-			...node,
-			children: withChildren,
-			onAdd: (parent: IItemTreeNode) => {
-				setRoot(prev =>
-					updateNodeById(prev, parent.id, current => {
-						const newChildBase: IItemTreeNode = {
-							id: Date.now(),
-							description: `Nueva subclase ${(current.children?.length || 0) + 1}`,
-							active: true,
-							children: [],
-						};
-						// Attach handlers to the new child so it can keep adding recursively
-						const newChild = attach(newChildBase);
-						return {
-							...current,
-							children: [...(current.children || []), newChild],
-						};
-					}),
-				);
-			},
-			onToggleActive: (itemId: number) => {
-				setRoot(prev =>
-					updateNodeById(prev, itemId, current => ({
-						...current,
-						active: !current.active,
-					})),
-				);
-			},
-		};
-	};
-	return attach(root);
-}
+) => {
+	setRoot(prev =>
+		updateItemTreeNodeById(prev, parent.id, current => {
+			const childWithLevel: IItemTreeNode = {
+				...newChild,
+				level: (current.level ?? 0) + 1,
+				children: newChild.children || [],
+			};
+			return { ...current, children: [...(current.children || []), childWithLevel] };
+		}),
+	);
+};
 
+/**
+ * Add a single child node under a parent id within a forest (array) of tree nodes.
+ * Returns a new tree array without mutating the original.
+ */
+export const addChildByParentId = (
+	roots: IItemTreeNode[],
+	parentId: number,
+	newChild: IItemTreeNode,
+): IItemTreeNode[] => {
+	const addToNode = (node: IItemTreeNode): IItemTreeNode =>
+		updateItemTreeNodeById(node, parentId, current => {
+			const childWithLevel: IItemTreeNode = {
+				...newChild,
+				level: (current.level ?? 0) + 1,
+				children: newChild.children || [],
+			};
+			return { ...current, children: [...(current.children || []), childWithLevel] };
+		});
 
+	return roots.map(addToNode);
+};
+
+/**
+ * Add multiple children under a parent id within a forest (array) of tree nodes.
+ * Returns a new tree array without mutating the original.
+ */
+export const addChildrenByParentId = (
+	roots: IItemTreeNode[],
+	parentId: number,
+	newChildren: IItemTreeNode[],
+): IItemTreeNode[] => {
+	const addToNode = (node: IItemTreeNode): IItemTreeNode =>
+		updateItemTreeNodeById(node, parentId, current => {
+			const mappedChildren = (newChildren || []).map(child => ({
+				...child,
+				level: (current.level ?? 0) + 1,
+				children: child.children || [],
+			}));
+			return { ...current, children: [...(current.children || []), ...mappedChildren] };
+		});
+
+	return roots.map(addToNode);
+};
+
+/**
+ * Update a direct child under a given parent id within a forest (array) of tree nodes.
+ * Matches the child to replace by its id (taken from updatedChild.id).
+ * Returns a new tree array without mutating the original.
+ */
+export const updateChildUnderParent = (
+	roots: IItemTreeNode[],
+	parentId: number,
+	updatedChild: IItemTreeNode,
+): IItemTreeNode[] => {
+	const updateInNode = (node: IItemTreeNode): IItemTreeNode =>
+		updateItemTreeNodeById(node, parentId, current => {
+			const nextChildren = (current.children || []).map(child =>
+				child.id === updatedChild.id
+					? {
+							...updatedChild,
+							level: (current.level ?? 0) + 1,
+							children: updatedChild.children || [],
+					  }
+					: child,
+			);
+			return { ...current, children: nextChildren };
+		});
+
+	return roots.map(updateInNode);
+};
