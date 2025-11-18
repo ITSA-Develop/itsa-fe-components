@@ -185,3 +185,4 @@ export type TTextTransform = 'capitalize' | 'full-size-kana' | 'full-width' | 'l
 
 export type TTreeNodeItemProps = ITreeNodeProps;
 
+export type TTreeNodeTypeComponent = 'SELECT' | 'CRUD';

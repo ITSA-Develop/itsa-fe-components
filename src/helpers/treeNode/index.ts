@@ -70,7 +70,7 @@ export const addChildrenByParentId = (
 				level: (current.level ?? 0) + 1,
 				children: child.children || [],
 			}));
-			return { ...current, children: [...(current.children || []), ...mappedChildren] };
+			return { ...current, children: mappedChildren };
 		});
 	const result = roots.map(addToNode);
 	setRoot?.(result);

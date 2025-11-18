@@ -498,6 +498,10 @@
   height: 100vh;
 }
 
+.h-\[60dvh\]{
+  height: 60dvh;
+}
+
 .max-h-8{
   max-height: 2rem;
 }

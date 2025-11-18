@@ -278,3 +278,8 @@ export enum EMapZoom {
 	zoom19 = 19,
 	zoom20 = 20,
 }
+
+export enum ETreeNodeTypeComponent {
+	select = 'SELECT',
+	crud = 'CRUD',
+}

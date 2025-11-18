@@ -7,6 +7,7 @@ import {
 	addChildrenByParentId,
 	updateChildUnderParent,
 } from '../../helpers/treeNode';
+import { ETreeNodeTypeComponent } from '../../enums';
 
 const meta = {
 	title: 'Components/TreeNode',
@@ -99,6 +100,7 @@ export const Basic: Story = {
 		items: sampleItems,
 		onEdit: () => {},
 		onAddChild: () => {},
+		onExpandParent: () => {},
 	},
 	parameters: {
 		docs: {
@@ -116,11 +118,12 @@ export const InteractiveHelpersDemo: Story = {
 		items: sampleItems,
 		onEdit: () => {},
 		onAddChild: () => {},
+		onExpandParent: () => {},
 	},
 	render: args => {
 		const [items, setItems] = React.useState<IItemTreeNode[]>(args.items);
 		return (
-			<div>
+			<div className="flex flex-col gap-4 h-[60dvh]">
 				<div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
 					<button
 						onClick={() =>
@@ -177,7 +180,14 @@ export const InteractiveHelpersDemo: Story = {
 						Update Child 1.1 under Root 1
 					</button>
 				</div>
-				<TreeNode items={items} defaultExpandedIds={[1, 12]} onEdit={args.onEdit} onAddChild={args.onAddChild} />
+				<TreeNode
+					type="SELECT"
+					items={items}
+					defaultExpandedIds={[1, 12]}
+					onEdit={args.onEdit}
+					onAddChild={args.onAddChild}
+					onExpandParent={args.onExpandParent}
+				/>
 			</div>
 		);
 	},
