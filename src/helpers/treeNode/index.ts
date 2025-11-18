@@ -36,6 +36,7 @@ export const addChildByParentId = (
 	roots: IItemTreeNode[],
 	parentId: number,
 	newChild: IItemTreeNode,
+	setRoot?: (root: IItemTreeNode[]) => void,
 ): IItemTreeNode[] => {
 	const addToNode = (node: IItemTreeNode): IItemTreeNode =>
 		updateItemTreeNodeById(node, parentId, current => {
@@ -47,7 +48,9 @@ export const addChildByParentId = (
 			return { ...current, children: [...(current.children || []), childWithLevel] };
 		});
 
-	return roots.map(addToNode);
+	const result = roots.map(addToNode);
+	setRoot?.(result);
+	return result;
 };
 
 /**
@@ -58,6 +61,7 @@ export const addChildrenByParentId = (
 	roots: IItemTreeNode[],
 	parentId: number,
 	newChildren: IItemTreeNode[],
+	setRoot?: (root: IItemTreeNode[]) => void,
 ): IItemTreeNode[] => {
 	const addToNode = (node: IItemTreeNode): IItemTreeNode =>
 		updateItemTreeNodeById(node, parentId, current => {
@@ -68,8 +72,9 @@ export const addChildrenByParentId = (
 			}));
 			return { ...current, children: [...(current.children || []), ...mappedChildren] };
 		});
-
-	return roots.map(addToNode);
+	const result = roots.map(addToNode);
+	setRoot?.(result);
+	return result;	
 };
 
 /**
@@ -81,6 +86,7 @@ export const updateChildUnderParent = (
 	roots: IItemTreeNode[],
 	parentId: number,
 	updatedChild: IItemTreeNode,
+	setRoot?: (root: IItemTreeNode[]) => void,
 ): IItemTreeNode[] => {
 	const updateInNode = (node: IItemTreeNode): IItemTreeNode =>
 		updateItemTreeNodeById(node, parentId, current => {
@@ -90,11 +96,13 @@ export const updateChildUnderParent = (
 							...updatedChild,
 							level: (current.level ?? 0) + 1,
 							children: updatedChild.children || [],
-					  }
+						}
 					: child,
 			);
 			return { ...current, children: nextChildren };
 		});
 
-	return roots.map(updateInNode);
+	const result = roots.map(updateInNode);
+	setRoot?.(result);
+	return result;
 };
