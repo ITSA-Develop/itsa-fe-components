@@ -30,7 +30,8 @@ const meta = {
 		},
 		onEdit: {
 			action: 'onEdit',
-			description: 'Callback al presionar el botón "Editar" de un nodo. Recibe el nodo.',
+			description:
+				'Callback al presionar el botón "Editar" de un nodo. Recibe el nodo y el id del padre (opcional).',
 		},
 	},
 };
@@ -98,7 +99,7 @@ const sampleItems: IItemTreeNode[] = [
 export const Basic: Story = {
 	args: {
 		items: sampleItems,
-		onEdit: () => {},
+		onEdit: (_node, _parentId) => {},
 		onAddChild: () => {},
 		onExpandParent: () => {},
 	},
@@ -116,7 +117,7 @@ export const Basic: Story = {
 export const InteractiveHelpersDemo: Story = {
 	args: {
 		items: sampleItems,
-		onEdit: () => {},
+		onEdit: (_node, _parentId) => {},
 		onAddChild: () => {},
 		onExpandParent: () => {},
 	},

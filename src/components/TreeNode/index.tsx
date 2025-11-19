@@ -9,7 +9,7 @@ import { TTreeNodeTypeComponent } from '@/types';
 
 export interface ITreeNodeProps {
 	items: IItemTreeNode[];
-	onEdit: (node: IItemTreeNode) => void;
+	onEdit: (node: IItemTreeNode, parentId?: number) => void;
 	onAddChild: (parent: IItemTreeNode) => void;
 	onExpandParent?: (parent: IItemTreeNode, isExpanded: boolean) => void;
 	onSelectNode?: (node: IItemTreeNode) => void;
@@ -27,6 +27,39 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 	type = 'CRUD',
 }) => {
 	const [expandedIds, setExpandedIds] = React.useState<Set<number>>(() => new Set(defaultExpandedIds ?? []));
+		const prevChildrenCountRef = React.useRef<Map<number, number> | null>(null);
+
+		const buildChildrenCountMap = (nodes: IItemTreeNode[]): Map<number, number> => {
+			const map = new Map<number, number>();
+			const walk = (n: IItemTreeNode) => {
+				map.set(n.id, n.children?.length ?? 0);
+				n.children?.forEach(walk);
+			};
+			nodes.forEach(walk);
+			return map;
+		};
+
+		React.useEffect(() => {
+			const currentMap = buildChildrenCountMap(items);
+			const prevMap = prevChildrenCountRef.current;
+			if (prevMap) {
+				const parentsToExpand: number[] = [];
+				currentMap.forEach((count, id) => {
+					const prevCount = prevMap.get(id) ?? 0;
+					if (count > prevCount) {
+						parentsToExpand.push(id);
+					}
+				});
+				if (parentsToExpand.length > 0) {
+					setExpandedIds(prev => {
+						const next = new Set(prev);
+						parentsToExpand.forEach(id => next.add(id));
+						return next;
+					});
+				}
+			}
+			prevChildrenCountRef.current = currentMap;
+		}, [items]);
 
 	const toggleExpanded = (id: number) => {
 		setExpandedIds(prev => {
@@ -37,8 +70,8 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 		});
 	};
 
-	const handleEdit = (node: IItemTreeNode) => {
-		onEdit(node);
+	const handleEdit = (node: IItemTreeNode, parentId?: number) => {
+		onEdit(node, parentId);
 	};
 	const handleAddChild = (node: IItemTreeNode) => {
 		onAddChild?.(node);
@@ -50,12 +83,13 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 		toggleExpanded(node.id);
 	};
 
-	const renderNode = (node: IItemTreeNode): React.ReactNode => {
+	const renderNode = (node: IItemTreeNode, parentId?: number): React.ReactNode => {
 		const level = node.level ?? 0;
 		const baseBgColor = level === 0 ? 'bg-gray-25' : 'bg-gray-50';
 		const borderColor = 'border-gray-200';
 		const hoverColor = 'hover:!bg-gray-75';
 		const isExpanded = expandedIds.has(node.id);
+		const hasChildren = (node.children?.length ?? 0) > 0;
 
 		const classNameNode = `nbg w-full min-w-0 ${type === ETreeNodeTypeComponent.select ? 'cursor-pointer' : ''}`;
 
@@ -66,18 +100,20 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 					style={{ marginLeft: `${level * 32}px` }}
 				>
 					<div className="flex items-center gap-1.5">
-						<ButtonAntd
-							size="small"
-							type="default"
-							onClick={() => handleExpandParent(node, isExpanded)}
-							icon={
-								<RightOutlined
-									style={{
-										transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-									}}
-								/>
-							}
-						/>
+						{hasChildren && (
+							<ButtonAntd
+								size="small"
+								type="default"
+								onClick={() => handleExpandParent(node, isExpanded)}
+								icon={
+									<RightOutlined
+										style={{
+											transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+										}}
+									/>
+								}
+							/>
+						)}
 						<div className="flex-1 min-w-0">
 							<p
 								className={`text-slate-900 font-medium text-xs truncate ${!node.active ? 'opacity-40 line-through' : ''}`}
@@ -96,13 +132,15 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 									onClick={() => handleAddChild(node)}
 								/>
 							)}
-							{type === 'CRUD' && <Button type="text" label="Editar" size="small" onClick={() => handleEdit(node)} />}
+							{type === 'CRUD' && (
+								<Button type="text" label="Editar" size="small" onClick={() => handleEdit(node, parentId)} />
+							)}
 						</div>
 					</div>
 				</div>
 
 				{node.children && node.children.length > 0 && isExpanded && (
-					<div className="space-y-1 mt-1">{node.children.map(child => renderNode(child))}</div>
+					<div className="space-y-1 mt-1">{node.children.map(child => renderNode(child, node.id))}</div>
 				)}
 			</div>
 		);

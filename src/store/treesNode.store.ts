@@ -12,6 +12,7 @@ export interface TreesNodeStore {
 	onAddChildren: (newChildren: IItemTreeNode[], parent?: IItemTreeNode) => void;
 	treesNodes: IItemTreeNode[];
 	setTreesNodes: (treesNodes: IItemTreeNode[]) => void;
+	resetCurrentParent: () => void;
 }
 
 export const useTreesNodeStore = create<TreesNodeStore>((set, get) => ({
@@ -22,21 +23,42 @@ export const useTreesNodeStore = create<TreesNodeStore>((set, get) => ({
 	treesNodes: [],
 	setTreesNodes: treesNodes => set({ treesNodes }),
 	onAddChild: (newChild: IItemTreeNode, parent?: IItemTreeNode) => {
-		if (!parent) return;
 		const treesNodes = get().treesNodes;
+		if (!parent) {
+			const rootChild: IItemTreeNode = {
+				...newChild,
+				level: 0,
+				children: newChild.children ?? [],
+			};
+			set({ treesNodes: [...treesNodes, rootChild] });
+			get().resetCurrentParent();
+			return;
+		}
 		const result = addChildByParentId(treesNodes, parent.id, newChild);
 		set({ treesNodes: result });
+		get().resetCurrentParent();
 	},
 	onUpdateChild: (updatedChild: IItemTreeNode, parent?: IItemTreeNode) => {
-		if (!parent) return;
+		if (!parent) {
+			get().resetCurrentParent();
+			return;
+		}
 		const treesNodes = get().treesNodes;
 		const result = updateChildUnderParent(treesNodes, parent.id, updatedChild);
 		set({ treesNodes: result });
+		get().resetCurrentParent();
 	},
 	onAddChildren: (newChildren: IItemTreeNode[], parent?: IItemTreeNode) => {
-		if (!parent) return;
+		if (!parent) {
+			get().resetCurrentParent();
+			return;
+		}
 		const treesNodes = get().treesNodes;
 		const result = addChildrenByParentId(treesNodes, parent.id, newChildren);
 		set({ treesNodes: result });
+		get().resetCurrentParent();
+	},
+	resetCurrentParent: () => {
+		set({ currentParent: undefined });
 	},
 }));
