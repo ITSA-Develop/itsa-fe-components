@@ -1,29 +1,30 @@
-import { ButtonAntd } from "@/components/ButtonAntd";
-import { getIcon } from "@/helpers/menu/menuDataTransformer";
+import { ButtonAntd } from '@/components/ButtonAntd';
+import { getIcon } from '@/helpers/menu/menuDataTransformer';
 
 export interface IButtonActiveModuleProps {
 	name: string;
 	icon: string;
 	onclick: () => void;
-	type: 'module' | 'submodule';
 }
 
-export const ButtonActiveModule = ({ name, icon, onclick, type }: IButtonActiveModuleProps) => {
-
-	
-	const newClassName = `flex min-w-[168px] ${type === 'module' ? 'flex-col' : 'flex-row'} items-center justify-center border border-primary-700 h-auto w-full p-2`;
-
+export const ButtonActiveModule = ({ name, icon, onclick }: IButtonActiveModuleProps) => {
 	return (
 		<ButtonAntd
-			type="primary"
-			variant="filled"
-			color="danger"
-			className={newClassName}
-			size="large"
+			type="default"
 			onClick={onclick}
+			className="
+                flex flex-col items-center justify-center
+                w-[170px] h-[140px]
+                border-[2px] border-primary-700
+                bg-white
+				hover:!bg-white hover:!border-primary-700 hover:!shadow-lg
+                p-3 gap-2
+                rounded-[16px]
+                shadow-lg
+            "
 		>
-			{getIcon(icon, 'w-10 h-10')}
-			<strong className="text-xs truncate line-clamp-1">{name}</strong>
+			{getIcon(icon, 'w-14 h-14 !text-red-500')}
+			<strong className="text-sm text-gray-800 text-center truncate max-w-[130px]">{name}</strong>
 		</ButtonAntd>
 	);
 };

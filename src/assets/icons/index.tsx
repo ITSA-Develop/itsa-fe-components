@@ -105,6 +105,7 @@ import User2Icon from './icon-user2.svg?react';
 import UserActiveIcon from './icon-user-active.svg?react';
 import UserRoundedSquareIcon from './icon-user-rounded-square.svg?react';
 import VehicleIcon from './icon-vehicle.svg?react';
+import VehicleIcon2 from './icon-vehicle2.svg?react';
 import WalletIcon from './icon-wallet.svg?react';
 import WalletIcon2 from './icon-wallet-2.svg?react';
 import WhatsappIcon from './icon-whatsapp.svg?react';
@@ -223,6 +224,7 @@ export {
   UserActiveIcon,
   UserRoundedSquareIcon,
   VehicleIcon,
+  VehicleIcon2,
   WalletIcon,
   WalletIcon2,
   WhatsappIcon,
