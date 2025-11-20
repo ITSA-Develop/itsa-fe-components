@@ -1326,11 +1326,6 @@
   color: rgb(248 135 146 / var(--tw-text-opacity, 1));
 }
 
-.text-primary-700{
-  --tw-text-opacity: 1;
-  color: rgb(234 61 72 / var(--tw-text-opacity, 1));
-}
-
 .text-primary-900{
   --tw-text-opacity: 1;
   color: rgb(217 0 34 / var(--tw-text-opacity, 1));
@@ -1814,11 +1809,6 @@ body,
   padding-right: var(--itsa-table-cell-padding-x) !important;
 }
 
-.hover\:\!border-blue-600:hover{
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(59 149 185 / var(--tw-border-opacity, 1)) !important;
-}
-
 .hover\:\!border-gray-100:hover{
   --tw-border-opacity: 1 !important;
   border-color: rgb(217 223 227 / var(--tw-border-opacity, 1)) !important;
@@ -1829,6 +1819,11 @@ body,
   border-color: rgb(17 20 24 / var(--tw-border-opacity, 1)) !important;
 }
 
+.hover\:\!border-primary-600:hover{
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(242 81 98 / var(--tw-border-opacity, 1)) !important;
+}
+
 .hover\:border-gray-75:hover{
   --tw-border-opacity: 1;
   border-color: rgb(238 241 243 / var(--tw-border-opacity, 1));
@@ -1837,16 +1832,6 @@ body,
 .hover\:border-red-200:hover{
   --tw-border-opacity: 1;
   border-color: rgb(255 201 200 / var(--tw-border-opacity, 1));
-}
-
-.hover\:\!border-primary-700:hover{
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
-}
-
-.hover\:\!border-primary-600:hover{
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(242 81 98 / var(--tw-border-opacity, 1)) !important;
 }
 
 .hover\:\!bg-gray-50:hover{
@@ -1879,11 +1864,6 @@ body,
   background-color: rgb(255 226 225 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:\!text-blue-600:hover{
-  --tw-text-opacity: 1 !important;
-  color: rgb(59 149 185 / var(--tw-text-opacity, 1)) !important;
-}
-
 .hover\:\!text-gray-400:hover{
   --tw-text-opacity: 1 !important;
   color: rgb(116 131 146 / var(--tw-text-opacity, 1)) !important;
@@ -1894,19 +1874,14 @@ body,
   color: rgb(17 20 24 / var(--tw-text-opacity, 1)) !important;
 }
 
-.hover\:text-gray-75:hover{
-  --tw-text-opacity: 1;
-  color: rgb(238 241 243 / var(--tw-text-opacity, 1));
-}
-
-.hover\:\!text-primary-700:hover{
-  --tw-text-opacity: 1 !important;
-  color: rgb(234 61 72 / var(--tw-text-opacity, 1)) !important;
-}
-
 .hover\:\!text-primary-600:hover{
   --tw-text-opacity: 1 !important;
   color: rgb(242 81 98 / var(--tw-text-opacity, 1)) !important;
+}
+
+.hover\:text-gray-75:hover{
+  --tw-text-opacity: 1;
+  color: rgb(238 241 243 / var(--tw-text-opacity, 1));
 }
 
 .focus\:border-gray-75:focus{

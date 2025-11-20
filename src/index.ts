@@ -29,6 +29,7 @@ export { FormInputPassword } from './components/FormInputPassword';
 export { FormInputDatePicker } from './components/FormInputDatePicker';
 export { FormInputTimePicker } from './components/FormInputTimePicker';
 export { FormLabel } from './components/FormLabel';
+export { FormButtonSelector } from './components/FormButtonSelector';
 export { FormLabelError } from './components/FormLabelError';
 export { InputPassword } from './components/InputPassword';
 export { InputAddress } from './components/InputAddress';

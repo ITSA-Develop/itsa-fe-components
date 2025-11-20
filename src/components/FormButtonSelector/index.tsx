@@ -4,25 +4,27 @@ import { CloseOutlined } from '@ant-design/icons';
 import { ReactNode } from 'react';
 import { FormLabel } from '../FormLabel';
 import { FormLabelError } from '../FormLabelError';
-import { Controller, FieldValues, Path } from 'react-hook-form';
+import { Controller, ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import { Control } from 'react-hook-form';
-export interface IButtonOpenModalSelectorProps<TFieldValues extends FieldValues> {
-	label: string;
+export interface IFormButtonSelectorProps<TFieldValues extends FieldValues> {
+	title: string;
 	name: Path<TFieldValues>;
 	placeholder?: string;
 	children: ReactNode;
 	control: Control<TFieldValues>;
+	value?: string;
 	closable?: boolean;
 }
 
-export const ButtonOpenModalSelector = <TFieldValues extends FieldValues>({
-	label,
+export const FormButtonSelector = <TFieldValues extends FieldValues>({
+	title,
+	value,
 	placeholder = 'Seleccionar',
 	children,
 	control,
 	name,
 	closable = false,
-}: IButtonOpenModalSelectorProps<TFieldValues>) => {
+}: IFormButtonSelectorProps<TFieldValues>) => {
 	const { openModal } = useModalResponsive();
 
 	const handleOpenModal = () => {
@@ -33,6 +35,12 @@ export const ButtonOpenModalSelector = <TFieldValues extends FieldValues>({
 		});
 	};
 
+	const normalizedValue = (field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => {
+		if (value) {
+			return value;
+		}
+		return field.value ? field.value : placeholder;
+	};
 	return (
 		<Controller
 			name={name}
@@ -41,7 +49,7 @@ export const ButtonOpenModalSelector = <TFieldValues extends FieldValues>({
 				const errorMsg = fieldState.error?.message as string | undefined;
 				return (
 					<div className="flex flex-col gap-1">
-						<FormLabel label={label} />
+						<FormLabel label={title} />
 						<div className={`${closable ? 'flex items-center' : ''}`}>
 							<Button
 								variant="outlined"
@@ -50,7 +58,7 @@ export const ButtonOpenModalSelector = <TFieldValues extends FieldValues>({
 								onClick={handleOpenModal}
 								className={`${field.value ? 'flex justify-start' : 'flex justify-start text-gray-400'} ${closable ? `${field.value ? 'flex-1 rounded-r-none' : 'flex-1'}` : ''} hover:!text-primary-600 hover:!border-primary-600 transition-colors`}
 							>
-								{field.value ? field.value : placeholder}
+								{normalizedValue(field)}
 							</Button>
 							{closable && field.value && (
 								<Button

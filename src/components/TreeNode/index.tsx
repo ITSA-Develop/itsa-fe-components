@@ -94,17 +94,21 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 		const classNameNode = `nbg w-full min-w-0 ${type === ETreeNodeTypeComponent.select ? 'cursor-pointer' : ''}`;
 
 		return (
-			<div key={node.id} className={classNameNode} onClick={() => onSelectNode?.(node)}>
+			<div key={node.id} className={classNameNode}>
 				<div
 					className={`${baseBgColor} ${isExpanded ? '!bg-gray-75' : ''} ${borderColor} border rounded-lg p-2 transition-all duration-200 ${hoverColor}`}
 					style={{ marginLeft: `${level * 32}px` }}
+					onClick={() => onSelectNode?.(node)}
 				>
 					<div className="flex items-center gap-1.5">
 						{hasChildren && (
 							<ButtonAntd
 								size="small"
 								type="default"
-								onClick={() => handleExpandParent(node, isExpanded)}
+								onClick={e => {
+									e.stopPropagation();
+									handleExpandParent(node, isExpanded);
+								}}
 								icon={
 									<RightOutlined
 										style={{
@@ -129,11 +133,27 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 									disabled={!node.active}
 									icon={<PlusOutlined />}
 									size="small"
-									onClick={() => handleAddChild(node)}
+									onClick={e => {
+										e.stopPropagation();
+										handleAddChild(node);
+									}}
 								/>
 							)}
 							{type === 'CRUD' && (
-								<Button type="text" label="Editar" size="small" onClick={() => handleEdit(node, parentId)} />
+								<div
+									onClick={e => {
+										e.stopPropagation();
+									}}
+								>
+									<Button
+										type="text"
+										label="Editar"
+										size="small"
+										onClick={() => {
+											handleEdit(node, parentId);
+										}}
+									/>
+								</div>
 							)}
 						</div>
 					</div>

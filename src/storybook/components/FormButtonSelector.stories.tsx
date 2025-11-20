@@ -4,7 +4,7 @@ import { Button as AntButton, Space } from 'antd';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ButtonOpenModalSelector, IButtonOpenModalSelectorProps } from '../../components/FormButtonSelector';
+import { FormButtonSelector, IFormButtonSelectorProps } from '../../components/FormButtonSelector';
 import { ResponsiveModalProvider } from '../../HOC/ResponsiveModalProvider';
 import { useModalResponsive } from '../../hooks/useModalResponsive';
 
@@ -15,9 +15,9 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 // ---------- Wrapper que obtiene el control del contexto del formulario ----------
-const BoundButtonSelector = (props: Omit<IButtonOpenModalSelectorProps<FormValues>, 'control'>) => {
+const BoundButtonSelector = (props: Omit<IFormButtonSelectorProps<FormValues>, 'control'>) => {
 	const { control } = useFormContext<FormValues>();
-	return <ButtonOpenModalSelector {...props} control={control as any} />;
+	return <FormButtonSelector {...props} control={control as any} />;
 };
 
 // ---------- Contenido del modal (selección) ----------
@@ -94,7 +94,8 @@ const meta: Meta<typeof BoundButtonSelector> = {
 		},
 	},
 	argTypes: {
-		label: { control: 'text' },
+		title: { control: 'text' },
+		value: { control: 'text' },
 		placeholder: { control: 'text' },
 		name: { control: 'text' },
 	},
@@ -109,7 +110,8 @@ export const Default: Story = {
 	name: 'Default',
 	args: {
 		name: 'selection',
-		label: 'Selector',
+		title: 'Selector',
+		value: 'Selector',
 		placeholder: 'Seleccionar',
 		closable: true,
 	},

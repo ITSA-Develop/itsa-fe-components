@@ -305,8 +305,25 @@ export interface IMapMarker {
 }
 export interface IItemTreeNode {
 	id: number;
-	description: ReactNode;
+	description: string;
 	active: boolean;
 	children: IItemTreeNode[];
 	level?: number;
+}
+
+export type RawValueType = string | number;
+
+export interface FlattenOptionData<OptionType> {
+	label?: React.ReactNode;
+	data: OptionType;
+	key: React.Key;
+	value?: RawValueType;
+	groupOption?: boolean;
+	group?: boolean;
+}
+
+export interface DebounceSelectProps<ValueType = any>
+	extends Omit<SelectProps<ValueType | ValueType[]>, 'options' | 'children'> {
+	fetchOptions: (search: string) => Promise<ValueType[]>;
+	debounceTimeout?: number;
 }
