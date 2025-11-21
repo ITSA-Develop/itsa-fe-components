@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { InputSearch, type InputSearchProps } from '../../components/InputSearch';
 
@@ -27,51 +27,34 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-	name: 'Default',
-	args: {
-		type: 'text',
-		placeholder: 'Buscar…',
-		allowClear: true,
-	},
-};
-
-export const Disabled: Story = {
-	name: 'Deshabilitado',
-	args: {
-		type: 'text',
-		placeholder: 'no editable',
-		disabled: true,
-	},
-};
-
-export const WithDefaultValue: Story = {
-	name: 'Con defaultValue',
-	args: {
-		type: 'text',
-		placeholder: 'Buscar…',
-		defaultValue: 'Inicial',
-	},
-};
-
 export const WithSearchHandler: Story = {
 	name: 'Con onSearch (evento)',
 	render: args => {
 		const [message, setMessage] = useState<string>('');
-        const [value, setValue] = useState<string>('');
+        const [value, setValue] = useState<string>();
+		const [loading, setLoading] = useState<boolean>(false);
+
+
+		useEffect(() => {
+			setValue('test');
+		}, []);
+
 		return (
 			<div style={{ width: 420 }}>
 				<InputSearch
-					{...(args as any)}
+					// {...(args as any)}
 					type="text"
+					defaultValue={value}
 					placeholder="Escribe y presiona Enter o el botón"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    onSearch={(v: string) => setMessage(v ? `Resultado para: "${v}"` : '')}
-                    debounceDelay={600}
-                    debounceLeading={false}
-                    debounceTrailing={true}
-                    enableLoading={true}
+                    // onChange={(e) => setValue(e.target.value)}
+                    loading={loading}
+                    onSearch={(v: string) => {
+                        setLoading(true);
+                        setTimeout(() => {
+                            setMessage(v ? `Resultado para: "${v}"` : '');
+                            setLoading(false);
+                        }, 1000);
+                    }}
 				/>
 				<div style={{ marginTop: 8, minHeight: 20 }}>{message}</div>
 			</div>
