@@ -7,7 +7,6 @@ import {
 	addChildrenByParentId,
 	updateChildUnderParent,
 } from '../../helpers/treeNode';
-import { ETreeNodeTypeComponent } from '../../enums';
 
 const meta = {
 	title: 'Components/TreeNode',
@@ -41,59 +40,104 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const sampleItems: IItemTreeNode[] = [
-	{
-		id: 1,
-		description: <span>Root 1</span>,
-		active: true,
-		level: 0,
-		children: [
-			{
-				id: 11,
-				description: <span>Child 1.1</span>,
-				active: true,
-				level: 1,
-				children: [],
-			},
-			{
-				id: 12,
-				description: <span>Child 1.2</span>,
-				active: false,
-				level: 1,
-				children: [
-					{
-						id: 121,
-						description: <span>Child 1.2.1</span>,
-						active: true,
-						level: 2,
-						children: [],
-					},
-				],
-			},
+		{
+			id: 123,
+			name: 'NEW SUBCLAS 2',
+			active: true,
+			fatherAllName: 'NEW CLASS TOYOTA TEST',
+			fatherAllId: 47,
+			children: [
+				{
+					id: 126,
+					name: 'NEW SUBCLAS N 3',
+					active: true,
+					parentId: 123,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
+					children: [],
+				},
+			],
+		},
+		{
+			id: 122,
+			name: 'NEW SUCLAS 1',
+			active: true,
+			fatherAllName: 'NEW CLASS TOYOTA TEST',
+			fatherAllId: 47,
+			children: [
+				{
+					id: 125,
+					name: 'NEW SUBCLAS NIVEL 1.2 UPDATe',
+					active: true,
+					parentId: 122,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
+					children: [],
+				},
+				{
+					id: 124,
+					name: 'NEW SUBCLAS NIVEL 2 UPDAT2',
+					active: true,
+					parentId: 122,
+					fatherAllName: 'NEW CLASS TOYOTA TEST',
+					fatherAllId: 47,
+					children: [],
+				},
 		],
 	},
-	{
-		id: 2,
-		description: <span>Root 2</span>,
-		active: false,
-		level: 0,
-		children: [
-			{
-				id: 21,
-				description: <span>Child 2.1</span>,
-				active: true,
-				level: 1,
-				children: [
-					{
-						id: 211,
-						description: <span>Child 2.1.1</span>,
-						active: true,
-						level: 2,
-						children: [],
-					},
-				],
-			},
-		],
-	},
+	// {
+	// 	id: 1,
+	// 	name: 'Root 1',
+	// 	active: true,
+	// 	level: 0,
+	// 	children: [
+	// 		{
+	// 			id: 11,
+	// 			name: 'Child 1.1',
+	// 			active: true,
+	// 			level: 1,
+	// 			children: [],
+	// 		},
+	// 		{
+	// 			id: 12,
+	// 			name: 'Child 1.2',
+	// 			active: false,
+	// 			level: 1,
+	// 			children: [
+	// 				{
+	// 					id: 121,
+	// 					name: 'Child 1.2.1',
+	// 					active: true,
+	// 					level: 2,
+	// 					children: [],
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// },
+	// {
+	// 	id: 2,
+	// 	name: 'Root 2',
+	// 	active: false,
+	// 	level: 0,
+	// 	children: [
+	// 		{
+	// 			id: 21,
+	// 			name: 'Child 2.1',
+	// 			active: true,
+	// 			level: 1,
+	// 			children: [
+	// 				{
+	// 					id: 211,
+	// 					name: 'Child 2.1.1',
+	// 					active: true,
+	// 					level: 2,
+	// 					children: [],
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// },
 ];
 
 export const Basic: Story = {

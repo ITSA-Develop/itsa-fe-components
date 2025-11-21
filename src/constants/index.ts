@@ -60,7 +60,8 @@ export const DEFAULT_PAGINATION_CONFIG = {
 };
 
 export const TABLE_SCROLL = {
-	y: 300,
+	y: '74vh',
+	x: 2000,
 };
 
 export * from './agencies';

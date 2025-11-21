@@ -243,10 +243,6 @@ export enum EOptionsFilterStatus {
 	undefined = 2,
 }
 
-export enum EUserRoleCodes {
-	adminRepuestos = 'COREP',
-	adminTalleres = 'CORTALL',
-}
 
 export enum EActionType {
 	create = 1,

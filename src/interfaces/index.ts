@@ -305,10 +305,13 @@ export interface IMapMarker {
 }
 export interface IItemTreeNode {
 	id: number;
-	description: string;
+	name: string;
 	active: boolean;
 	children: IItemTreeNode[];
 	level?: number;
+	parentId?: number;
+	fatherAllName?: string;
+	fatherAllId?: number;
 }
 
 export type RawValueType = string | number;
