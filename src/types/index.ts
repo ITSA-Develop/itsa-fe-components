@@ -6,6 +6,7 @@ import { IActions } from '@/interfaces';
 import { FormItemProps } from 'antd/es/form';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { InputProps } from 'antd';
+import { ITreeNodeProps } from '@/components/TreeNode';
 export type { Dayjs as TDayjs } from 'dayjs';
 
 //TODO: Probably deprecated starting from here (need to start doing implementations to clean up this)
@@ -180,8 +181,8 @@ export type TNotificationProps ={
 
 export type MakeFunctionParamsOptional<F> = F extends (...args: infer P) => infer R ? (...args: Partial<P>) => R : never;
 
+export type TTextTransform = 'capitalize' | 'full-size-kana' | 'full-width' | 'lowercase' | 'none' | 'uppercase';
 
+export type TTreeNodeItemProps = ITreeNodeProps;
 
-
-
-
+export type TTreeNodeTypeComponent = 'SELECT' | 'CRUD';

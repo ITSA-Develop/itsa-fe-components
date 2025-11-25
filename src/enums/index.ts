@@ -243,10 +243,6 @@ export enum EOptionsFilterStatus {
 	undefined = 2,
 }
 
-export enum EUserRoleCodes {
-	adminRepuestos = 'COREP',
-	adminTalleres = 'CORTALL',
-}
 
 export enum EActionType {
 	create = 1,
@@ -277,4 +273,9 @@ export enum EMapZoom {
 	zoom18 = 18,
 	zoom19 = 19,
 	zoom20 = 20,
+}
+
+export enum ETreeNodeTypeComponent {
+	select = 'SELECT',
+	crud = 'CRUD',
 }
