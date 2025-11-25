@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IItemTreeNode } from '@/interfaces';
 import { PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { Button as ButtonAntd } from 'antd';
@@ -27,39 +27,39 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 	type = 'CRUD',
 }) => {
 	const [expandedIds, setExpandedIds] = React.useState<Set<number>>(() => new Set(defaultExpandedIds ?? []));
-		const prevChildrenCountRef = React.useRef<Map<number, number> | null>(null);
+	const prevChildrenCountRef = React.useRef<Map<number, number> | null>(null);
 
-		const buildChildrenCountMap = (nodes: IItemTreeNode[]): Map<number, number> => {
-			const map = new Map<number, number>();
-			const walk = (n: IItemTreeNode) => {
-				map.set(n.id, n.children?.length ?? 0);
-				n.children?.forEach(walk);
-			};
-			nodes.forEach(walk);
-			return map;
+	const buildChildrenCountMap = (nodes: IItemTreeNode[]): Map<number, number> => {
+		const map = new Map<number, number>();
+		const walk = (n: IItemTreeNode) => {
+			map.set(n.id, n.children?.length ?? 0);
+			n.children?.forEach(walk);
 		};
+		nodes.forEach(walk);
+		return map;
+	};
 
-		React.useEffect(() => {
-			const currentMap = buildChildrenCountMap(items);
-			const prevMap = prevChildrenCountRef.current;
-			if (prevMap) {
-				const parentsToExpand: number[] = [];
-				currentMap.forEach((count, id) => {
-					const prevCount = prevMap.get(id) ?? 0;
-					if (count > prevCount) {
-						parentsToExpand.push(id);
-					}
-				});
-				if (parentsToExpand.length > 0) {
-					setExpandedIds(prev => {
-						const next = new Set(prev);
-						parentsToExpand.forEach(id => next.add(id));
-						return next;
-					});
+	useEffect(() => {
+		const currentMap = buildChildrenCountMap(items);
+		const prevMap = prevChildrenCountRef.current;
+		if (prevMap) {
+			const parentsToExpand: number[] = [];
+			currentMap.forEach((count, id) => {
+				const prevCount = prevMap.get(id) ?? 0;
+				if (count > prevCount) {
+					parentsToExpand.push(id);
 				}
+			});
+			if (parentsToExpand.length > 0) {
+				setExpandedIds(prev => {
+					const next = new Set(prev);
+					parentsToExpand.forEach(id => next.add(id));
+					return next;
+				});
 			}
-			prevChildrenCountRef.current = currentMap;
-		}, [items]);
+		}
+		prevChildrenCountRef.current = currentMap;
+	}, [items]);
 
 	const toggleExpanded = (id: number) => {
 		setExpandedIds(prev => {
@@ -122,7 +122,7 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 							<p
 								className={`text-slate-900 font-medium text-xs truncate ${!node.active ? 'opacity-40 line-through' : ''}`}
 							>
-								{node.description}
+								{node.name}
 							</p>
 						</div>
 						<div className="flex items-center gap-0.5">

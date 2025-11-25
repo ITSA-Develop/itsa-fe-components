@@ -1,19 +1,26 @@
 import { useModalResponsive } from '@/hooks';
+import { useMemo } from 'react';
 import { Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { ReactNode } from 'react';
 import { FormLabel } from '../FormLabel';
 import { FormLabelError } from '../FormLabelError';
-import { Controller, ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
+import { Controller, FieldValues, Path } from 'react-hook-form';
 import { Control } from 'react-hook-form';
+
+export interface IFormButtonSelectorValue {
+	value: number;
+	label: string;
+}
 export interface IFormButtonSelectorProps<TFieldValues extends FieldValues> {
 	title: string;
 	name: Path<TFieldValues>;
 	placeholder?: string;
 	children: ReactNode;
 	control: Control<TFieldValues>;
-	value?: string;
 	closable?: boolean;
+	disabled?: boolean;
+	value?: IFormButtonSelectorValue;
 }
 
 export const FormButtonSelector = <TFieldValues extends FieldValues>({
@@ -24,6 +31,7 @@ export const FormButtonSelector = <TFieldValues extends FieldValues>({
 	control,
 	name,
 	closable = false,
+	disabled = false,
 }: IFormButtonSelectorProps<TFieldValues>) => {
 	const { openModal } = useModalResponsive();
 
@@ -35,12 +43,12 @@ export const FormButtonSelector = <TFieldValues extends FieldValues>({
 		});
 	};
 
-	const normalizedValue = (field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => {
+	const normalizedValue = useMemo(() => {
 		if (value) {
-			return value;
+			return value.label;
 		}
-		return field.value ? field.value : placeholder;
-	};
+		return placeholder;
+	}, [value]);
 	return (
 		<Controller
 			name={name}
@@ -56,13 +64,14 @@ export const FormButtonSelector = <TFieldValues extends FieldValues>({
 								color={errorMsg ? 'danger' : undefined}
 								block={!closable}
 								onClick={handleOpenModal}
-								className={`${field.value ? 'flex justify-start' : 'flex justify-start text-gray-400'} ${closable ? `${field.value ? 'flex-1 rounded-r-none' : 'flex-1'}` : ''} hover:!text-primary-600 hover:!border-primary-600 transition-colors`}
+								className={`${value?.label ? 'flex justify-start' : 'flex justify-start text-gray-400'} ${closable ? `${value?.label ? 'flex-1 rounded-r-none' : 'flex-1'}` : ''} hover:!text-primary-600 hover:!border-primary-600 transition-colors`}
+								disabled={disabled}
 							>
-								{normalizedValue(field)}
+								{normalizedValue}
 							</Button>
-							{closable && field.value && (
+							{closable && value?.label && (
 								<Button
-									onClick={() => field.onChange(undefined)}
+									onClick={() => field.onChange({ value: 0, label: '' })}
 									type="default"
 									aria-label="Limpiar selección"
 									icon={<CloseOutlined />}
