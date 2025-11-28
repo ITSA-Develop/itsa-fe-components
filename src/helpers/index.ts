@@ -21,6 +21,7 @@ import {
 	getSchemaFields,
 	getNumberFromStorage,
 	getStringFromStorage,
+	parseValidDateITSA,
 } from './formats';
 import {
 	cleanObject,
@@ -73,6 +74,7 @@ export {
 	getNumberFromStorage,
 	getStringFromStorage,
 	getInstance,
+	parseValidDateITSA,
 	generateFilteredMenu,
 	getAllMenuKeys,
 	getCurrentDate,

@@ -1,5 +1,7 @@
 import { TInputOptions } from '@/types';
 import { IEntitySchema, TFieldDisplayType } from '@/types/schema';
+import { EDateMaskFormat } from '@/enums';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const getDropdownFormattedOptions = (optionValues: Record<any, string>) => {
 	return Object.entries(optionValues).map(([key, value]) => ({
@@ -102,3 +104,23 @@ export function getStringFromStorage(key: string, defaultValue = ''): string {
 	}
 }
 
+export function parseValidDateITSA(
+	date: Date | string | number | Dayjs | null | undefined,
+	maskFormat: EDateMaskFormat = EDateMaskFormat.YYYYMMDD,
+): string {
+	if (!date) {
+		return '';
+	}
+
+	try {
+		const parsedDate = dayjs(date);
+
+		if (!parsedDate.isValid()) {
+			return '';
+		}
+
+		return parsedDate.format(maskFormat);
+	} catch {
+		return '';
+	}
+}
