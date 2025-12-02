@@ -559,6 +559,10 @@
   height: 100vh;
 }
 
+.max-h-12{
+  max-height: 3rem;
+}
+
 .max-h-8{
   max-height: 2rem;
 }
@@ -663,6 +667,10 @@
   min-width: 100%;
 }
 
+.max-w-\[100px\]{
+  max-width: 100px;
+}
+
 .max-w-\[130px\]{
   max-width: 130px;
 }
@@ -697,6 +705,10 @@
 
 .max-w-xl{
   max-width: 36rem;
+}
+
+.max-w-\[150px\]{
+  max-width: 150px;
 }
 
 .flex-1{

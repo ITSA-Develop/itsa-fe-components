@@ -1,8 +1,7 @@
 import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
+import { imageItsaLogo } from '@/assets/images';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
 import { DropdownIcon } from '@/components/DropdownIcon';
-import { Image } from '@/components/Image';
-import { LOGO_DIMENSIONS, ROUTES_IMAGES } from '@/constants';
 import { useSidebarStore } from '@/hooks';
 import { ISelectOptionDropdownButton } from '@/interfaces';
 import { useViewportStore } from '@/store';
@@ -14,14 +13,12 @@ export interface HeaderLayoutProps {
 	loadingHeader: boolean;
 	notifications?: MenuProps;
 	userActions?: MenuProps;
-	logo?: string;
 }
 
 export const HeaderLayout = ({
 	loadingHeader,
 	notifications = { items: [] },
-	userActions = { items: [] },
-	logo = '',
+	userActions = { items: [] }
 }: HeaderLayoutProps) => {
 	const { width } = useViewportStore();
 	const { setCurrentModule, setCurrentAgency } = useAppLayoutStore();
@@ -78,12 +75,10 @@ export const HeaderLayout = ({
 						/>
 					)}
 					{width > 768 && (
-						<Image
-							imgPath={logo || ROUTES_IMAGES.companyLogo}
-							width={LOGO_DIMENSIONS.HEADER_WIDTH}
-							height={LOGO_DIMENSIONS.HEADER_HEIGHT}
-							alt="Logo"
-							errorLabel="Importadora Tomebamba"
+						<img
+							src={imageItsaLogo}
+							alt="logo"
+							className="h-full max-h-12 max-w-[150px] object-cover"
 						/>
 					)}
 				</div>
@@ -124,7 +119,9 @@ export const HeaderLayout = ({
 						/>
 						<div className="flex flex-col">
 							<span className="text-4 whitespace-nowrap">{userName ?? ''}</span>
-							<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">{userRole?.name ?? ''}</span>
+							<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">
+								{userRole?.name ?? ''}
+							</span>
 						</div>
 					</div>
 				</div>
