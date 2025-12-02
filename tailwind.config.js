@@ -154,7 +154,7 @@ export default {
 			boxShadow: {
 				xs: '0 1px 2px 0 rgba(38, 50, 56, 0.50)',
 				sm: '0 1px 4px 0 rgba(38, 50, 56, 0.50)',
-				md: '0 1px 4px 0 rgba(207, 126, 220, 0.50)',
+				md: '0 1px 4px 0 rgba(38, 50, 56, 0.50)',
 				lg: '0 0.5px 8px 0 rgba(207, 216, 220, 1)',
 				xl: '', // TBD
 			},
