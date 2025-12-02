@@ -17,7 +17,6 @@ export interface AppLayoutProps extends LayoutProps {
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
 	userActions?: MenuProps;
 	notifications?: MenuProps;
-	logo?: string;
 	modeSidebar?: TMenuMode;
 }
 
@@ -29,7 +28,6 @@ export const AppLayout = ({
 	onClickOptionMenu,
 	notifications = { items: [] },
 	userActions = { items: [] },
-	logo = '',
 	modeSidebar = 'inline',
 }: AppLayoutProps) => {
 	useViewportSize();
@@ -89,7 +87,7 @@ export const AppLayout = ({
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">
 			<Layout className="p-2 gap-2">
-				<HeaderLayout loadingHeader={loading} notifications={notifications} userActions={userActions} logo={logo} />
+				<HeaderLayout loadingHeader={loading} notifications={notifications} userActions={userActions} />
 				<SidebarLayout
 					width={widthSidebar}
 					currentPath={currentPath}
