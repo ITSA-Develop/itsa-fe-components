@@ -14,7 +14,29 @@ const meta = {
 			},
 		},
 	},
-	argTypes: {},
+	argTypes: {
+		checkedLabel: {
+			control: 'text',
+			description: 'Label que se muestra cuando el switch está encendido',
+		},
+		uncheckedLabel: {
+			control: 'text',
+			description: 'Label que se muestra cuando el switch está apagado',
+		},
+		activeBgColor: {
+			control: 'color',
+			description: 'Color de fondo cuando el switch está encendido',
+		},
+		inactiveBgColor: {
+			control: 'color',
+			description: 'Color de fondo cuando el switch está apagado',
+		},
+		size: {
+			control: 'select',
+			options: ['small', 'default'],
+			description: 'Tamaño del switch',
+		},
+	},
 };
 
 export default meta;
@@ -22,5 +44,27 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {},
+	args: {
+		checkedLabel: 'Si',
+		uncheckedLabel: 'No',
+		size: 'default',
+		
+	},
+};
+
+export const WithCustomColors: Story = {
+	args: {
+		activeBgColor: '#52c41a',
+		inactiveBgColor: '#d9d9d9',
+		checkedLabel: 'Si',
+		uncheckedLabel: 'No',
+		size: 'default',
+	},
+};
+
+export const WithPrimaryColors: Story = {
+	args: {
+		activeBgColor: '#EA3B48',
+		inactiveBgColor: '#D9DFE3',
+	},
 };
