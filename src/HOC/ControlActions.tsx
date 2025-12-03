@@ -25,8 +25,10 @@ export const ControlActionsProvider = ({ children, fnApiValidatePermissionAction
 
 	useEffect(() => {
 		if (currentModule) {
+			console.log('currentPath =>', currentPath);
+			console.log('currentModule =>', currentModule);
 			const programActions = getProgramActionsbyPath(currentPath, currentModule);
-
+			console.log('programActions =>', programActions);
 			if (programActions) {
 				setActions(programActions.actions);
 				setProgramId(programActions.program.id);

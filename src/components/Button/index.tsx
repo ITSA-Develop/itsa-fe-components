@@ -15,10 +15,10 @@ export interface IButtonProps {
 	default?: boolean;
 	width?: number;
 	block?: boolean;
-    shape?: "default" | "round" | "circle" | undefined,
+	shape?: 'default' | 'round' | 'circle' | undefined;
 	actionType?: EActionType;
 	validateWithApiAction?: boolean;
-	viewBtnDisabled?: boolean;
+	showBtnDisabled?: boolean;
 	loading?: boolean;
 }
 
@@ -26,7 +26,7 @@ export const Button = (props: IButtonProps) => {
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 
-	const { width, block = false, actionType, validateWithApiAction = false, viewBtnDisabled, loading = false } = props;
+	const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
 	const { size = 'small', type = 'primary', htmlType, label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
@@ -37,9 +37,10 @@ export const Button = (props: IButtonProps) => {
 	const disabledClass = disabled ? sizeClass + ' itsa-btn--disabled rounded-[12px]' : '';
 
 	const labelContent = <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>;
-
+	console.log('actions =>', actions);
+	console.log('programId =>', programId);
+	console.log('actionType =>', actionType);
 	const isDisabledAction = disabled === true ? true : disabledActionButton(actionType, actions);
-
 
 	const handleClick = async () => {
 		const agencyId = currentAgency?.id;
@@ -56,7 +57,7 @@ export const Button = (props: IButtonProps) => {
 	const appliedClassName = isDisabledAction === true ? disabledClass : className;
 
 	if (actionType) {
-		if (viewBtnDisabled !== true && isDisabledAction) {
+		if (showBtnDisabled !== true && isDisabledAction) {
 			return null;
 		}
 	}
