@@ -18,17 +18,42 @@ export interface ControlActionsProviderProps {
 export const ControlActionsContext = createContext<ControlActionsContextType | undefined>(undefined);
 
 export const ControlActionsProvider = ({ children, fnApiValidatePermissionAction }: ControlActionsProviderProps) => {
-	const [currentPath, setCurrentPath] = useState<string>('');
+	// Inicializar currentPath desde la URL del navegador si está disponible
+	const getInitialPath = (): string => {
+		if (typeof window !== 'undefined') {
+			return window.location.pathname;
+		}
+		return '';
+	};
+	
+	const [currentPath, setCurrentPath] = useState<string>(getInitialPath());
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const [actions, setActions] = useState<IActions>();
 	const [programId, setProgramId] = useState<number>();
 
+	// Escuchar cambios en la URL del navegador
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		
+		const handleLocationChange = () => {
+			setCurrentPath(window.location.pathname);
+		};
+
+		// Escuchar eventos de popstate (navegación hacia atrás/adelante)
+		window.addEventListener('popstate', handleLocationChange);
+		
+		// También escuchar cambios de hash si es necesario
+		window.addEventListener('hashchange', handleLocationChange);
+
+		return () => {
+			window.removeEventListener('popstate', handleLocationChange);
+			window.removeEventListener('hashchange', handleLocationChange);
+		};
+	}, []);
+
 	useEffect(() => {
 		if (currentModule) {
-			console.log('currentPath =>', currentPath);
-			console.log('currentModule =>', currentModule);
 			const programActions = getProgramActionsbyPath(currentPath, currentModule);
-			console.log('programActions =>', programActions);
 			if (programActions) {
 				setActions(programActions.actions);
 				setProgramId(programActions.program.id);

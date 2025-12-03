@@ -37,9 +37,7 @@ export const Button = (props: IButtonProps) => {
 	const disabledClass = disabled ? sizeClass + ' itsa-btn--disabled rounded-[12px]' : '';
 
 	const labelContent = <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>;
-	console.log('actions =>', actions);
-	console.log('programId =>', programId);
-	console.log('actionType =>', actionType);
+
 	const isDisabledAction = disabled === true ? true : disabledActionButton(actionType, actions);
 
 	const handleClick = async () => {
