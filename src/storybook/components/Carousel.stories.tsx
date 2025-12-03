@@ -12,7 +12,7 @@ const meta: Meta<typeof Carousel.Root> = {
 		docs: {
 			description: {
 				component:
-					'Componente Carousel para mostrar imágenes en un carrusel con navegación, indicadores y auto-play opcional.',
+					'Componente Carousel responsive para mostrar imágenes con navegación, indicadores y auto-play opcional.\n\n**Features:**\n- **Responsive**: Gestos táctiles en móvil (swipe), botones en desktop\n- **Indicadores adaptativos**: Líneas en móvil, dots/lines configurables en desktop\n-  **Navegación por teclado**: Flechas izquierda/derecha\n- **Auto-play opcional**: Con intervalo configurable\n- **Loop configurable**: Activar/desactivar navegación infinita',
 			},
 		},
 	},
