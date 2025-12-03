@@ -7,6 +7,7 @@ export { ButtonAddItem } from './components/ButtonAddItem/';
 export { ButtonAntd } from './components/ButtonAntd/';
 export { BreadcrumbCustom } from './components/BreadcrumbCustom';
 export { Card } from './components/Card/Card';
+export { Carousel } from './components/Carousel';
 export { Checkbox } from './components/Checkbox/Checkbox';
 export { Collapse } from './components/Collapse/Collapse';
 export { CustomFooterModal } from './components/CustomFooterModal';

@@ -122,3 +122,4 @@ export const LOCATION_DEFAULT = {
 	lat: -2.8975518745091158,
 	lng: -79.0039876216035,
 }
+export * from './carouselImages';
