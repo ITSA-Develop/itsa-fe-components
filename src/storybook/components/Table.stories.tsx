@@ -284,7 +284,7 @@ const TableWithPaginationState = () => {
 				<FilterInput
 					type="text"
 					defaultValue={undefined}
-					placeholder="Buscar marcap"
+					placeholder="Buscar marcap"	
 					onSearch={() => {}}
 					loading={true}
 					disabled={false}
@@ -293,7 +293,7 @@ const TableWithPaginationState = () => {
 				<FilterSelect
 					label="Filtrar por columna"
 					options={OPTIONS_STATUS}
-					value={undefined}
+					value={1}
 					onChange={value => console.log(value)}
 					disabled={false}
 					placeholder="Seleccionar estado"
@@ -319,7 +319,7 @@ const TableWithPaginationState = () => {
 				<FilterSelect
 					label="Filtrar por columna"
 					options={OPTIONS_STATUS}
-					value={undefined}
+					value={2}
 					onChange={value => console.log(value)}
 					disabled={false}
 					placeholder="Seleccionar estado"

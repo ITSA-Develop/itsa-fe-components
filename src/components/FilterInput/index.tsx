@@ -4,7 +4,7 @@ import { Input, InputProps, Spin } from 'antd';
 import { RefCallBack } from 'react-hook-form';
 
 export interface FilterInputProps extends InputProps {
-	type: string;
+	type?: string;
 	title?: string;
 	defaultValue?: string;
 	ref?: RefCallBack;
@@ -13,7 +13,7 @@ export interface FilterInputProps extends InputProps {
 	onSearch?: (value: string) => void;
 }
 
-export const FilterInput = ({ ref, type, defaultValue, loading, onSearch, title, ...rest }: FilterInputProps) => {
+export const FilterInput = ({ ref, type = 'text', defaultValue, loading, onSearch, title, ...rest }: FilterInputProps) => {
 	const initRef = useRef<boolean>(false);
 	const [internalValue, setInternalValue] = useState<string>(
 		typeof (rest as any).value === 'string'
@@ -67,6 +67,8 @@ export const FilterInput = ({ ref, type, defaultValue, loading, onSearch, title,
 		</span>
 	);
 
+	const hasValue = typeof resolvedValue === 'string' ? resolvedValue.trim().length > 0 : !!resolvedValue;
+
 	return (
 		<div className="flex flex-col gap-0.5">
 			<small className="font-bold">{title}</small>
@@ -82,7 +84,10 @@ export const FilterInput = ({ ref, type, defaultValue, loading, onSearch, title,
 					height: '27px',
 					lineHeight: '18px',
 					padding: '1px 2px',
-					fontSize: '13	px',
+					fontSize: '13px',
+					transition: 'box-shadow 160ms ease, border-color 160ms ease',
+					boxShadow: hasValue ? '0 0 0 2px rgba(59, 130, 246, 0.15)' : undefined,
+					borderColor: hasValue ? '#93c5fd' : undefined,
 				}}
 			/>
 		</div>

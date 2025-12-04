@@ -65,7 +65,9 @@ export const Table = <T extends object>({
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const finalPagination = showPagination ? paginationConfig : false;
 
-	const tableRootClassName = ['itsa-table--head-rounded', rootClassName].filter(Boolean).join(' ');
+	const tableRootClassName = ['itsa-table--head-rounded', 'itsa-table-min-h-300', rootClassName]
+		.filter(Boolean)
+		.join(' ');
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
