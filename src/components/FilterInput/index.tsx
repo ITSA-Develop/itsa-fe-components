@@ -3,7 +3,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Input, InputProps, Spin } from 'antd';
 import { RefCallBack } from 'react-hook-form';
 
-export interface InputSearchProps extends InputProps {
+export interface FilterInputProps extends InputProps {
 	type: string;
 	title?: string;
 	defaultValue?: string;
@@ -13,7 +13,7 @@ export interface InputSearchProps extends InputProps {
 	onSearch?: (value: string) => void;
 }
 
-export const InputSearch = ({ ref, type, defaultValue, loading, onSearch, title, ...rest }: InputSearchProps) => {
+export const FilterInput = ({ ref, type, defaultValue, loading, onSearch, title, ...rest }: FilterInputProps) => {
 	const initRef = useRef<boolean>(false);
 	const [internalValue, setInternalValue] = useState<string>(
 		typeof (rest as any).value === 'string'
@@ -33,7 +33,7 @@ export const InputSearch = ({ ref, type, defaultValue, loading, onSearch, title,
 		// 	setInternalValue(typeof defaultValue === 'string' ? (defaultValue as string) : '');
 		// 	initRef.current = true;
 		// }
-		if(defaultValue){
+		if (defaultValue) {
 			setInternalValue(defaultValue);
 			initRef.current = true;
 		}
@@ -68,10 +68,8 @@ export const InputSearch = ({ ref, type, defaultValue, loading, onSearch, title,
 	);
 
 	return (
-		<div className="flex flex-col gap-0">
-			<small className="font-bold">
-                {title}
-            </small>
+		<div className="flex flex-col gap-0.5">
+			<small className="font-bold">{title}</small>
 			<Input
 				{...rest}
 				ref={ref}
@@ -81,9 +79,10 @@ export const InputSearch = ({ ref, type, defaultValue, loading, onSearch, title,
 				onPressEnter={handlePressEnter}
 				suffix={mergedSuffix}
 				style={{
-					height: '28px',
+					height: '27px',
 					lineHeight: '18px',
 					padding: '1px 2px',
+					fontSize: '13	px',
 				}}
 			/>
 		</div>

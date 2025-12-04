@@ -218,6 +218,7 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 				columns={finalColumns() as ColumnsType<T>}
 				dataSource={data}
 				loading={loading}
+				size="small"
 				bordered={bordered}
 				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
 				onChange={onChange}
@@ -247,8 +248,9 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 										...props?.style,
 										background: '#EEF1F3',
 										color: 'black',
-										fontSize: '12px',
-										height: '40px',
+										fontSize: '14px',
+										height: '42px',
+										padding: '4px 8px',
 									}}
 								/>
 							);
@@ -261,8 +263,10 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 								style={{
 									...props?.style,
 									color: 'black',
-									fontSize: '14px',
-									height: '45px',
+									fontSize: '15px',
+									height: '28px',
+									lineHeight: '18px',
+									padding: '4px 8px',
 								}}
 							/>
 						),
