@@ -1,27 +1,26 @@
 import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
 import { EActionType } from '@/enums';
-import { disabledActionButton } from '@/helpers/functions';
+import { disabledActionButton, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
 import { useAppLayoutStore } from '@/store';
-import { ITableColumnAction, MakeFunctionParamsOptional, TStrictColumnType, TStrictTableColumnsType } from '@/types';
+import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { MoreOutlined } from '@ant-design/icons';
-import {
-	Table as AntTable,
-	TableProps as AntTableProps,
-	Button,
-	Dropdown,
-	TablePaginationConfig,
-	Modal,
-} from 'antd';
-import { ColumnsType, TableLocale } from 'antd/es/table/interface';
+import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal } from 'antd';
+import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
 import { useState } from 'react';
 import type { TableProps as RcTableProps } from 'rc-table';
+import { ISorterTable } from '@/interfaces';
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
 	rowKey: Extract<keyof T, string> | ((record: T) => React.Key);
 	loading: boolean;
-	onChange: MakeFunctionParamsOptional<NonNullable<AntTableProps<T>['onChange']>>;
+	onChange: (
+		pagination?: TablePaginationConfig,
+		sorter?: ISorterTable,
+		filters?: Record<string, FilterValue | null>,
+		extra?: TableCurrentDataSource<T>,
+	) => void;
 	bordered?: boolean;
 	rowSelection?: AntTableProps<T>['rowSelection'];
 	showPagination?: boolean;
@@ -129,56 +128,56 @@ export const Table = <T extends object>({
 		setConfirmModalState({ open: false, action: null, record: null });
 	};
 
-const finalColumns = (): TStrictTableColumnsType<T> => {
-	if (showColumnActions) {
-		const actionsColumn: TStrictColumnType<T> = {
-			title: '',
-			key: 'actions',
-			width: 64,
-			align: 'center',
-			fixed: 'right',
-			render: (record: T) => (
-				<Dropdown
-					disabled={!!getActionsDisabled?.(record)}
-					placement="bottomRight"
-					menu={{
-						items: (columnActions || [])
-							.filter(action => {
-								const hasPermission = disabledActionButton(action.actionType, actions);
-								const actionDisabled =
-									typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
-								return !hasPermission && !actionDisabled;
-							})
-							.map((action, index) => ({
-								label: action.title,
-								key: action.key || `action-${index}`,
-								icon: action.icon,
-								onClick: () => clickAction(action, record),
-								danger: action.danger,
-							})),
-					}}
-				>
-					<Button
-						type="text"
-						shape="round"
-						size="small"
-						className="w-full"
-						disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
+	const finalColumns = (): TStrictTableColumnsType<T> => {
+		if (showColumnActions) {
+			const actionsColumn: TStrictColumnType<T> = {
+				title: '',
+				key: 'actions',
+				width: 64,
+				align: 'center',
+				fixed: 'right',
+				render: (record: T) => (
+					<Dropdown
+						disabled={!!getActionsDisabled?.(record)}
+						placement="bottomRight"
+						menu={{
+							items: (columnActions || [])
+								.filter(action => {
+									const hasPermission = disabledActionButton(action.actionType, actions);
+									const actionDisabled =
+										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+									return !hasPermission && !actionDisabled;
+								})
+								.map((action, index) => ({
+									label: action.title,
+									key: action.key || `action-${index}`,
+									icon: action.icon,
+									onClick: () => clickAction(action, record),
+									danger: action.danger,
+								})),
+						}}
 					>
-						<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
-					</Button>
-				</Dropdown>
-			),
-		};
-		return [...columns, actionsColumn];
-	}
-	return columns;
-};
+						<Button
+							type="text"
+							shape="round"
+							size="small"
+							className="w-full"
+							disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
+						>
+							<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
+						</Button>
+					</Dropdown>
+				),
+			};
+			return [...columns, actionsColumn];
+		}
+		return columns;
+	};
 
 	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
 	const getFinalScroll = () => {
 		const columnsWithFixed = finalColumns().some(col => col.fixed === 'left' || col.fixed === 'right');
-		
+
 		if (!columnsWithFixed) {
 			return scroll;
 		}
@@ -196,12 +195,15 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 
 		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
 		const baseScroll = scroll && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
-		
+
 		return {
 			...baseScroll,
-			x: (scroll && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null) 
-				? scroll.x 
-				: (totalWidth > 0 ? totalWidth : TABLE_SCROLL.x),
+			x:
+				scroll && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null
+					? scroll.x
+					: totalWidth > 0
+						? totalWidth
+						: TABLE_SCROLL.x,
 		};
 	};
 
@@ -214,6 +216,19 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 		return content;
 	};
 
+	const handleChangePagination = (
+		pagination: TablePaginationConfig,
+		filters: Record<string, FilterValue | null>,
+		sorter: SorterResult<T> | SorterResult<T>[],
+		extra: TableCurrentDataSource<T>,
+	) => {
+		if (Array.isArray(sorter)) {
+			return;
+		}
+		const sorterParsed: ISorterTable = parseSorter(sorter);
+		onChange(pagination, sorterParsed, filters, extra);
+	};
+
 	return (
 		<>
 			<AntTable<T>
@@ -223,7 +238,7 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 				size="small"
 				bordered={bordered}
 				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
-				onChange={onChange}
+				onChange={handleChangePagination}
 				pagination={finalPagination}
 				scroll={getFinalScroll()}
 				locale={locale}

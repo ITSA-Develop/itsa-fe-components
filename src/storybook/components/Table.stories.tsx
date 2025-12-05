@@ -9,6 +9,8 @@ import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { Button } from '../../components/Button';
 import { FilterSelect } from '../../components/FilterSelect';
 import { FilterInput } from '../../components/FilterInput';
+import { FilterValue, TableCurrentDataSource } from 'antd/es/table/interface';
+import { ISorterTable } from '../../interfaces';
 
 export type ITablePersonData = {
 	id: number;
@@ -24,90 +26,90 @@ export const sampleData: ITablePersonData[] = [
 		age: 32,
 		address: 'New York No. 1 Lake Park',
 	},
-	// {
-	// 	id: 2,
-	// 	name: 'Jim Greens',
-	// 	age: 42,
-	// 	address: 'London No. 1 Lake Park',
-	// },
-	// {
-	// 	id: 3,
-	// 	name: 'Joe Black',
-	// 	age: 32,
-	// 	address: 'Sydney No. 1 Lake Park',
-	// },
-	// {
-	// 	id: 4,
-	// 	name: 'Jim Red',
-	// 	age: 28,
-	// 	address: 'London No. 2 Lake Park',
-	// },
-	// {
-	// 	id: 5,
-	// 	name: 'John Smith',
-	// 	age: 45,
-	// 	address: 'New York No. 5 West Street',
-	// },
-	// {
-	// 	id: 6,
-	// 	name: 'Joe White',
-	// 	age: 25,
-	// 	address: 'Sydney No. 3 East Road',
-	// },
-	// {
-	// 	id: 7,
-	// 	name: 'Jim Blue',
-	// 	age: 38,
-	// 	address: 'London No. 4 North Avenue',
-	// },
-	// {
-	// 	id: 8,
-	// 	name: 'John Wilson',
-	// 	age: 50,
-	// 	address: 'New York No. 7 South Lane',
-	// },
-	// {
-	// 	id: 9,
-	// 	name: 'Mike Johnson',
-	// 	age: 35,
-	// 	address: 'Chicago No. 10 Main St',
-	// },
-	// {
-	// 	id: 10,
-	// 	name: 'Sarah Davis',
-	// 	age: 29,
-	// 	address: 'Boston No. 15 Oak Ave',
-	// },
-	// {
-	// 	id: 11,
-	// 	name: 'Tom Miller',
-	// 	age: 41,
-	// 	address: 'Miami No. 20 Beach Blvd',
-	// },
-	// {
-	// 	id: 12,
-	// 	name: 'Lisa Garcia',
-	// 	age: 33,
-	// 	address: 'Seattle No. 25 Pine St',
-	// },
-	// {
-	// 	id: 13,
-	// 	name: 'David Rodriguez',
-	// 	age: 47,
-	// 	address: 'Denver No. 30 Mountain Rd',
-	// },
-	// {
-	// 	id: 14,
-	// 	name: 'Emily Taylor',
-	// 	age: 26,
-	// 	address: 'Portland No. 35 River Way',
-	// },
-	// {
-	// 	id: 15,
-	// 	name: 'Chris Martinez',
-	// 	age: 39,
-	// 	address: 'Atlanta No. 40 Peach St',
-	// },
+	{
+		id: 2,
+		name: 'Jim Greens',
+		age: 42,
+		address: 'London No. 1 Lake Park',
+	},
+	{
+		id: 3,
+		name: 'Joe Black',
+		age: 32,
+		address: 'Sydney No. 1 Lake Park',
+	},
+	{
+		id: 4,
+		name: 'Jim Red',
+		age: 28,
+		address: 'London No. 2 Lake Park',
+	},
+	{
+		id: 5,
+		name: 'John Smith',
+		age: 45,
+		address: 'New York No. 5 West Street',
+	},
+	{
+		id: 6,
+		name: 'Joe White',
+		age: 25,
+		address: 'Sydney No. 3 East Road',
+	},
+	{
+		id: 7,
+		name: 'Jim Blue',
+		age: 38,
+		address: 'London No. 4 North Avenue',
+	},
+	{
+		id: 8,
+		name: 'John Wilson',
+		age: 50,
+		address: 'New York No. 7 South Lane',
+	},
+	{
+		id: 9,
+		name: 'Mike Johnson',
+		age: 35,
+		address: 'Chicago No. 10 Main St',
+	},
+	{
+		id: 10,
+		name: 'Sarah Davis',
+		age: 29,
+		address: 'Boston No. 15 Oak Ave',
+	},
+	{
+		id: 11,
+		name: 'Tom Miller',
+		age: 41,
+		address: 'Miami No. 20 Beach Blvd',
+	},
+	{
+		id: 12,
+		name: 'Lisa Garcia',
+		age: 33,
+		address: 'Seattle No. 25 Pine St',
+	},
+	{
+		id: 13,
+		name: 'David Rodriguez',
+		age: 47,
+		address: 'Denver No. 30 Mountain Rd',
+	},
+	{
+		id: 14,
+		name: 'Emily Taylor',
+		age: 26,
+		address: 'Portland No. 35 River Way',
+	},
+	{
+		id: 15,
+		name: 'Chris Martinez',
+		age: 39,
+		address: 'Atlanta No. 40 Peach St',
+	},
 ];
 
 const sampleColumns: ColumnsType<ITablePersonData> = [
@@ -267,24 +269,35 @@ type Story = StoryObj<typeof meta>;
 
 const TableWithPaginationState = () => {
 	const { pagination, filters, sorter, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
+	
 
-	const newOnChangePagination = (pagination?: TablePaginationConfig) => {
-		onChangePagination(pagination);
+	const handleTableChange: ITableProps<ITablePersonData>['onChange'] = (
+		pagination,
+		sorter,
+		filters,
+		extra,
+	) => {
+		console.log('sorter =========> =>', sorter);
+		newOnChangePagination(pagination, sorter, filters, extra);
+	};
+
+	const newOnChangePagination = (
+		pagination?: TablePaginationConfig,
+		sorter?: ISorterTable,
+		filters?: Record<string, FilterValue | null>,
+		extra?: TableCurrentDataSource<ITablePersonData>,
+	) => {
+		console.log('sorter aaaaaaaaa =>',sorter);
+		onChangePagination(pagination, sorter, filters, extra);
 	};
 
 	return (
 		<div className="h-full flex flex-col gap-2 p-2">
-			{/* <div className="flex flex-col gap-2 border-1 border-gray-500 rounded-md h-auto">
-				<span>Test Current Page: {pagination.current}</span>
-				<span>Page Size: {pagination.pageSize}</span>
-				<span>Filtered Data: {JSON.stringify(filters)}</span>
-				<span>Sorter: {JSON.stringify(sorter)}</span>
-			</div> */}
 			<div className="grid grid-cols-3 gap-1 bg-gray-250 p-2 rounded-md">
 				<FilterInput
 					type="text"
 					defaultValue={undefined}
-					placeholder="Buscar marcap"	
+					placeholder="Buscar marcap"
 					onSearch={() => {}}
 					loading={true}
 					disabled={false}
@@ -335,7 +348,7 @@ const TableWithPaginationState = () => {
 				bordered={false}
 				showPagination={true}
 				paginationConfig={{ ...pagination, total: sampleData.length }}
-				onChange={newOnChangePagination}
+				onChange={handleTableChange}
 				rowKey={'id'}
 				showColumnActions={true}
 				columnActions={sampleColumnsWithActions}

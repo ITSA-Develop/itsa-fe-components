@@ -330,3 +330,13 @@ export interface DebounceSelectProps<ValueType = any>
 	fetchOptions: (search: string) => Promise<ValueType[]>;
 	debounceTimeout?: number;
 }
+
+export interface ISorterTable {
+	orderBy?: string;
+	column?: {
+		title: string;
+		dataIndex: string;
+	};
+	order?: string;
+	field?: string;
+}

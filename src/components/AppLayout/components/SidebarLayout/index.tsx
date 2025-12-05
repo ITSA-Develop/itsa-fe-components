@@ -110,7 +110,7 @@ export const SidebarLayout = ({
 			)}
 			<Layout className="rounded-lg h-full">
 				<Content className="bg-white-100 rounded-lg pt-3 h-full flex flex-col min-h-0 relative">
-					<div className="flex-1 overflow-auto min-h-0">
+					<div className="flex-1 overflow-auto min-h-0 p-2">
 						{children}
 					</div>
 					{footerComponent && <div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>}
