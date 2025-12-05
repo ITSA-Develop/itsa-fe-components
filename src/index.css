@@ -627,8 +627,8 @@
   min-height: 40px;
 }
 
-.min-h-\[800px\]{
-  min-height: 800px;
+.min-h-\[900px\]{
+  min-height: 900px;
 }
 
 .\!w-full{
@@ -1016,8 +1016,16 @@
   border-bottom-left-radius: 1rem;
 }
 
+.rounded-bl-lg{
+  border-bottom-left-radius: 0.5rem;
+}
+
 .rounded-br-2xl{
   border-bottom-right-radius: 1rem;
+}
+
+.rounded-br-lg{
+  border-bottom-right-radius: 0.5rem;
 }
 
 .rounded-tl-2xl{
@@ -1285,6 +1293,10 @@
   padding: 2rem;
 }
 
+.p-1{
+  padding: 0.25rem;
+}
+
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1315,6 +1327,10 @@
   padding-bottom: 1rem;
 }
 
+.\!pl-\[15px\]{
+  padding-left: 15px !important;
+}
+
 .pb-0\.5{
   padding-bottom: 0.125rem;
 }
@@ -1343,6 +1359,10 @@
   padding-left: 1.5rem;
 }
 
+.pr-2{
+  padding-right: 0.5rem;
+}
+
 .pr-3{
   padding-right: 0.75rem;
 }
@@ -1369,6 +1389,18 @@
 
 .pt-4{
   padding-top: 1rem;
+}
+
+.pr-1{
+  padding-right: 0.25rem;
+}
+
+.pr-0{
+  padding-right: 0px;
+}
+
+.pl-1{
+  padding-left: 0.25rem;
 }
 
 .text-center{
@@ -1671,14 +1703,14 @@
 /* Base (mobile-first) */
 
 .itsa-table-min-h-responsive .ant-table-body {
-  min-height: 30vh;
+  min-height: 20vh;
 }
 
 /* md ≥ 768px */
 
 @media (min-width: 768px) {
   .itsa-table-min-h-responsive .ant-table-body {
-    min-height: 50vh;
+    min-height: 30vh;
   }
 }
 
@@ -1686,7 +1718,7 @@
 
 @media (min-width: 1240px) {
   .itsa-table-min-h-responsive .ant-table-body {
-    min-height: 60vh;
+    min-height: 50vh;
   }
 }
 
@@ -1694,7 +1726,7 @@
 
 @media (min-width: 1536px) {
   .itsa-table-min-h-responsive .ant-table-body {
-    min-height: 70vh;
+    min-height: 54vh;
   }
 }
 

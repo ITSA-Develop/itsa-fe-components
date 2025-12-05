@@ -82,7 +82,7 @@ const AppLayoutWithMockData = (args: any) => {
 	return (
 		<div style={{ height: '100vh', width: '100vw' }}>
 			<AppLayout {...args} onClickOptionMenu={ (info: { key: string; item: TExtendedMenuItem }) => onClickOptionMenu(info.key, info.item)} >
-				<div style={{ padding: '24px', background: '#f5f5f5', minHeight: '100%' }}>
+				<div style={{ padding: '24px', minHeight: '100dvh' }}>
 					<h1>Contenido Principal gg</h1>
 					<p>Este es el contenido principal de la aplicación dentro del AppLayout.</p>
 					<div style={{ background: 'white', padding: '16px', borderRadius: '8px', marginTop: '16px' }}>
@@ -132,10 +132,7 @@ const meta: Meta<typeof AppLayout> = {
 			options: ['inline', 'vertical', 'horizontal'],
 			description: 'Modo de visualización del menú del sidebar',
 		},
-		logo: {
-			control: 'text',
-			description: 'URL del logo de la aplicación',
-		},
+		
 	},
 };
 

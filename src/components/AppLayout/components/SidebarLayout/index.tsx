@@ -1,4 +1,5 @@
 import MenuOptions from '@/components/AppLayout/components/MenuOptions';
+import { CustomFooterModal } from '@/components/CustomFooterModal';
 import { getAllMenuKeys, transformModuleToMenuData } from '@/helpers';
 import { getStoredCollapsedSidebar, setStoredCollapsedSidebar } from '@/helpers/functions';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
@@ -73,7 +74,7 @@ export const SidebarLayout = ({
 	};
 
 	return (
-		<Layout hasSider className="gap-2">
+		<Layout hasSider className="gap-2 h-full">
 			{!collapsed && (
 				<div className="flex flex-col pt-3 rounded-lg bg-gray-200" style={{ width: width }}>
 					<div className="flex items-center justify-center pr-3 pl-3">
@@ -106,8 +107,22 @@ export const SidebarLayout = ({
 					</div>
 				</div>
 			)}
-			<Layout className="rounded-lg">
-				<Content className="bg-white-100 overflow-auto rounded-lg pt-3 pb-2 pr-4 pl-4">{children}</Content>
+			<Layout className="rounded-lg h-full">
+				<Content className="bg-white-100 rounded-lg pt-3 h-full flex flex-col min-h-0 relative">
+					<div className="flex-1 overflow-auto min-h-0">
+						{children}
+					</div>
+					<div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">
+						<CustomFooterModal
+							onCancel={() => {}}
+							onConfirm={() => {}}
+							confirmLabel="Guardar"
+							cancelLabel="Cancelar"
+							confirmDisabled={false}
+							confirmLoading={false}
+						/>
+					</div>
+				</Content>
 			</Layout>
 		</Layout>
 	);
