@@ -27,7 +27,7 @@ export const Button = (props: IButtonProps) => {
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 
 	const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
-	const { size = 'small', type = 'primary', htmlType, label, disabled = false, onClick } = props;
+	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick } = props;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
 	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';

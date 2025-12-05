@@ -10,6 +10,7 @@ import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useAppLayoutFooter } from '../../context';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
@@ -28,6 +29,7 @@ export const SidebarLayout = ({
 	loadingMenu = false,
 	}: SidebarLayoutProps) => {
 	const [, setStoredCollapsed] = useState(getStoredCollapsedSidebar());
+	const { footerComponent } = useAppLayoutFooter();
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const windowWidth = useViewportStore(state => state.width);
 	const { collapsed, setCollapsed, searchTerm, setSearchTerm, openKeys, setOpenKeys } = useSidebarStore();
@@ -73,7 +75,7 @@ export const SidebarLayout = ({
 	};
 
 	return (
-		<Layout hasSider className="gap-2">
+		<Layout hasSider className="gap-2 h-full">
 			{!collapsed && (
 				<div className="flex flex-col pt-3 rounded-lg bg-gray-200" style={{ width: width }}>
 					<div className="flex items-center justify-center pr-3 pl-3">
@@ -106,8 +108,13 @@ export const SidebarLayout = ({
 					</div>
 				</div>
 			)}
-			<Layout className="rounded-lg">
-				<Content className="bg-white-100 overflow-auto rounded-lg pt-3 pb-2 pr-4 pl-4">{children}</Content>
+			<Layout className="rounded-lg h-full">
+				<Content className="bg-white-100 rounded-lg pt-3 h-full flex flex-col min-h-0 relative">
+					<div className="flex-1 overflow-auto min-h-0">
+						{children}
+					</div>
+					{footerComponent && <div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>}
+				</Content>
 			</Layout>
 		</Layout>
 	);

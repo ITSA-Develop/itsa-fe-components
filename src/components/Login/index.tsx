@@ -9,11 +9,13 @@ import type { FormEventHandler } from 'react';
 export interface ILogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
 	control: Control<TFieldValues>;
 	onSubmit?: FormEventHandler<HTMLFormElement>;
+	loading?: boolean;
 }
 
 export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({
 	control,
 	onSubmit,
+	loading,
 }: ILogin<TFieldValues>) => {
 	useViewportSize(0);
 	const { width } = useViewportStore();
@@ -32,7 +34,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 						<div>
 							<Title title="Iniciar sesión" level={4} />
 						</div>
-						<FormLogin control={control} onSubmit={handleSubmit} />
+						<FormLogin control={control} onSubmit={handleSubmit} loading={loading} />
 					</div>
 					<div className="bg-white rounded-tr-2xl rounded-br-2xl overflow-hidden flex-1 max-w-[420px]">
 						<img src={loginImage} alt="logo" className="w-full h-full max-h-[481px] object-cover" />
@@ -51,7 +53,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 						<div>
 							<Title title="Iniciar sesión" level={4} />
 						</div>
-						<FormLogin control={control} onSubmit={handleSubmit} />
+						<FormLogin control={control} onSubmit={handleSubmit} loading={loading} />
 					</div>
 				</div>
 			)}

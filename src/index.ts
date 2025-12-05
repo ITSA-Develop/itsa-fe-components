@@ -1,5 +1,6 @@
 export { Alert } from './components/Alert/Alert';
 export { AppLayout } from './components/AppLayout/AppLayout';
+export { AppLayoutFooterProvider, useAppLayoutFooter } from './components/AppLayout/context';
 export { Avatar } from './components/Avatar/Avatar';
 export { Badge } from './components/Badge/Badge';
 export { Button } from './components/Button/';
@@ -29,6 +30,8 @@ export { FormRadio } from './components/FormRadio';
 export { FormInputPassword } from './components/FormInputPassword';
 export { FormInputDatePicker } from './components/FormInputDatePicker';
 export { FormInputTimePicker } from './components/FormInputTimePicker';
+export { FilterSelect } from './components/FilterSelect';
+export { FilterInput } from './components/FilterInput';
 export { FormLabel } from './components/FormLabel';
 export { FormButtonSelector } from './components/FormButtonSelector';
 export { FormLabelError } from './components/FormLabelError';

@@ -5,6 +5,7 @@ import '../src/index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { NotificationsProvider } from '../src/HOC/NotificationsProviders';
 import { ControlActionsProvider } from '../src/HOC/ControlActions';
+import { AppLayoutFooterProvider } from '../src/components/AppLayout/context';
 const preview: Preview = {
 	parameters: {
 		controls: {
@@ -22,7 +23,9 @@ const preview: Preview = {
 					<BrowserRouter>
 						<NotificationsProvider>
 							<ControlActionsProvider fnApiValidatePermissionAction={async () => true}>
-								<Story />
+								<AppLayoutFooterProvider>
+									<Story />
+								</AppLayoutFooterProvider>
 							</ControlActionsProvider>
 						</NotificationsProvider>
 					</BrowserRouter>

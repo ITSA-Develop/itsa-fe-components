@@ -22,8 +22,8 @@ export const Default: Story = {
 		const FormLayoutHistory = () => {
 			return (
 				<div>
-					<div className="p-10 bg-gray-100 min-h-[800px]">
-						<h1 className="text-3xl font-bold">Contenido Principal</h1>
+					<div className="p-10 bg-gray-100 min-h-[900px]">
+						<h1 className="text-3xl font-bold">Contenido Principaesl</h1>
 						<p className="text-gray-700 mt-4">Esto se verá parcialmente en desktop cuando el Drawer esté abierto.</p>
 					</div>
 

@@ -65,7 +65,9 @@ export const Table = <T extends object>({
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const finalPagination = showPagination ? paginationConfig : false;
 
-	const tableRootClassName = ['itsa-table--head-rounded', rootClassName].filter(Boolean).join(' ');
+	const tableRootClassName = ['itsa-table--head-rounded', 'itsa-table-min-h-responsive', rootClassName]
+		.filter(Boolean)
+		.join(' ');
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
@@ -218,6 +220,7 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 				columns={finalColumns() as ColumnsType<T>}
 				dataSource={data}
 				loading={loading}
+				size="small"
 				bordered={bordered}
 				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
 				onChange={onChange}
@@ -248,7 +251,8 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 										background: '#EEF1F3',
 										color: 'black',
 										fontSize: '12px',
-										height: '40px',
+										height: '42px',
+										padding: '4px 8px',
 									}}
 								/>
 							);
@@ -261,8 +265,10 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 								style={{
 									...props?.style,
 									color: 'black',
-									fontSize: '14px',
-									height: '45px',
+									fontSize: '12px',
+									height: '30px',
+									lineHeight: '18px',
+									padding: '4px 8px',
 								}}
 							/>
 						),
