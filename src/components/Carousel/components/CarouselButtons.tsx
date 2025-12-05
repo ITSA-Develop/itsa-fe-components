@@ -53,7 +53,7 @@ export const CarouselButton = ({ direction, className, children, variant = 'over
 			type="button"
 			onClick={handleClick}
 			disabled={isDisabled}
-			className={classNames(baseClasses, variantClasses[variant], positionClasses, className)}
+			className={classNames('hidden md:flex', baseClasses, variantClasses[variant], positionClasses, className)}
 			aria-label={direction === 'next' ? 'Siguiente imagen' : 'Imagen anterior'}
 		>
 			{children ||
