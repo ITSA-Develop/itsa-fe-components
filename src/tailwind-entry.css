@@ -541,3 +541,37 @@ body,
 	padding-right: var(--itsa-table-cell-padding-x) !important;
 }
 
+/* Min height for table body when empty or with few rows */
+.itsa-table-min-h-300 .ant-table-body {
+	min-height: 300px;
+}
+
+/* Responsive min-height based on screen size */
+@layer utilities {
+	/* Base (mobile-first) */
+	.itsa-table-min-h-responsive .ant-table-body {
+		min-height: 30vh;
+	}
+
+	/* md ≥ 768px */
+	@media (min-width: 768px) {
+		.itsa-table-min-h-responsive .ant-table-body {
+			min-height: 50vh;
+		}
+	}
+
+	/* lg ≥ 1240px */
+	@media (min-width: 1240px) {
+		.itsa-table-min-h-responsive .ant-table-body {
+			min-height: 60vh;
+		}
+	}
+
+	/* 2xl ≥ 1536px */
+	@media (min-width: 1536px) {
+		.itsa-table-min-h-responsive .ant-table-body {
+			min-height: 70vh;
+		}
+	}
+}
+

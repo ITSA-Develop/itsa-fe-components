@@ -83,7 +83,7 @@ export const FilterInput = ({ ref, type = 'text', defaultValue, loading, onSearc
 				style={{
 					height: '27px',
 					lineHeight: '18px',
-					padding: '1px 2px',
+					padding: '2px 2px',
 					fontSize: '13px',
 					transition: 'box-shadow 160ms ease, border-color 160ms ease',
 					boxShadow: hasValue ? '0 0 0 2px rgba(59, 130, 246, 0.15)' : undefined,
