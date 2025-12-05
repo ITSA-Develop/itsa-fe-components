@@ -1,5 +1,4 @@
 import MenuOptions from '@/components/AppLayout/components/MenuOptions';
-import { CustomFooterModal } from '@/components/CustomFooterModal';
 import { getAllMenuKeys, transformModuleToMenuData } from '@/helpers';
 import { getStoredCollapsedSidebar, setStoredCollapsedSidebar } from '@/helpers/functions';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
@@ -11,6 +10,7 @@ import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useAppLayoutFooter } from '../../context';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
@@ -29,6 +29,7 @@ export const SidebarLayout = ({
 	loadingMenu = false,
 	}: SidebarLayoutProps) => {
 	const [, setStoredCollapsed] = useState(getStoredCollapsedSidebar());
+	const { footerComponent } = useAppLayoutFooter();
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const windowWidth = useViewportStore(state => state.width);
 	const { collapsed, setCollapsed, searchTerm, setSearchTerm, openKeys, setOpenKeys } = useSidebarStore();
@@ -112,16 +113,7 @@ export const SidebarLayout = ({
 					<div className="flex-1 overflow-auto min-h-0">
 						{children}
 					</div>
-					<div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">
-						<CustomFooterModal
-							onCancel={() => {}}
-							onConfirm={() => {}}
-							confirmLabel="Guardar"
-							cancelLabel="Cancelar"
-							confirmDisabled={false}
-							confirmLoading={false}
-						/>
-					</div>
+					{footerComponent && <div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>}
 				</Content>
 			</Layout>
 		</Layout>

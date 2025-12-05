@@ -8,6 +8,8 @@ import { IAgency } from '../../interfaces';
 import { TExtendedMenuItem } from '../../types';
 import { useCustomNavigation } from '../../hooks/useCustomNavigation';
 import { Dashboard } from '../../components/Dashboard';
+import { CustomFooterModal } from '../../components/CustomFooterModal';
+import { useAppLayoutFooter } from '../../components/AppLayout/context';
 
 // Mock data para las agencias y módulos
 const mockAgencies: IAgency[] = AGENCIES_DATA;
@@ -51,6 +53,25 @@ const mockUserActions = {
 	],
 };
 
+const FooterInitializer = () => {
+	const { setFooterComponent, clearFooter } = useAppLayoutFooter();
+
+	useEffect(() => {
+		setFooterComponent(
+			<CustomFooterModal
+				onConfirm={() => console.log('confirm footer action')}
+				onCancel={() => console.log('cancel footer action')}
+				confirmLabel="Guardar cambios"
+				cancelLabel="Cancelar"
+			/>,
+		);
+
+		return () => clearFooter();
+	}, [setFooterComponent, clearFooter]);
+
+	return null;
+};
+
 // Componente wrapper para inicializar el store con datos mock
 const AppLayoutWithMockData = (args: any) => {
 	const { navigateRoute } = useCustomNavigation();
@@ -60,7 +81,6 @@ const AppLayoutWithMockData = (args: any) => {
 	useEffect(() => {
 		console.log('agency =>', agency);
 	}, [agency]);
-
 
 	useEffect(() => {
 		// Inicializar datos mock
@@ -74,16 +94,20 @@ const AppLayoutWithMockData = (args: any) => {
 	const onClickOptionMenu = (key: string, item: TExtendedMenuItem) => {
 		const itemMenu = item.data;
 
-		if(itemMenu){
+		if (itemMenu) {
 			navigateRoute({ path: itemMenu.path ?? '' });
 		}
 	};
 
 	return (
 		<div style={{ height: '100vh', width: '100vw' }}>
-			<AppLayout {...args} onClickOptionMenu={ (info: { key: string; item: TExtendedMenuItem }) => onClickOptionMenu(info.key, info.item)} >
+			<AppLayout
+				{...args}
+				onClickOptionMenu={(info: { key: string; item: TExtendedMenuItem }) => onClickOptionMenu(info.key, info.item)}
+			>
+				<FooterInitializer />
 				<div style={{ padding: '24px', minHeight: '100dvh' }}>
-					<h1>Contenido Principal gg</h1>
+					<h1>Contenido Principal</h1>
 					<p>Este es el contenido principal de la aplicación dentro del AppLayout.</p>
 					<div style={{ background: 'white', padding: '16px', borderRadius: '8px', marginTop: '16px' }}>
 						<h2>Ejemplo de Contenido</h2>

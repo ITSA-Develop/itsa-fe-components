@@ -1,5 +1,6 @@
 export { Alert } from './components/Alert/Alert';
 export { AppLayout } from './components/AppLayout/AppLayout';
+export { AppLayoutFooterProvider, useAppLayoutFooter } from './components/AppLayout/context';
 export { Avatar } from './components/Avatar/Avatar';
 export { Badge } from './components/Badge/Badge';
 export { Button } from './components/Button/';

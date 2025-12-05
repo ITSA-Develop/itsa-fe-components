@@ -8,6 +8,7 @@ import { dataFromLocalStorage } from '@/helpers/objects';
 import { ELocalStorageKeys } from '@/enums';
 import { TExtendedMenuItem } from '@/types';
 import { useViewportSize } from '@/hooks';
+import { AppLayoutFooterProvider } from './context';
 
 export interface AppLayoutProps extends LayoutProps {
 	loading: boolean;
@@ -85,19 +86,21 @@ export const AppLayout = ({
 	}, [agencies]);
 
 	return (
-		<div className="flex h-[100dvh] w-full overflow-hidden">
-			<Layout className="p-2 gap-2">
-				<HeaderLayout loadingHeader={loading} notifications={notifications} userActions={userActions} />
-				<SidebarLayout
-					width={widthSidebar}
-					currentPath={currentPath}
-					modeSidebar={modeSidebar}
-					onClickOptionMenu={onClickOptionMenu}
-					loadingMenu={loading}
-				>
-					{children}
-				</SidebarLayout>
-			</Layout>
-		</div>
+		<AppLayoutFooterProvider>
+			<div className="flex h-[100dvh] w-full overflow-hidden">
+				<Layout className="p-2 gap-2">
+					<HeaderLayout loadingHeader={loading} notifications={notifications} userActions={userActions} />
+					<SidebarLayout
+						width={widthSidebar}
+						currentPath={currentPath}
+						modeSidebar={modeSidebar}
+						onClickOptionMenu={onClickOptionMenu}
+						loadingMenu={loading}
+					>
+						{children}
+					</SidebarLayout>
+				</Layout>
+			</div>
+		</AppLayoutFooterProvider>
 	);
 };
