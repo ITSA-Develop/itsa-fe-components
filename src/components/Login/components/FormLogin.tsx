@@ -9,8 +9,9 @@ export type LoginFormValuesBase = { username: string; password: string };
 export interface IFormLogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
 	control: Control<TFieldValues>;
 	onSubmit?: FormEventHandler<HTMLFormElement>;
+	loading?: boolean;
 }
-export const FormLogin = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({ control, onSubmit }: IFormLogin<TFieldValues>) => {
+export const FormLogin = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({ control, onSubmit, loading }: IFormLogin<TFieldValues>) => {
 	return (
 		<form className="flex flex-col gap-4 w-full p-8" onSubmit={onSubmit}>
 			<FormInput
@@ -32,6 +33,7 @@ export const FormLogin = <TFieldValues extends LoginFormValuesBase = LoginFormVa
 				htmlType="submit"
 				size="middle"
 				label="Iniciar sesión"
+				loading={loading}
 			/>
 		</form>
 	);

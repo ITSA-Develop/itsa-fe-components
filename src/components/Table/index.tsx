@@ -250,7 +250,7 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 										...props?.style,
 										background: '#EEF1F3',
 										color: 'black',
-										fontSize: '14px',
+										fontSize: '12px',
 										height: '42px',
 										padding: '4px 8px',
 									}}
@@ -265,8 +265,8 @@ const finalColumns = (): TStrictTableColumnsType<T> => {
 								style={{
 									...props?.style,
 									color: 'black',
-									fontSize: '15px',
-									height: '28px',
+									fontSize: '12px',
+									height: '30px',
 									lineHeight: '18px',
 									padding: '4px 8px',
 								}}
