@@ -20,7 +20,13 @@ export interface HeaderLayoutProps {
 	notifications?: MenuProps;
 }
 
-export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout, userActions = { items: [] }, notifications = { items: [] } }: HeaderLayoutProps) => {
+export const HeaderLayout = ({
+	onChangeModule,
+	onChangeAgency,
+	loadingAppLayout,
+	userActions = { items: [] },
+	notifications = { items: [] },
+}: HeaderLayoutProps) => {
 	const { collapsed, setCollapsed } = useSidebarStore();
 	const { modulesAgency } = useAppLayoutStore();
 	const { agencies } = useAppLayoutStore();
@@ -59,29 +65,58 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 		})),
 	};
 
-	  const setModulesAgencyCallback = useCallback(
-			(agencies: IAgency[]) => {
-				const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
-				if (moduleId) {
-					for (const agency of agencies) {
-						if (!agency.modules) continue;
-						for (const module of agency.modules) {
-							if (module.id === moduleId) {
-								setCurrentModule(module);
-								setModulesAgency(agency.modules);
-								setCurrentAgency(agency);
-								return;
-							}
+	const setModulesAgencyCallback = useCallback(
+		(agencies: IAgency[]) => {
+			const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
+			if (moduleId) {
+				for (const agency of agencies) {
+					if (!agency.modules) continue;
+					for (const module of agency.modules) {
+						if (module.id === moduleId) {
+							setCurrentModule(module);
+							setModulesAgency(agency.modules);
+							setCurrentAgency(agency);
+							return;
 						}
 					}
 				}
-			},
-			[setCurrentModule, setModulesAgency],
-		);
+			} else {
+				const agencyId = getNumberFromStorage(ELocalStorageKeys.agencyId);
+				if (agencyId) {
+					const agency = agencies.find(a => a.id === agencyId);
+					if (agency) {
+						setCurrentAgency(agency);
+						setModulesAgency(agency.modules);
+						const currentModule = agency.modules[0];
+						if (currentModule) {
+							setCurrentModule(currentModule);
+						}
+					}
+				} else {
+					const newAgency = agencies[0];
+					if (newAgency) {
+						setCurrentAgency(newAgency);
+						setModulesAgency(newAgency.modules);
+						const currentModule = newAgency.modules[0];
+						if (currentModule) {
+							setCurrentModule(currentModule);
+						}
+					}
+				}
+			}
+		},
+		[setCurrentModule, setModulesAgency],
+	);
 
 	useEffect(() => {
 		setModulesAgencyCallback(agencies);
 	}, [agencies, setModulesAgencyCallback]);
+
+	useEffect(() => {
+		if (currentAgency) {
+			setModulesAgencyCallback([currentAgency]);
+		}
+	}, [currentAgency]);
 
 	const handleSetCurrentModule = (moduleId: string) => {
 		const module = modulesAgency.find(m => m.id.toString() === moduleId);
@@ -96,8 +131,6 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 			onChangeAgency(agency);
 		}
 	};
-
-	
 
 	return (
 		<header className="h-16">

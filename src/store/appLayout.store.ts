@@ -50,6 +50,7 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		set({
 			currentAgency: agency,
 		});
+		localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
 	},
 	currentModule: undefined,
 	setCurrentModule: (module: IModule) => {

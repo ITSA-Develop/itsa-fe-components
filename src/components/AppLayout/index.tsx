@@ -36,7 +36,6 @@ export const AppLayout = ({
 	itemsMenuOptions = [],
 	onOpenKeysChange,
 }: AppLayoutProps) => {
-
 	useViewportSize();
 	const { setCollapsed } = useSidebarStore();
 
@@ -50,7 +49,6 @@ export const AppLayout = ({
 		}
 	}, []);
 
-	
 	return (
 		<AppLayoutFooterProvider>
 			<div className="flex h-[100dvh] w-full overflow-hidden">
