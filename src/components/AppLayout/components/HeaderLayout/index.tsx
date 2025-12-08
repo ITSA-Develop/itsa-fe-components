@@ -8,6 +8,9 @@ import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/a
 import { SettingOutlined } from '@ant-design/icons';
 import { IAgency, IModule, ISelectOptionDropdownButton } from '@/interfaces';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
+import { useCallback, useEffect } from 'react';
+import { ELocalStorageKeys } from '@/enums';
+import { getNumberFromStorage } from '@/helpers';
 
 export interface HeaderLayoutProps {
 	onChangeModule: (module: IModule) => void;
@@ -25,6 +28,7 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 	const { userName } = useAppLayoutStore();
 	const { currentModule } = useAppLayoutStore();
 	const { currentAgency } = useAppLayoutStore();
+	const { setCurrentModule, setModulesAgency, setCurrentAgency } = useAppLayoutStore();
 
 	const isActiveUserActions = Boolean(userActions?.items?.length);
 	const isActiveNotifications = Boolean(notifications?.items?.length);
@@ -55,6 +59,30 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 		})),
 	};
 
+	  const setModulesAgencyCallback = useCallback(
+			(agencies: IAgency[]) => {
+				const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
+				if (moduleId) {
+					for (const agency of agencies) {
+						if (!agency.modules) continue;
+						for (const module of agency.modules) {
+							if (module.id === moduleId) {
+								setCurrentModule(module);
+								setModulesAgency(agency.modules);
+								setCurrentAgency(agency);
+								return;
+							}
+						}
+					}
+				}
+			},
+			[setCurrentModule, setModulesAgency],
+		);
+
+	useEffect(() => {
+		setModulesAgencyCallback(agencies);
+	}, [agencies, setModulesAgencyCallback]);
+
 	const handleSetCurrentModule = (moduleId: string) => {
 		const module = modulesAgency.find(m => m.id.toString() === moduleId);
 		if (module) {
@@ -68,6 +96,8 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 			onChangeAgency(agency);
 		}
 	};
+
+	
 
 	return (
 		<header className="h-16">

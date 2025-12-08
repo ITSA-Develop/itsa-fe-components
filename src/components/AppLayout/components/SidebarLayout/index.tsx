@@ -1,16 +1,33 @@
-import { Button, Input, Layout } from 'antd';
+import { Button, Input, Layout, MenuProps } from 'antd';
 import { ReactNode } from 'react';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useAppLayoutFooter } from '@/HOC/AppLayoutFooterContext';
 import { Content } from 'antd/es/layout/layout';
 import { useSidebarStore } from '@/hooks';
+import { MenuOptions } from '../MenuOptions';
+import { TExtendedMenuItem } from '@/types';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
 	width?: number;
+	loadingAppLayout: boolean;
+	currentPath: string;
+	onClickOptionMenu: MenuProps['onClick'];
+	openKeysMenuOptions: string[];
+	itemsMenuOptions: TExtendedMenuItem[];
+	onOpenKeysChange: (openKeys: string[]) => void;
 }
 
-export const SidebarLayout = ({ children, width = 235 }: SidebarLayoutProps) => {
+export const SidebarLayout = ({
+	children,
+	width = 235,
+	loadingAppLayout,
+	currentPath,
+	onClickOptionMenu,
+	openKeysMenuOptions,
+	itemsMenuOptions,
+	onOpenKeysChange,
+}: SidebarLayoutProps) => {
 	const { collapsed, setCollapsed, searchTerm, setSearchTerm } = useSidebarStore();
 
 	const { footerComponent } = useAppLayoutFooter();
@@ -28,7 +45,16 @@ export const SidebarLayout = ({ children, width = 235 }: SidebarLayoutProps) => 
 							onChange={e => setSearchTerm(e.target.value)}
 						/>
 					</div>
-					<div className="flex-1 overflow-y-auto scrollbar-none h-full max-w-full"></div>
+					<div className="flex-1 overflow-y-auto scrollbar-none h-full max-w-full">
+						<MenuOptions
+							loadingAppLayout={loadingAppLayout}
+							currentPath={currentPath}
+							onClickOptionMenu={onClickOptionMenu}
+							openKeysMenuOptions={openKeysMenuOptions}
+							items={itemsMenuOptions}
+							onOpenKeysChange={onOpenKeysChange}
+						/>
+					</div>
 					<div className="w-full flex justify-end pr-3 pl-3">
 						<Button
 							type="link"
