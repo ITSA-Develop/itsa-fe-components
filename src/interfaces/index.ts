@@ -340,3 +340,34 @@ export interface ISorterTable {
 	order?: string;
 	field?: string;
 }
+
+export interface IMapPoint {
+	placeObject?: IPlaceObject;
+	addressData?: IAddressData;
+}
+
+export interface IAddressData {
+	principalStreet: string;
+	latitude: number;
+	longitude: number;
+	streetNumber: string;
+	postalCode: string;
+	isManualAddress: boolean;
+}
+
+export interface IPlaceObject {
+	street_number: IAdministrativeAreaLevel1;
+	route: IAdministrativeAreaLevel1;
+	political: IAdministrativeAreaLevel1;
+	locality: IAdministrativeAreaLevel1;
+	administrative_area_level_2: IAdministrativeAreaLevel1;
+	administrative_area_level_1: IAdministrativeAreaLevel1;
+	country: IAdministrativeAreaLevel1;
+	lat: number;
+	long: number;
+}
+
+export interface IAdministrativeAreaLevel1 {
+	long_name: string;
+	short_name: string;
+}
