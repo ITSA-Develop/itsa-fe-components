@@ -71,6 +71,23 @@ export const Map = ({
 		return undefined;
 	};
 
+	const emitLocationChange = (placeObject?: unknown, addressData?: any) => {
+		const lat = typeof (placeObject as any)?.lat === 'number' ? (placeObject as any).lat : addressData?.latitude;
+		const lng = typeof (placeObject as any)?.long === 'number' ? (placeObject as any).long : addressData?.longitude;
+
+		if (typeof lat === 'number' && typeof lng === 'number') {
+			const pos = { lat, lng } as IMapLocation;
+			setClickedPosition(pos);
+			setCenter(pos);
+		}
+
+		const mapPoint: IMapPoint = {
+			placeObject: placeObject as IPlaceObject,
+			addressData,
+		};
+		onLocationChange?.(mapPoint);
+	};
+
 	const reverseGeocode = async (lat: number, lng: number) => {
 		const g = (window as any)?.google;
 		if (!g?.maps?.Geocoder) {
@@ -124,7 +141,7 @@ export const Map = ({
 				placeObject: placeObject as unknown as IPlaceObject,
 				addressData,
 			};
-			onLocationChange?.(mapPoint);
+			emitLocationChange(mapPoint.placeObject, mapPoint.addressData);
 		} catch (e) {
 			console.error('Error en geocodificación inversa', e);
 			onLocationChange?.(null);
@@ -171,27 +188,16 @@ export const Map = ({
 		const lng = typeof placeObject?.long === 'number' ? placeObject.long : addressData?.longitude;
 
 		if (typeof lat === 'number' && typeof lng === 'number') {
-			const pos = { lat, lng } as IMapLocation;
-			setClickedPosition(pos);
-			setCenter(pos);
 			// Si ya tenemos addressData desde el Autocomplete, reenviamos;
 			// en casocleanObject contrario, geocodificación inversa para obtener placeObject/addressData
 			if (addressData) {
-				const mapPoint: IMapPoint = {
-					placeObject: placeObject as unknown as IPlaceObject,
-					addressData,
-				};
-				onLocationChange?.(mapPoint);
+				emitLocationChange(placeObject, addressData);
 			} else {
 				reverseGeocode(lat, lng);
 			}
 		} else {
 			// Si no hay coordenadas claras, reenvía lo que venga o null
-			const mapPoint: IMapPoint = {
-				placeObject: placeObject as unknown as IPlaceObject,
-				addressData,
-			};
-			onLocationChange?.(mapPoint);
+			emitLocationChange(placeObject, addressData);
 		}
 	};
 	//AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw
