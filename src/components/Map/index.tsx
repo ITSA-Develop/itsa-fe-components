@@ -1,6 +1,6 @@
 import { LOCATION_DEFAULT } from '@/constants';
 import { EMapZoom } from '@/enums';
-import { IMapLocation } from '@/interfaces';
+import { IMapLocation, IMapPoint, IPlaceObject } from '@/interfaces';
 import { AdvancedMarker, APIProvider, Map as MapComponent, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { CSSProperties, useEffect, useState } from 'react';
@@ -18,25 +18,8 @@ export interface IMapProps {
 	className?: string;
 	containerStyle?: CSSProperties;
 	style?: CSSProperties;
-	onLocationChange?: (
-		placeObject: {
-			[key: string]:
-				| {
-						long_name: string;
-						short_name: string;
-				  }
-				| number
-				| undefined;
-		} | null,
-		addressData?: {
-			principalStreet: string;
-			latitude: number;
-			longitude: number;
-			streetNumber: string;
-			postalCode: string;
-			isManualAddress: boolean;
-		},
-	) => void;
+	onLocationChange?: (mapPoint: IMapPoint | null) => void;
+	loading?: boolean;
 }
 
 export const Map = ({
@@ -54,16 +37,16 @@ export const Map = ({
 	const [center, setCenter] = useState<IMapLocation>(location);
 	const [clickedPosition, setClickedPosition] = useState<IMapLocation | null>(null);
 
-const MapCamera = ({ target }: { target?: IMapLocation }) => {
-	const mapInstance = useMap();
-	useEffect(() => {
-		if (mapInstance && target) {
-			(mapInstance as any).panTo(target);
-			(mapInstance as any).setZoom(EMapZoom.zoom17);
-		}
-	}, [mapInstance, target]);
-	return null;
-};
+	const MapCamera = ({ target }: { target?: IMapLocation }) => {
+		const mapInstance = useMap();
+		useEffect(() => {
+			if (mapInstance && target) {
+				(mapInstance as any).panTo(target);
+				(mapInstance as any).setZoom(EMapZoom.zoom17);
+			}
+		}, [mapInstance, target]);
+		return null;
+	};
 
 	useEffect(() => {
 		setCenter(location);
@@ -137,7 +120,11 @@ const MapCamera = ({ target }: { target?: IMapLocation }) => {
 			};
 
 			console.log('Map click -> reverseGeocode:', { placeObject, addressData });
-			onLocationChange?.(placeObject, addressData);
+			const mapPoint: IMapPoint = {
+				placeObject: placeObject as unknown as IPlaceObject,
+				addressData,
+			};
+			onLocationChange?.(mapPoint);
 		} catch (e) {
 			console.error('Error en geocodificación inversa', e);
 			onLocationChange?.(null);
@@ -188,19 +175,27 @@ const MapCamera = ({ target }: { target?: IMapLocation }) => {
 			setClickedPosition(pos);
 			setCenter(pos);
 			// Si ya tenemos addressData desde el Autocomplete, reenviamos;
-			// en caso contrario, geocodificación inversa para obtener placeObject/addressData
+			// en casocleanObject contrario, geocodificación inversa para obtener placeObject/addressData
 			if (addressData) {
-				onLocationChange?.(placeObject, addressData);
+				const mapPoint: IMapPoint = {
+					placeObject: placeObject as unknown as IPlaceObject,
+					addressData,
+				};
+				onLocationChange?.(mapPoint);
 			} else {
 				reverseGeocode(lat, lng);
 			}
 		} else {
 			// Si no hay coordenadas claras, reenvía lo que venga o null
-			onLocationChange?.(placeObject ?? null, addressData);
+			const mapPoint: IMapPoint = {
+				placeObject: placeObject as unknown as IPlaceObject,
+				addressData,
+			};
+			onLocationChange?.(mapPoint);
 		}
 	};
 	//AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw
-	//82446f60eba4a92316dbec8c
+	//82446f60eba4a 92316dbec8c
 	return (
 		<div className={`relative flex-1 bg-red-300 h-full w-full ${className ?? ''}`} style={containerStyle}>
 			<APIProvider apiKey={googleMapsApiKey} libraries={['places']}>
