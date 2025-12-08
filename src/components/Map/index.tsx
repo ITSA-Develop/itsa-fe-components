@@ -1,7 +1,7 @@
 import { LOCATION_DEFAULT } from '@/constants';
 import { EMapZoom } from '@/enums';
 import { IMapLocation, IMapPoint, IPlaceObject } from '@/interfaces';
-import { AdvancedMarker, APIProvider, Map as MapComponent, MapMouseEvent, useMap } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, APIProvider, Map as MapComponent, MapMouseEvent, useMap, InfoWindow, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { CSSProperties, useEffect, useState } from 'react';
 import { useGeolocation } from '@/hooks';
@@ -13,6 +13,7 @@ export interface IMapProps {
 	location?: IMapLocation;
 	zoom?: EMapZoom;
 	useUserLocation?: boolean;
+	defaultMarker?: IMapLocation;
 	googleMapsApiKey?: string;
 	mapId?: string;
 	className?: string;
@@ -26,6 +27,7 @@ export const Map = ({
 	location = LOCATION_DEFAULT,
 	zoom = EMapZoom.zoom14,
 	useUserLocation = false,
+	defaultMarker,
 	googleMapsApiKey = GOOGLE_API_KEY,
 	mapId = GOOGLE_MAP_ID,
 	className,
@@ -36,6 +38,7 @@ export const Map = ({
 	const [geoState, requestLocation] = useGeolocation();
 	const [center, setCenter] = useState<IMapLocation>(location);
 	const [clickedPosition, setClickedPosition] = useState<IMapLocation | null>(null);
+	const [markerInfo, setMarkerInfo] = useState<{ address: string; coords: IMapLocation } | null>(null);
 
 	const MapCamera = ({ target }: { target?: IMapLocation }) => {
 		const mapInstance = useMap();
@@ -46,6 +49,55 @@ export const Map = ({
 			}
 		}, [mapInstance, target]);
 		return null;
+	};
+
+	const UserLocationMarker = ({ position, markerInfo }: { position: IMapLocation; markerInfo: { address: string; coords: IMapLocation } | null }) => {
+		const [markerRef, marker] = useAdvancedMarkerRef();
+		const [infoWindowShown, setInfoWindowShown] = useState(true);
+
+		useEffect(() => {
+			// Mostrar el popup cuando cambia el marcador
+			if (markerInfo && markerInfo.coords.lat === position.lat && markerInfo.coords.lng === position.lng) {
+				setInfoWindowShown(true);
+			}
+		}, [markerInfo, position]);
+
+		const handleClose = () => {
+			setInfoWindowShown(false);
+		};
+
+		return (
+			<>
+				<AdvancedMarker
+					ref={markerRef}
+					position={position}
+					title="Ubicación actual"
+				/>
+				{infoWindowShown && markerInfo && markerInfo.coords.lat === position.lat && markerInfo.coords.lng === position.lng && (
+					<InfoWindow anchor={marker} onClose={handleClose}>
+						<div style={{ padding: '4px' }}>
+							<h3 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>Ubicación actual</h3>
+							<p style={{ margin: '0 0 4px 0', fontSize: '12px' }}>{markerInfo.address}</p>
+							<p style={{ margin: '0', fontSize: '11px', color: '#666' }}>
+								{markerInfo.coords.lat.toFixed(6)}, {markerInfo.coords.lng.toFixed(6)}
+							</p>
+						</div>
+					</InfoWindow>
+				)}
+			</>
+		);
+	};
+
+	const ClickedMarker = ({ position }: { position: IMapLocation; markerInfo: { address: string; coords: IMapLocation } | null; showInfoWindow?: boolean }) => {
+		const [markerRef ] = useAdvancedMarkerRef();
+
+		return (
+			<AdvancedMarker
+				ref={markerRef}
+				position={position}
+				title="Marcador"
+			/>
+		);
 	};
 
 	useEffect(() => {
@@ -60,9 +112,21 @@ export const Map = ({
 
 	useEffect(() => {
 		if (geoState.coords) {
-			setCenter({ lat: geoState.coords.latitude, lng: geoState.coords.longitude });
+			const coords = { lat: geoState.coords.latitude, lng: geoState.coords.longitude };
+			setCenter(coords);
+			// Actualizar información del marcador cuando cambia la ubicación del usuario
+			reverseGeocode(coords.lat, coords.lng);
 		}
 	}, [geoState.coords]);
+
+	// Efecto para manejar el marcador por defecto
+	useEffect(() => {
+		if (defaultMarker && !clickedPosition) {
+			setCenter(defaultMarker);
+			// Obtener información de la dirección del marcador por defecto
+			reverseGeocode(defaultMarker.lat, defaultMarker.lng);
+		}
+	}, [defaultMarker]);
 
 	const getLongName = (value: unknown): string | undefined => {
 		if (typeof value === 'object' && value !== null && 'long_name' in value) {
@@ -79,6 +143,22 @@ export const Map = ({
 			const pos = { lat, lng } as IMapLocation;
 			setClickedPosition(pos);
 			setCenter(pos);
+
+			// Actualizar información del marcador si tenemos addressData
+			if (addressData) {
+				const addressParts = [
+					addressData.principalStreet,
+					addressData.streetNumber,
+				].filter(Boolean);
+				const addressSummary = addressParts.length > 0 
+					? addressParts.join(', ') 
+					: `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+				setMarkerInfo({
+					address: addressSummary,
+					coords: { lat, lng },
+				});
+			}
 		}
 
 		const mapPoint: IMapPoint = {
@@ -136,7 +216,24 @@ export const Map = ({
 				isManualAddress: false,
 			};
 
-			console.log('Map click -> reverseGeocode:', { placeObject, addressData });
+			// Construir resumen de dirección para el popup
+			const addressParts = [
+				addressData.principalStreet,
+				addressData.streetNumber,
+				getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.canton]),
+				getLongName(placeObject[GOOGLE_MAP_ADDRESS_KEYS.province]),
+			].filter(Boolean);
+			const addressSummary = addressParts.length > 0 
+				? addressParts.join(', ') 
+				: result.formatted_address || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+			// Actualizar información del marcador para mostrar en el popup
+			setMarkerInfo({
+				address: addressSummary,
+				coords: { lat, lng },
+			});
+
+			// console.log('Map click -> reverseGeocode:', { placeObject, addressData });
 			const mapPoint: IMapPoint = {
 				placeObject: placeObject as unknown as IPlaceObject,
 				addressData,
@@ -159,15 +256,16 @@ export const Map = ({
 			setClickedPosition(pos);
 			// Opcional: recentrar el mapa en el marcador nuevo
 			setCenter(pos);
-			console.log('Map click -> coords:', pos);
+			// console.log('Map click -> coords:', pos);
 			// Obtener información del punto clickeado
 			reverseGeocode(lat, lng);
 		}
 	};
 
 	const openInGoogleMaps = () => {
-		if (!clickedPosition) return;
-		const { lat, lng } = clickedPosition;
+		const position = clickedPosition || defaultMarker;
+		if (!position) return;
+		const { lat, lng } = position;
 		const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 		window.open(url, '_blank', 'noopener');
 	};
@@ -215,12 +313,25 @@ export const Map = ({
 					mapId={mapId}
 				>
 					{useUserLocation && geoState.coords && (
-						<AdvancedMarker
+						<UserLocationMarker 
 							position={{ lat: geoState.coords.latitude, lng: geoState.coords.longitude }}
-							title="Mi ubicación"
+							markerInfo={markerInfo}
 						/>
 					)}
-					{clickedPosition && <AdvancedMarker position={clickedPosition} title="Marcador" />}
+					{clickedPosition && (
+						<ClickedMarker 
+							position={clickedPosition} 
+							markerInfo={markerInfo}
+							showInfoWindow={false}
+						/>
+					)}
+					{defaultMarker && !clickedPosition && (
+						<ClickedMarker 
+							position={defaultMarker} 
+							markerInfo={markerInfo}
+							showInfoWindow={false}
+						/>
+					)}
 					<MapCamera target={center} />
 				</MapComponent>
 				<InputSearchAddress
@@ -229,7 +340,7 @@ export const Map = ({
 					onLocationChange={handleLocationChangeBySearch}
 				/>
 			</APIProvider>
-			{clickedPosition && (
+			{(clickedPosition || defaultMarker) && (
 				<div className="absolute right-3 bottom-16 z-10">
 					<Button type="secondary" onClick={openInGoogleMaps} size="middle" label={<EnvironmentOutlined />} />
 				</div>
