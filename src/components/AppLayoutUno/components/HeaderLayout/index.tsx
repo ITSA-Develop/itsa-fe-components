@@ -1,44 +1,43 @@
-import { Button, Dropdown, MenuProps } from 'antd';
-import { MenuUnfoldOutlined } from '@ant-design/icons';
-import { useSidebarStore } from '@/hooks';
-import { useAppLayoutStore } from '@/store';
-import { imageItsaLogo } from '@/assets/images';
-import { DropdownIcon } from '@/components/DropdownIcon';
 import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
-import { SettingOutlined } from '@ant-design/icons';
-import { IAgency, IModule, ISelectOptionDropdownButton } from '@/interfaces';
+import { imageItsaLogo } from '@/assets/images';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
+import { DropdownIcon } from '@/components/DropdownIcon';
+import { useSidebarStore } from '@/hooks';
+import { ISelectOptionDropdownButton } from '@/interfaces';
+import { useViewportStore } from '@/store';
+import { useAppLayoutStore } from '@/store/appLayout.store';
+import { MenuUnfoldOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Dropdown, MenuProps } from 'antd';
 
 export interface HeaderLayoutProps {
-	onChangeModule: (module: IModule) => void;
-	onChangeAgency: (agency: IAgency) => void;
-	loadingAppLayout: boolean;
-	userActions?: MenuProps;
+	loadingHeader: boolean;
 	notifications?: MenuProps;
+	userActions?: MenuProps;
 }
 
-export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout, userActions = { items: [] }, notifications = { items: [] } }: HeaderLayoutProps) => {
+export const HeaderLayout = ({
+	loadingHeader,
+	notifications = { items: [] },
+	userActions = { items: [] }
+}: HeaderLayoutProps) => {
+	const { width } = useViewportStore();
+	const { setCurrentModule, setCurrentAgency } = useAppLayoutStore();
 	const { collapsed, setCollapsed } = useSidebarStore();
-	const { modulesAgency } = useAppLayoutStore();
 	const { agencies } = useAppLayoutStore();
-	const { userRole } = useAppLayoutStore();
-	const { userName } = useAppLayoutStore();
-	const { currentModule } = useAppLayoutStore();
 	const { currentAgency } = useAppLayoutStore();
+	const { currentModule } = useAppLayoutStore();
+	const { modulesAgency } = useAppLayoutStore();
+	const { userName } = useAppLayoutStore();
+	const { userRole } = useAppLayoutStore();
 
-	const isActiveUserActions = Boolean(userActions?.items?.length);
 	const isActiveNotifications = Boolean(notifications?.items?.length);
+	const isActiveUserActions = Boolean(userActions?.items?.length);
 
 	const modulesData: ISelectOptionDropdownButton = {
 		items: modulesAgency.map(m => ({
 			key: m.id.toString(),
 			label: m.name,
-			onClick: (id: string) => {
-				const mod = modulesAgency.find(m => m.id.toString() === id);
-				if (mod) {
-					onChangeModule(mod);
-				}
-			},
+			onClick: (id: string) => handleSetCurrentModule(id),
 		})),
 	};
 
@@ -46,26 +45,21 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 		items: agencies.map(a => ({
 			key: a.id.toString(),
 			label: a.name,
-			onClick: (id: string) => {
-				const agency = agencies.find(a => a.id.toString() === id);
-				if (agency) {
-					onChangeAgency(agency);
-				}
-			},
+			onClick: (id: string) => handleSetCurrentAgency(id),
 		})),
 	};
 
 	const handleSetCurrentModule = (moduleId: string) => {
 		const module = modulesAgency.find(m => m.id.toString() === moduleId);
 		if (module) {
-			onChangeModule(module);
+			setCurrentModule(module);
 		}
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
 		const agency = agencies.find(a => a.id.toString() === agencyId);
 		if (agency) {
-			onChangeAgency(agency);
+			setCurrentAgency(agency);
 		}
 	};
 
@@ -80,32 +74,37 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 							onClick={() => setCollapsed(!collapsed)}
 						/>
 					)}
-					<div className="hidden md:block">
-						<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
-					</div>
+					{width > 768 && (
+						<img
+							src={imageItsaLogo}
+							alt="logo"
+							className="h-full max-h-12 max-w-[150px] object-cover"
+						/>
+					)}
 				</div>
-				<div className="block md:hidden">
-					<div className="flex flex-row items-center gap-4">
+				<div className="flex flex-row w-auto items-center gap-4">
+					{/* Vista Móvil (solo iconos) */}
+					<div className="flex tablet:hidden flex-row items-center gap-4">
 						<DropdownIcon
 							options={modulesData}
-							loading={loadingAppLayout}
+							loading={loadingHeader}
 							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
 							onChange={handleSetCurrentModule}
 						/>
 						<DropdownIcon
 							options={agenciesData}
-							loading={loadingAppLayout}
+							loading={loadingHeader}
 							icon={<PinIcon className="text-white-100 w-4 h-4" />}
 							onChange={handleSetCurrentAgency}
 						/>
 					</div>
-				</div>
-				<div className="hidden md:block">
-					<div className="flex flex-row items-center gap-4">
+
+					{/* Vista Desktop (custom labels) */}
+					<div className="hidden tablet:flex flex-row items-center gap-4">
 						<DropdownCustomLabel
 							defaultValue={currentModule?.id?.toString()}
 							options={modulesData}
-							loading={loadingAppLayout}
+							loading={loadingHeader}
 							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
 							emptyLabel="Sin módulos asignados"
 							onChange={handleSetCurrentModule}
@@ -113,7 +112,7 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 						<DropdownCustomLabel
 							defaultValue={currentAgency?.id?.toString()}
 							options={agenciesData}
-							loading={loadingAppLayout}
+							loading={loadingHeader}
 							icon={<PinIcon className="text-white-100 w-4 h-4" />}
 							emptyLabel="Sin agencias asignadas"
 							onChange={handleSetCurrentAgency}
@@ -126,11 +125,12 @@ export const HeaderLayout = ({ onChangeModule, onChangeAgency, loadingAppLayout,
 						</div>
 					</div>
 				</div>
+
 				<div className="flex flex-row pl-4">
-					<Dropdown menu={userActions} placement="bottomRight" disabled={!isActiveUserActions}>
+					<Dropdown menu={userActions || { items: [] }} placement="bottomRight" disabled={!isActiveUserActions}>
 						<Button type="text" icon={<UserIcon className="text-white-100 w-6 h-6" />} />
 					</Dropdown>
-					<Dropdown menu={notifications} placement="bottomRight" disabled={!isActiveNotifications}>
+					<Dropdown menu={notifications || { items: [] }} placement="bottomRight" disabled={!isActiveNotifications}>
 						<Button
 							type="text"
 							icon={

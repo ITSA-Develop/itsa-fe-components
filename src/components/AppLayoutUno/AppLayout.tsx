@@ -8,7 +8,7 @@ import { dataFromLocalStorage } from '@/helpers/objects';
 import { ELocalStorageKeys } from '@/enums';
 import { TExtendedMenuItem } from '@/types';
 import { useViewportSize } from '@/hooks';
-import { AppLayoutFooterProvider } from './context';
+import { AppLayoutFooterProvider } from '../../HOC/AppLayoutFooterContext';
 
 export interface AppLayoutProps extends LayoutProps {
 	loading: boolean;

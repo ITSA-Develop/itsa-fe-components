@@ -1,221 +1,25 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { useEffect } from 'react';
-import { AppLayout } from '../../components/AppLayout/AppLayout';
-import { useAppLayoutStore } from '../../store/appLayout.store';
-import { AGENCIES_DATA } from '../../constants/agencies';
-import { IAgency } from '../../interfaces';
-import { TExtendedMenuItem } from '../../types';
-import { useCustomNavigation } from '../../hooks/useCustomNavigation';
-import { Dashboard } from '../../components/Dashboard';
-import { CustomFooterModal } from '../../components/CustomFooterModal';
-import { useAppLayoutFooter } from '../../components/AppLayout/context';
+import type { StoryObj } from '@storybook/react';
+import { AppLayout } from '../../components/AppLayout';
 
-// Mock data para las agencias y módulos
-const mockAgencies: IAgency[] = AGENCIES_DATA;
-
-const mockNotifications = {
-	items: [
-		{
-			key: '1',
-			label: 'Nueva notificación',
-			icon: 'BellOutlined',
-		},
-		{
-			key: '2',
-			label: 'Mensaje importante',
-			icon: 'ExclamationCircleOutlined',
-		},
-	],
-};
-
-const mockUserActions = {
-	items: [
-		{
-			key: 'profile',
-			label: 'Mi Perfil',
-			icon: 'UserOutlined',
-		},
-		{
-			key: 'settings',
-			label: 'Configuración',
-			icon: 'SettingOutlined',
-		},
-		{
-			type: 'divider' as const,
-		},
-		{
-			key: 'logout',
-			label: 'Cerrar Sesión',
-			icon: 'LogoutOutlined',
-			danger: true,
-		},
-	],
-};
-
-const FooterInitializer = () => {
-	const { setFooterComponent, clearFooter } = useAppLayoutFooter();
-
-	useEffect(() => {
-		setFooterComponent(
-			<CustomFooterModal
-				onConfirm={() => console.log('confirm footer action')}
-				onCancel={() => console.log('cancel footer action')}
-				confirmLabel="Guardar cambios"
-				cancelLabel="Cancelar"
-			/>,
-		);
-
-		return () => clearFooter();
-	}, [setFooterComponent, clearFooter]);
-
-	return null;
-};
-
-// Componente wrapper para inicializar el store con datos mock
-const AppLayoutWithMockData = (args: any) => {
-	const { navigateRoute } = useCustomNavigation();
-	const { setAgencies, setModulesAgency, setCurrentAgency, setUserName, setUserRole } = useAppLayoutStore();
-	const agency = useAppLayoutStore(state => state.currentAgency);
-
-	useEffect(() => {
-		console.log('agency =>', agency);
-	}, [agency]);
-
-	useEffect(() => {
-		// Inicializar datos mock
-		setAgencies(mockAgencies);
-		setModulesAgency(mockAgencies[0].modules);
-		setCurrentAgency(mockAgencies[0]);
-		setUserName('Juan Pérez');
-		setUserRole('Administrador');
-	}, [setAgencies, setModulesAgency, setCurrentAgency, setUserName, setUserRole]);
-
-	const onClickOptionMenu = (key: string, item: TExtendedMenuItem) => {
-		const itemMenu = item.data;
-
-		if (itemMenu) {
-			navigateRoute({ path: itemMenu.path ?? '' });
-		}
-	};
-
-	return (
-		<div style={{ height: '100vh', width: '100vw' }}>
-			<AppLayout
-				{...args}
-				onClickOptionMenu={(info: { key: string; item: TExtendedMenuItem }) => onClickOptionMenu(info.key, info.item)}
-			>
-				<FooterInitializer />
-				<div style={{ padding: '24px', minHeight: '100dvh' }}>
-					<h1>Contenido Principal</h1>
-					<p>Este es el contenido principal de la aplicación dentro del AppLayout.</p>
-					<div style={{ background: 'white', padding: '16px', borderRadius: '8px', marginTop: '16px' }}>
-						<h2>Ejemplo de Contenido</h2>
-						<p>Aquí puedes colocar cualquier contenido que necesites mostrar en tu aplicación.</p>
-						<ul>
-							<li>Dashboard principal</li>
-							<li>Formularios</li>
-							<li>Tablas de datos</li>
-							<li>Gráficos y reportes</li>
-						</ul>
-					</div>
-				</div>
-			</AppLayout>
-		</div>
-	);
-};
-
-const meta: Meta<typeof AppLayout> = {
-    title: 'Components/AppLayout',
-    component: AppLayout,
-    tags: ['autodocs'],
+const meta = {
+	title: 'Components/AppLayout',
+	component: AppLayout,
+	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
 		docs: {
 			description: {
 				component:
-					'Componente principal de layout de la aplicación que incluye header, sidebar y área de contenido principal.',
+					'Componente de layout principal de la aplicación.',
 			},
 		},
-	},
-	argTypes: {
-		loading: {
-			control: 'boolean',
-			description: 'Estado de carga del layout',
-		},
-		currentPath: {
-			control: 'text',
-			description: 'Ruta actual de la aplicación',
-		},
-		widthSidebar: {
-			control: { type: 'range', min: 200, max: 400, step: 10 },
-			description: 'Ancho del sidebar en píxeles',
-		},
-		modeSidebar: {
-			control: 'select',
-			options: ['inline', 'vertical', 'horizontal'],
-			description: 'Modo de visualización del menú del sidebar',
-		},
-		
 	},
 };
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: args => <AppLayoutWithMockData {...args} />,
-	args: {
-		loading: false,
-		currentPath: '/dashboard',
-		widthSidebar: 280,
-		modeSidebar: 'inline',
-		notifications: mockNotifications,
-		userActions: mockUserActions,
-		logo: '',
-	},
+	args: {},
 };
-export const DifferentPath: Story = {
-	args: {
-		...Default.args,
-		currentPath: '/nucleo/gestion-clientes',
-		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
-			console.log('info =>', info);
-		},
-	},
-};
-export const VerticalMenu: Story = {
-	render: args => <AppLayoutWithMockData {...args} />,
-	args: {
-		...Default.args,
-		modeSidebar: 'vertical',
-		loading: true,
-		
-	},
-};
-
-export const NarrowSidebar: Story = {
-	args: {
-		...Default.args,
-		widthSidebar: 220,
-		loadingMenu: true,
-		
-	},
-};
-//mockAgencies[0].modules
-export const WithDashboard: Story = {
-	args: {
-		...Default.args,
-		widthSidebar: 220,
-		loadingMenu: true,
-		onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => {
-			console.log('info =>', info);
-		},
-		children: <Dashboard handleNavigateProgram={(program) => {
-			console.log('program =>', program);
-		}} />,
-	},
-};
-
-
-

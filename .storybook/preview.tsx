@@ -5,7 +5,7 @@ import '../src/index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { NotificationsProvider } from '../src/HOC/NotificationsProviders';
 import { ControlActionsProvider } from '../src/HOC/ControlActions';
-import { AppLayoutFooterProvider } from '../src/components/AppLayout/context';
+import { AppLayoutFooterProvider } from '../src/HOC/AppLayoutFooterContext';
 const preview: Preview = {
 	parameters: {
 		controls: {

@@ -1,3 +1,4 @@
+import { ELocalStorageKeys } from '@/enums';
 import { create } from 'zustand';
 
 type SidebarStore = {
@@ -11,7 +12,10 @@ type SidebarStore = {
 
 export const useSidebarStore = create<SidebarStore>(set => ({
 	collapsed: false,
-	setCollapsed: collapsed => set({ collapsed }),
+	setCollapsed: collapsed => {
+		set({ collapsed });
+		localStorage.setItem(ELocalStorageKeys.collapsedSidebar, String(collapsed));
+	},
 	searchTerm: '',
 	setSearchTerm: searchTerm => set({ searchTerm }),
 	openKeys: [],

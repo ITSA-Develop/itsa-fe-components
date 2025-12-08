@@ -2279,6 +2279,16 @@ body,
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+@media (min-width: 640px){
+  .sm\:block{
+    display: block;
+  }
+
+  .sm\:hidden{
+    display: none;
+  }
+}
+
 @media (min-width: 768px){
   .md\:col-span-1{
     grid-column: span 1 / span 1;
