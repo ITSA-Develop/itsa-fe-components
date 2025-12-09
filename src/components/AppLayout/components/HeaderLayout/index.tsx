@@ -11,9 +11,11 @@ import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
 import { useCallback, useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
 import { getNumberFromStorage } from '@/helpers';
+import { NavigateFunction } from 'react-router-dom';
 
 export interface HeaderLayoutProps {
 	loadingAppLayout: boolean;
+	navigateApp: NavigateFunction;
 	userActions?: MenuProps;
 	notifications?: MenuProps;
 }
@@ -22,6 +24,7 @@ export const HeaderLayout = ({
 	loadingAppLayout,
 	userActions = { items: [] },
 	notifications = { items: [] },
+	navigateApp,
 }: HeaderLayoutProps) => {
 	const { collapsed, setCollapsed } = useSidebarStore();
 	const { modulesAgency } = useAppLayoutStore();
@@ -33,6 +36,35 @@ export const HeaderLayout = ({
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
 		useAppLayoutStore();
 
+	const redirectToHome = () => {
+		navigateApp('/home');
+	};
+
+	const selectModule = (module?: (typeof modulesAgency)[number], shouldNavigate = true) => {
+		if (!module) return false;
+		setCurrentModule(module);
+		setSubmodulesAgency(module.submodules);
+		const currentSubmodule = module.submodules[0];
+		if (currentSubmodule) {
+			setCurrentSubmodule(currentSubmodule);
+		}
+		if (shouldNavigate) {
+			redirectToHome();
+		}
+		return true;
+	};
+
+	const selectAgency = (agency?: IAgency, navigateWhenNoModule = true) => {
+		if (!agency) return false;
+		setCurrentAgency(agency);
+		setModulesAgency(agency.modules);
+		const hasModule = selectModule(agency.modules[0], false);
+		if (hasModule || navigateWhenNoModule) {
+			redirectToHome();
+		}
+		return hasModule;
+	};
+
 	const isActiveUserActions = Boolean(userActions?.items?.length);
 	const isActiveNotifications = Boolean(notifications?.items?.length);
 
@@ -40,17 +72,7 @@ export const HeaderLayout = ({
 		items: modulesAgency.map(m => ({
 			key: m.id.toString(),
 			label: m.name,
-			onClick: (id: string) => {
-				const mod = modulesAgency.find(m => m.id.toString() === id);
-				if (mod) {
-					setCurrentModule(mod);
-					setSubmodulesAgency(mod.submodules);
-					const currentSubmodule = mod.submodules[0];
-					if (currentSubmodule) {
-						setCurrentSubmodule(currentSubmodule);
-					}
-				}
-			},
+			onClick: (id: string) => selectModule(modulesAgency.find(m => m.id.toString() === id)),
 		})),
 	};
 
@@ -58,17 +80,7 @@ export const HeaderLayout = ({
 		items: agencies.map(a => ({
 			key: a.id.toString(),
 			label: a.name,
-			onClick: (id: string) => {
-				const agency = agencies.find(a => a.id.toString() === id);
-				if (agency) {
-					setCurrentAgency(agency);
-					setModulesAgency(agency.modules);
-					const currentModule = agency.modules[0];
-					if (currentModule) {
-						setCurrentModule(currentModule);
-					}
-				}
-			},
+			onClick: (id: string) => selectAgency(agencies.find(a => a.id.toString() === id)),
 		})),
 	};
 
@@ -126,27 +138,11 @@ export const HeaderLayout = ({
 	}, [currentAgency]);
 
 	const handleSetCurrentModule = (moduleId: string) => {
-		const module = modulesAgency.find(m => m.id.toString() === moduleId);
-		if (module) {
-			setCurrentModule(module);
-			setSubmodulesAgency(module.submodules);
-			const currentSubmodule = module.submodules[0];
-			if (currentSubmodule) {
-				setCurrentSubmodule(currentSubmodule);
-			}
-		}
+		selectModule(modulesAgency.find(m => m.id.toString() === moduleId));
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
-		const agency = agencies.find(a => a.id.toString() === agencyId);
-		if (agency) {
-			setCurrentAgency(agency);
-			setModulesAgency(agency.modules);
-			const currentModule = agency.modules[0];
-			if (currentModule) {
-				setCurrentModule(currentModule);
-			}
-		}
+		selectAgency(agencies.find(a => a.id.toString() === agencyId), false);
 	};
 
 	return (

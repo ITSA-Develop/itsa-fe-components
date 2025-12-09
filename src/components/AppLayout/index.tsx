@@ -9,9 +9,11 @@ import { ELocalStorageKeys } from '@/enums';
 import { TExtendedMenuItem } from '@/types';
 import { useAppLayoutStore, useMenuDataStore } from '@/store';
 import { transformModuleToMenuData } from '@/helpers';
+import { NavigateFunction } from 'react-router-dom';
 
 export interface AppLayoutProps {
 	children: ReactNode;
+	navigateApp: NavigateFunction;
 	loadingAppLayout: boolean;
 	userActions?: MenuProps;
 	notifications?: MenuProps;
@@ -24,6 +26,7 @@ export const AppLayout = ({
 	userActions = { items: [] },
 	notifications = { items: [] },
 	onClickOptionMenu,
+	navigateApp,
 }: AppLayoutProps) => {
 	useViewportSize();
 	const { setCollapsed } = useSidebarStore();
@@ -50,7 +53,8 @@ export const AppLayout = ({
 		<AppLayoutFooterProvider>
 			<div className="flex h-[100dvh] w-full overflow-hidden">
 				<Layout className="p-2 gap-2">
-					<HeaderLayout loadingAppLayout={loadingAppLayout} userActions={userActions} notifications={notifications} />
+					<HeaderLayout loadingAppLayout={loadingAppLayout} userActions={userActions} 
+					notifications={notifications} navigateApp={navigateApp} />
 					<SidebarLayout loadingAppLayout={loadingAppLayout} onClickOptionMenu={onClickOptionMenu}>
 						{children}
 					</SidebarLayout>

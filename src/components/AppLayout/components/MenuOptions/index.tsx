@@ -3,7 +3,8 @@ import { Menu, MenuProps } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useSidebarStore } from '@/hooks';
 import { findMenuItemByRoute, getProgramActionsbyPath } from '@/helpers/functions';
-import { useAppLayoutStore } from '@/store';
+import { useAppLayoutStore, useMenuDataStore } from '@/store';
+import { useEffect, useMemo } from 'react';
 // import { cleanObject } from '@/helpers';
 // import { cleanObject } from '@/helpers';
 export interface MenuOptionsProps {
@@ -23,7 +24,19 @@ export const MenuOptions = ({
 	onClickOptionMenu,
 }: MenuOptionsProps) => {
 	const setCurrentProgram = useSidebarStore(state => state.setCurrentProgram);
+	const setCurrentItemMenu = useMenuDataStore(state => state.setCurrenItemMenu);
+
 	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const localPath = window.location.pathname;
+	const currentPathModule = useMemo(() => findMenuItemByRoute(items, localPath), [items, localPath]);
+	const currentPathKeyString = currentPathModule?.key?.toString() ?? '';
+
+	useEffect(() => {
+		if (currentPathModule) {
+			setCurrentItemMenu(currentPathModule);
+		}
+	}, [currentPathModule]);
+
 	const handleMenuClick: MenuProps['onClick'] = info => {
 		const findMenuItem = (menuItems: TExtendedMenuItem[], key: string): TExtendedMenuItem | null => {
 			for (const item of menuItems) {
@@ -50,11 +63,6 @@ export const MenuOptions = ({
 			onClickOptionMenu({ key: info.key, item: clickedItem });
 		}
 	};
-	const localPath = window.location.pathname;
-	const currentPath = findMenuItemByRoute(items, localPath);
-	const currentPathKeyString = currentPath?.key?.toString() ?? '';
-	console.log('localPath =>',localPath);
-	console.log('currentPathKeyString =>',currentPathKeyString);
 
 	return (
 		<div className="menu-options">
