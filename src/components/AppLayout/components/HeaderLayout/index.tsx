@@ -6,23 +6,19 @@ import { imageItsaLogo } from '@/assets/images';
 import { DropdownIcon } from '@/components/DropdownIcon';
 import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
 import { SettingOutlined } from '@ant-design/icons';
-import { IAgency, IModule, ISelectOptionDropdownButton } from '@/interfaces';
+import { IAgency, ISelectOptionDropdownButton } from '@/interfaces';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
 import { useCallback, useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
 import { getNumberFromStorage } from '@/helpers';
 
 export interface HeaderLayoutProps {
-	onChangeModule: (module: IModule) => void;
-	onChangeAgency: (agency: IAgency) => void;
 	loadingAppLayout: boolean;
 	userActions?: MenuProps;
 	notifications?: MenuProps;
 }
 
 export const HeaderLayout = ({
-	onChangeModule,
-	onChangeAgency,
 	loadingAppLayout,
 	userActions = { items: [] },
 	notifications = { items: [] },
@@ -34,7 +30,8 @@ export const HeaderLayout = ({
 	const { userName } = useAppLayoutStore();
 	const { currentModule } = useAppLayoutStore();
 	const { currentAgency } = useAppLayoutStore();
-	const { setCurrentModule, setModulesAgency, setCurrentAgency } = useAppLayoutStore();
+	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
+		useAppLayoutStore();
 
 	const isActiveUserActions = Boolean(userActions?.items?.length);
 	const isActiveNotifications = Boolean(notifications?.items?.length);
@@ -46,7 +43,12 @@ export const HeaderLayout = ({
 			onClick: (id: string) => {
 				const mod = modulesAgency.find(m => m.id.toString() === id);
 				if (mod) {
-					onChangeModule(mod);
+					setCurrentModule(mod);
+					setSubmodulesAgency(mod.submodules);
+					const currentSubmodule = mod.submodules[0];
+					if (currentSubmodule) {
+						setCurrentSubmodule(currentSubmodule);
+					}
 				}
 			},
 		})),
@@ -59,7 +61,12 @@ export const HeaderLayout = ({
 			onClick: (id: string) => {
 				const agency = agencies.find(a => a.id.toString() === id);
 				if (agency) {
-					onChangeAgency(agency);
+					setCurrentAgency(agency);
+					setModulesAgency(agency.modules);
+					const currentModule = agency.modules[0];
+					if (currentModule) {
+						setCurrentModule(currentModule);
+					}
 				}
 			},
 		})),
@@ -121,14 +128,24 @@ export const HeaderLayout = ({
 	const handleSetCurrentModule = (moduleId: string) => {
 		const module = modulesAgency.find(m => m.id.toString() === moduleId);
 		if (module) {
-			onChangeModule(module);
+			setCurrentModule(module);
+			setSubmodulesAgency(module.submodules);
+			const currentSubmodule = module.submodules[0];
+			if (currentSubmodule) {
+				setCurrentSubmodule(currentSubmodule);
+			}
 		}
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
 		const agency = agencies.find(a => a.id.toString() === agencyId);
 		if (agency) {
-			onChangeAgency(agency);
+			setCurrentAgency(agency);
+			setModulesAgency(agency.modules);
+			const currentModule = agency.modules[0];
+			if (currentModule) {
+				setCurrentModule(currentModule);
+			}
 		}
 	};
 

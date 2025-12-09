@@ -6,39 +6,29 @@ import { ReactNode } from 'react';
 import { useSidebarStore, useViewportSize } from '@/hooks';
 import { useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
-import { IAgency, IModule } from '@/interfaces';
 import { TExtendedMenuItem } from '@/types';
+import { useAppLayoutStore, useMenuDataStore } from '@/store';
+import { transformModuleToMenuData } from '@/helpers';
 
 export interface AppLayoutProps {
 	children: ReactNode;
-	onChangeModule: (module: IModule) => void;
-	onChangeAgency: (agency: IAgency) => void;
 	loadingAppLayout: boolean;
 	userActions?: MenuProps;
 	notifications?: MenuProps;
-	currentPath: string;
-	onClickOptionMenu: MenuProps['onClick'];
-	openKeysMenuOptions: string[];
-	itemsMenuOptions: TExtendedMenuItem[];
-	onOpenKeysChange: (openKeys: string[]) => void;
+	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
 }
 
 export const AppLayout = ({
 	children,
-	onChangeModule,
-	onChangeAgency,
 	loadingAppLayout,
 	userActions = { items: [] },
 	notifications = { items: [] },
-	currentPath = '',
 	onClickOptionMenu,
-	openKeysMenuOptions = [],
-	itemsMenuOptions = [],
-	onOpenKeysChange,
 }: AppLayoutProps) => {
 	useViewportSize();
 	const { setCollapsed } = useSidebarStore();
-
+	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const setMenuData = useMenuDataStore(state => state.setMenuData);
 	useEffect(() => {
 		// Initialize collapsed from localStorage
 		const storedCollapsed = localStorage.getItem(ELocalStorageKeys.collapsedSidebar);
@@ -49,25 +39,19 @@ export const AppLayout = ({
 		}
 	}, []);
 
+	useEffect(() => {
+		if (currentModule) {
+			const menuData = transformModuleToMenuData(currentModule);
+			setMenuData(menuData ?? []);
+		}
+	}, [currentModule]);
+
 	return (
 		<AppLayoutFooterProvider>
 			<div className="flex h-[100dvh] w-full overflow-hidden">
 				<Layout className="p-2 gap-2">
-					<HeaderLayout
-						onChangeModule={onChangeModule}
-						onChangeAgency={onChangeAgency}
-						loadingAppLayout={loadingAppLayout}
-						userActions={userActions}
-						notifications={notifications}
-					/>
-					<SidebarLayout
-						loadingAppLayout={loadingAppLayout}
-						currentPath={currentPath}
-						onClickOptionMenu={onClickOptionMenu}
-						openKeysMenuOptions={openKeysMenuOptions}
-						itemsMenuOptions={itemsMenuOptions}
-						onOpenKeysChange={onOpenKeysChange}
-					>
+					<HeaderLayout loadingAppLayout={loadingAppLayout} userActions={userActions} notifications={notifications} />
+					<SidebarLayout loadingAppLayout={loadingAppLayout} onClickOptionMenu={onClickOptionMenu}>
 						{children}
 					</SidebarLayout>
 				</Layout>

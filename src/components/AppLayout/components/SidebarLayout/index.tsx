@@ -1,36 +1,34 @@
-import { Button, Input, Layout, MenuProps } from 'antd';
-import { ReactNode } from 'react';
+import { Button, Input, Layout } from 'antd';
+import { ReactNode, useMemo } from 'react';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useAppLayoutFooter } from '@/HOC/AppLayoutFooterContext';
 import { Content } from 'antd/es/layout/layout';
 import { useSidebarStore } from '@/hooks';
 import { MenuOptions } from '../MenuOptions';
+import { useMenuDataStore } from '@/store';
+import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
 import { TExtendedMenuItem } from '@/types';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
 	width?: number;
 	loadingAppLayout: boolean;
-	currentPath: string;
-	onClickOptionMenu: MenuProps['onClick'];
-	openKeysMenuOptions: string[];
-	itemsMenuOptions: TExtendedMenuItem[];
-	onOpenKeysChange: (openKeys: string[]) => void;
+	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
 }
 
-export const SidebarLayout = ({
-	children,
-	width = 235,
-	loadingAppLayout,
-	currentPath,
-	onClickOptionMenu,
-	openKeysMenuOptions,
-	itemsMenuOptions,
-	onOpenKeysChange,
-}: SidebarLayoutProps) => {
-	const { collapsed, setCollapsed, searchTerm, setSearchTerm } = useSidebarStore();
-
+export const SidebarLayout = ({ children, width = 245, loadingAppLayout, onClickOptionMenu }: SidebarLayoutProps) => {
+	const { collapsed, searchTerm, openKeys } = useSidebarStore();
+	const { setSearchTerm, setCollapsed, setOpenKeys } = useSidebarStore();
+	const menuData = useMenuDataStore(state => state.menuData);
 	const { footerComponent } = useAppLayoutFooter();
+	const menuDataFiltered = useMemo(() => {
+		const searchTermTrim = searchTerm.trim();
+		if (searchTermTrim.length === 0) {
+			return menuData;
+		}
+		const filterResult = filterMenuItems(menuData, searchTermTrim);
+		return filterResult;
+	}, [searchTerm, menuData]);
 
 	return (
 		<Layout hasSider className="gap-2 h-full">
@@ -48,11 +46,10 @@ export const SidebarLayout = ({
 					<div className="flex-1 overflow-y-auto scrollbar-none h-full max-w-full">
 						<MenuOptions
 							loadingAppLayout={loadingAppLayout}
-							currentPath={currentPath}
 							onClickOptionMenu={onClickOptionMenu}
-							openKeysMenuOptions={openKeysMenuOptions}
-							items={itemsMenuOptions}
-							onOpenKeysChange={onOpenKeysChange}
+							openKeysMenuOptions={openKeys}
+							items={menuDataFiltered}
+							onOpenKeysChange={setOpenKeys}
 						/>
 					</div>
 					<div className="w-full flex justify-end pr-3 pl-3">
