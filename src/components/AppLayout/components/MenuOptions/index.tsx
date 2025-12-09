@@ -53,9 +53,8 @@ export const MenuOptions = ({
 	const localPath = window.location.pathname;
 	const currentPath = findMenuItemByRoute(items, localPath);
 	const currentPathKeyString = currentPath?.key?.toString() ?? '';
-	console.log('items =>',items);
+	console.log('localPath =>',localPath);
 	console.log('currentPathKeyString =>',currentPathKeyString);
-
 
 	return (
 		<div className="menu-options">
@@ -69,7 +68,7 @@ export const MenuOptions = ({
 					mode={mode}
 					// inlineCollapsed={collapsed}
 					items={items}
-					defaultSelectedKeys={[currentPathKeyString]}
+					selectedKeys={currentPathKeyString ? [currentPathKeyString] : []}
 					className="overflow-auto scrollbar-none border-none min-w-full"
 					openKeys={openKeysMenuOptions}
 					onOpenChange={onOpenKeysChange}

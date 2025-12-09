@@ -268,22 +268,43 @@ export const findProgramIdByPath = (path: string): ISubmodule | null => {
 
 export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: string): TExtendedMenuItem | null => {
 	if (!Array.isArray(menuItems) || !route) return null;
+
+	// Normaliza ambas rutas: elimina query params y slashes iniciales para comparar únicamente la ruta base.
+	const normalizeRoutePath = (path?: string) => {
+		if (!path) return '';
+		const basePath = path.split('?')?.[0] ?? '';
+		return basePath.replace(/^\/+/, '').replace(/\/+$/, '');
+	};
+
+	const normalizedRoute = normalizeRoutePath(route);
+
 	let bestMatch: TExtendedMenuItem | null = null;
 	let bestLength = -1;
+
 	const traverse = (list: TExtendedMenuItem[]) => {
 		for (const item of list) {
 			const itemPath = item.data?.path;
-			if (typeof itemPath === 'string' && itemPath.length > 0 && route.includes(itemPath)) {
-				if (itemPath.length > bestLength) {
-					bestMatch = item;
-					bestLength = itemPath.length;
+			if (typeof itemPath === 'string' && itemPath.length > 0) {
+				const normalizedItemPath = normalizeRoutePath(itemPath);
+
+				// Usamos startsWith para permitir que la ruta actual tenga segmentos adicionales
+				if (
+					normalizedRoute === normalizedItemPath ||
+					normalizedRoute.startsWith(normalizedItemPath)
+				) {
+					if (normalizedItemPath.length > bestLength) {
+						bestMatch = item;
+						bestLength = normalizedItemPath.length;
+					}
 				}
 			}
+
 			if ('children' in item && item.children?.length) {
 				traverse(item.children as TExtendedMenuItem[]);
 			}
 		}
 	};
+
 	traverse(menuItems);
 	return bestMatch;
 };
