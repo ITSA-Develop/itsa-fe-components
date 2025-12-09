@@ -1,5 +1,5 @@
 import { Button, Input, Layout } from 'antd';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useAppLayoutFooter } from '@/HOC/AppLayoutFooterContext';
 import { Content } from 'antd/es/layout/layout';
@@ -8,6 +8,7 @@ import { MenuOptions } from '../MenuOptions';
 import { useMenuDataStore } from '@/store';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
 import { TExtendedMenuItem } from '@/types';
+import { findMenuItemByRoute } from '@/helpers/functions';
 
 export interface SidebarLayoutProps {
 	children: ReactNode;
@@ -21,6 +22,25 @@ export const SidebarLayout = ({ children, width = 245, loadingAppLayout, onClick
 	const { setSearchTerm, setCollapsed, setOpenKeys } = useSidebarStore();
 	const menuData = useMenuDataStore(state => state.menuData);
 	const { footerComponent } = useAppLayoutFooter();
+	const currentPath = window.location.pathname;
+
+	const getParentKeys = (menuItems: TExtendedMenuItem[], targetKey: string, parents: string[] = []): string[] | null => {
+		for (const item of menuItems) {
+			const itemKey = item?.key !== undefined ? String(item.key) : undefined;
+			const nextParents = itemKey ? [...parents, itemKey] : parents;
+
+			if (itemKey === targetKey) {
+				return parents;
+			}
+
+			if ('children' in item && item.children?.length) {
+				const found = getParentKeys(item.children as TExtendedMenuItem[], targetKey, nextParents);
+				if (found) return found;
+			}
+		}
+		return null;
+	};
+
 	const menuDataFiltered = useMemo(() => {
 		const searchTermTrim = searchTerm.trim();
 		if (searchTermTrim.length === 0) {
@@ -29,6 +49,22 @@ export const SidebarLayout = ({ children, width = 245, loadingAppLayout, onClick
 		const filterResult = filterMenuItems(menuData, searchTermTrim);
 		return filterResult;
 	}, [searchTerm, menuData]);
+
+	useEffect(() => {
+		if (!menuDataFiltered.length) {
+			setOpenKeys([]);
+			return;
+		}
+
+		const selectedItem = findMenuItemByRoute(menuDataFiltered, currentPath);
+		if (selectedItem?.key) {
+			const parentKeys = getParentKeys(menuDataFiltered, String(selectedItem.key)) ?? [];
+			setOpenKeys(parentKeys);
+			return;
+		}
+
+		setOpenKeys([]);
+	}, [menuDataFiltered, setOpenKeys, currentPath]);
 
 	return (
 		<Layout hasSider className="gap-2 h-full">

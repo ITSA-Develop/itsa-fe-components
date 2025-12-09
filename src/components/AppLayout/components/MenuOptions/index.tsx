@@ -74,7 +74,6 @@ export const MenuOptions = ({
 			) : (
 				<Menu
 					mode={mode}
-					// inlineCollapsed={collapsed}
 					items={items}
 					selectedKeys={currentPathKeyString ? [currentPathKeyString] : []}
 					className="overflow-auto scrollbar-none border-none min-w-full"
