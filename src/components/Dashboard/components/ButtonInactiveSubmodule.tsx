@@ -8,23 +8,13 @@ export interface IButtonInactiveSubmoduleProps {
 
 export const ButtonInactiveSubmodule = ({ name, onclick }: IButtonInactiveSubmoduleProps) => {
 	return (
-		<ButtonAntd 
-			type="text" 
-			className="
-				px-3 py-2 h-9 -mb-px
-				flex items-center justify-center
-				text-sm font-medium rounded-none
-				bg-transparent
-				text-gray-600
-				border-0
-				transition-colors duration-200 ease-out
-				hover:!bg-[transparent]
-				hover:!text-gray-900 hover:!border-b-gray-300
-			" 
-			size="small" 
+		<ButtonAntd
+			type="text"
+			size="small"
 			onClick={onclick}
+			className="px-2 sm:px-3 min-h-[35px] h-auto flex items-center justify-center text-xs sm:text-sm font-medium rounded-none bg-transparent text-gray-600 border-0 transition-all duration-200 hover:!bg-transparent hover:!text-gray-900 active:bg-gray-50 whitespace-nowrap"
 		>
-				<span className="text-sm leading-none">{name}</span>
+			<span className="text-xs sm:text-sm leading-tight">{name}</span>
 		</ButtonAntd>
 	);
 };
