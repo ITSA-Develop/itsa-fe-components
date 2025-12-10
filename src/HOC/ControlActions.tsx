@@ -31,23 +31,40 @@ export const ControlActionsProvider = ({ children, fnApiValidatePermissionAction
 	const [actions, setActions] = useState<IActions>();
 	const [programId, setProgramId] = useState<number>();
 
-	// Escuchar cambios en la URL del navegador
+	// Efecto para detectar cambios de ruta (incluyendo navegación con React Router)
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
 		
-		const handleLocationChange = () => {
-			setCurrentPath(window.location.pathname);
+		const checkPathChange = () => {
+			const newPath = window.location.pathname;
+			setCurrentPath(prevPath => {
+				if (prevPath !== newPath) {
+					return newPath;
+				}
+				return prevPath;
+			});
 		};
 
-		// Escuchar eventos de popstate (navegación hacia atrás/adelante)
-		window.addEventListener('popstate', handleLocationChange);
+		// Escuchar eventos nativos del navegador
+		const handlePopState = () => {
+			checkPathChange();
+		};
 		
-		// También escuchar cambios de hash si es necesario
-		window.addEventListener('hashchange', handleLocationChange);
+		const handleHashChange = () => {
+			checkPathChange();
+		};
+
+		window.addEventListener('popstate', handlePopState);
+		window.addEventListener('hashchange', handleHashChange);
+
+		// Verificar cambios de ruta periódicamente para detectar navegación con React Router
+		// React Router no dispara popstate/hashchange cuando se navega programáticamente
+		const intervalId = setInterval(checkPathChange, 150);
 
 		return () => {
-			window.removeEventListener('popstate', handleLocationChange);
-			window.removeEventListener('hashchange', handleLocationChange);
+			window.removeEventListener('popstate', handlePopState);
+			window.removeEventListener('hashchange', handleHashChange);
+			clearInterval(intervalId);
 		};
 	}, []);
 
@@ -57,6 +74,10 @@ export const ControlActionsProvider = ({ children, fnApiValidatePermissionAction
 			if (programActions) {
 				setActions(programActions.actions);
 				setProgramId(programActions.program.id);
+			} else {
+				// Limpiar actions y programId cuando no hay programActions para la ruta actual
+				setActions(undefined);
+				setProgramId(undefined);
 			}
 		}
 	}, [currentPath, currentModule]);

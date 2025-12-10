@@ -59,10 +59,7 @@ export const DEFAULT_PAGINATION_CONFIG = {
 	totalBoundaryShowSizeChanger: 100,
 };
 
-export const TABLE_SCROLL = {
-	y: '74vh',
-	x: 2000,
-};
+export const TABLE_SCROLL = { y: 'calc(100dvh - 323px)', x: 1000 };
 
 export * from './agencies';
 export * from './iconOptions';

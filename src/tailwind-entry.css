@@ -550,27 +550,27 @@ body,
 @layer utilities {
 	/* Base (mobile-first) */
 	.itsa-table-min-h-responsive .ant-table-body {
-		min-height: 20vh;
+		min-height: 20%;
 	}
 
 	/* md ≥ 768px */
 	@media (min-width: 768px) {
 		.itsa-table-min-h-responsive .ant-table-body {
-			min-height: 30vh;
+			min-height: 30%;
 		}
 	}
 
 	/* lg ≥ 1240px */
 	@media (min-width: 1240px) {
 		.itsa-table-min-h-responsive .ant-table-body {
-			min-height: 50vh;
+			min-height: 50%;
 		}
 	}
 
 	/* 2xl ≥ 1536px */
 	@media (min-width: 1536px) {
 		.itsa-table-min-h-responsive .ant-table-body {
-			min-height: 54vh;
+			min-height: 50%;
 		}
 	}
 }
