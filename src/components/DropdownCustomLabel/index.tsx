@@ -62,6 +62,7 @@ export const DropdownCustomLabel = ({
 		<Dropdown.Button
 			menu={menuWithHandler}
 			placement="bottomRight"
+			trigger={['hover']}
 			buttonsRender={([left, right]) => [
 				React.cloneElement(left as React.ReactElement<{ className?: string; children?: React.ReactNode }>, {
 					className:

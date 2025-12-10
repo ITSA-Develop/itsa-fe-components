@@ -1,43 +1,78 @@
-import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
-import { imageItsaLogo } from '@/assets/images';
-import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
-import { DropdownIcon } from '@/components/DropdownIcon';
-import { useSidebarStore } from '@/hooks';
-import { ISelectOptionDropdownButton } from '@/interfaces';
-import { useViewportStore } from '@/store';
-import { useAppLayoutStore } from '@/store/appLayout.store';
-import { MenuUnfoldOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps } from 'antd';
+import { MenuUnfoldOutlined } from '@ant-design/icons';
+import { useSidebarStore } from '@/hooks';
+import { useAppLayoutStore } from '@/store';
+import { imageItsaLogo } from '@/assets/images';
+import { DropdownIcon } from '@/components/DropdownIcon';
+import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
+import { SettingOutlined } from '@ant-design/icons';
+import { IAgency, ISelectOptionDropdownButton } from '@/interfaces';
+import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
+import { useCallback, useEffect } from 'react';
+import { ELocalStorageKeys } from '@/enums';
+import { getNumberFromStorage } from '@/helpers';
+import { NavigateFunction } from 'react-router-dom';
 
 export interface HeaderLayoutProps {
-	loadingHeader: boolean;
-	notifications?: MenuProps;
+	loadingAppLayout: boolean;
+	navigateApp: NavigateFunction;
 	userActions?: MenuProps;
+	notifications?: MenuProps;
 }
 
 export const HeaderLayout = ({
-	loadingHeader,
+	loadingAppLayout,
+	userActions = { items: [] },
 	notifications = { items: [] },
-	userActions = { items: [] }
+	navigateApp,
 }: HeaderLayoutProps) => {
-	const { width } = useViewportStore();
-	const { setCurrentModule, setCurrentAgency } = useAppLayoutStore();
 	const { collapsed, setCollapsed } = useSidebarStore();
-	const { agencies } = useAppLayoutStore();
-	const { currentAgency } = useAppLayoutStore();
-	const { currentModule } = useAppLayoutStore();
 	const { modulesAgency } = useAppLayoutStore();
-	const { userName } = useAppLayoutStore();
+	const { agencies } = useAppLayoutStore();
 	const { userRole } = useAppLayoutStore();
+	const { userName } = useAppLayoutStore();
+	const { currentModule } = useAppLayoutStore();
+	const { currentAgency } = useAppLayoutStore();
+	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
+		useAppLayoutStore();
 
-	const isActiveNotifications = Boolean(notifications?.items?.length);
+	const redirectToHome = () => {
+		navigateApp('/home');
+	};
+
+	const selectModule = (module?: (typeof modulesAgency)[number], shouldNavigate = true) => {
+		if (!module) return false;
+		setCurrentModule(module);
+		setSubmodulesAgency(module.submodules);
+		const currentSubmodule = module.submodules[0];
+		if (currentSubmodule) {
+			setCurrentSubmodule(currentSubmodule);
+		}
+		if (shouldNavigate) {
+			redirectToHome();
+		}
+		return true;
+	};
+
+	const selectAgency = (agency?: IAgency, navigateWhenNoModule = true) => {
+		if (!agency) return false;
+		setCurrentAgency(agency);
+		setModulesAgency(agency.modules);
+		const hasModule = selectModule(agency.modules[0], false);
+		if (hasModule || navigateWhenNoModule) {
+			redirectToHome();
+		}
+		return hasModule;
+	};
+
 	const isActiveUserActions = Boolean(userActions?.items?.length);
+	const isActiveNotifications = Boolean(notifications?.items?.length);
 
 	const modulesData: ISelectOptionDropdownButton = {
 		items: modulesAgency.map(m => ({
 			key: m.id.toString(),
 			label: m.name,
-			onClick: (id: string) => handleSetCurrentModule(id),
+			onClick: (id: string) => selectModule(modulesAgency.find(m => m.id.toString() === id)),
 		})),
 	};
 
@@ -45,22 +80,69 @@ export const HeaderLayout = ({
 		items: agencies.map(a => ({
 			key: a.id.toString(),
 			label: a.name,
-			onClick: (id: string) => handleSetCurrentAgency(id),
+			onClick: (id: string) => selectAgency(agencies.find(a => a.id.toString() === id)),
 		})),
 	};
 
-	const handleSetCurrentModule = (moduleId: string) => {
-		const module = modulesAgency.find(m => m.id.toString() === moduleId);
-		if (module) {
-			setCurrentModule(module);
+	const setModulesAgencyCallback = useCallback(
+		(agencies: IAgency[]) => {
+			const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
+			if (moduleId) {
+				for (const agency of agencies) {
+					if (!agency.modules) continue;
+					for (const module of agency.modules) {
+						if (module.id === moduleId) {
+							setCurrentModule(module);
+							setModulesAgency(agency.modules);
+							setCurrentAgency(agency);
+							return;
+						}
+					}
+				}
+			} else {
+				const agencyId = getNumberFromStorage(ELocalStorageKeys.agencyId);
+				if (agencyId) {
+					const agency = agencies.find(a => a.id === agencyId);
+					if (agency) {
+						setCurrentAgency(agency);
+						setModulesAgency(agency.modules);
+						const currentModule = agency.modules[0];
+						if (currentModule) {
+							setCurrentModule(currentModule);
+						}
+					}
+				} else {
+					const newAgency = agencies[0];
+					if (newAgency) {
+						setCurrentAgency(newAgency);
+						setModulesAgency(newAgency.modules);
+						const currentModule = newAgency.modules[0];
+						if (currentModule) {
+							setCurrentModule(currentModule);
+						}
+					}
+				}
+			}
+		},
+		[setCurrentModule, setModulesAgency],
+	);
+
+	useEffect(() => {
+		setModulesAgencyCallback(agencies);
+	}, [agencies, setModulesAgencyCallback]);
+
+	useEffect(() => {
+		if (currentAgency) {
+			setModulesAgencyCallback([currentAgency]);
 		}
+	}, [currentAgency]);
+
+	const handleSetCurrentModule = (moduleId: string) => {
+		selectModule(modulesAgency.find(m => m.id.toString() === moduleId));
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
-		const agency = agencies.find(a => a.id.toString() === agencyId);
-		if (agency) {
-			setCurrentAgency(agency);
-		}
+		selectAgency(agencies.find(a => a.id.toString() === agencyId), false);
 	};
 
 	return (
@@ -74,37 +156,32 @@ export const HeaderLayout = ({
 							onClick={() => setCollapsed(!collapsed)}
 						/>
 					)}
-					{width > 768 && (
-						<img
-							src={imageItsaLogo}
-							alt="logo"
-							className="h-full max-h-12 max-w-[150px] object-cover"
-						/>
-					)}
+					<div className="hidden md:block">
+						<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
+					</div>
 				</div>
-				<div className="flex flex-row w-auto items-center gap-4">
-					{/* Vista Móvil (solo iconos) */}
-					<div className="flex tablet:hidden flex-row items-center gap-4">
+				<div className="block md:hidden">
+					<div className="flex flex-row items-center gap-4">
 						<DropdownIcon
 							options={modulesData}
-							loading={loadingHeader}
+							loading={loadingAppLayout}
 							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
 							onChange={handleSetCurrentModule}
 						/>
 						<DropdownIcon
 							options={agenciesData}
-							loading={loadingHeader}
+							loading={loadingAppLayout}
 							icon={<PinIcon className="text-white-100 w-4 h-4" />}
 							onChange={handleSetCurrentAgency}
 						/>
 					</div>
-
-					{/* Vista Desktop (custom labels) */}
-					<div className="hidden tablet:flex flex-row items-center gap-4">
+				</div>
+				<div className="hidden md:block">
+					<div className="flex flex-row items-center gap-4">
 						<DropdownCustomLabel
 							defaultValue={currentModule?.id?.toString()}
 							options={modulesData}
-							loading={loadingHeader}
+							loading={loadingAppLayout}
 							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
 							emptyLabel="Sin módulos asignados"
 							onChange={handleSetCurrentModule}
@@ -112,7 +189,7 @@ export const HeaderLayout = ({
 						<DropdownCustomLabel
 							defaultValue={currentAgency?.id?.toString()}
 							options={agenciesData}
-							loading={loadingHeader}
+							loading={loadingAppLayout}
 							icon={<PinIcon className="text-white-100 w-4 h-4" />}
 							emptyLabel="Sin agencias asignadas"
 							onChange={handleSetCurrentAgency}
@@ -125,12 +202,11 @@ export const HeaderLayout = ({
 						</div>
 					</div>
 				</div>
-
 				<div className="flex flex-row pl-4">
-					<Dropdown menu={userActions || { items: [] }} placement="bottomRight" disabled={!isActiveUserActions}>
+					<Dropdown menu={userActions} placement="bottomRight" disabled={!isActiveUserActions}>
 						<Button type="text" icon={<UserIcon className="text-white-100 w-6 h-6" />} />
 					</Dropdown>
-					<Dropdown menu={notifications || { items: [] }} placement="bottomRight" disabled={!isActiveNotifications}>
+					<Dropdown menu={notifications} placement="bottomRight" disabled={!isActiveNotifications}>
 						<Button
 							type="text"
 							icon={

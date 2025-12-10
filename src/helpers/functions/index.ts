@@ -1,10 +1,12 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
-import { IActions, IModule, IProgramActions, ISorterTable } from '@/interfaces';
-import { TNotificationProps } from '@/types';
+import { IActions, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
+import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
+import { useAppLayoutStore } from '@/store';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
 	notification[type]({
@@ -12,6 +14,8 @@ export const openNotificationWithIcon = ({ type, message, description }: TNotifi
 		description,
 	});
 };
+
+export const generateUuid = () => uuidv4();
 
 export const normalizeStatus = (status?: string | boolean | number): EOptionsFilterStatus => {
 	if (status === undefined || status === null || status === '') return 2;
@@ -173,26 +177,31 @@ export const uppercaseStrings = <T>(obj: T): T => {
 
 export const parseSorter = (sorter: SorterResult): ISorterTable => {
 	// Obtener el campo a ordenar: usar field, columnKey, column.dataIndex o column.key como fallback
-	const field = sorter.field 
-		? (Array.isArray(sorter.field) ? sorter.field[0] : sorter.field)
-		: sorter.columnKey 
-		? sorter.columnKey 
-		: sorter.column?.dataIndex 
-		? (Array.isArray(sorter.column.dataIndex) ? sorter.column.dataIndex.join('.') : sorter.column.dataIndex)
-		: sorter.column?.key
-		? sorter.column.key
-		: undefined;
+	const field = sorter.field
+		? Array.isArray(sorter.field)
+			? sorter.field[0]
+			: sorter.field
+		: sorter.columnKey
+			? sorter.columnKey
+			: sorter.column?.dataIndex
+				? Array.isArray(sorter.column.dataIndex)
+					? sorter.column.dataIndex.join('.')
+					: sorter.column.dataIndex
+				: sorter.column?.key
+					? sorter.column.key
+					: undefined;
 
 	// Convertir field a string si existe
 	const fieldString = field ? String(field) : undefined;
 
 	// Construir orderBy basado en el orden y el campo
 	// Ant Design usa 'descend', 'ascend' o null para el orden
-	const orderBy = sorter.order === 'descend' && fieldString
-		? `-${fieldString}` 
-		: sorter.order === 'ascend' && fieldString
-		? fieldString
-		: undefined;
+	const orderBy =
+		sorter.order === 'descend' && fieldString
+			? `-${fieldString}`
+			: sorter.order === 'ascend' && fieldString
+				? fieldString
+				: undefined;
 
 	return {
 		...sorter,
@@ -208,3 +217,96 @@ export interface ISorterColumn {
 	order: 'ascend' | 'descend';
 	field: string;
 }
+const normalizePath = (value: string | null | undefined): string => {
+	if (!value) return '';
+	return value.replace(/^\/+|\/+$/g, '').toLowerCase();
+};
+
+export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined, path: string): ISubmodule | null => {
+	if (!agencies || !Array.isArray(agencies) || !path) return null;
+
+	const target = normalizePath(path);
+	if (!target) return null;
+
+	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
+		if (!programs) return null;
+		for (const program of programs) {
+			if (normalizePath(program?.path ?? null) === target) {
+				return program;
+			}
+		}
+		return null;
+	};
+
+	for (const agency of agencies) {
+		const modules = agency?.modules ?? [];
+		for (const mod of modules ?? []) {
+			const foundAtModule = checkPrograms(mod?.submodules ?? []);
+			if (foundAtModule !== null) return foundAtModule;
+
+			const submodules = mod?.submodules ?? [];
+			for (const sub of submodules ?? []) {
+				const foundAtSub = checkPrograms(sub?.programs ?? []);
+				if (foundAtSub !== null) return foundAtSub;
+
+				const groups = sub?.groups ?? [];
+				for (const group of groups ?? []) {
+					const foundAtGroup = checkPrograms(group?.programs ?? []);
+					if (foundAtGroup !== null) return foundAtGroup;
+				}
+			}
+		}
+	}
+
+	return null;
+};
+
+export const findProgramIdByPath = (path: string): ISubmodule | null => {
+	const agencies: IAgency[] | undefined = useAppLayoutStore?.getState?.()?.agencies ?? [];
+	return findProgramIdByPathFromAgencies(agencies, path);
+};
+
+export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: string): TExtendedMenuItem | null => {
+	if (!Array.isArray(menuItems) || !route) return null;
+
+	// Normaliza ambas rutas: elimina query params y slashes iniciales para comparar únicamente la ruta base.
+	const normalizeRoutePath = (path?: string) => {
+		if (!path) return '';
+		const basePath = path.split('?')?.[0] ?? '';
+		return basePath.replace(/^\/+/, '').replace(/\/+$/, '');
+	};
+
+	const normalizedRoute = normalizeRoutePath(route);
+
+	let bestMatch: TExtendedMenuItem | null = null;
+	let bestLength = -1;
+
+	const traverse = (list: TExtendedMenuItem[]) => {
+		for (const item of list) {
+			const itemPath = item.data?.path;
+			if (typeof itemPath === 'string' && itemPath.length > 0) {
+				const normalizedItemPath = normalizeRoutePath(itemPath);
+
+				// Usamos startsWith para permitir que la ruta actual tenga segmentos adicionales
+				if (
+					normalizedRoute === normalizedItemPath ||
+					normalizedRoute.startsWith(normalizedItemPath)
+				) {
+					if (normalizedItemPath.length > bestLength) {
+						bestMatch = item;
+						bestLength = normalizedItemPath.length;
+					}
+				}
+			}
+
+			if ('children' in item && item.children?.length) {
+				traverse(item.children as TExtendedMenuItem[]);
+			}
+		}
+	};
+
+	traverse(menuItems);
+	return bestMatch;
+};
+
+

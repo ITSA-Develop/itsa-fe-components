@@ -25,9 +25,14 @@ export interface AppLayoutStore {
 
 	userInformation?: IUserInformation;
 	setUserInformation: (userInformation: IUserInformation) => void;
+
+	collapsed: boolean;
+	setCollapsed: (collapsed: boolean) => void;
 }
 
 export const useAppLayoutStore = create<AppLayoutStore>(set => ({
+	collapsed: false,
+	setCollapsed: (collapsed: boolean) => set({ collapsed }),
 	agencies: [],
 	setAgencies: (agencies: IAgency[]) => {
 		set({ agencies });
@@ -45,6 +50,7 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		set({
 			currentAgency: agency,
 		});
+		localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
 	},
 	currentModule: undefined,
 	setCurrentModule: (module: IModule) => {

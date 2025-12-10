@@ -40,7 +40,16 @@ import {
 import { transformModuleToMenuData } from './menu/menuDataTransformer';
 import { clearLocalStorage } from './session';
 import { codeUserInputValidation } from './codeUserInputValidation';
-import { capitalize, isRouteActive, toTitleCase, getMicroFrontendByPath, joinUrl, isNumericOnly, filterNumericOnly, filterPositiveNumbersOnly } from './strings';
+import {
+	capitalize,
+	isRouteActive,
+	toTitleCase,
+	getMicroFrontendByPath,
+	joinUrl,
+	isNumericOnly,
+	filterNumericOnly,
+	filterPositiveNumbersOnly,
+} from './strings';
 import {
 	addOrderParamIfMissing,
 	buildQueryParams,
@@ -52,8 +61,14 @@ import {
 	updateURLParams,
 } from './urls';
 
-import { normalizeStatus, uppercaseStrings } from './functions';
-import { handleAddChildTreeNode, updateItemTreeNodeById, addChildByParentId, addChildrenByParentId, updateChildUnderParent } from './treeNode';
+import { normalizeStatus, uppercaseStrings, findProgramIdByPath, findProgramIdByPathFromAgencies, generateUuid } from './functions';
+import {
+	handleAddChildTreeNode,
+	updateItemTreeNodeById,
+	addChildByParentId,
+	addChildrenByParentId,
+	updateChildUnderParent,
+} from './treeNode';
 
 export {
 	addOrderParamIfMissing,
@@ -71,6 +86,9 @@ export {
 	filterNumericOnly,
 	filterPositiveNumbersOnly,
 	findLastChild,
+	findProgramIdByPath,
+	findProgramIdByPathFromAgencies,
+	generateUuid,
 	getNumberFromStorage,
 	getStringFromStorage,
 	getInstance,

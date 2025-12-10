@@ -3,6 +3,7 @@ import { ISubmodule } from '@/interfaces';
 import { IModule } from '@/interfaces';
 import { TExtendedMenuItem } from '@/types';
 import { getIconByName } from '@/helpers/icons';
+import { generateUuid } from '../functions';
 
 export const getIcon = (icon: string | null, className?: string, style?: React.CSSProperties): React.ReactNode => {
 	return getIconByName(icon, { className, style, size: 16 });
@@ -16,7 +17,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 	const menuData: TExtendedMenuItem[] = [];
 
 	menuData.push({
-		key: '/home',
+		key: generateUuid(),
 		label: 'INICIO',
 		icon: getIcon('HomeIcon'),
 		data: {
@@ -40,9 +41,9 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 
 				// Agregar programas del grupo
 				if (group.programs && group.programs.length > 0) {
-					group.programs.forEach((program, index) => {
+					group.programs.forEach(program => {
 						groupChildren.push({
-							key: program.path ?? `group${index}`,
+							key: generateUuid(),
 							label: program.name,
 							icon: getIcon(program.icon),
 							data: {
@@ -61,7 +62,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 				}
 
 				submoduleChildren.push({
-					key: `group-${group.id}`,
+					key: generateUuid(),
 					label: group.name,
 					icon: getIcon('MenuIcon'),
 					children: groupChildren,
@@ -80,9 +81,9 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 
 		// Agregar programas directos del submodule (que no están en grupos)
 		if (submodule.programs && submodule.programs.length > 0) {
-			submodule.programs.forEach((program, index) => {
+			submodule.programs.forEach(program => {
 				submoduleChildren.push({
-					key: program.path ?? `program${index}`,
+					key: generateUuid(),
 					label: program.name,
 					icon: getIcon(program.icon),
 					data: {
@@ -102,7 +103,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 		// Solo agregar el submodule si tiene contenido
 		if (submoduleChildren.length > 0) {
 			menuData.push({
-				key: `submodule-${submodule.id}`,
+				key: generateUuid(),
 				label: submodule.name,
 				icon: getIcon('MenuIcon'),
 				children: submoduleChildren,
@@ -126,10 +127,6 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
  * Función para filtrar items del menú por término de búsqueda
  */
 export const filterMenuItems = (menuData: TExtendedMenuItem[], searchTerm: string): TExtendedMenuItem[] => {
-	if (!searchTerm.trim()) {
-		return menuData;
-	}
-
 	const searchUpper = searchTerm.toUpperCase();
 
 	const filterRecursive = (items: TExtendedMenuItem[]): TExtendedMenuItem[] => {

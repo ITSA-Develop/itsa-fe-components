@@ -1,7 +1,7 @@
 {
 	"name": "@itsa-develop/itsa-fe-components",
 	"private": false,
-	"version": "0.0.27",
+	"version": "0.0.28",
 	"type": "module",
 	"exports": {
 		".": {
@@ -84,6 +84,7 @@
 		"react-hook-form": "^7.62.0",
 		"react-number-format": "^5.4.3",
 		"react-router-dom": "^7.6.0",
+		"uuid4": "^2.0.3",
 		"zod": "^4.1.5",
 		"zustand": "^5.0.3"
 	},

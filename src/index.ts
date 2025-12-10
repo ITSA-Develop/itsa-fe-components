@@ -1,6 +1,5 @@
 export { Alert } from './components/Alert/Alert';
-export { AppLayout } from './components/AppLayout/AppLayout';
-export { AppLayoutFooterProvider, useAppLayoutFooter } from './components/AppLayout/context';
+export { AppLayout } from './components/AppLayout';
 export { Avatar } from './components/Avatar/Avatar';
 export { Badge } from './components/Badge/Badge';
 export { Button } from './components/Button/';
@@ -77,6 +76,7 @@ export type { ProtectedProps, ProtectedRouteProps, PublicRouteProps, TLocation }
 
 export { UIProvider } from './HOC/UIProvider';
 export { ControlActionsProvider } from './HOC/ControlActions';
+export { AppLayoutFooterProvider } from './HOC/AppLayoutFooterContext';
 
 export * from './assets/icons';
 export * from './assets/images';
