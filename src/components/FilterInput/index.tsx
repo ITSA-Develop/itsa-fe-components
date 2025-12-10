@@ -70,8 +70,8 @@ export const FilterInput = ({ ref, type = 'text', defaultValue, loading, onSearc
 	const hasValue = typeof resolvedValue === 'string' ? resolvedValue.trim().length > 0 : !!resolvedValue;
 
 	return (
-		<div className="flex flex-col gap-0.5">
-			<small className="font-bold">{title}</small>
+		<div className="flex flex-col gap-0">
+			<small className="font-bold pl-1">{title}</small>
 			<Input
 				{...rest}
 				ref={ref}

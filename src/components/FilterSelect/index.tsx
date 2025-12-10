@@ -37,8 +37,8 @@ export const FilterSelect = ({ label, ...rest }: IFilterSelectProps) => {
 	};
 
 	return (
-		<div className="flex flex-col gap-0.5">
-            <small className="font-bold">
+		<div className="flex flex-col gap-0">
+            <small className="font-bold pl-1">
                 {label}
             </small>
 			<Select
