@@ -1,5 +1,4 @@
 import { Layout, MenuProps } from 'antd';
-import { AppLayoutFooterProvider } from '../../HOC/AppLayoutFooterContext';
 import { SidebarLayout } from './components/SidebarLayout';
 import { HeaderLayout } from './components/HeaderLayout';
 import { ReactNode } from 'react';
@@ -50,16 +49,18 @@ export const AppLayout = ({
 	}, [currentModule]);
 
 	return (
-		<AppLayoutFooterProvider>
-			<div className="flex h-[100dvh] w-full overflow-hidden">
-				<Layout className="p-2 gap-2">
-					<HeaderLayout loadingAppLayout={loadingAppLayout} userActions={userActions} 
-					notifications={notifications} navigateApp={navigateApp} />
-					<SidebarLayout loadingAppLayout={loadingAppLayout} onClickOptionMenu={onClickOptionMenu}>
-						{children}
-					</SidebarLayout>
-				</Layout>
-			</div>
-		</AppLayoutFooterProvider>
+		<div className="flex h-[100dvh] w-full overflow-hidden">
+			<Layout className="p-2 gap-2">
+				<HeaderLayout
+					loadingAppLayout={loadingAppLayout}
+					userActions={userActions}
+					notifications={notifications}
+					navigateApp={navigateApp}
+				/>
+				<SidebarLayout loadingAppLayout={loadingAppLayout} onClickOptionMenu={onClickOptionMenu}>
+					{children}
+				</SidebarLayout>
+			</Layout>
+		</div>
 	);
 };

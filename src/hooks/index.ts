@@ -11,3 +11,4 @@ export { useViewportSize } from './useViewportSize/useViewportSize';
 export { useGetUserInformation } from './useGetPermissionsByRol';
 export { useControlActions } from './useControlActions/useControlActions';
 export { useGeolocation } from './useGeolocation';
+export { useAppLayoutFooter } from '../HOC/AppLayoutFooterContext';

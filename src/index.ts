@@ -76,6 +76,7 @@ export type { ProtectedProps, ProtectedRouteProps, PublicRouteProps, TLocation }
 
 export { UIProvider } from './HOC/UIProvider';
 export { ControlActionsProvider } from './HOC/ControlActions';
+export { AppLayoutFooterProvider } from './HOC/AppLayoutFooterContext';
 
 export * from './assets/icons';
 export * from './assets/images';
