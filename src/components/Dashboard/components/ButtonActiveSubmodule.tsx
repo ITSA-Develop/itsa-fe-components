@@ -7,24 +7,14 @@ export interface IButtonActiveSubmoduleProps {
 }
 
 export const ButtonActiveSubmodule = ({ name, onclick }: IButtonActiveSubmoduleProps) => {
-
 	return (
 		<ButtonAntd
 			type="text"
-					className="
-						px-3 py-2 h-9 -mb-px 
-						flex items-center justify-center 
-						font-medium text-sm rounded-none
-						text-primary-700 
-						border-0 
-						hover:!text-primary-700 hover:!border-b-primary-700
-						hover:!bg-[transparent]
-						transition-colors duration-200 ease-out
-					"
 			size="small"
 			onClick={onclick}
+			className="px-2 sm:px-3 min-h-[35px] h-auto flex items-center justify-center font-medium text-xs sm:text-sm rounded-none text-primary-700 border-0 hover:!text-primary-700 hover:!bg-transparent active:bg-primary-50/30 transition-all duration-200 whitespace-nowrap"
 		>
-					<strong className="text-sm leading-none">{name}</strong>
+			<strong className="text-xs sm:text-sm leading-tight">{name}</strong>
 		</ButtonAntd>
 	);
 };
