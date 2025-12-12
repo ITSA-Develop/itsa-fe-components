@@ -288,10 +288,7 @@ export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: strin
 				const normalizedItemPath = normalizeRoutePath(itemPath);
 
 				// Usamos startsWith para permitir que la ruta actual tenga segmentos adicionales
-				if (
-					normalizedRoute === normalizedItemPath ||
-					normalizedRoute.startsWith(normalizedItemPath)
-				) {
+				if (normalizedRoute === normalizedItemPath || normalizedRoute.startsWith(normalizedItemPath)) {
 					if (normalizedItemPath.length > bestLength) {
 						bestMatch = item;
 						bestLength = normalizedItemPath.length;
@@ -309,4 +306,50 @@ export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: strin
 	return bestMatch;
 };
 
+export const findContainedPaths = (url: string, pathsConfig: Record<string, (params?: string) => string>): string[] => {
+	// A. Extraer la ruta limpia (pathname) usando la API URL
+	// El 'http://dummy.com' es un fallback por si pasas una ruta relativa
+	let cleanPath = '';
+	try {
+		const urlObj = new URL(
+			url.startsWith('http') || url.startsWith('//') ? url.replace(/^\/\//, '') : `http://dummy.com/${url}`,
+		);
+		cleanPath = urlObj.pathname;
+	} catch (error) {
+		console.error('error =>', error);
+		cleanPath = url.split('?')[0] ?? ''; // Fallback manual
+	}
 
+	// Quitamos barras iniciales/finales para evitar strings vacíos
+	cleanPath = cleanPath.replace(/^\/+|\/+$/g, '');
+
+	// B. Crear un Set con todas las rutas válidas de tu config
+	// Ejecutamos las funciones para obtener los strings reales
+	const validPathsSet = new Set(Object.values(pathsConfig).map(fn => fn()));
+
+	// C. Construir combinaciones hacia atrás y filtrar
+	const segments = cleanPath.split('/');
+	const matches: string[] = [];
+	let currentBuild = '';
+
+	segments.forEach(segment => {
+		// Reconstruimos la ruta paso a paso: security -> security/modules -> ...
+		currentBuild = currentBuild ? `${currentBuild}/${segment}` : segment;
+
+		// Si esta combinación existe en tu config, la guardamos
+		if (validPathsSet.has(currentBuild)) {
+			matches.push(currentBuild);
+		}
+	});
+
+	return matches;
+};
+export const getOriginFromUrl = (url: string): string | undefined => {
+	try {
+		const urlObject = new URL(url);
+		return urlObject.origin;
+	} catch (e) {
+		console.error('Error al procesar la URL:', e);
+		return undefined;
+	}
+};

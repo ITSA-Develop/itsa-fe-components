@@ -61,7 +61,15 @@ import {
 	updateURLParams,
 } from './urls';
 
-import { normalizeStatus, uppercaseStrings, findProgramIdByPath, findProgramIdByPathFromAgencies, generateUuid } from './functions';
+import {
+	normalizeStatus,
+	uppercaseStrings,
+	findProgramIdByPath,
+	findProgramIdByPathFromAgencies,
+	generateUuid,
+	findContainedPaths,
+	getOriginFromUrl,
+} from './functions';
 import {
 	handleAddChildTreeNode,
 	updateItemTreeNodeById,
@@ -88,6 +96,8 @@ export {
 	findLastChild,
 	findProgramIdByPath,
 	findProgramIdByPathFromAgencies,
+	findContainedPaths,
+	getOriginFromUrl,
 	generateUuid,
 	getNumberFromStorage,
 	getStringFromStorage,

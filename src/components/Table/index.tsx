@@ -10,6 +10,9 @@ import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLo
 import { useState } from 'react';
 import type { TableProps as RcTableProps } from 'rc-table';
 import { ISorterTable } from '@/interfaces';
+
+const DEFAULT_COLUMN_MIN_WIDTH = 140;
+const ACTIONS_COLUMN_WIDTH = 64;
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
@@ -133,7 +136,7 @@ export const Table = <T extends object>({
 			const actionsColumn: TStrictColumnType<T> = {
 				title: '',
 				key: 'actions',
-				width: 64,
+				width: ACTIONS_COLUMN_WIDTH,
 				align: 'center',
 				fixed: 'right',
 				render: (record: T) => (
@@ -174,11 +177,19 @@ export const Table = <T extends object>({
 		return columns;
 	};
 
-	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
-	const getFinalScroll = () => {
-		const columnsWithFixed = finalColumns().some(col => col.fixed === 'left' || col.fixed === 'right');
+	const getColumnsTotalWidth = (tableColumns: TStrictTableColumnsType<T>) =>
+		tableColumns.reduce((sum, col) => {
+			if (typeof col.width === 'number') return sum + col.width;
+			if (col.key === 'actions') return sum + ACTIONS_COLUMN_WIDTH;
+			return sum + DEFAULT_COLUMN_MIN_WIDTH;
+		}, 0);
 
-		if (!columnsWithFixed) {
+	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
+	const getFinalScroll = (tableColumns: TStrictTableColumnsType<T>) => {
+		const columnsWithFixed = tableColumns.some(col => col.fixed === 'left' || col.fixed === 'right');
+		const shouldForceScrollX = columnsWithFixed || showColumnActions;
+
+		if (!shouldForceScrollX) {
 			return scroll;
 		}
 
@@ -188,10 +199,7 @@ export const Table = <T extends object>({
 		}
 
 		// Calcular el ancho total de las columnas o usar el valor por defecto
-		const totalWidth = finalColumns().reduce((sum, col) => {
-			const width = typeof col.width === 'number' ? col.width : 0;
-			return sum + width;
-		}, 0);
+		const totalWidth = getColumnsTotalWidth(tableColumns);
 
 		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
 		const baseScroll = scroll && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
@@ -229,10 +237,12 @@ export const Table = <T extends object>({
 		onChange(pagination, sorterParsed, filters, extra);
 	};
 
+	const tableColumns = finalColumns();
+
 	return (
 		<>
 			<AntTable<T>
-				columns={finalColumns() as ColumnsType<T>}
+				columns={tableColumns as ColumnsType<T>}
 				dataSource={data}
 				loading={loading}
 				size="small"
@@ -240,7 +250,7 @@ export const Table = <T extends object>({
 				rowSelection={rowSelection ? { type: 'checkbox', ...rowSelection } : undefined}
 				onChange={handleChangePagination}
 				pagination={finalPagination}
-				scroll={getFinalScroll()}
+				scroll={getFinalScroll(tableColumns)}
 				locale={locale}
 				rowKey={rowKey}
 				rootClassName={tableRootClassName}
