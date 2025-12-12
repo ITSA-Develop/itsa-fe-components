@@ -12,3 +12,4 @@ export { useGetUserInformation } from './useGetPermissionsByRol';
 export { useControlActions } from './useControlActions/useControlActions';
 export { useGeolocation } from './useGeolocation';
 export { useAppLayoutFooter } from '../HOC/AppLayoutFooterContext';
+export { useDestructureRoutes } from './useDestructureRoutes/useDestructureRoutes';
