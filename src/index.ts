@@ -66,6 +66,7 @@ export { Textarea } from './components/Textarea/Textarea';
 export { Title } from './components/Title';
 export { Tooltip } from './components/Tooltip/Tooltip';
 export { TreeNode } from './components/TreeNode';
+export { UserProfileDrawer } from './components/UserProfileDrawer';
 export { WithoutInformation } from './components/WithoutInformation';
 export { ErrorsProvider } from './routing/components/ErrorsProvider';
 export { LayoutComponent } from './routing/components/LayoutComponent';
