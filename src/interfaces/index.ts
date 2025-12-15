@@ -55,6 +55,23 @@ export interface IValidateRouteResponse {
 	message: string;
 	result: boolean;
 }
+
+export interface IUserRole {
+	id: number;
+	code: string | null;
+	name: string;
+	moduleId: number;
+}
+
+export interface IUserInformation {
+	identification: string;
+	identificationType: string;
+	businessLineId: number;
+	name: string;
+	picture: string;
+	email: string;
+	roles: IUserRole[];
+}
 //--------------------------------------------------->
 // TODO: clean up this file after implementations starts
 import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
