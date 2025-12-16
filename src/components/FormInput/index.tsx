@@ -50,17 +50,18 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 				}, [errorMsg, errorIdentificationExists]);
 
 				const normalizedValueUppercase = useMemo(() => {
-					if (field.value === undefined || field.value === null) {
+					if (field.value === undefined || field.value === null || field.value === '') {
 						return undefined;
 					}
+					const value = field.value ?? '';
 					if (textTransform === 'none') {
-						return field.value;
+						return value;
 					}
 					if (textTransform === 'lowercase') {
-						return field.value.toLowerCase();
+						return value.toLowerCase();
 					}
-					return field.value.toUpperCase();
-				}, [field.value]);
+					return value.toUpperCase();
+				}, [textTransform, field.value]);
 
 				return (
 					<div className="flex flex-col gap-1">
