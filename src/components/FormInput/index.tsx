@@ -49,28 +49,41 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 					return undefined;
 				}, [errorMsg, errorIdentificationExists]);
 
-				const normalizedValueUppercase = useMemo(() => {
-					if (field.value === undefined || field.value === null || field.value === '') {
-						return undefined;
-					}
-					const value = field.value ?? '';
-					if (textTransform === 'none') {
-						return value;
-					}
-					if (textTransform === 'lowercase') {
-						return value.toLowerCase();
-					}
-					return value.toUpperCase();
-				}, [textTransform, field.value]);
+				// const normalizedValueUppercase = useMemo(() => {
+				// 	const newValue = String(field.value);
+				// 	if (newValue === undefined || newValue === null || newValue === '') {
+				// 		return '';
+				// 	}
 
+				// 	if (textTransform === 'none') {
+				// 		return newValue;
+				// 	}
+				// 	if (textTransform === 'lowercase') {
+				// 		return newValue.toLowerCase();
+				// 	}
+				// 	return newValue.toUpperCase();
+				// }, [textTransform, field.value]);
+
+				const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+					const inputValue = e.target.value ?? '';
+					let transformedValue = inputValue;
+
+					if (textTransform === 'uppercase') {
+						transformedValue = inputValue.toUpperCase();
+					} else if (textTransform === 'lowercase') {
+						transformedValue = inputValue.toLowerCase();
+					}
+
+					field.onChange(transformedValue);
+				};
 				return (
 					<div className="flex flex-col gap-1">
 						<FormLabel label={label} htmlFor={id} />
 						<Input
 							id={id as string}
 							type={EInput.text}
-							value={normalizedValueUppercase}
-							onChange={field.onChange}
+							value={field.value}
+							onChange={handleChange}
 							onBlur={field.onBlur}
 							ref={field.ref}
 							name={field.name}
