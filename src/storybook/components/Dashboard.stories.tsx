@@ -1,9 +1,11 @@
 import type { StoryObj } from '@storybook/react';
 import type { ISubmodule } from '../../interfaces';
 import { Dashboard } from '../../components/Dashboard';
+import { AppLayout } from '../../components/AppLayout';
 import { useAppLayoutStore } from '../../store/appLayout.store';
 import { useEffect } from 'react';
 import { AGENCIES_DATA } from '../../constants/agencies';
+import { useNavigate } from 'react-router-dom';
 
 const meta = {
 	title: 'Components/Dashboard',
@@ -65,6 +67,37 @@ export const Empty: Story = {
 		docs: {
 			description: {
 				story: 'Dashboard sin datos - estado inicial cuando no hay agencia seleccionada.',
+			},
+		},
+	},
+};
+
+export const WithinAppLayout: Story = {
+	decorators: [withRealData],
+	args: {
+		handleNavigateProgram: (program: ISubmodule) => {
+			console.log('Navegando a programa:', program);
+		},
+	},
+	render: (args) => {
+		const navigate = useNavigate();
+		
+		return (
+			<AppLayout
+				navigateApp={navigate}
+				loadingAppLayout={false}
+				userActions={{ items: [] }}
+				notifications={{ items: [] }}
+				onClickOptionMenu={() => {}}
+			>
+				<Dashboard {...args} />
+			</AppLayout>
+		);
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Dashboard renderizado dentro del AppLayout completo, mostrando cómo se ve en el contexto real de la aplicación con sidebar, header y toda la estructura.',
 			},
 		},
 	},

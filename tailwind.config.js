@@ -176,6 +176,10 @@ export default {
 					'0%': { transform: 'translateX(0)' },
 					'100%': { transform: 'translateX(-100%)' },
 				},
+				slideInRight: {
+					'0%': { opacity: '0', transform: 'translateX(-20px)' },
+					'100%': { opacity: '1', transform: 'translateX(0)' },
+				},
 				fadeIn: {
 					from: { opacity: '0' },
 					to: { opacity: '1' },
@@ -185,6 +189,7 @@ export default {
 				ripple: 'ripple 1s linear',
 				slideIn: 'slideIn 300ms ease-out forwards',
 				slideOut: 'slideOut 300ms ease-in forwards',
+				slideInRight: 'slideInRight 0.3s ease-in-out',
 				fadeIn: 'fadeIn 0.3s ease-in-out',
 			},
 			fontFamily: {

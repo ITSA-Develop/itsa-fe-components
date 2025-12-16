@@ -12,11 +12,11 @@ export const ButtonInactiveModule = ({ name, icon, onclick }: IButtonInactiveMod
 		<ButtonAntd
 			type="default"
 			onClick={onclick}
-			className="flex flex-col items-center justify-center min-w-[85px] w-[85px] sm:w-[120px] md:w-[140px] lg:w-[150px] xl:w-[165px] 2xl:w-[180px] h-auto min-h-[85px] sm:min-h-[110px] md:min-h-[125px] lg:min-h-[135px] xl:min-h-[145px] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-md active:scale-95 py-2 px-1.5 sm:py-3 sm:px-2 md:px-3 gap-1 sm:gap-2 rounded-lg sm:rounded-2xl shadow-sm sm:shadow-md transition-all duration-200"
+			className="flex flex-col items-center justify-center min-w-[70px] w-[70px] sm:w-[100px] md:w-[115px] lg:w-[125px] xl:w-[135px] 2xl:w-[145px] h-auto min-h-[70px] sm:min-h-[90px] md:min-h-[105px] lg:min-h-[115px] xl:min-h-[120px] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-md active:scale-95 py-2 px-1.5 sm:py-2.5 sm:px-2 md:px-2.5 gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl shadow-sm sm:shadow-md transition-all duration-200"
 		>
-			{getIcon(icon, 'w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 !text-gray-400 shrink-0')}
+			{getIcon(icon, 'w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11 xl:w-12 xl:h-12 !text-gray-400 shrink-0')}
 			<strong
-				className="whitespace-normal text-[9px] leading-[1.2] sm:text-xs sm:leading-snug md:text-sm md:leading-tight lg:text-sm xl:text-base text-gray-400 text-center break-words hyphens-auto px-0.5 w-full"
+				className="whitespace-normal text-[8px] leading-[1.2] sm:text-[10px] sm:leading-snug md:text-xs md:leading-tight lg:text-xs xl:text-sm text-gray-400 text-center break-words hyphens-auto px-0.5 w-full"
 			>
 				{name}
 			</strong>
