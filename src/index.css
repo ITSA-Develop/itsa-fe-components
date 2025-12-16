@@ -1246,6 +1246,11 @@
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-primary-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 135 146 / var(--tw-bg-opacity, 1));
+}
+
 .fill-white-100{
   fill: #FFFFFF;
 }
@@ -1495,6 +1500,11 @@
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .font-bold{
