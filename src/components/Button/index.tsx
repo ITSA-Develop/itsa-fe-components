@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { EActionType } from '@/enums';
 import { disabledActionButton } from '@/helpers/functions';
 import { useAppLayoutStore } from '@/store';
+import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 
 export interface IButtonProps {
 	size?: 'small' | 'middle' | 'large';
@@ -23,22 +24,24 @@ export interface IButtonProps {
 }
 
 export const Button = (props: IButtonProps) => {
+	const isOnline = useOnlineStatus();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 
 	const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
 	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick } = props;
+	const validateDisabled = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
 	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';
 	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
 
-	const disabledClass = disabled ? sizeClass + ' itsa-btn--disabled rounded-[12px]' : '';
+	const disabledClass = validateDisabled ? sizeClass + ' itsa-btn--disabled rounded-[12px]' : '';
 
 	const labelContent = <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>;
 
-	const isDisabledAction = disabled === true ? true : disabledActionButton(actionType, actions);
+	const isDisabledAction = validateDisabled === true ? true : disabledActionButton(actionType, actions);
 
 	const handleClick = async () => {
 		const agencyId = currentAgency?.id;
@@ -55,8 +58,10 @@ export const Button = (props: IButtonProps) => {
 	const appliedClassName = isDisabledAction === true ? disabledClass : className;
 
 	if (actionType) {
-		if (showBtnDisabled !== true && isDisabledAction) {
-			return null;
+		if (isOnline === true) {
+			if (showBtnDisabled !== true && isDisabledAction) {
+				return null;
+			}
 		}
 	}
 

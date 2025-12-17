@@ -41,7 +41,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
         />
       </div>
         <div className={`grid grid-cols-1 ${showParish ? "md:grid-cols-3" : "md:grid-cols-2"} gap-2 col-span-3`}>
-          <div className="flex flex-col gap-0">
+          <div className="col-span-1">
             <FormLabel label="Provincia" />
             <Select
               options={optionsProvinces}
@@ -55,7 +55,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
               className="w-full"
             />
           </div>
-          <div className="flex flex-col gap-0">
+          <div className="col-span-1">
             <FormLabel label="Cantón" />
             <Select
               options={optionsCantons}
@@ -69,7 +69,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
             />
           </div>
           {showParish && (
-            <div className="flex flex-col gap-0">
+            <div className="col-span-1">
               <FormLabel label="Parroquia" />
               <Select
                 options={optionsParishes}
