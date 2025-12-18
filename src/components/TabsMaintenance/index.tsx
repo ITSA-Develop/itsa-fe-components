@@ -1,7 +1,6 @@
 import { Tabs } from 'antd';
 import { ITabsMaintenanceItem } from '@/interfaces';
 
-
 export interface ITabsMaintenance {
 	items: ITabsMaintenanceItem[];
 	onChange: (key: string) => void;
@@ -10,5 +9,14 @@ export interface ITabsMaintenance {
 }
 
 export const TabsMaintenance = ({ items, onChange, defaultActiveKey, activeKey }: ITabsMaintenance) => {
-	return <Tabs className="tabs-maintenance" centered defaultActiveKey={defaultActiveKey} items={items} onChange={onChange} activeKey={activeKey} />;
+	return (
+		<Tabs
+			className="tabs-maintenance"
+			centered
+			defaultActiveKey={defaultActiveKey}
+			items={items}
+			onChange={onChange}
+			activeKey={activeKey}
+		/>
+	);
 };
