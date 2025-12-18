@@ -6,5 +6,9 @@ export interface IButtonProps extends ButtonProps {
 }
 
 export const ButtonAntd = ({ children, ...rest }: IButtonProps) => {
-	return <AntButton {...rest}>{children}</AntButton>;
+	return (
+		<AntButton {...rest} >
+			{children}
+		</AntButton>
+	);
 };
