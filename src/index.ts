@@ -34,6 +34,7 @@ export { FilterInput } from './components/FilterInput';
 export { FormLabel } from './components/FormLabel';
 export { FormButtonSelector } from './components/FormButtonSelector';
 export { FormLabelError } from './components/FormLabelError';
+export { FormSwitch } from './components/FormSwitch';
 export { InputPassword } from './components/InputPassword';
 export { InputAddress } from './components/InputAddress';
 export { Input } from './components/Input/Input';
