@@ -24,11 +24,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const items: ITabsMaintenanceItem[] = [
-	{ key: '1', label: 'Datos personales', children: <TabsItemContent width='100%' title='Datos personales'>Datos personales</TabsItemContent> },
-	{ key: '2', label: 'Correo electrónico', children: <TabsItemContent title='Correo electrónico'>Correo electrónico</TabsItemContent> },
-	{ key: '3', label: 'Teléfonos', children: <TabsItemContent title='Teléfonos principales'>Teléfonos</TabsItemContent> },
-	{ key: '4', label: 'Dirección', children: <TabsItemContent title='Dirección'>Dirección</TabsItemContent> },
-	{ key: '5', label: 'Contactos', children: <TabsItemContent>Contactos</TabsItemContent> },
+	{
+		key: '1',
+		label: 'Datos personales',
+		children: <TabsItemContent>Datos personales</TabsItemContent>,
+	},
+	{
+		key: '2',
+		label: 'Correo electrónico',
+		children: <TabsItemContent maxWidth="100%">Correo electrónico</TabsItemContent>,
+	},
+	{ key: '3', label: 'Teléfonos', children: <TabsItemContent maxWidth="100%">Teléfonos</TabsItemContent> },
+	{ key: '4', label: 'Dirección', children: <TabsItemContent maxWidth="100%">Dirección</TabsItemContent> },
+	{ key: '5', label: 'Contactos', children: <TabsItemContent maxWidth="100%">Contactos</TabsItemContent> },
 ];
 
 export const Default: Story = {

@@ -68,7 +68,7 @@ export const API_VERSIONS_MODULE = {
 	security: 'sec/v1/security/',
 };
 
-export const TABS_ITEM_CONTENT_WIDTH = '512px';
+export const TABS_ITEM_CONTENT_WIDTH = '650px';
 
 export const COLOR_TAGS = {
 	magenta: {
