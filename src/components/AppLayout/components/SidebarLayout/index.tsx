@@ -6,6 +6,7 @@ import { Content } from 'antd/es/layout/layout';
 import { useSidebarStore } from '@/hooks';
 import { MenuOptions } from '../MenuOptions';
 import { useMenuDataStore } from '@/store';
+import { useViewportStore } from '@/store/viewport.store';
 import { filterMenuItems } from '@/helpers/menu/menuDataTransformer';
 import { TExtendedMenuItem } from '@/types';
 import { findMenuItemByRoute } from '@/helpers/functions';
@@ -23,6 +24,14 @@ export const SidebarLayout = ({ children, width = 245, loadingAppLayout, onClick
 	const menuData = useMenuDataStore(state => state.menuData);
 	const { footerComponent } = useAppLayoutFooter();
 	const currentPath = window.location.pathname;
+	const viewportWidth = useViewportStore(state => state.width);
+	const isMobile = viewportWidth < 1024;
+
+	useEffect(() => {
+		if (isMobile && !collapsed) {
+			setCollapsed(true);
+		}
+	}, [isMobile]);
 
 	const getParentKeys = (menuItems: TExtendedMenuItem[], targetKey: string, parents: string[] = []): string[] | null => {
 		for (const item of menuItems) {
@@ -67,44 +76,61 @@ export const SidebarLayout = ({ children, width = 245, loadingAppLayout, onClick
 	}, [menuDataFiltered, setOpenKeys, currentPath]);
 
 	return (
-		<Layout hasSider className="gap-2 h-full">
-			{!collapsed && (
-				<div className="flex flex-col pt-3 rounded-lg bg-gray-200" style={{ width: width }}>
-					<div className="flex items-center justify-center pr-3 pl-3">
-						<Input
-							placeholder="Buscar en el menú"
-							className="rounded-lg text-sm"
-							suffix={<SearchOutlined className="text-gray-300" />}
-							defaultValue={searchTerm}
-							onChange={e => setSearchTerm(e.target.value)}
-						/>
-					</div>
-					<div className="flex-1 overflow-y-auto scrollbar-none h-full max-w-full">
-						<MenuOptions
-							loadingAppLayout={loadingAppLayout}
-							onClickOptionMenu={onClickOptionMenu}
-							openKeysMenuOptions={openKeys}
-							items={menuDataFiltered}
-							onOpenKeysChange={setOpenKeys}
-						/>
-					</div>
-					<div className="w-full flex justify-end pr-3 pl-3">
-						<Button
-							type="link"
-							onClick={() => setCollapsed(!collapsed)}
-							icon={<DoubleLeftOutlined className="text-gray-400" />}
-						/>
-					</div>
-				</div>
+		<>
+			{isMobile && !collapsed && (
+				<div
+					className="fixed inset-0 bg-black-100 bg-opacity-50 z-30 lg:hidden"
+					onClick={() => setCollapsed(true)}
+					aria-label="Close sidebar"
+				/>
 			)}
-			<Layout className="rounded-lg h-full">
-				<Content className="bg-white-100 rounded-lg pt-3 h-full flex flex-col min-h-0 relative">
-					<div className="flex-1 overflow-auto min-h-0 p-2">{children}</div>
-					{footerComponent && (
-						<div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>
-					)}
-				</Content>
+
+			<Layout hasSider className="gap-2 h-full">
+				{!collapsed && (
+					<div
+						className={
+							isMobile
+								? 'fixed left-2 top-[72px] bottom-2 flex flex-col pt-3 rounded-lg bg-gray-200 z-40 shadow-xl'
+								: 'flex flex-col pt-3 rounded-lg bg-gray-200'
+						}
+						style={{ width: width }}
+					>
+						<div className="flex items-center justify-center pr-3 pl-3">
+							<Input
+								placeholder="Buscar en el menú"
+								className="rounded-lg text-sm"
+								suffix={<SearchOutlined className="text-gray-300" />}
+								defaultValue={searchTerm}
+								onChange={e => setSearchTerm(e.target.value)}
+							/>
+						</div>
+						<div className="flex-1 overflow-y-auto scrollbar-none h-full max-w-full">
+							<MenuOptions
+								loadingAppLayout={loadingAppLayout}
+								onClickOptionMenu={onClickOptionMenu}
+								openKeysMenuOptions={openKeys}
+								items={menuDataFiltered}
+								onOpenKeysChange={setOpenKeys}
+							/>
+						</div>
+						<div className="w-full flex justify-end pr-3 pl-3">
+							<Button
+								type="link"
+								onClick={() => setCollapsed(!collapsed)}
+								icon={<DoubleLeftOutlined className="text-gray-400" />}
+							/>
+						</div>
+					</div>
+				)}
+				<Layout className="rounded-lg h-full">
+					<Content className="bg-white-100 rounded-lg pt-3 h-full flex flex-col min-h-0 relative">
+						<div className="flex-1 overflow-auto min-h-0 p-2">{children}</div>
+						{footerComponent && (
+							<div className="h-auto w-full lg:z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>
+						)}
+					</Content>
+				</Layout>
 			</Layout>
-		</Layout>
+		</>
 	);
 };
