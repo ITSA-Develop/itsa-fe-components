@@ -4,16 +4,19 @@ import { Switch } from '@/components/Switch/Switch';
 import type { SwitchCustomProps } from '@/components/Switch/Switch';
 import { FormLabelError } from '@/index';
 
-export interface IFormSwitchProps<TFieldValues extends FieldValues> extends Omit<SwitchCustomProps, 'checked' | 'onChange'> {
+export interface IFormSwitchProps<TFieldValues extends FieldValues>
+	extends Omit<SwitchCustomProps, 'checked' | 'onChange'> {
 	name: Path<TFieldValues>;
-	label: string;
 	control: Control<TFieldValues>;
+	checkedLabel?: string;
+	uncheckedLabel?: string;
 }
 
 const FormSwitchComponent = <TFieldValues extends FieldValues>({
 	name,
-	label,
 	control,
+	checkedLabel,
+	uncheckedLabel,
 	...rest
 }: IFormSwitchProps<TFieldValues>) => {
 	return (
@@ -29,8 +32,9 @@ const FormSwitchComponent = <TFieldValues extends FieldValues>({
 								{...rest}
 								checked={field.value}
 								onChange={field.onChange}
+								checkedLabel={checkedLabel}
+								uncheckedLabel={uncheckedLabel}
 							/>
-							{label && <label className="text-sm">{label}</label>}
 						</div>
 						{errorMsg && <FormLabelError label={errorMsg} />}
 					</div>
