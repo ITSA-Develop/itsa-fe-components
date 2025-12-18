@@ -10,6 +10,7 @@ export interface IFormSwitchProps<TFieldValues extends FieldValues>
 	control: Control<TFieldValues>;
 	checkedLabel?: string;
 	uncheckedLabel?: string;
+	label?: string;
 }
 
 const FormSwitchComponent = <TFieldValues extends FieldValues>({
@@ -17,7 +18,7 @@ const FormSwitchComponent = <TFieldValues extends FieldValues>({
 	control,
 	checkedLabel,
 	uncheckedLabel,
-	...rest
+	label,
 }: IFormSwitchProps<TFieldValues>) => {
 	return (
 		<Controller
@@ -29,12 +30,12 @@ const FormSwitchComponent = <TFieldValues extends FieldValues>({
 					<div className="flex flex-col gap-1">
 						<div className="flex items-center gap-2" onBlur={field.onBlur}>
 							<Switch
-								{...rest}
 								checked={field.value}
 								onChange={field.onChange}
 								checkedLabel={checkedLabel}
 								uncheckedLabel={uncheckedLabel}
 							/>
+							{label && <label className="text-sm">{label}</label>}
 						</div>
 						{errorMsg && <FormLabelError label={errorMsg} />}
 					</div>
