@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { TableDetails, type ITableColumn, ITableDetailsProps } from '../../components/TableDetails';
+import { TableDetails, ITableDetailsProps } from '../../components/TableDetails';
+import { ITableDetailsColumn  } from '../../interfaces';
 
 export type ITableDetailsData = {
 	id: number;
@@ -38,7 +39,7 @@ const sampleData: ITableDetailsData[] = [
 	},
 ];
 
-const sampleColumns: ITableColumn<ITableDetailsData>[] = [
+const sampleColumns: ITableDetailsColumn<ITableDetailsData>[] = [
 	{
 		title: 'Name',
 		dataIndex: 'name',

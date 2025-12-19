@@ -388,3 +388,21 @@ export interface IAdministrativeAreaLevel1 {
 	long_name: string;
 	short_name: string;
 }
+
+export interface ITableDetailsColumn<T extends object> {
+	title: string;
+	dataIndex: keyof T | string | number;
+	key: string;
+	disabled?: boolean;
+	type?:
+		| 'text'
+		| 'number'
+		| 'percentage'
+		| 'select';
+
+	options?: { label: string; value: string | number }[];
+	width?: string;
+	actions?: {
+		onClick: () => void;
+	}[];
+}

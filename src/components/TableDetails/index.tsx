@@ -4,52 +4,28 @@ import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Select';
 import { Button } from '../Button';
 import { DeleteOutlined } from '@ant-design/icons';
-
-export interface ITableColumn<T extends object> {
-	title: string;
-	dataIndex: keyof T | string | number;
-	key: string;
-	disabled?: boolean;
-	type:
-		| 'text'
-		| 'number'
-		| 'percentage'
-		| 'date'
-		| 'boolean'
-		| 'select'
-		| 'radio'
-		| 'checkbox'
-		| 'textarea'
-		| 'email'
-		| 'phone'
-		| 'url'
-		| 'image'
-		| 'file'
-		| 'video'
-		| 'audio'
-		| 'link'
-		| 'code'
-		| 'json'
-		| 'html'
-		| 'markdown'
-		| 'richText'
-		| 'custom';
-
-	options?: { label: string; value: string | number }[];
-	width?: string;
-	actions?: {
-		onClick: () => void;
-	}[];
-}
+import { ITableDetailsColumn } from '@/interfaces';
 
 export interface ITableDetailsProps<T extends object> {
-	columns: ITableColumn<T>[];
+	columns: ITableDetailsColumn<T>[];
 	data: T[];
 	onDelete: (record: T) => void;
 	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }) => void;
+	scroll?: {
+		x?: string | number | true | undefined;
+		y?: string | number | undefined;
+	} & {
+		scrollToFirstRowOnChange?: boolean | undefined;
+	};
 }
 
-export const TableDetails = <T extends object>({ columns, data, onDelete, onChangeData }: ITableDetailsProps<T>) => {
+export const TableDetails = <T extends object>({
+	columns,
+	data,
+	onDelete,
+	onChangeData,
+	scroll,
+}: ITableDetailsProps<T>) => {
 	const handleChangeData = (record: T, dataIndex: keyof T | string | number, value: any) => {
 		onChangeData?.({
 			record,
@@ -81,6 +57,10 @@ export const TableDetails = <T extends object>({ columns, data, onDelete, onChan
 				},
 			}),
 			render: (value: any, record: T) => {
+				if (column.type === undefined) {
+					return value;
+				}
+
 				if (column.type === 'select') {
 					return (
 						<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
@@ -201,7 +181,7 @@ export const TableDetails = <T extends object>({ columns, data, onDelete, onChan
 			rowKey={(record, index) => (record as any)?.id ?? (record as any)?.key ?? index ?? 0}
 			pagination={false}
 			tableLayout="fixed"
-			scroll={{ x: 'max-content' }}
+			scroll={scroll || { y: 'calc(80dvh - 310px)', x: 'max-content' }}
 			bordered={true}
 		/>
 	);
