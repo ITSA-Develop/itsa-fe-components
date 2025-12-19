@@ -2,7 +2,6 @@ import { InputNumber, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Input } from '@/components/Input/Input';
 import { Select } from '@/components/Select';
-import { useState } from 'react';
 import { Button } from '../Button';
 import { DeleteOutlined } from '@ant-design/icons';
 
@@ -47,17 +46,17 @@ export interface ITableDetailsProps<T extends object> {
 	columns: ITableColumn<T>[];
 	data: T[];
 	onDelete: (record: T) => void;
+	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }) => void;
 }
 
-export const TableDetails = <T extends object>({ columns, data, onDelete }: ITableDetailsProps<T>) => {
-	const [editableData, setEditableData] = useState<T[]>(data);
-
-	const handleChange = (record: T, dataIndex: keyof T | string | number, value: any) => {
-		if (typeof dataIndex === 'string' || typeof dataIndex === 'number') {
-			setEditableData(prevData => prevData.map(item => (item === record ? { ...item, [dataIndex]: value } : item)));
-		}
+export const TableDetails = <T extends object>({ columns, data, onDelete, onChangeData }: ITableDetailsProps<T>) => {
+	const handleChangeData = (record: T, dataIndex: keyof T | string | number, value: any) => {
+		onChangeData?.({
+			record,
+			dataIndex,
+			value,
+		});
 	};
-
 	const antColumns = columns.map(column => {
 		return {
 			title: column.title,
@@ -88,7 +87,7 @@ export const TableDetails = <T extends object>({ columns, data, onDelete }: ITab
 							<Select
 								value={value}
 								options={column.options || []}
-								onChange={val => handleChange(record, column.dataIndex, val)}
+								onChange={val => handleChangeData(record, column.dataIndex, val)}
 								placeholder="Seleccione una opción"
 								style={{ width: '100%' }}
 								disabled={column.disabled}
@@ -102,8 +101,8 @@ export const TableDetails = <T extends object>({ columns, data, onDelete }: ITab
 						<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 							<Input
 								type="text"
-								value={value || ''}
-								onChange={e => handleChange(record, column.dataIndex, e.target.value)}
+								value={value}
+								onChange={e => handleChangeData(record, column.dataIndex, e.target.value)}
 								style={{ width: '100%' }}
 								disabled={column.disabled}
 							/>
@@ -115,8 +114,8 @@ export const TableDetails = <T extends object>({ columns, data, onDelete }: ITab
 					return (
 						<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 							<InputNumber
-								value={value || ''}
-								onChange={e => handleChange(record, column.dataIndex, e)}
+								value={value}
+								onChange={val => handleChangeData(record, column.dataIndex, val)}
 								style={{ width: '100%' }}
 								min={0}
 								disabled={column.disabled}
@@ -130,8 +129,8 @@ export const TableDetails = <T extends object>({ columns, data, onDelete }: ITab
 						<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 							<InputNumber
 								suffix="%"
-								value={value || ''}
-								onChange={e => handleChange(record, column.dataIndex, e)}
+								value={value}
+								onChange={val => handleChangeData(record, column.dataIndex, val)}
 								style={{ width: '100%' }}
 								min={0}
 								max={100}
@@ -198,7 +197,7 @@ export const TableDetails = <T extends object>({ columns, data, onDelete }: ITab
 	return (
 		<Table
 			columns={antdWithActions}
-			dataSource={editableData}
+			dataSource={data}
 			rowKey={(record, index) => (record as any)?.id ?? (record as any)?.key ?? index ?? 0}
 			pagination={false}
 			tableLayout="fixed"

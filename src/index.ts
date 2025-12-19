@@ -61,6 +61,7 @@ export { Switch } from './components/Switch/Switch';
 export { Tag } from './components/Tag';
 export { TagStatus } from './components/TagStatus';
 export { Table } from './components/Table';
+export { TableDetails } from './components/TableDetails';
 export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';
 export { TabsItemContent } from './components/TabsItemContent';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { TableDetails, type ITableColumn, ITableDetailsProps } from '../../components/TableDetails';
 
@@ -44,7 +44,6 @@ const sampleColumns: ITableColumn<ITableDetailsData>[] = [
 		dataIndex: 'name',
 		key: 'name',
 		type: 'text',
-		disabled: true,
 	},
 	{
 		title: 'Age',
@@ -96,32 +95,73 @@ export default meta;
 type Story = StoryObj<ITableDetailsProps<ITableDetailsData>>;
 
 export const Default: Story = {
-	render: args => (
-		<div>
-			<TableDetails {...args} />
-		</div>
-	),
+	render: args => {
+		const [rows, setRows] = useState<ITableDetailsData[]>(args.data);
+
+		const handleChangeData: NonNullable<ITableDetailsProps<ITableDetailsData>['onChangeData']> = ({
+			record,
+			dataIndex,
+			value,
+		}) => {
+			setRows(prev =>
+				prev.map(item => (item.id === record.id ? { ...item, [dataIndex as keyof ITableDetailsData]: value } : item)),
+			);
+		};
+
+		const handleDelete = (record: ITableDetailsData) => {
+			setRows(prev => prev.filter(item => item.id !== record.id));
+		};
+
+		return (
+			<div>
+				<TableDetails
+					{...args}
+					data={rows}
+					onDelete={handleDelete}
+					onChangeData={handleChangeData}
+				/>
+			</div>
+		);
+	},
 	args: {
 		data: sampleData,
 		columns: sampleColumns,
-		onDelete: (record: ITableDetailsData) => {
-			console.log('delete', record);
-		},
 	},
 };
 
 export const WithData: Story = {
-	render: args => (
-		<div>
-			<TableDetails {...args} />
-		</div>
-	),
+	render: args => {
+		const [rows, setRows] = useState<ITableDetailsData[]>(args.data);
+        console.log('rows =>',rows);
+
+		const handleChangeData = ({
+			record,
+			dataIndex,
+			value,
+		}) => {
+			setRows(prev =>
+				prev.map(item => (item.id === record.id ? { ...item, [dataIndex as keyof ITableDetailsData]: value } : item)),
+			);
+		};
+
+		const handleDelete = (record: ITableDetailsData) => {
+			setRows(prev => prev.filter(item => item.id !== record.id));
+		};
+
+		return (
+			<div>
+				<TableDetails
+					{...args}
+					data={rows}
+					onDelete={handleDelete}
+					onChangeData={handleChangeData}
+				/>
+			</div>
+		);
+	},
 	args: {
 		data: sampleData,
 		columns: sampleColumns,
-		onDelete: (record: ITableDetailsData) => {
-			console.log('delete', record);
-		},
 	},
 	parameters: {
 		docs: {
