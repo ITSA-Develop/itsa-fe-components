@@ -1,7 +1,7 @@
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
-import { memo, useId } from 'react';
+import { memo, useId, useMemo } from 'react';
 import { SelectProps } from 'antd';
 import { Select } from '@/components/Select';
 
@@ -35,6 +35,13 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 		return (option.label ?? '').toLowerCase().includes(input.toLowerCase());
 	};
 
+	const placeholderUppercase = useMemo(() => {
+		if(placeholder && placeholder.trim().length > 0){
+			return placeholder.toUpperCase();
+		}
+		return 'Seleccionar item';
+	}, [placeholder]);
+
 	return (
 		<Controller
 			name={name}
@@ -59,7 +66,7 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 							aria-invalid={!!errorMsg}
 							aria-describedby={errorMsg ? errId : undefined}
 							options={options}
-							placeholder={placeholder}
+							placeholder={placeholderUppercase}
 							loading={isLoading}
 							filterOption={(input, option) => filterOption(input, option as { label: string; value: string | number })}
 							disabled={disabled}
