@@ -398,7 +398,8 @@ export interface ITableDetailsColumn<T extends object> {
 		| 'text'
 		| 'number'
 		| 'percentage'
-		| 'select';
+		| 'select'
+		| 'money';
 
 	options?: { label: string; value: string | number }[];
 	width?: string;
