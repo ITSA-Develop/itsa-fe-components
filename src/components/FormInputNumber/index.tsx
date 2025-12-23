@@ -3,7 +3,7 @@ import { Control, Controller, ControllerRenderProps, FieldValues, Path } from 'r
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Input } from '@/components/Input/Input';
-import { memo, useId } from 'react';
+import { memo, useId, useMemo } from 'react';
 import { EInput } from '@/enums';
 import { filterPositiveNumbersOnly } from '@/helpers';
 
@@ -81,6 +81,14 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 		e.preventDefault();
 	};
 
+
+	const placeholderUppercase = useMemo(() => {
+		if(placeholder && placeholder.trim().length > 0){
+			return placeholder.toUpperCase();
+		}
+		return 'Ingrese un valor numérico';
+	}, [placeholder]);
+
 	return (
 		<Controller
 			name={name}
@@ -105,7 +113,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							showCountCharacters={showCaracteres}
 							min={0}
 							step="any"
-							placeholder={placeholder}
+							placeholder={placeholderUppercase}
 							disabled={disabled}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
