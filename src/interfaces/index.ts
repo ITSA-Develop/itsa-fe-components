@@ -401,9 +401,13 @@ export interface ITableDetailsColumn<T extends object> {
 		| 'select'
 		| 'money';
 
+	maxDigits?: number;
 	options?: { label: string; value: string | number }[];
 	width?: string;
+	min?: number;
 	actions?: {
 		onClick: () => void;
 	}[];
+	errorAccessor?: (record: T, column: ITableDetailsColumn<T>) => string | undefined;
+	errorKey?: keyof T | string;
 }

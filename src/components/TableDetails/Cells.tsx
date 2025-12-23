@@ -6,10 +6,12 @@ export const TextInputCell = ({
 	value,
 	onCommit,
 	disabled,
+	status,
 }: {
 	value: any;
 	onCommit: (value: any) => void;
 	disabled?: boolean;
+	status?: 'error' | 'warning';
 }) => {
 	const [innerValue, setInnerValue] = useState(value);
 
@@ -25,6 +27,7 @@ export const TextInputCell = ({
 			onBlur={() => onCommit(innerValue)}
 			style={{ width: '100%' }}
 			disabled={disabled}
+			status={status}
 		/>
 	);
 };
@@ -38,6 +41,8 @@ export const NumberInputCell = ({
 	suffix,
 	prefix,
 	precision,
+	maxDigits,
+	status,
 }: {
 	value: any;
 	onCommit: (value: any) => void;
@@ -47,6 +52,8 @@ export const NumberInputCell = ({
 	suffix?: string;
 	prefix?: string;
 	precision?: number;
+	maxDigits?: number;
+	status?: 'error' | 'warning';
 }) => {
 	const [innerValue, setInnerValue] = useState(value);
 
@@ -54,10 +61,22 @@ export const NumberInputCell = ({
 		setInnerValue(value);
 	}, [value]);
 
+	const handleChange = (val: string | number | null) => {
+		if (maxDigits !== undefined && val !== null && val !== undefined) {
+			const digits = `${val}`.replace(/\D/g, '');
+
+			if (digits.length > maxDigits) {
+				return;
+			}
+		}
+
+		setInnerValue(val);
+	};
+
 	return (
 		<InputNumber
 			value={innerValue}
-			onChange={val => setInnerValue(val)}
+			onChange={handleChange}
 			onBlur={() => onCommit(innerValue)}
 			style={{ width: '100%' }}
 			min={min}
@@ -66,6 +85,7 @@ export const NumberInputCell = ({
 			disabled={disabled}
 			prefix={prefix}
 			precision={precision}
+			status={status}
 		/>
 	);
 };

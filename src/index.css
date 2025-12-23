@@ -1207,11 +1207,6 @@
   border-color: rgb(229 57 53 / var(--tw-border-opacity, 1));
 }
 
-.\!border-gray-300{
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(176 188 213 / var(--tw-border-opacity, 1)) !important;
-}
-
 .\!border-b-gray-200{
   --tw-border-opacity: 1 !important;
   border-bottom-color: rgb(217 223 227 / var(--tw-border-opacity, 1)) !important;
@@ -1555,6 +1550,10 @@
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[9px\]{
+  font-size: 9px;
 }
 
 .font-bold{

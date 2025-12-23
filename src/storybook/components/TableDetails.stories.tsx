@@ -8,8 +8,10 @@ export type ITableDetailsData = {
 	name: string;
 	age: number;
 	discount: number;
+	salary: number;
 	email: string;
 	status: 'active' | 'inactive';
+	keyObjectError?: Record<string, string>;
 };
 
 const sampleData: ITableDetailsData[] = [
@@ -18,6 +20,7 @@ const sampleData: ITableDetailsData[] = [
 		name: 'John Doe',
 		age: 32,
 		discount: 10,
+		salary: 1250,
 		email: 'john.doe@example.com',
 		status: 'active',
 	},
@@ -26,6 +29,7 @@ const sampleData: ITableDetailsData[] = [
 		name: 'Jane Smith',
 		age: 28,
 		discount: 20,
+		salary: 980,
 		email: 'jane.smith@example.com',
 		status: 'inactive',
 	},
@@ -34,8 +38,14 @@ const sampleData: ITableDetailsData[] = [
 		name: 'Bob Johnson',
 		age: 45,
 		discount: 30,
+		salary: 1575,
 		email: 'bob.johnson@example.com',
 		status: 'active',
+		keyObjectError: {
+			age: 'Error de prueba',
+			discount: 'Descuento inválido',
+			salary: 'Salario fuera de rango',
+		},
 	},
 ];
 
@@ -51,18 +61,30 @@ const sampleColumns: ITableDetailsColumn<ITableDetailsData>[] = [
 		dataIndex: 'age',
 		key: 'age',
 		type: 'number',
+		maxDigits: 3,
 	},
 	{
 		title: 'Discount',
 		dataIndex: 'discount',
 		key: 'discount',
 		type: 'percentage',
+		maxDigits: 3,
+		width: '140px',
+	},
+	{
+		title: 'Salary',
+		dataIndex: 'salary',
+		key: 'salary',
+		type: 'money',
+		maxDigits: 6,
+		width: '160px',
 	},
 	{
 		title: 'Email',
 		dataIndex: 'email',
 		key: 'email',
 		type: 'text',
+		disabled: true,
 	},
 	{
 		title: 'Status',
@@ -88,7 +110,32 @@ const meta: Meta<typeof TableDetails> = {
 			},
 		},
 	},
-	argTypes: {},
+	argTypes: {
+		data: {
+			control: 'object',
+			description: 'Filas a renderizar en la tabla.',
+		},
+		columns: {
+			control: 'object',
+			description: 'Configuración de columnas (tipo de celda, opciones, validaciones).',
+		},
+		rowKey: {
+			control: 'text',
+			description: 'Clave única por fila. Usa `id` por defecto en este ejemplo.',
+		},
+		scroll: {
+			control: 'object',
+			description: 'Propiedad de scroll de la tabla de Ant Design.',
+		},
+		onDelete: {
+			table: { disable: true },
+			description: 'Callback al eliminar un registro.',
+		},
+		onChangeData: {
+			table: { disable: true },
+			description: 'Callback al modificar una celda.',
+		},
+	},
 };
 
 export default meta;
@@ -105,7 +152,7 @@ export const Default: Story = {
 			value,
 		}) => {
 			setRows(prev =>
-				prev.map(item => (item.id === record.id ? { ...item, [dataIndex as keyof ITableDetailsData]: value } : item)),
+				prev.map(item => (item.id === record.id ? { ...record, [dataIndex as keyof ITableDetailsData]: value } : item)),
 			);
 		};
 
@@ -120,6 +167,7 @@ export const Default: Story = {
 					data={rows}
 					onDelete={handleDelete}
 					onChangeData={handleChangeData}
+					rowKey={args.rowKey || 'id'}
 				/>
 			</div>
 		);
@@ -127,21 +175,21 @@ export const Default: Story = {
 	args: {
 		data: sampleData,
 		columns: sampleColumns,
+		rowKey: 'id',
 	},
 };
 
 export const WithData: Story = {
 	render: args => {
 		const [rows, setRows] = useState<ITableDetailsData[]>(args.data);
-        console.log('rows =>',rows);
 
-		const handleChangeData = ({
+		const handleChangeData: NonNullable<ITableDetailsProps<ITableDetailsData>['onChangeData']> = ({
 			record,
 			dataIndex,
 			value,
 		}) => {
 			setRows(prev =>
-				prev.map(item => (item.id === record.id ? { ...item, [dataIndex as keyof ITableDetailsData]: value } : item)),
+				prev.map(item => (item.id === record.id ? { ...record, [dataIndex as keyof ITableDetailsData]: value } : item)),
 			);
 		};
 
@@ -156,6 +204,7 @@ export const WithData: Story = {
 					data={rows}
 					onDelete={handleDelete}
 					onChangeData={handleChangeData}
+					rowKey={args.rowKey || 'id'}
 				/>
 			</div>
 		);
@@ -163,11 +212,14 @@ export const WithData: Story = {
 	args: {
 		data: sampleData,
 		columns: sampleColumns,
+		rowKey: 'id',
+		scroll: { x: 'max-content', y: 320 },
 	},
 	parameters: {
 		docs: {
 			description: {
-				story: 'Ejemplo básico del componente TableDetails con columnas de texto y select.',
+				story:
+					'Variación con scroll personalizado para demostrar edición, eliminación y columnas de tipo porcentaje, dinero y select.',
 			},
 		},
 	},

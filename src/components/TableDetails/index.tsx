@@ -6,12 +6,14 @@ import { Button } from '../Button';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ITableDetailsColumn } from '@/interfaces';
 import { NumberInputCell, TextInputCell } from './Cells';
+import { GetRowKey } from 'antd/es/table/interface';
 
 export interface ITableDetailsProps<T extends object> {
 	columns: ITableDetailsColumn<T>[];
 	data: T[];
 	onDelete: (record: T) => void;
 	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }) => void;
+	rowKey?: string | keyof T | GetRowKey<T>;
 	scroll?: {
 		x?: string | number | true | undefined;
 		y?: string | number | undefined;
@@ -21,6 +23,7 @@ export interface ITableDetailsProps<T extends object> {
 }
 
 export const TableDetails = <T extends object>({
+	rowKey,
 	columns,
 	data,
 	onDelete,
@@ -69,13 +72,20 @@ export const TableDetails = <T extends object>({
 						},
 					}),
 					render: (value: any, record: T) => {
+						const errorFromAccessor = column.errorAccessor?.(record, column);
+						const errorFromKeyObject = (record as any)?.[
+							(column.errorKey as keyof T) || 'keyObjectError'
+						]?.[column.dataIndex as string] as string | undefined;
+						const error = errorFromAccessor ?? errorFromKeyObject;
+
 						if (column.type === undefined) {
 							return value;
 						}
 
 						if (column.type === 'select') {
 							return (
-								<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								<div className='flex flex-col gap-0.5'>
 									<Select
 										value={value}
 										options={column.options || []}
@@ -83,39 +93,49 @@ export const TableDetails = <T extends object>({
 										placeholder="Seleccione una opción"
 										style={{ width: '100%' }}
 										disabled={column.disabled}
+										status={error && column.type === 'select' ? 'error' : undefined}
 									/>
+									{error && column.type === 'select' && <small className='text-[9px] text-red-500 italic'>{error}</small>}
 								</div>
 							);
 						}
 
 						if (column.type === 'text') {
 							return (
-								<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								<div className='flex flex-col gap-0.5'>
 									<TextInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
 										disabled={column.disabled}
+										status={error ? 'error' : undefined}
 									/>
+									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
 								</div>
 							);
 						}
 
 						if (column.type === 'number') {
 							return (
-								<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								<div className='flex flex-col gap-0.5'>
 									<NumberInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
 										min={0}
 										disabled={column.disabled}
+										maxDigits={column.maxDigits}
+										status={error ? 'error' : undefined}
 									/>
+									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
 								</div>
 							);
 						}
 
 						if (column.type === 'percentage') {
 							return (
-								<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								<div className='flex flex-col gap-0.5'>
 									<NumberInputCell
 										suffix="%"
 										value={value}
@@ -123,14 +143,18 @@ export const TableDetails = <T extends object>({
 										min={0}
 										max={100}
 										disabled={column.disabled}
+										maxDigits={column.maxDigits}
+										status={error ? 'error' : undefined}
 									/>
+									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
 								</div>
 							);
 						}
 
 						if (column.type === 'money') {
 							return (
-								<div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
+								<div className='flex flex-col gap-0.5'>
 									<NumberInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
@@ -140,7 +164,10 @@ export const TableDetails = <T extends object>({
 										max={1000000}
 										precision={2}
 										prefix="$"
+										maxDigits={column.maxDigits}
+										status={error ? 'error' : undefined}
 									/>
+									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
 								</div>
 							);
 						}
@@ -211,7 +238,7 @@ export const TableDetails = <T extends object>({
 		<Table
 			columns={antdWithActions}
 			dataSource={data}
-			rowKey={(record, index) => (record as any)?.id ?? (record as any)?.key ?? index ?? 0}
+			rowKey={rowKey}
 			pagination={false}
 			tableLayout="fixed"
 			scroll={scroll || { y: 'calc(80dvh - 310px)', x: 'max-content' }}
