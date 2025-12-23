@@ -32,6 +32,7 @@ export { FormInputTimePicker } from './components/FormInputTimePicker';
 export { FormSwitch } from './components/FormSwitch';
 export { FilterSelect } from './components/FilterSelect';
 export { FilterInput } from './components/FilterInput';
+export { FormTextarea } from './components/FormTextarea';
 export { FormLabel } from './components/FormLabel';
 export { FormButtonSelector } from './components/FormButtonSelector';
 export { FormLabelError } from './components/FormLabelError';
