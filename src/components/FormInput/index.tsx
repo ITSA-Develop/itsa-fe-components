@@ -77,7 +77,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 					field.onChange(transformedValue);
 				};
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-0.5">
 						<FormLabel label={label} htmlFor={id} />
 						<Input
 							id={id as string}
