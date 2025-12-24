@@ -404,6 +404,7 @@ export interface ITableDetailsColumn<T extends object> {
 	maxDigits?: number;
 	options?: { label: string; value: string | number }[];
 	width?: string;
+	minWidth?: number;
 	min?: number;
 	actions?: {
 		onClick: () => void;

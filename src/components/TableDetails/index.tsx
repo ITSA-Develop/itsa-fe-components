@@ -11,7 +11,7 @@ import { GetRowKey } from 'antd/es/table/interface';
 export interface ITableDetailsProps<T extends object> {
 	columns: ITableDetailsColumn<T>[];
 	data: T[];
-	onDelete: (record: T) => void;
+	onDelete: (value: any, record: T, index: number) => void;
 	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }) => void;
 	rowKey?: string | keyof T | GetRowKey<T>;
 	scroll?: {
@@ -54,6 +54,7 @@ export const TableDetails = <T extends object>({
 					dataIndex: column.dataIndex,
 					key: column.key,
 					width: 'auto',
+					minWidth: column.minWidth ? column.minWidth : 150,
 					onHeaderCell: () => ({
 						style: {
 							paddingTop: 6,
@@ -63,7 +64,7 @@ export const TableDetails = <T extends object>({
 					onCell: () => ({
 						style: {
 							width: column.width || '140px',
-							minWidth: 0,
+							minWidth: column.minWidth ? column.minWidth : 150,
 							whiteSpace: 'normal',
 							wordBreak: 'break-word',
 							overflowWrap: 'break-word',
@@ -73,9 +74,9 @@ export const TableDetails = <T extends object>({
 					}),
 					render: (value: any, record: T) => {
 						const errorFromAccessor = column.errorAccessor?.(record, column);
-						const errorFromKeyObject = (record as any)?.[
-							(column.errorKey as keyof T) || 'keyObjectError'
-						]?.[column.dataIndex as string] as string | undefined;
+						const errorFromKeyObject = (record as any)?.[(column.errorKey as keyof T) || 'keyObjectError']?.[
+							column.dataIndex as string
+						] as string | undefined;
 						const error = errorFromAccessor ?? errorFromKeyObject;
 
 						if (column.type === undefined) {
@@ -85,7 +86,7 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'select') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className='flex flex-col gap-0.5'>
+								<div className="flex flex-col gap-0.5">
 									<Select
 										value={value}
 										options={column.options || []}
@@ -95,7 +96,9 @@ export const TableDetails = <T extends object>({
 										disabled={column.disabled}
 										status={error && column.type === 'select' ? 'error' : undefined}
 									/>
-									{error && column.type === 'select' && <small className='text-[9px] text-red-500 italic'>{error}</small>}
+									{error && column.type === 'select' && (
+										<small className="text-[9px] text-red-500 italic">{error}</small>
+									)}
 								</div>
 							);
 						}
@@ -103,14 +106,14 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'text') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className='flex flex-col gap-0.5'>
+								<div className="flex flex-col gap-0.5">
 									<TextInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
 										disabled={column.disabled}
 										status={error ? 'error' : undefined}
 									/>
-									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
+									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
 								</div>
 							);
 						}
@@ -118,7 +121,7 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'number') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className='flex flex-col gap-0.5'>
+								<div className="flex flex-col gap-0.5">
 									<NumberInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
@@ -127,7 +130,7 @@ export const TableDetails = <T extends object>({
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
-									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
+									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
 								</div>
 							);
 						}
@@ -135,7 +138,7 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'percentage') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className='flex flex-col gap-0.5'>
+								<div className="flex flex-col gap-0.5">
 									<NumberInputCell
 										suffix="%"
 										value={value}
@@ -146,7 +149,7 @@ export const TableDetails = <T extends object>({
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
-									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
+									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
 								</div>
 							);
 						}
@@ -154,7 +157,7 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'money') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className='flex flex-col gap-0.5'>
+								<div className="flex flex-col gap-0.5">
 									<NumberInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val)}
@@ -167,7 +170,7 @@ export const TableDetails = <T extends object>({
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
-									{error && <small className='text-[9px] text-red-500 italic'>{error}</small>}
+									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
 								</div>
 							);
 						}
@@ -182,8 +185,8 @@ export const TableDetails = <T extends object>({
 	const ACTION_COL_WIDTH = 40;
 
 	const handleDelete = useCallback(
-		(record: T) => {
-			onDelete(record);
+		(value: any, record: T, index: number) => {
+			onDelete(value, record, index);
 		},
 		[onDelete],
 	);
@@ -197,13 +200,13 @@ export const TableDetails = <T extends object>({
 				fixed: 'right' as const,
 				width: ACTION_COL_WIDTH,
 				align: 'center',
-				render: (record: T) => {
+				render: ( value: any, record: T, index: number) => {
 					return (
 						<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 							<Button
 								type="secondary"
 								size="small"
-								onClick={() => handleDelete(record)}
+								onClick={() => handleDelete(value, record, index)}
 								loading={false}
 								label={<DeleteOutlined />}
 							/>
