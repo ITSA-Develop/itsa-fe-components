@@ -403,12 +403,15 @@ export interface ITableDetailsColumn<T extends object> {
 
 	maxDigits?: number;
 	options?: { label: string; value: string | number }[];
-	width?: string;
+	width?: number;
 	minWidth?: number;
 	min?: number;
+	maxWidth?: number;
 	actions?: {
 		onClick: () => void;
 	}[];
 	errorAccessor?: (record: T, column: ITableDetailsColumn<T>) => string | undefined;
 	errorKey?: keyof T | string;
+	display?: 'flex' | 'block';
+	render?: (value: any, record: T, index: number) => ReactNode;
 }

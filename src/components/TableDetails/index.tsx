@@ -12,7 +12,7 @@ export interface ITableDetailsProps<T extends object> {
 	columns: ITableDetailsColumn<T>[];
 	data: T[];
 	onDelete: (value: any, record: T, index: number) => void;
-	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }) => void;
+	onChangeData?: (params: { record: T; dataIndex: keyof T | string | number; value: any }, index: number) => void;
 	rowKey?: string | keyof T | GetRowKey<T>;
 	scroll?: {
 		x?: string | number | true | undefined;
@@ -31,7 +31,7 @@ export const TableDetails = <T extends object>({
 	scroll,
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
-		(record: T, dataIndex: keyof T | string | number, value: any) => {
+		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
 			const updatedRecord = {
 				...record,
 				[dataIndex]: value,
@@ -41,7 +41,7 @@ export const TableDetails = <T extends object>({
 				record: updatedRecord,
 				dataIndex,
 				value,
-			});
+			}, index);
 		},
 		[onChangeData],
 	);
@@ -49,22 +49,34 @@ export const TableDetails = <T extends object>({
 	const antColumns = useMemo(
 		() =>
 			columns.map(column => {
+				// Allow min/max to drive sizing when width is not set.
+				const width = column.width;
+				const minWidth = column.minWidth ?? column.width ?? column.maxWidth ?? 150;
+				const maxWidth = column.maxWidth ?? column.width;
+				const widthStyle = width ?? column.maxWidth ?? column.minWidth;
+
 				return {
 					title: column.title,
 					dataIndex: column.dataIndex,
 					key: column.key,
-					width: 'auto',
-					minWidth: column.minWidth ? column.minWidth : 150,
+					width,
+					minWidth,
+					maxWidth,
+					display: column.display,
 					onHeaderCell: () => ({
 						style: {
 							paddingTop: 6,
 							paddingBottom: 6,
+							width: widthStyle,
+							minWidth,
+							maxWidth,
 						},
 					}),
 					onCell: () => ({
 						style: {
-							width: column.width || '140px',
-							minWidth: column.minWidth ? column.minWidth : 150,
+							width: widthStyle,
+							minWidth,
+							maxWidth,
 							whiteSpace: 'normal',
 							wordBreak: 'break-word',
 							overflowWrap: 'break-word',
@@ -72,7 +84,12 @@ export const TableDetails = <T extends object>({
 							paddingBottom: 2,
 						},
 					}),
-					render: (value: any, record: T) => {
+					render: (value: any, record: T, index: number) => {
+
+						if (column.render) {
+							return column.render(value, record, index);
+						}
+
 						const errorFromAccessor = column.errorAccessor?.(record, column);
 						const errorFromKeyObject = (record as any)?.[(column.errorKey as keyof T) || 'keyObjectError']?.[
 							column.dataIndex as string
@@ -81,16 +98,16 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === undefined) {
 							return value;
-						}
+						}	
 
 						if (column.type === 'select') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className="flex flex-col gap-0.5">
+								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<Select
 										value={value}
 										options={column.options || []}
-										onChange={val => handleChangeData(record, column.dataIndex, val)}
+										onChange={val => handleChangeData(record, column.dataIndex, val, index)}
 										placeholder="Seleccione una opción"
 										style={{ width: '100%' }}
 										disabled={column.disabled}
@@ -106,10 +123,10 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'text') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className="flex flex-col gap-0.5">
+								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<TextInputCell
 										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val)}
+										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										disabled={column.disabled}
 										status={error ? 'error' : undefined}
 									/>
@@ -121,10 +138,10 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'number') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className="flex flex-col gap-0.5">
+								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val)}
+										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
 										disabled={column.disabled}
 										maxDigits={column.maxDigits}
@@ -138,11 +155,11 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'percentage') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className="flex flex-col gap-0.5">
+								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										suffix="%"
 										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val)}
+										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
 										max={100}
 										disabled={column.disabled}
@@ -157,10 +174,10 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'money') {
 							return (
 								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-								<div className="flex flex-col gap-0.5">
+								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val)}
+										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
 										disabled={column.disabled}
 										suffix="USD"
