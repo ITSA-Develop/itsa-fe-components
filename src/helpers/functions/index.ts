@@ -129,8 +129,6 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 			}
 		}
 	}
-
-	console.log('getProgramActionsbyPath: NO se encontró ningún programa que coincida');
 	return undefined;
 };
 

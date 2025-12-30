@@ -102,7 +102,6 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === 'select') {
 							return (
-								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<Select
 										value={value}
@@ -122,7 +121,6 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === 'text') {
 							return (
-								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<TextInputCell
 										value={value}

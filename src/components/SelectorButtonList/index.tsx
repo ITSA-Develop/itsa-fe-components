@@ -14,7 +14,6 @@ export interface ISelectorButtonListProps {
 	clickHandler: (value: string) => void;
 	size?: SizeType;
 	notificationType?: NotificationType;
-	notificationMessage?: string;
 	showNotification?: boolean;
 }
 
@@ -24,23 +23,20 @@ export const SelectorButtonList = ({
 	size = 'large',
 	notificationType = 'success',
 	showNotification = true,
-	notificationMessage,
 }: ISelectorButtonListProps) => {
 	const [api, contextHolder] = notification.useNotification();
 
 	const openNotificationWithIcon = (type: NotificationType, description: React.ReactNode) => {
 		api[type]({
-			message: <div className="font-bold">
-                <strong>{notificationMessage}</strong>
-            </div>,
-			description: description,
+			message: description,
+			description: "Seleccionado correctamente",
 		});
 	};
 
 	const handleClick = (value: string) => {
 		if (showNotification) {
             const label = buttons.find(button => button.value === value)?.label;
-			const description = <div><strong className='uppercase'>{label}</strong> se ha seleccionado correctamente</div>;
+			const description = <div><strong className='uppercase'>{label}</strong></div>;
 			openNotificationWithIcon(notificationType, description);
 		}
 		clickHandler(value);
