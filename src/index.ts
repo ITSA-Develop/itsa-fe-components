@@ -60,6 +60,7 @@ export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
 export { Skeleton } from './components/Skeleton/Skeleton';
 export { Switch } from './components/Switch/Switch';
+export { SelectorButtonList } from './components/SelectorButtonList';
 export { Tag } from './components/Tag';
 export { TagStatus } from './components/TagStatus';
 export { Table } from './components/Table';
