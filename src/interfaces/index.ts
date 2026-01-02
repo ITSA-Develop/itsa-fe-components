@@ -414,4 +414,5 @@ export interface ITableDetailsColumn<T extends object> {
 	errorKey?: keyof T | string;
 	display?: 'flex' | 'block';
 	render?: (value: any, record: T, index: number) => ReactNode;
+	fixed?: 'left' | 'right';
 }
