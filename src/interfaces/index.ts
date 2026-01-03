@@ -394,12 +394,7 @@ export interface ITableDetailsColumn<T extends object> {
 	dataIndex: keyof T | string | number;
 	key: string;
 	disabled?: boolean;
-	type?:
-		| 'text'
-		| 'number'
-		| 'percentage'
-		| 'select'
-		| 'money';
+	type?: 'text' | 'number' | 'percentage' | 'select' | 'money';
 
 	maxDigits?: number;
 	options?: { label: string; value: string | number }[];
@@ -415,4 +410,33 @@ export interface ITableDetailsColumn<T extends object> {
 	display?: 'flex' | 'block';
 	render?: (value: any, record: T, index: number) => ReactNode;
 	fixed?: 'left' | 'right';
+}
+
+//test
+export interface IMapSelectionDetails {
+	principalStreet: string;
+	secondaryStreet: string;
+	streetNumber: string;
+	postalCode: string;
+	province: string;
+	canton: string;
+	parish: string;
+	country: string;
+}
+
+export interface IMapSelectionPlaceObject {
+	[key: string]: { long_name: string; short_name: string } | number | undefined;
+	lat: number;
+	long: number;
+	route?: { long_name: string; short_name: string };
+	intersection?: { long_name: string; short_name: string };
+}
+
+export interface IMapSelection {
+	lat: number;
+	lng: number;
+	address: string;
+	details: IMapSelectionDetails;
+	placeObject: IMapSelectionPlaceObject;
+	addressData: IAddressData;
 }
