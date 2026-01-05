@@ -31,7 +31,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message as string | undefined;
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-0.5">
 						<FormLabel label={label} htmlFor={id} optional={optional} />
 						<DatePicker
 							format={{

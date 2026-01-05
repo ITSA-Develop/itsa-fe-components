@@ -288,7 +288,10 @@ export interface ILocationSelectorProps {
 	onChangeOtherCountryDescription: (value: string) => void;
 	otherCountryDescription: string;
 	showParish?: boolean;
+	showProvince?: boolean;
+	showCanton?: boolean;
 	aloneEcuador?: boolean;
+	allowClear?: boolean;
 }
 
 export interface IUserRole {

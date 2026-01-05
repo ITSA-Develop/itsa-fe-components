@@ -29,15 +29,46 @@ export const Map = ({
 }: IMapProps) => {
 	const [center, setCenter] = useState<IMapLocation>(location);
 	const [markerPosition, setMarkerPosition] = useState<IMapLocation>(location);
+	const [isMapReady, setIsMapReady] = useState(false);
 
 	useEffect(() => {
 		setCenter(location);
 		setMarkerPosition(location);
-		// Emitir cambio si el prop location cambia externamente
-		if (typeof location.lat === 'number' && typeof location.lng === 'number') {
+		// Emitir cambio si el prop location cambia externamente y el mapa está listo
+		if (isMapReady && typeof location.lat === 'number' && typeof location.lng === 'number') {
 			void reverseGeocode(location.lat, location.lng);
 		}
-	}, [location]);
+	}, [location, isMapReady]);
+
+	useEffect(() => {
+		const checkGoogleReady = () => {
+			const g = (window as any)?.google;
+			if (g?.maps?.Geocoder) {
+				setIsMapReady(true);
+				return true;
+			}
+			return false;
+		};
+
+		if (checkGoogleReady()) return;
+
+		let timeoutId: number;
+		const intervalId = window.setInterval(() => {
+			if (checkGoogleReady()) {
+				window.clearInterval(intervalId);
+				window.clearTimeout(timeoutId);
+			}
+		}, 200);
+
+		timeoutId = window.setTimeout(() => {
+			window.clearInterval(intervalId);
+		}, 10000);
+
+		return () => {
+			window.clearInterval(intervalId);
+			window.clearTimeout(timeoutId);
+		};
+	}, []);
 
 	const getLongName = (value: unknown): string | undefined => {
 		if (typeof value === 'object' && value !== null && 'long_name' in value) {
@@ -118,8 +149,7 @@ export const Map = ({
 	const reverseGeocode = async (lat: number, lng: number) => {
 		const g = (window as any)?.google;
 		if (!g?.maps?.Geocoder) {
-			console.warn('Google Geocoder no disponible');
-			console.log('Coordenadas seleccionadas (sin geocoder):', { lat, lng });
+			console.info('Mapa todavía no listo para geocoding inverso');
 			return;
 		}
 		const geocoder = new g.maps.Geocoder();
@@ -233,6 +263,11 @@ export const Map = ({
     };
 	return (
 		<div className="relative flex-1 bg-red-300 h-full w-full">
+			{!isMapReady && (
+				<div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 text-gray-700 text-sm">
+					Cargando mapa...
+				</div>
+			)}
 			<APIProvider apiKey={googleMapsApiKey} libraries={['places']}>
 				<MapComponent
 					style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
