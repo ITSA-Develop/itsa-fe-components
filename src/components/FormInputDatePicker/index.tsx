@@ -35,7 +35,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 				const errorMsg = fieldState.error?.message as string | undefined;
 				const dateValue = field.value ? dayjs(field.value, format) : null;
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-0.5">
 						<FormLabel label={label} htmlFor={id} optional={optional} />
 						<DatePicker
 							format={{

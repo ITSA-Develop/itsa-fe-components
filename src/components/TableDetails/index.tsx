@@ -63,6 +63,7 @@ export const TableDetails = <T extends object>({
 					minWidth,
 					maxWidth,
 					display: column.display,
+					fixed: column.fixed,
 					onHeaderCell: () => ({
 						style: {
 							paddingTop: 6,
