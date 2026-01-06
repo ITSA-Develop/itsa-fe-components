@@ -22,6 +22,9 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
     isLoadingProvinces, 
     isLoadingCantons, 
     isLoadingParishes, 
+    showProvince,
+    showCanton,
+    allowClear = true,
   } = props;
 
   return (
@@ -38,10 +41,12 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           value={valueCountryId}
           placeholder="País"
           className="w-full"
+          allowClear={allowClear}
         />
       </div>
         <div className={`grid grid-cols-1 ${showParish ? "md:grid-cols-3" : "md:grid-cols-2"} gap-2 col-span-3`}>
-          <div className="col-span-1">
+          {showProvince && (
+            <div className="col-span-1">
             <FormLabel label="Provincia" />
             <Select
               options={optionsProvinces}
@@ -53,8 +58,11 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
               value={valueProvinceId !== 0 ? valueProvinceId : undefined}
               placeholder="Provincia"
               className="w-full"
+              allowClear={allowClear}
             />
           </div>
+          )}
+          {showCanton && (
           <div className="col-span-1">
             <FormLabel label="Cantón" />
             <Select
@@ -66,8 +74,10 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
               value={valueCantonId !== 0 ? valueCantonId : undefined}
               placeholder="Cantón"
               className="w-full"
+              allowClear={allowClear}
             />
           </div>
+          )}
           {showParish && (
             <div className="col-span-1">
               <FormLabel label="Parroquia" />
@@ -81,6 +91,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
                 value={valueParishId !== 0 ? valueParishId : undefined}
                 placeholder="Parroquia"
                 className="w-full"
+                allowClear={allowClear}
               />
             </div>
           )}
