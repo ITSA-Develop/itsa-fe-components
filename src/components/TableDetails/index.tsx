@@ -136,7 +136,6 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === 'number') {
 							return (
-								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										value={value}
@@ -153,7 +152,6 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === 'percentage') {
 							return (
-								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										suffix="%"
@@ -172,7 +170,6 @@ export const TableDetails = <T extends object>({
 
 						if (column.type === 'money') {
 							return (
-								// <div style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<NumberInputCell
 										value={value}

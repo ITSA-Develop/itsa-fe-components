@@ -85,7 +85,7 @@ export const FilterInputDatePicker = ({
 
 	return (
 		<div className="flex flex-col gap-0">
-			<small className="font-bold pl-1">{title}</small>
+			<small className="font-bold flex-1 min-w-0 truncate">{title}</small>
 			<DatePicker
 				{...rest}
 				className="w-full"
