@@ -292,6 +292,10 @@ export interface ILocationSelectorProps {
 	showCanton?: boolean;
 	aloneEcuador?: boolean;
 	allowClear?: boolean;
+	titleCountry?: string;
+	titleProvince?: string;
+	titleCanton?: string;
+	titleParish?: string;
 }
 
 export interface IUserRole {

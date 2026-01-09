@@ -25,12 +25,16 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
     showProvince,
     showCanton,
     allowClear = true,
+    titleCountry = 'País',
+    titleProvince = 'Provincia',
+    titleCanton = 'Cantón',
+    titleParish = 'Parroquia',
   } = props;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-2 w-full">
       <div className="flex flex-col gap-0 md:col-span-1">
-        <FormLabel label="País" />
+        <FormLabel label={titleCountry} />
         <Select
           options={optionsCountries}
           status={undefined}
@@ -39,7 +43,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           onChange={onChangeCountry}
           loading={isLoadingCountries}
           value={valueCountryId}
-          placeholder="País"
+          placeholder={titleCountry}
           className="w-full"
           allowClear={allowClear}
         />
@@ -47,7 +51,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
         <div className={`grid grid-cols-1 ${showParish ? "md:grid-cols-3" : "md:grid-cols-2"} gap-2 col-span-3`}>
           {showProvince && (
             <div className="col-span-1">
-            <FormLabel label="Provincia" />
+            <FormLabel label={titleProvince} />
             <Select
               options={optionsProvinces}
               status={undefined}
@@ -56,7 +60,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
               onChange={onChangeProvince}
               loading={isLoadingProvinces}
               value={valueProvinceId !== 0 ? valueProvinceId : undefined}
-              placeholder="Provincia"
+              placeholder={titleProvince}
               className="w-full"
               allowClear={allowClear}
             />
@@ -64,7 +68,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           )}
           {showCanton && (
           <div className="col-span-1">
-            <FormLabel label="Cantón" />
+            <FormLabel label={titleCanton} />
             <Select
               options={optionsCantons}
               showSearch
@@ -72,7 +76,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
               onChange={onChangeCanton}
               loading={isLoadingCantons}
               value={valueCantonId !== 0 ? valueCantonId : undefined}
-              placeholder="Cantón"
+              placeholder={titleCanton}
               className="w-full"
               allowClear={allowClear}
             />
@@ -80,7 +84,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
           )}
           {showParish && (
             <div className="col-span-1">
-              <FormLabel label="Parroquia" />
+              <FormLabel label={titleParish} />
               <Select
                 options={optionsParishes}
                 status={undefined}
@@ -89,7 +93,7 @@ export const LocationSelector = (props: ILocationSelectorProps) => {
                 onChange={onChangeParish}
                 loading={isLoadingParishes}
                 value={valueParishId !== 0 ? valueParishId : undefined}
-                placeholder="Parroquia"
+                placeholder={titleParish}
                 className="w-full"
                 allowClear={allowClear}
               />
