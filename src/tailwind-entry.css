@@ -108,13 +108,13 @@ body,
 }
 
 .itsa-radio--default .ant-radio .ant-radio-inner {
-	border-color: var(--itsa-primary) !important;
+  border-color: var(--ant-colorBorder, #d9d9d9) !important;
 }
 
 .itsa-radio--default .ant-radio-wrapper:hover .ant-radio-inner,
 .itsa-radio--default .ant-radio:hover .ant-radio-inner,
 .itsa-radio--default .ant-radio-input:focus+.ant-radio-inner {
-	border-color: var(--itsa-primary) !important;
+  border-color: var(--ant-colorBorder, #d9d9d9) !important;
 }
 
 .itsa-radio--default .ant-radio-checked .ant-radio-inner {
