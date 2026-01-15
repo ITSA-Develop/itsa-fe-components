@@ -369,10 +369,10 @@ const TableWithSingleSelection = () => {
 			showPagination={false}
 			rowSelection={{
 				selectedRowKeys,
-				hideSelectAll: true,
+				hideSelectAll: false,
 				onChange: keys => setSelectedRowKeys(keys),
 			}}
-			selectionMode="single"
+			selectionMode="multiple"
 			onChange={() => {}}
 			rowKey={'id'}
 		/>

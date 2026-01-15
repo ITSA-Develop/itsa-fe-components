@@ -1,5 +1,5 @@
 import { ModalResponsive, HeaderButton } from '@/components/ModalResponsive';
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useRef, useState } from 'react';
 
 export interface ResponsiveModalContextType {
 	openModal: (params: {
@@ -37,7 +37,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
     };
 
     const [modals, setModals] = useState<ModalEntry[]>([]);
-    const [nextId, setNextId] = useState<number>(1);
+    const nextIdRef = useRef<number>(1);
 
     const openModal: ResponsiveModalContextType['openModal'] = ({
         title,
@@ -51,8 +51,9 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
         afterClose,
         extraHeaderButtons,
     }) => {
+        const id = nextIdRef.current++;
         const newEntry: ModalEntry = {
-            id: nextId,
+            id,
             title: title ?? '',
             content,
             footer: footer ?? null,
@@ -66,18 +67,20 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
             isOpen: true,
         };
         setModals(prev => [...prev, newEntry]);
-        setNextId(id => id + 1);
     };
 
     const closeModal = () => {
+        const idToClose = modals[modals.length - 1]?.id;
+        if (idToClose == null) return;
         setModals(prev => {
-            if (prev.length === 0) return prev;
-            const lastIndex = prev.length - 1;
-            const lastEntry = prev[lastIndex];
-            if (!lastEntry) return prev;
-            lastEntry.onCancel?.();
+            const idx = prev.findIndex(m => m.id === idToClose);
+            if (idx === -1) return prev;
+            const entry = prev[idx];
+            entry?.onCancel?.();
             const copy = [...prev];
-            copy[lastIndex] = { ...lastEntry, isOpen: false };
+            const current = copy[idx];
+            if (!current) return prev;
+            copy[idx] = { ...current, isOpen: false };
             return copy;
         });
     };
@@ -115,11 +118,11 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
     };
 
     const setBeforeClose: ResponsiveModalContextType['setBeforeClose'] = updater => {
+        const idToUpdate = modals[modals.length - 1]?.id;
+        if (idToUpdate == null) return;
         setModals(prev => {
-            if (prev.length === 0) return prev;
-            const lastIndex = prev.length - 1;
-            return prev.map((m, idx) => {
-                if (idx !== lastIndex) return m;
+            return prev.map(m => {
+                if (m.id !== idToUpdate) return m;
                 const previousValue = m.afterClose;
                 const nextValue = typeof updater === 'function'
                     ? (updater as (prevState: (() => void) | undefined) => (() => void) | undefined)(previousValue)
