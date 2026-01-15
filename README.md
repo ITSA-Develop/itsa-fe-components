@@ -12,7 +12,7 @@ npx vercel@latest --prod --yes
 
 Publicar la version en NPM
 
- npm publish --access public
+npm publish --access public
 
 
 Este paquete contiene componentes de interfaz de usuario reutilizables y personalizables para aplicaciones web basadas en React. Está diseñado para mejorar la productividad y facilitar la implementación de componentes comunes en proyectos que utilizan React y TypeScript.
