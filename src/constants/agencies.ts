@@ -255,7 +255,7 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 1,
 				name: 'VEHÍCULOS',
-				icon: 'VehicleIcon',
+				icon: 'VehicleOutlineIcon',
 				entorno: 'FRONTOFFICE',
 				submodules: [
 					{
@@ -750,7 +750,7 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 2,
 				name: 'TALLERES',
-				icon: 'WorkshopIcon',
+				icon: 'WorkshopOutlineIcon',
 				entorno: 'FRONTOFFICE',
 				submodules: [
 					{
@@ -917,7 +917,7 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 6,
 				name: 'CARTERA',
-				icon: 'WalletIcon2',
+				icon: 'PortfolioOutlineIcon',
 				entorno: 'BACKOFFICE',
 				submodules: [
 					{
@@ -950,7 +950,7 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 7,
 				name: 'LINEAS PARA EL HOGAR',
-				icon: 'HouseholdIcon',
+				icon: 'LphOutlineIcon',
 				entorno: 'BACKOFFICE',
 				submodules: [
 					{
@@ -983,9 +983,273 @@ export const AGENCIES_DATA: IAgency[] = [
 			{
 				id: 9,
 				name: 'SEGURIDAD',
-				icon: 'SecurityIcon',
+				icon: 'SafetyOutlineIcon',
 				entorno: 'BACKOFFICE',
 				submodules: [],
+			},
+			{
+				id: 10,
+				name: 'LOGISTICA',
+				icon: 'LogisticsOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 11,
+				name: 'IMPORTACIONES',
+				icon: 'ImportsOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 12,
+				name: 'TESORERÍA',
+				icon: 'TreasuryOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 13,
+				name: 'REPUESTOS',
+				icon: 'SpareOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 14,
+				name: 'LLANTAS',
+				icon: 'TiresOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 15,
+				name: 'MOTOS',
+				icon: 'MotorcyclesOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 16,
+				name: 'CONTABILIDAD',
+				icon: 'AccountingOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
+			},
+			{
+				id: 17,
+				name: 'TALENTO HUMANO',
+				icon: 'RrhhOutlineIcon',
+				entorno: 'BACKOFFICE',
+				submodules: [
+					{
+						id: 7,
+						name: 'GESTIÓN DE COBRANZA',
+						icon: 'mdiViewModule',
+						groups: [],
+						pathPadre: null,
+						path: null,
+						programs: [
+							{
+								id: 56,
+								name: 'ABONOS',
+								url: 'http://backoffice.127.0.0.1.nip.io:4000/None/None',
+								pathPadre: null,
+								path: 'None/None',
+								icon: 'mdiLaptop',
+								actions: {
+									allActions: true,
+									read: false,
+									create: false,
+									update: false,
+									delete: false,
+								},
+							},
+						],
+					},
+				],
 			},
 		],
 	},
