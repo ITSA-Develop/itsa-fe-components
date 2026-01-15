@@ -16,6 +16,7 @@ export { Descriptions } from './components/Descriptions';
 export { Drawer } from './components/Drawer/Drawer';
 export { DropdownCustomLabel } from './components/DropdownCustomLabel';
 export { Dashboard } from './components/Dashboard';
+export { DetailView, createDetailSchema } from './components/DetailView';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { Empty } from './components/Empty';
 export { ErrorPage } from './components/ErrorPage/ErrorPage';
@@ -84,6 +85,15 @@ export { Iconos } from './components/IconSelector';
 export { IconSelectAntd } from './components/IconSelectAntd';
 
 export type { ProtectedProps, ProtectedRouteProps, PublicRouteProps, TLocation } from './routing/types';
+export type {
+	DetailViewProps,
+	DetailSchema,
+	SectionConfig,
+	FieldConfig,
+	ColumnConfig as DetailColumnConfig,
+	FieldType,
+	TableColumnConfig as DetailTableColumnConfig,
+} from './components/DetailView';
 
 export { UIProvider } from './HOC/UIProvider';
 export { ControlActionsProvider } from './HOC/ControlActions';
