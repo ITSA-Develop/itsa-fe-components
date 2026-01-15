@@ -1,11 +1,6 @@
-import { InputNumber } from 'antd';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-
-export interface StackedCardData {
-	id: number | string;
-    title?: string;
-	children: ReactNode;
-}
+import { StackedCardData } from '@/interfaces';
+import { Button, InputNumber } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 
 export interface StackedCardsProps {
 	cards?: StackedCardData[];
@@ -21,12 +16,48 @@ export interface StackedCardsProps {
 }
 
 const defaultCardsData: StackedCardData[] = [
-	{ id: 1, title: 'Primera tarjeta', children: <p className="text-blue-600 font-medium text-sm">Primera tarjeta con contenido</p> },
-	{ id: 2, title: 'Segunda tarjeta', children: <p className="text-blue-600 font-medium text-sm">Segunda tarjeta con contenido</p> },
-	{ id: 3, title: 'Tercera tarjeta', children: <p className="text-blue-600 font-medium text-sm">Tercera tarjeta con contenido</p> },
-	{ id: 4, title: 'Cuarta tarjeta', children: <p className="text-blue-600 font-medium text-sm">Cuarta tarjeta con contenido</p> },
-	{ id: 5, title: 'Quinta tarjeta', children: <p className="text-blue-600 font-medium text-sm">Quinta tarjeta con contenido</p> },
-	{ id: 6, title: 'Sexta tarjeta', children: <p className="text-blue-600 font-medium text-sm">Sexta tarjeta con contenido</p> },
+	{
+		id: 1,
+		title: 'Primera tarjeta',
+		line1: 'Primera tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
+	{
+		id: 2,
+		title: 'Segunda tarjeta',
+		line1: 'Segunda tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
+	{
+		id: 3,
+		title: 'Tercera tarjeta',
+		line1: 'Tercera tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
+	{
+		id: 4,
+		title: 'Cuarta tarjeta',
+		line1: 'Cuarta tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
+	{
+		id: 5,
+		title: 'Quinta tarjeta',
+		line1: 'Quinta tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
+	{
+		id: 6,
+		title: 'Sexta tarjeta',
+		line1: 'Sexta tarjeta con contenido',
+		line2: 'Segunda línea opcional',
+		line3: 'Tercera línea opcional',
+	},
 ];
 
 function clamp(value: number, min: number, max: number) {
@@ -114,10 +145,7 @@ export const StackedCards = (props: StackedCardsProps) => {
 	}, [maxIndex]);
 
 	return (
-		<div
-			ref={containerRef}
-			className={`flex items-center justify-center w-full ${className ?? ''}`}
-		>
+		<div ref={containerRef} className={`flex items-center justify-center w-full ${className ?? ''}`}>
 			<div
 				className="relative"
 				style={{
@@ -151,9 +179,42 @@ export const StackedCards = (props: StackedCardsProps) => {
 								<div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-[10px]">
 									{card.id}
 								</div>
-								<h2 className="m-0 text-sm font-bold text-gray-800 leading-none">{card.title}</h2>
+
+								<div className="flex items-center gap-2 flex-1 min-w-0">
+									<h2 className="m-0 text-sm font-bold text-gray-800 leading-none truncate">{card.title}</h2>
+								</div>
+
+								{card.buttonTitle ? (
+									<Button
+										size="small"
+										type={card.typeButton as 'primary' | 'text' | 'dashed' | 'default' | undefined}
+										className="shrink-0 border border-gray-200 hover:bg-gray-100"
+										onClick={card.onButtonClick}
+										disabled={!card.onButtonClick}
+									>
+										{card.buttonTitle}
+									</Button>
+								) : null}
+
+								{card.onRemoveClick ? (
+									<Button
+										size="small"
+										type="text"
+										aria-label={card.removeButtonAriaLabel ?? 'Quitar'}
+										className="shrink-0"
+										onClick={card.onRemoveClick}
+									>
+										×
+									</Button>
+								) : null}
 							</div>
-							<div className="itsa-stacked-cards__content p-2">{card.children}</div>
+							<div className="itsa-stacked-cards__content p-2">
+								{card.line1 ? (
+									<span className="block text-sm text-blue-600 font-medium truncate">{card.line1}</span>
+								) : null}
+								{card.line2 ? <span className="block text-xs text-gray-500 truncate">{card.line2}</span> : null}
+								{card.line3 ? <span className="block text-xs text-gray-500 truncate">{card.line3}</span> : null}
+							</div>
 						</div>
 					);
 				})}

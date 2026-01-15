@@ -28,66 +28,46 @@ export const CustomCards: Story = {
 					{
 						id: 1,
 						title: 'Primera tarjeta',
-						children: (
-							<div className="flex flex-col">
-								<p className="text-blue-600 font-medium text-sm">Primera tarjeta con contenido</p>
-								<a className="text-blue-700 underline text-sm" href="#" onClick={e => e.preventDefault()}>
-									Link de ejemplo
-								</a>
-							</div>
-						),
+						buttonTitle: 'Acción',
+						onButtonClick: () => alert('Acción en tarjeta 1'),
+						typeButton: 'secondary',
+						removeButtonAriaLabel: 'Quitar orden de compra',
+						onRemoveClick: () => alert('Quitar orden de compra (tarjeta 1)'),
+						line1: 'Primera tarjeta con contenido',
+						line2: 'Link de ejemplo (texto)',
+						line3: 'Detalle adicional opcional',
 					},
 					{
 						id: 2,
 						title: 'Segunda tarjeta',
-						children: (
-							<div className="flex flex-col">
-								<p className="text-blue-600 font-medium text-sm">Segunda tarjeta con contenido</p>
-								<div className="h-2 bg-gray-200 rounded-full w-4/6" />
-							</div>
-						),
+						line1: 'Segunda tarjeta con contenido',
+						line2: 'Segunda línea opcional',
 					},
 					{
 						id: 3,
 						title: 'Tercera tarjeta',
-						children: (
-							<div className="flex flex-col gap-0">
-								<span className="text-blue-600 font-medium text-sm">Tercera tarjeta con contenido</span>
-								<span className="text-gray-500 text-sm">Puedes renderizar cualquier JSX aquí.</span>
-							</div>
-						),
+						line1: 'Tercera tarjeta con contenido',
+						line2: 'Puedes renderizar solo texto aquí.',
 					},
 					{
 						id: 4,
 						title: 'Cuarta tarjeta',
-						children: (
-							<div className="flex flex-col">
-								<p className="text-blue-600 font-medium text-sm">Cuarta tarjeta con contenido</p>
-								<a className="text-blue-700 underline text-sm" href="#" onClick={e => e.preventDefault()}>
-									Link de ejemplo
-								</a>
-							</div>
-						),
+						line1: 'Cuarta tarjeta con contenido',
+						line2: 'Segunda línea',
+						line3: 'Tercera línea',
 					},
 					{
 						id: 5,
 						title: 'Quinta tarjeta',
-						children: (
-							<div className="flex flex-col">
-								<p className="text-blue-600 font-medium text-sm">Quinta tarjeta con contenido</p>
-								<div className="h-2 bg-gray-200 rounded-full w-4/6" />
-							</div>
-						),
+						line1: 'Quinta tarjeta con contenido',
+						line2: 'Segunda línea',
 					},
 					{
 						id: 6,
 						title: 'Sexta tarjeta',
-						children: (
-							<div className="flex flex-col gap-0">
-								<span className="text-blue-600 font-medium text-sm">Sexta tarjeta con contenido</span>
-								<span className="text-gray-500 text-sm">Puedes renderizar cualquier JSX aquí.</span>
-							</div>
-						),
+						line1: 'Sexta tarjeta con contenido',
+						line2: 'Segunda línea',
+						line3: 'Tercera línea',
 					},
 				]}
 			/>
