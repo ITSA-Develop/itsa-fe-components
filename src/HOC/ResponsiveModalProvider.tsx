@@ -1,21 +1,21 @@
 import { ModalResponsive, HeaderButton } from '@/components/ModalResponsive';
-import { createContext, Dispatch, ReactNode, SetStateAction, useRef, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 
 export interface ResponsiveModalContextType {
-	openModal: (params: {
-		content: ReactNode;
-		title?: string;
-		footer?: ReactNode;
-		onOk?: () => void;
-		onCancel?: () => void;
-		height?: string;
-		width?: string;
-		closable?: boolean;
-		afterClose?: () => void;
-		extraHeaderButtons?: HeaderButton[];
-	}) => void;
-	closeModal: () => void;
-	setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
+    openModal: (params: {
+        content: ReactNode;
+        title?: string;
+        footer?: ReactNode;
+        onOk?: () => void;
+        onCancel?: () => void;
+        height?: string;
+        width?: string;
+        closable?: boolean;
+        afterClose?: () => void;
+        extraHeaderButtons?: HeaderButton[];
+    }) => void;
+    closeModal: () => void;
+    setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
 }
 
 export const ResponsiveModalContext = createContext<ResponsiveModalContextType | undefined>(undefined);
@@ -37,7 +37,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
     };
 
     const [modals, setModals] = useState<ModalEntry[]>([]);
-    const nextIdRef = useRef<number>(1);
+    const [nextId, setNextId] = useState<number>(1);
 
     const openModal: ResponsiveModalContextType['openModal'] = ({
         title,
@@ -51,9 +51,8 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
         afterClose,
         extraHeaderButtons,
     }) => {
-        const id = nextIdRef.current++;
         const newEntry: ModalEntry = {
-            id,
+            id: nextId,
             title: title ?? '',
             content,
             footer: footer ?? null,
@@ -67,20 +66,18 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
             isOpen: true,
         };
         setModals(prev => [...prev, newEntry]);
+        setNextId(id => id + 1);
     };
 
     const closeModal = () => {
-        const idToClose = modals[modals.length - 1]?.id;
-        if (idToClose == null) return;
         setModals(prev => {
-            const idx = prev.findIndex(m => m.id === idToClose);
-            if (idx === -1) return prev;
-            const entry = prev[idx];
-            entry?.onCancel?.();
+            if (prev.length === 0) return prev;
+            const lastIndex = prev.length - 1;
+            const lastEntry = prev[lastIndex];
+            if (!lastEntry) return prev;
+            lastEntry.onCancel?.();
             const copy = [...prev];
-            const current = copy[idx];
-            if (!current) return prev;
-            copy[idx] = { ...current, isOpen: false };
+            copy[lastIndex] = { ...lastEntry, isOpen: false };
             return copy;
         });
     };
@@ -118,11 +115,11 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
     };
 
     const setBeforeClose: ResponsiveModalContextType['setBeforeClose'] = updater => {
-        const idToUpdate = modals[modals.length - 1]?.id;
-        if (idToUpdate == null) return;
         setModals(prev => {
-            return prev.map(m => {
-                if (m.id !== idToUpdate) return m;
+            if (prev.length === 0) return prev;
+            const lastIndex = prev.length - 1;
+            return prev.map((m, idx) => {
+                if (idx !== lastIndex) return m;
                 const previousValue = m.afterClose;
                 const nextValue = typeof updater === 'function'
                     ? (updater as (prevState: (() => void) | undefined) => (() => void) | undefined)(previousValue)
@@ -131,7 +128,7 @@ export const ResponsiveModalProvider = ({ children }: { children: ReactNode }) =
             });
         });
     };
-    
+
     return (
         <ResponsiveModalContext.Provider value={{ openModal, closeModal, setBeforeClose }}>
             {children}

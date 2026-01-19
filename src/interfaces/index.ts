@@ -402,6 +402,8 @@ export interface ITableDetailsColumn<T extends object> {
 	key: string;
 	disabled?: boolean;
 	type?: 'text' | 'number' | 'percentage' | 'select' | 'money';
+	/** Solo se usa en `type: 'select'` cuando el valor viene null/undefined. */
+	defaultValue?: string | number | ((record: T, index: number, column: ITableDetailsColumn<T>) => string | number);
 
 	maxDigits?: number;
 	options?: { label: string; value: string | number }[];

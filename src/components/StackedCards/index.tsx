@@ -15,50 +15,7 @@ export interface StackedCardsProps {
 	onActiveIndexChange?: (activeIndex: number) => void;
 }
 
-const defaultCardsData: StackedCardData[] = [
-	{
-		id: 1,
-		title: 'Primera tarjeta',
-		line1: 'Primera tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-	{
-		id: 2,
-		title: 'Segunda tarjeta',
-		line1: 'Segunda tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-	{
-		id: 3,
-		title: 'Tercera tarjeta',
-		line1: 'Tercera tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-	{
-		id: 4,
-		title: 'Cuarta tarjeta',
-		line1: 'Cuarta tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-	{
-		id: 5,
-		title: 'Quinta tarjeta',
-		line1: 'Quinta tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-	{
-		id: 6,
-		title: 'Sexta tarjeta',
-		line1: 'Sexta tarjeta con contenido',
-		line2: 'Segunda línea opcional',
-		line3: 'Tercera línea opcional',
-	},
-];
+
 
 function clamp(value: number, min: number, max: number) {
 	return Math.max(min, Math.min(value, max));
@@ -102,7 +59,7 @@ function cardTransform(position: number, direction: 'downRight' | 'upLeft', maxV
 
 export const StackedCards = (props: StackedCardsProps) => {
 	const {
-		cards = defaultCardsData,
+		cards = [],
 		initialIndex = 0,
 		maxVisible = 6,
 		height = 180,
