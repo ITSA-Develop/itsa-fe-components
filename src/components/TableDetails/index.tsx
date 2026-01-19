@@ -102,10 +102,20 @@ export const TableDetails = <T extends object>({
 						}	
 
 						if (column.type === 'select') {
+							const defaultOptionValue = column.options?.[0]?.value;
+							const safeValue = typeof value === 'string' || typeof value === 'number' ? value : undefined;
+							const rawDefault =
+								safeValue === undefined
+									? typeof column.defaultValue === 'function'
+										? column.defaultValue(record, index, column)
+										: column.defaultValue
+									: undefined;
+							const resolvedValue = safeValue ?? rawDefault ?? defaultOptionValue;
+
 							return (
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
 									<Select
-										value={value}
+										value={resolvedValue}
 										options={column.options || []}
 										onChange={val => handleChangeData(record, column.dataIndex, val, index)}
 										placeholder="Seleccione una opción"
