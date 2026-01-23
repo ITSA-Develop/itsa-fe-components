@@ -1,0 +1,210 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Notification component > renders error type notification 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--error"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-error ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Test notification description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders info type notification 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--info"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Test notification description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders notification with description 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--info"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Test notification description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders notification with title and description 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--info"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-message"
+        >
+          <span
+            class="font-bold"
+          >
+            Test Title
+          </span>
+        </div>
+        <div
+          class="ant-alert-description"
+        >
+          Test Description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders success type notification 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--success"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-success ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Test notification description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders warning type notification 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--warning"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Test notification description
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders with long description 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--info"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Notification component > renders without title 1`] = `
+<div>
+  <div
+    class="mb-4 animate-slideInRight itsa-notification--info"
+    style="width: 100%;"
+  >
+    <div
+      class="ant-alert ant-alert-info ant-alert-with-description ant-alert-no-icon w-full css-dev-only-do-not-override-l9pxc0"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          Only description here
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

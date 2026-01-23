@@ -69,7 +69,7 @@ const sampleColumns: ITableDetailsColumn<ITableDetailsData>[] = [
 		key: 'discount',
 		type: 'percentage',
 		maxDigits: 3,
-		width: '140px',
+		width: 140,
 	},
 	{
 		title: 'Salary',
@@ -77,14 +77,14 @@ const sampleColumns: ITableDetailsColumn<ITableDetailsData>[] = [
 		key: 'salary',
 		type: 'money',
 		maxDigits: 6,
-		width: '160px',
+		width: 160,
 	},
 	{
 		title: 'Email',
 		dataIndex: 'email',
 		key: 'email',
 		type: 'text',
-		disabled: true,
+		disabled: record => record.status === 'inactive',
 	},
 	{
 		title: 'Status',

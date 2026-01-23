@@ -91,6 +91,9 @@ export const TableDetails = <T extends object>({
 							return column.render(value, record, index);
 						}
 
+						const isDisabled =
+							typeof column.disabled === 'function' ? column.disabled(record, index, column) : !!column.disabled;
+
 						const errorFromAccessor = column.errorAccessor?.(record, column);
 						const errorFromKeyObject = (record as any)?.[(column.errorKey as keyof T) || 'keyObjectError']?.[
 							column.dataIndex as string
@@ -120,7 +123,7 @@ export const TableDetails = <T extends object>({
 										onChange={val => handleChangeData(record, column.dataIndex, val, index)}
 										placeholder="Seleccione una opción"
 										style={{ width: '100%' }}
-										disabled={column.disabled}
+										disabled={isDisabled}
 										status={error && column.type === 'select' ? 'error' : undefined}
 									/>
 									{error && column.type === 'select' && (
@@ -136,7 +139,7 @@ export const TableDetails = <T extends object>({
 									<TextInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										disabled={column.disabled}
+										disabled={isDisabled}
 										status={error ? 'error' : undefined}
 									/>
 									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
@@ -151,7 +154,7 @@ export const TableDetails = <T extends object>({
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
-										disabled={column.disabled}
+										disabled={isDisabled}
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
@@ -169,7 +172,7 @@ export const TableDetails = <T extends object>({
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
 										max={100}
-										disabled={column.disabled}
+										disabled={isDisabled}
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
@@ -185,7 +188,7 @@ export const TableDetails = <T extends object>({
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
-										disabled={column.disabled}
+										disabled={isDisabled}
 										suffix="USD"
 										max={1000000}
 										precision={2}

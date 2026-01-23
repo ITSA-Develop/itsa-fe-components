@@ -1,3 +1,4 @@
+import { generateUuid } from '@/helpers';
 import { StackedCardData } from '@/interfaces';
 import { Button, InputNumber } from 'antd';
 import { useEffect, useRef, useState } from 'react';
@@ -116,10 +117,10 @@ export const StackedCards = (props: StackedCardsProps) => {
 				{cards.map((card, index) => {
 					const position = index - activeIndex;
 					const isVisible = position >= 0 && position < maxVisible;
-
+					const uuId = generateUuid();
 					return (
 						<div
-							key={card.id}
+							key={uuId}
 							className={`absolute inset-0 bg-white-100 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-lg overflow-hidden transition-all duration-500 ease-out ${
 								!isVisible ? 'opacity-0 pointer-events-none' : ''
 							}`}
