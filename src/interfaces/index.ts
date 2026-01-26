@@ -75,7 +75,7 @@ export interface IUserInformation {
 //--------------------------------------------------->
 // TODO: clean up this file after implementations starts
 import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
-import { TDate, TInputOptions, TInputRules } from '@/types';
+import { TDate, TInputOptions, TInputRules, TTextTransform } from '@/types';
 import { SelectProps } from 'antd';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 import { Dayjs } from 'dayjs';
@@ -404,7 +404,7 @@ export interface ITableDetailsColumn<T extends object> {
 	type?: 'text' | 'number' | 'percentage' | 'select' | 'money';
 	/** Solo se usa en `type: 'select'` cuando el valor viene null/undefined. */
 	defaultValue?: string | number | ((record: T, index: number, column: ITableDetailsColumn<T>) => string | number);
-
+	textTransform?: TTextTransform;
 	maxDigits?: number;
 	options?: { label: string; value: string | number }[];
 	width?: number;
