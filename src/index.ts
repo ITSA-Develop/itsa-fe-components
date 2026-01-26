@@ -11,6 +11,8 @@ export { Carousel } from './components/Carousel';
 export { Checkbox } from './components/Checkbox/Checkbox';
 export { Collapse } from './components/Collapse/Collapse';
 export { CustomFooterModal } from './components/CustomFooterModal';
+export { ConfirmDeleteModal } from './components/ConfirmDeleteModal';
+export type { IConfirmDeleteModalProps, IConfirmDeleteDetailItem } from './components/ConfirmDeleteModal';
 export { Divider } from './components/Divider/Divider';
 export { Descriptions } from './components/Descriptions';
 export { Drawer } from './components/Drawer/Drawer';
