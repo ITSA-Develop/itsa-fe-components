@@ -141,6 +141,7 @@ export const TableDetails = <T extends object>({
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										disabled={isDisabled}
 										status={error ? 'error' : undefined}
+										textTransform={column.textTransform}
 									/>
 									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
 								</div>
