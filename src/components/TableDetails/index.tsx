@@ -5,7 +5,7 @@ import { Select } from '@/components/Select';
 import { Button } from '../Button';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ITableDetailsColumn } from '@/interfaces';
-import { NumberInputCell, TextInputCell } from './Cells';
+import { MoneyInputCell, NumberInputCell, TextInputCell } from './Cells';
 import { GetRowKey } from 'antd/es/table/interface';
 
 export interface ITableDetailsProps<T extends object> {
@@ -185,13 +185,12 @@ export const TableDetails = <T extends object>({
 						if (column.type === 'money') {
 							return (
 								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<NumberInputCell
+									<MoneyInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										min={0}
+										min={column.min ?? 0}
 										disabled={isDisabled}
 										suffix="USD"
-										max={1000000}
 										precision={2}
 										prefix="$"
 										maxDigits={column.maxDigits}

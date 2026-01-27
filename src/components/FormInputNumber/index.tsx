@@ -30,7 +30,10 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	const handleValueChange = (value: string, field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => {
 		const cleanValue = filterPositiveNumbersOnly(value);
 		if (cleanValue === '' || cleanValue === undefined || cleanValue === null) {
-			field.onChange(undefined);
+			// IMPORTANT:
+			// In react-hook-form, setting `undefined` may fall back to `defaultValues` (e.g. 100),
+			// causing the input to "re-populate" after clearing. Use `null` to keep it cleared.
+			field.onChange(null);
 		} else {
 			const numValue = Number(cleanValue);
 			field.onChange(isNaN(numValue) ? undefined : numValue);
@@ -38,9 +41,10 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	};
 
 	const handleBlur = (value: string, field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => {
+		field.onBlur();
 		const cleanValue = filterPositiveNumbersOnly(value);
 		if (cleanValue === '' || cleanValue === undefined || cleanValue === null) {
-			field.onChange(undefined);
+			field.onChange(null);
 		} else {
 			const numValue = Number(cleanValue);
 			field.onChange(isNaN(numValue) ? undefined : numValue);

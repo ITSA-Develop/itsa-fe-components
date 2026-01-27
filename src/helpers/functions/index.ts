@@ -351,3 +351,18 @@ export const getOriginFromUrl = (url: string): string | undefined => {
 		return undefined;
 	}
 };
+
+
+export const formatMoneyIfValid = (val: string | number | undefined | null): string => {
+	if (val === undefined || val === null) return '';
+	const raw = `${val}`.trim();
+	const normalized = raw.replace(/,/g, '');
+	// Only format when it's a "complete" numeric value: -123, 123, 123.45
+	// (If user is mid-typing like "-", "1.", ".5" we leave it as-is.)
+	const isValidNumber = /^-?\d+(\.\d+)?$/.test(normalized);
+	if (!isValidNumber) return raw;
+
+	const [intPart = '', decPart] = normalized.split('.');
+	const groupedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	return decPart !== undefined ? `${groupedInt}.${decPart}` : groupedInt;
+};
