@@ -77,6 +77,7 @@ import {
 	generateUuid,
 	findContainedPaths,
 	getOriginFromUrl,
+	formatMoneyIfValid,
 } from './functions';
 import {
 	handleAddChildTreeNode,
@@ -105,6 +106,7 @@ export {
 	findProgramIdByPath,
 	findProgramIdByPathFromAgencies,
 	findContainedPaths,
+	formatMoneyIfValid,
 	getOriginFromUrl,
 	generateUuid,
 	getNumberFromStorage,
