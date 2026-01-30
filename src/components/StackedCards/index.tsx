@@ -1,25 +1,22 @@
-import { generateUuid } from '@/helpers';
+import React from "react"
 import { StackedCardData } from '@/interfaces';
-import { Button, InputNumber } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react"
+import { CloseOutlined } from "@ant-design/icons"
+import { Button } from "../Button"
 
-export interface StackedCardsProps {
-	cards?: StackedCardData[];
-	initialIndex?: number;
-	maxVisible?: number;
-	height?: number | string;
-	maxWidth?: number | string;
-	width?: number | string;
+export interface IStackedCardsProps {
+	cards: StackedCardData[]
+	emptyMessage?: string;
 	className?: string;
-	showFooterControls?: boolean;
-	stackDirection?: 'downRight' | 'upLeft';
-	onActiveIndexChange?: (activeIndex: number) => void;
-}
-
-
-
-function clamp(value: number, min: number, max: number) {
-	return Math.max(min, Math.min(value, max));
+	maxVisible?: number;
+	/** px de separación vertical entre cards */
+	stackOffsetY?: number;
+	/** ancho máximo del stack (px o string css) */
+	maxWidth?: number | string;
+	/** ancho del stack (px o string css) */
+	width?: number | string;
+	/** alto mínimo cuando está vacío (px o string css) */
+	emptyMinHeight?: number | string;
 }
 
 function cssSize(value: number | string | undefined) {
@@ -27,178 +24,179 @@ function cssSize(value: number | string | undefined) {
 	return typeof value === 'number' ? `${value}px` : value;
 }
 
-function cardShadow(position: number) {
-	// position: 0 = active card, >0 = cards behind
-	if (position <= 0) {
-		// Similar to configured shadow-lg
-		return '0 0.5px 8px 0 rgba(207, 216, 220, 1)';
-	}
-
-	// Behind cards: invert shadow to top-left (negative offsets)
-	const x = -2 - position * 2;
-	const y = -2 - position * 2;
-	const blur = 10 + position * 2;
-	const alpha = Math.max(0.08, 0.18 - position * 0.02);
-	return `${x}px ${y}px ${blur}px 0 rgba(38, 50, 56, ${alpha})`;
-}
-
-function cardTransform(position: number, direction: 'downRight' | 'upLeft', maxVisible: number) {
-	const dir = direction === 'upLeft' ? -1 : 1;
-
-	// Center the whole visible stack, not only the active card.
-	// With upLeft the stack grows to negative offsets; with downRight it grows to positive offsets.
-	// We offset by half the max spread so the stack bounding box is centered.
-	const steps = Math.max(0, maxVisible - 1);
-	const spreadX = 12 * steps;
-	const baseX = -dir * (spreadX / 2);
-
-	const x = baseX + position * 12 * dir;
-	const y = position * 8 * dir;
-	const s = 1 - position * 0.02;
-	return `translateX(${x}px) translateY(${y}px) scale(${s})`;
-}
-
-export const StackedCards = (props: StackedCardsProps) => {
+export const StackedCards = (props: IStackedCardsProps) => {
 	const {
-		cards = [],
-		initialIndex = 0,
-		maxVisible = 6,
-		height = 180,
-		width,
-		maxWidth = 448,
+		cards,
+		emptyMessage,
 		className,
-		showFooterControls = false,
-		stackDirection = 'downRight',
-		onActiveIndexChange,
-	} = props;
-	const maxIndex = Math.max(0, cards.length - 1);
-	const [activeIndex, setActiveIndex] = useState(() => clamp(initialIndex, 0, maxIndex));
-	const containerRef = useRef<HTMLDivElement>(null);
+		maxVisible = 3,
+		stackOffsetY = 10,
+		maxWidth = 340,
+		width,
+		emptyMinHeight = 144,
+	} = props
+	const [currentIndex, setCurrentIndex] = useState(0)
+
+	const cardsRef = useRef(cards)
+	const currentIndexRef = useRef(currentIndex)
+	const activeCardRef = useRef<HTMLDivElement | null>(null)
+	const [activeCardHeight, setActiveCardHeight] = useState<number>(0)
 
 	useEffect(() => {
-		setActiveIndex(prev => clamp(prev, 0, maxIndex));
-	}, [maxIndex]);
+		cardsRef.current = cards
+	}, [cards])
 
 	useEffect(() => {
-		onActiveIndexChange?.(activeIndex);
-	}, [activeIndex, onActiveIndexChange]);
+		currentIndexRef.current = currentIndex
+	}, [currentIndex])
 
+	// Measure active card height so the container can reserve space (absolute children don't affect layout height)
 	useEffect(() => {
-		const handleWheel = (e: WheelEvent) => {
-			e.preventDefault();
-			const dir = e.deltaY > 0 ? 1 : -1;
-			setActiveIndex(prev => clamp(prev + dir, 0, maxIndex));
-		};
+		const el = activeCardRef.current
+		if (!el) return
 
-		const container = containerRef.current;
-		if (container) {
-			container.addEventListener('wheel', handleWheel, { passive: false });
+		const measure = () => {
+			const rect = el.getBoundingClientRect()
+			setActiveCardHeight(Math.ceil(rect.height))
 		}
 
-		return () => {
-			if (container) {
-				container.removeEventListener('wheel', handleWheel);
+		measure()
+
+		if (typeof ResizeObserver !== "undefined") {
+			const ro = new ResizeObserver(() => measure())
+			ro.observe(el)
+			return () => ro.disconnect()
+		}
+
+		// Fallback: re-measure on next frame
+		const raf = window.requestAnimationFrame(measure)
+		return () => window.cancelAnimationFrame(raf)
+	}, [cards.length, currentIndex])
+
+	// Clamp index when cards length changes
+	useEffect(() => {
+		setCurrentIndex(prev => {
+			const max = Math.max(0, cards.length - 1)
+			return Math.min(prev, max)
+		})
+	}, [cards.length])
+
+	// Keyboard navigation: ArrowUp/ArrowDown + Enter to execute onButtonClick
+	useEffect(() => {
+		const onKeyDown = (e: KeyboardEvent) => {
+			const target = e.target as HTMLElement | null
+			const isTypingTarget =
+				!!target &&
+				(target.tagName === "INPUT" ||
+					target.tagName === "TEXTAREA" ||
+					target.tagName === "SELECT" ||
+					target.isContentEditable)
+
+			if (isTypingTarget) return
+
+			const list = cardsRef.current
+			const len = list.length
+			if (len === 0) return
+
+			if (e.key === "ArrowDown") {
+				e.preventDefault()
+				setCurrentIndex(i => (i < len - 1 ? i + 1 : i))
+				return
 			}
-		};
-	}, [maxIndex]);
+
+			if (e.key === "ArrowUp") {
+				e.preventDefault()
+				setCurrentIndex(i => (i > 0 ? i - 1 : i))
+				return
+			}
+
+			if (e.key === "Enter") {
+				const active = list[currentIndexRef.current]
+				active?.onButtonClick?.()
+			}
+		}
+
+		window.addEventListener("keydown", onKeyDown)
+		return () => window.removeEventListener("keydown", onKeyDown)
+	}, [])
+
+
+
+	const handleDelete = (card: StackedCardData) => {
+		card.onRemoveClick?.()
+	}
+
+	const handleScroll = (e: React.WheelEvent) => {
+		e.preventDefault()
+		if (e.deltaY > 0 && currentIndex < cards.length - 1) {
+			setCurrentIndex(currentIndex + 1)
+		} else if (e.deltaY < 0 && currentIndex > 0) {
+			setCurrentIndex(currentIndex - 1)
+		}
+	}
+
+	const visibleCount = Math.min(maxVisible, cards.length)
+	const stackLift = Math.max(0, visibleCount - 1) * stackOffsetY
+	const reservedHeight = activeCardHeight > 0 ? activeCardHeight + stackLift : undefined
 
 	return (
-		<div ref={containerRef} className={`flex items-center justify-center w-full ${className ?? ''}`}>
-			<div
-				className="relative"
-				style={{
-					height: cssSize(height),
-					width: cssSize(width ?? maxWidth),
-					maxWidth: cssSize(maxWidth),
-					marginLeft: 'auto',
-					marginRight: 'auto',
-				}}
-			>
-				{cards.map((card, index) => {
-					const position = index - activeIndex;
-					const isVisible = position >= 0 && position < maxVisible;
-					const uuId = generateUuid();
+		<div
+			className={`relative w-full ${className ?? ""}`}
+			style={{
+				maxWidth: cssSize(maxWidth),
+				width: cssSize(width),
+				height: reservedHeight ? `${reservedHeight}px` : undefined,
+				minHeight: cards.length === 0 ? cssSize(emptyMinHeight) : undefined,
+			}}
+			onWheel={handleScroll}
+		>
+			{cards.length === 0 ? (
+				<div className="flex h-full items-center justify-center rounded-xl border border-gray-100 bg-gray-100 text-sm text-gray-400">
+					{emptyMessage ?? 'No hay documentos cargados'}
+				</div>
+			) : (
+				cards.map((card, index) => {
+					const offset = index - currentIndex
+					const isVisible = offset >= 0 && offset < maxVisible
+
+					if (!isVisible) return null
+
 					return (
 						<div
-							key={uuId}
-							className={`absolute inset-0 bg-white-100 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-lg overflow-hidden transition-all duration-500 ease-out ${
-								!isVisible ? 'opacity-0 pointer-events-none' : ''
-							}`}
+							key={card.id}
+							ref={offset === 0 ? activeCardRef : undefined}
+							className="absolute inset-x-0 bottom-0 rounded-xl bg-gray-250 border border-gray-300 shadow-sm p-2 transition-all duration-200"
 							style={{
-								transform: isVisible
-									? cardTransform(position, stackDirection, maxVisible)
-									: 'translateX(100px) translateY(50px) scale(0.8)',
-								zIndex: cards.length - position,
-								opacity: isVisible ? 1 - position * 0.15 : 0,
-								boxShadow: isVisible ? cardShadow(position) : undefined,
+								transform: `translateY(${offset * -stackOffsetY}px) scale(${1 - offset * 0.03})`,
+								zIndex: cards.length - offset,
+								opacity: offset === 0 ? 1 : 0.7,
 							}}
 						>
-							<div className="itsa-stacked-cards__header flex items-center gap-2 bg-gray-50 px-2 py-1">
-								<div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-[10px]">
-									{card.id}
+							<div className="flex items-start justify-between gap-0">
+								<div className="flex items-center gap-1">
+									<span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-100 text-xs font-medium text-gray-600">
+										{card.id}
+									</span>
+									<small className="text-sm font-medium text-gray-900">
+										{card.title}
+									</small>
 								</div>
-
-								<div className="flex items-center gap-2 flex-1 min-w-0">
-									<h2 className="m-0 text-sm font-bold text-gray-800 leading-none truncate">{card.title}</h2>
-								</div>
-
-								{card.buttonTitle ? (
+								<div className="flex items-center gap-1">
+									<Button size="small" type="secondary" 
+									label={card.buttonTitle} onClick={card.onButtonClick} allowEnterKey={true} />
 									<Button
-										size="small"
-										type={card.typeButton as 'primary' | 'text' | 'dashed' | 'default' | undefined}
-										className="shrink-0 border border-gray-200 hover:bg-gray-100"
-										onClick={card.onButtonClick}
-										disabled={!card.onButtonClick}
-									>
-										{card.buttonTitle}
-									</Button>
-								) : null}
-
-								{card.onRemoveClick ? (
-									<Button
+										onClick={() => handleDelete(card)}
 										size="small"
 										type="text"
-										aria-label={card.removeButtonAriaLabel ?? 'Quitar'}
-										className="shrink-0"
-										onClick={card.onRemoveClick}
-									>
-										×
-									</Button>
-								) : null}
+										label={<CloseOutlined />}
+									/>
+								</div>
 							</div>
-							<div className="itsa-stacked-cards__content p-2">
-								{card.line1 ? (
-									<span className="block text-sm text-blue-600 font-medium truncate">{card.line1}</span>
-								) : null}
-								{card.line2 ? <span className="block text-xs text-gray-500 truncate">{card.line2}</span> : null}
-								{card.line3 ? <span className="block text-xs text-gray-500 truncate">{card.line3}</span> : null}
-							</div>
+							{card.content}
 						</div>
-					);
-				})}
-
-				{showFooterControls ? (
-					<div className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 flex gap-2">
-						<div
-							onWheel={e => e.stopPropagation()}
-							onWheelCapture={e => e.stopPropagation()}
-							className="bg-white-100 rounded-md px-2 py-1"
-						>
-							<InputNumber
-								size="small"
-								min={1}
-								max={Math.max(1, cards.length)}
-								value={activeIndex + 1}
-								onChange={value => {
-									if (typeof value !== 'number') return;
-									setActiveIndex(clamp(value - 1, 0, maxIndex));
-								}}
-								className="w-[80px] h-[30px] text-center flex items-center justify-center"
-							/>
-						</div>
-					</div>
-				) : null}
-			</div>
+					)
+				})
+			)}
 		</div>
-	);
-};
+	)
+}
