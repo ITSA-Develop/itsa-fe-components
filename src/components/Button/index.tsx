@@ -21,6 +21,11 @@ export interface IButtonProps {
 	validateWithApiAction?: boolean;
 	showBtnDisabled?: boolean;
 	loading?: boolean;
+	/**
+	 * Por defecto `false`: evita que la tecla Enter dispare el botón cuando está enfocado
+	 * (y mitiga submits por Enter en ciertos contextos).
+	 */
+	allowEnterKey?: boolean;
 }
 
 export const Button = (props: IButtonProps) => {
@@ -29,7 +34,7 @@ export const Button = (props: IButtonProps) => {
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 
 	const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
-	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick } = props;
+	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick, allowEnterKey = false } = props;
 	const validateDisabled = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
@@ -73,6 +78,12 @@ export const Button = (props: IButtonProps) => {
 			htmlType={htmlType}
 			disabled={isDisabledAction}
 			onClick={handleClick}
+			onKeyDown={e => {
+				if (!allowEnterKey && e.key === 'Enter') {
+					e.preventDefault();
+					e.stopPropagation();
+				}
+			}}
 			block={block}
 			style={{ width: block ? '100%' : width ? `${width}%` : undefined }}
 			loading={loading}
