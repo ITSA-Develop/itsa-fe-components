@@ -82,6 +82,8 @@ export { Tooltip } from './components/Tooltip/Tooltip';
 export { TreeNode } from './components/TreeNode';
 export { UserProfileDrawer } from './components/UserProfileDrawer';
 export { WithoutInformation } from './components/WithoutInformation';
+export { WizardSteps } from './components/WizardSteps/WizardSteps';
+export type { IWizardStepsProps } from './components/WizardSteps/WizardSteps';
 export { ErrorsProvider } from './routing/components/ErrorsProvider';
 export { LayoutComponent } from './routing/components/LayoutComponent';
 export { Iconos } from './components/IconSelector';
