@@ -29,7 +29,8 @@ export const Button = (props: IButtonProps) => {
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const { userActionPermissions } = useUserActionPermissions();
-	const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
+	// const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
+	const { width, block = false, actionType, validateWithApiAction = false, loading = false } = props;
 	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick, allowEnterKey = false } = props;
 	const isDisabledByState = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
@@ -59,13 +60,13 @@ export const Button = (props: IButtonProps) => {
 	};
 	const appliedClassName = isDisabledActionButton === true ? disabledClass : className;
 
-	if (actionType) {
-		if (isOnline === true) {
-			if (showBtnDisabled !== true && isActionForbidden) {
-				return null;
-			}
-		}
-	}
+	// if (actionType) {
+	// 	if (isOnline === true) {
+	// 		if (showBtnDisabled !== true && isActionForbidden) {
+	// 			return null;
+	// 		}
+	// 	}
+	// }
 
 	return (
 		<ButtonAntd
