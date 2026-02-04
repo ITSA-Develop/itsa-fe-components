@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
-import { IActions, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
+import { IActions, IActionsValidatePermission, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
 import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
 import { useAppLayoutStore } from '@/store';
+// import { act } from 'react';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
 	notification[type]({
@@ -152,6 +153,29 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 	}
 	return true;
 };
+
+export const isDisabledAction = (actionsPermissions?: IActionsValidatePermission, operation?: EActionType) => {
+
+	if (!operation || !actionsPermissions) {
+		return false;
+	}
+	if (actionsPermissions.allActions === true) {
+		return false;
+	}
+	if (operation === EActionType.create && actionsPermissions.create === true) {
+		return false;
+	}
+	if (operation === EActionType.read && actionsPermissions.read === true) {
+		return false;
+	}
+	if (operation === EActionType.update && actionsPermissions.update === true) {
+		return false;
+	}
+	if (operation === EActionType.delete && actionsPermissions.delete === true) {
+		return false;
+	}
+	return true;
+}
 
 export const uppercaseStrings = <T>(obj: T): T => {
 	if (obj === null || obj === undefined) return obj;

@@ -459,3 +459,16 @@ export interface StackedCardData {
 	onRemoveClick?: () => void;
 	emptyMessage?: string;
 }
+export interface IActionsValidatePermission {
+	create: boolean;
+	update: boolean;
+	delete: boolean;
+	read: boolean;
+	allActions: boolean;
+	programId: number;
+	agencyId: number;
+	path: string;
+	pathParent: string;
+	moduleId: number;
+	submoduleId: number;
+}
