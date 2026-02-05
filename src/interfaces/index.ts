@@ -453,8 +453,8 @@ export interface IMapSelection {
 export interface StackedCardData {
 	id: number | string;
 	content: ReactNode;
-	title?: string;
-	buttonTitle?: string;
+	title?: ReactNode;
+	buttonTitle?: ReactNode;
 	onButtonClick?: () => void;
 	onRemoveClick?: () => void;
 	emptyMessage?: string;

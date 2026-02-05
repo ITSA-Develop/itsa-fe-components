@@ -154,16 +154,16 @@ export const Table = <T extends object>({
 						placement="bottomRight"
 						menu={{
 							items: (columnActions || [])
-								.filter(action => {
-									const hasPermission = disabledActionButton(action.actionType, actions);
-									const actionDisabled =
-										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
-									return !hasPermission && !actionDisabled;
-								})
+								// .filter(action => {
+								// 	// const hasPermission = false;//! disabledActionButton(action.actionType, actions);
+								// 	// const actionDisabled =
+								// 	// 	typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+								// 	return true; //!hasPermission && !actionDisabled;
+								// })
 								.map((action, index) => ({
 									label: action.title,
 									key: action.key || `action-${index}`,
-									icon: action.icon,
+									icon: typeof action.icon === 'function' ? action.icon(record) : action.icon,
 									onClick: () => clickAction(action, record),
 									danger: action.danger,
 								})),
