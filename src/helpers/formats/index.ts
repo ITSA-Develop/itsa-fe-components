@@ -113,7 +113,24 @@ export function parseValidDateITSA(
 	}
 
 	try {
-		const parsedDate = dayjs(date);
+		const normalizeDateString = (raw: string): string | null => {
+			const trimmed = raw.trim();
+			const match = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/.exec(trimmed);
+			if (!match) return null;
+			const day = match[1];
+			const month = match[2];
+			const year = match[3];
+			if (!day || !month || !year) return null;
+			return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+		};
+
+		const parsedDate = (() => {
+			if (typeof date === 'string') {
+				const normalized = normalizeDateString(date);
+				return normalized ? dayjs(normalized) : dayjs(date);
+			}
+			return dayjs(date);
+		})();
 
 		if (!parsedDate.isValid()) {
 			return '';
@@ -124,3 +141,4 @@ export function parseValidDateITSA(
 		return '';
 	}
 }
+
