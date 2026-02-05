@@ -20,6 +20,7 @@ export interface ITableDetailsProps<T extends object> {
 	} & {
 		scrollToFirstRowOnChange?: boolean | undefined;
 	};
+	disabledColumnActions?: boolean;
 }
 
 export const TableDetails = <T extends object>({
@@ -29,6 +30,7 @@ export const TableDetails = <T extends object>({
 	onDelete,
 	onChangeData,
 	scroll,
+	disabledColumnActions = false,
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
 		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
@@ -123,7 +125,7 @@ export const TableDetails = <T extends object>({
 										onChange={val => handleChangeData(record, column.dataIndex, val, index)}
 										placeholder="Seleccione una opción"
 										style={{ width: '100%' }}
-										disabled={isDisabled}
+										disabled={isDisabled || disabledColumnActions}
 										status={error && column.type === 'select' ? 'error' : undefined}
 									/>
 									{error && column.type === 'select' && (
@@ -139,7 +141,7 @@ export const TableDetails = <T extends object>({
 									<TextInputCell
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										disabled={isDisabled}
+										disabled={isDisabled || disabledColumnActions}
 										status={error ? 'error' : undefined}
 										textTransform={column.textTransform}
 									/>
@@ -155,7 +157,7 @@ export const TableDetails = <T extends object>({
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
-										disabled={isDisabled}
+										disabled={isDisabled || disabledColumnActions}
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
@@ -173,7 +175,7 @@ export const TableDetails = <T extends object>({
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={0}
 										max={100}
-										disabled={isDisabled}
+										disabled={isDisabled || disabledColumnActions}
 										maxDigits={column.maxDigits}
 										status={error ? 'error' : undefined}
 									/>
@@ -189,7 +191,7 @@ export const TableDetails = <T extends object>({
 										value={value}
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={column.min ?? 0}
-										disabled={isDisabled}
+										disabled={isDisabled || disabledColumnActions}
 										suffix="USD"
 										precision={2}
 										prefix="$"
@@ -265,7 +267,7 @@ export const TableDetails = <T extends object>({
 
 	return (
 		<Table
-			columns={antdWithActions}
+			columns={disabledColumnActions ? antColumns : antdWithActions}
 			dataSource={data}
 			rowKey={rowKey}
 			pagination={false}

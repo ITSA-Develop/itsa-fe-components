@@ -142,6 +142,7 @@ import VehicleBlackIcon from './icon-vehicle-black.svg?react';
 import VehicleRedIcon from './icon-vehicle-red.svg?react';
 import WalletIcon from './icon-wallet.svg?react';
 import WalletIcon2 from './icon-wallet-2.svg?react';
+import WarehouseStock from './icon-warehouse-stock.svg?react';
 import WhatsappIcon from './icon-whatsapp.svg?react';
 import WithoutInformationIcon from './icon-without-information.svg?react';
 import WorkshopIcon from './icon-workshop.svg?react';
@@ -304,6 +305,7 @@ export {
   WorkshopOutlineIcon,
   WorkshopBlackIcon,
   WorkshopRedIcon,
+  WarehouseStock,
   XIcon,
   XCircleIcon,
   HouseholdIcon,
