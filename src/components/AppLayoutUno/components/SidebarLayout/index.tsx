@@ -113,7 +113,11 @@ export const SidebarLayout = ({
 					<div className="flex-1 overflow-auto min-h-0 p-2">
 						{children}
 					</div>
-					{footerComponent && <div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>}
+					{footerComponent && (
+						<div className="h-auto w-full z-50 rounded-bl-lg rounded-br-lg p-1 bg-white-100 shadow-[0_-8px_12px_-8px_rgba(0,0,0,0.35)]">
+							{footerComponent}
+						</div>
+					)}
 				</Content>
 			</Layout>
 		</Layout>
