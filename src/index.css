@@ -642,6 +642,14 @@
   height: 60vh;
 }
 
+.h-\[70dvh\]{
+  height: 70dvh;
+}
+
+.h-\[calc\(100\%-80px\)\]{
+  height: calc(100% - 80px);
+}
+
 .h-auto{
   height: auto;
 }
@@ -756,6 +764,14 @@
 
 .w-8{
   width: 2rem;
+}
+
+.w-\[214mm\]{
+  width: 214mm;
+}
+
+.w-\[240mm\]{
+  width: 240mm;
 }
 
 .w-\[32\]{
@@ -1845,6 +1861,12 @@
 .shadow-2xl{
   --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_-8px_12px_-8px_rgba\(0\2c 0\2c 0\2c 0\.35\)\]{
+  --tw-shadow: 0 -8px 12px -8px rgba(0,0,0,0.35);
+  --tw-shadow-colored: 0 -8px 12px -8px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
