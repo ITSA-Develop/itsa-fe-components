@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Table } from 'antd';
+import { Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Select } from '@/components/Select';
 import { Button } from '../Button';
@@ -75,18 +75,37 @@ export const TableDetails = <T extends object>({
 							maxWidth,
 						},
 					}),
-					onCell: () => ({
-						style: {
+					onCell: () => {
+						const baseStyle = {
 							width: widthStyle,
 							minWidth,
 							maxWidth,
-							whiteSpace: 'normal',
-							wordBreak: 'break-word',
-							overflowWrap: 'break-word',
 							paddingTop: 2,
 							paddingBottom: 2,
-						},
-					}),
+						};
+
+						if (column.type === undefined) {
+							return {
+								style: {
+									...baseStyle,
+									whiteSpace: 'nowrap',
+									overflow: 'hidden',
+									textOverflow: 'ellipsis',
+									wordBreak: 'normal',
+									overflowWrap: 'normal',
+								},
+							};
+						}
+
+						return {
+							style: {
+								...baseStyle,
+								whiteSpace: 'normal',
+								wordBreak: 'break-word',
+								overflowWrap: 'break-word',
+							},
+						};
+					},
 					render: (value: any, record: T, index: number) => {
 
 						if (column.render) {
@@ -101,10 +120,6 @@ export const TableDetails = <T extends object>({
 							column.dataIndex as string
 						] as string | undefined;
 						const error = errorFromAccessor ?? errorFromKeyObject;
-
-						if (column.type === undefined) {
-							return value;
-						}	
 
 						if (column.type === 'select') {
 							const defaultOptionValue = column.options?.[0]?.value;
@@ -203,7 +218,16 @@ export const TableDetails = <T extends object>({
 							);
 						}
 
-						return value;
+						const canTooltip = typeof value === 'string' || typeof value === 'number';
+						const tooltipValue = canTooltip ? String(value) : undefined;
+
+						return (
+							<div className="w-full min-w-0">
+								<Tooltip title={tooltipValue} placement="topLeft">
+									<span className="block truncate">{value}</span>
+								</Tooltip>
+							</div>
+						);
 					},
 				};
 			}) as ColumnsType<T>,

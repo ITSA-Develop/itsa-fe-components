@@ -10,6 +10,7 @@ export type ITableDetailsData = {
 	discount: number;
 	salary: number;
 	email: string;
+	description: string;
 	status: 'active' | 'inactive';
 	keyObjectError?: Record<string, string>;
 };
@@ -22,6 +23,8 @@ const sampleData: ITableDetailsData[] = [
 		discount: 10,
 		salary: 1250,
 		email: 'john.doe@example.com',
+		description:
+			'Seguro de transporte - gastos no sujetos a IVA con detalle largo para mostrar el tooltip completo.',
 		status: 'active',
 	},
 	{
@@ -31,6 +34,8 @@ const sampleData: ITableDetailsData[] = [
 		discount: 20,
 		salary: 980,
 		email: 'jane.smith@example.com',
+		description:
+			'Seguro de transporte - gastos gravados con IVA y texto extendido para ver el truncado y el popup.',
 		status: 'inactive',
 	},
 	{
@@ -40,6 +45,8 @@ const sampleData: ITableDetailsData[] = [
 		discount: 30,
 		salary: 1575,
 		email: 'bob.johnson@example.com',
+		description:
+			'Seguro de transporte - prima neta (grava IVA) con una descripción suficientemente larga.',
 		status: 'active',
 		keyObjectError: {
 			age: 'Error de prueba',
@@ -70,6 +77,12 @@ const sampleColumns: ITableDetailsColumn<ITableDetailsData>[] = [
 		type: 'percentage',
 		maxDigits: 3,
 		width: 140,
+	},
+	{
+		title: 'Descripción',
+		dataIndex: 'description',
+		key: 'description',
+		width: 220,
 	},
 	{
 		title: 'Salary',
