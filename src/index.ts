@@ -23,6 +23,7 @@ export { DetailView, createDetailSchema } from './components/DetailView';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { Empty } from './components/Empty';
 export { ErrorPage } from './components/ErrorPage/ErrorPage';
+export { ExampleReport } from './components/Reports/ExampleProforma/ExampleReport';
 export { Fade } from './components/Fade/Fade';
 export { FilterSearchContainer } from './components/FilterSearchContainer/FilterSearchContainer';
 export { Footer } from './components/Footer/Footer';
