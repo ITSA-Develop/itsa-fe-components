@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Select } from '@/components/Select';
@@ -21,6 +21,8 @@ export interface ITableDetailsProps<T extends object> {
 		scrollToFirstRowOnChange?: boolean | undefined;
 	};
 	disabledColumnActions?: boolean;
+	footer?: ReactNode;
+	showHeader?: boolean;
 }
 
 export const TableDetails = <T extends object>({
@@ -31,6 +33,8 @@ export const TableDetails = <T extends object>({
 	onChangeData,
 	scroll,
 	disabledColumnActions = false,
+	footer,
+	showHeader = true,
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
 		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
@@ -298,6 +302,8 @@ export const TableDetails = <T extends object>({
 			tableLayout="fixed"
 			scroll={scroll || { y: 'calc(80dvh - 310px)', x: 'max-content' }}
 			bordered={true}
+			footer={footer ? () => footer : undefined}
+			showHeader={showHeader}
 		/>
 	);
 };

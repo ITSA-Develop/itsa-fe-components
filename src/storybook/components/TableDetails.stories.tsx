@@ -211,13 +211,18 @@ export const WithData: Story = {
 		};
 
 		return (
-			<div>
+			<div className='bg-primary-300 p-2'>
 				<TableDetails
 					{...args}
 					data={rows}
 					onDelete={handleDelete}
 					onChangeData={handleChangeData}
 					rowKey={args.rowKey || 'id'}
+					footer={<div className='flex min-h-0 w-full justify-end items-center p-2'>
+						Total
+					</div>}
+					scroll={{ x: 'max-content', y: 320 }}
+					showHeader={false}
 				/>
 			</div>
 		);
