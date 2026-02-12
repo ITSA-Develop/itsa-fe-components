@@ -243,3 +243,71 @@ export const WithData: Story = {
 	},
 };
 
+const HEIGHT_PRESETS = [200, 280, 360, 400, 500] as const;
+
+export const FixedHeight: Story = {
+	render: args => {
+		const [rows, setRows] = useState<ITableDetailsData[]>(args.data);
+		const [height, setHeight] = useState<number>(280);
+
+		const handleChangeData: NonNullable<ITableDetailsProps<ITableDetailsData>['onChangeData']> = ({
+			record,
+			dataIndex,
+			value,
+		}) => {
+			setRows(prev =>
+				prev.map(item => (item.id === record.id ? { ...record, [dataIndex as keyof ITableDetailsData]: value } : item)),
+			);
+		};
+
+		const handleDelete = (_value: any, record: ITableDetailsData) => {
+			setRows(prev => prev.filter(item => item.id !== record.id));
+		};
+
+		return (
+			<div className='space-y-4'>
+				<div className='flex flex-wrap items-center gap-2'>
+					<span className='text-sm text-gray-600'>Alto:</span>
+					{HEIGHT_PRESETS.map(h => (
+						<button
+							key={h}
+							type='button'
+							onClick={() => setHeight(h)}
+							className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
+								height === h ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+							}`}
+						>
+							{h}px
+						</button>
+					))}
+				</div>
+				<TableDetails
+					{...args}
+					data={rows}
+					onDelete={handleDelete}
+					onChangeData={handleChangeData}
+					rowKey={args.rowKey || 'id'}
+					height={height}
+					footer={
+						<div className='flex min-h-0 w-full justify-end items-center p-2'>
+							Total
+						</div>
+					}
+				/>
+			</div>
+		);
+	},
+	args: {
+		data: sampleData,
+		columns: sampleColumns,
+		rowKey: 'id',
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Tabla con alto fijo mediante la prop `height`. Mantiene el mismo tamaño con o sin datos. Usa los botones de eliminar para vaciar la tabla y ver que el contenedor conserva su altura.',
+			},
+		},
+	},
+};
+

@@ -90,6 +90,12 @@
   }
 }
 
+.itsa-table-details-fixed-height .ant-table-body{
+  min-height: var(--itsa-table-body-height) !important;
+  max-height: var(--itsa-table-body-height) !important;
+  height: var(--itsa-table-body-height) !important;
+}
+
 .itsa-btn{
   display: inline-flex;
   align-items: center;
