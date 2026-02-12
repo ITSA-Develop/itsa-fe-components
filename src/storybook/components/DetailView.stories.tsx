@@ -71,7 +71,7 @@ export const Basic: Story = {
 					.field('itemCode', 'Código')
 					.field('itemSuffix', 'Sufijo')
 					.field('brandName', 'Marca')
-					.badge('isActive', 'Estado')
+					.badge('isActive', 'Estado', { true: 'Sí', false: 'No' })
 			)
 			.section('Especificaciones', s =>
 				s
