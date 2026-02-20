@@ -296,6 +296,10 @@ export interface ILocationSelectorProps {
 	titleProvince?: string;
 	titleCanton?: string;
 	titleParish?: string;
+	errorCountry?: string;
+	errorProvince?: string;
+	errorCanton?: string;
+	errorParish?: string;
 }
 
 export interface IUserRole {
