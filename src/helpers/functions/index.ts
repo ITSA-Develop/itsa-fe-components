@@ -377,6 +377,66 @@ export const getOriginFromUrl = (url: string): string | undefined => {
 };
 
 
+export const roundUpDecimal = (value: unknown): string => {
+	if (value === undefined || value === null) return '0.00';
+	const normalizedValue =
+		typeof value === 'string'
+			? Number(value.trim().replace(/,/g, ''))
+			: Number(value);
+	if (!Number.isFinite(normalizedValue)) return '0.00';
+
+	// Limitamos a 8 decimales para eliminar ruido de punto flotante (ej: 48.60000000000002).
+	const fixedToEight = normalizedValue.toFixed(8);
+	const isNegative = fixedToEight.startsWith('-');
+	const absoluteValue = isNegative ? fixedToEight.slice(1) : fixedToEight;
+	const [intPart = '0', decPart = ''] = absoluteValue.split('.');
+	const eightDecimals = decPart.padEnd(8, '0').slice(0, 8);
+	const firstTwoDecimals = eightDecimals.slice(0, 2);
+	const hasExtraDecimals = /[1-9]/.test(eightDecimals.slice(2));
+
+	let cents = Number(intPart) * 100 + Number(firstTwoDecimals);
+	// "Elevar al inmediato superior" solo aplica para positivos.
+	if (!isNegative && hasExtraDecimals) {
+		cents += 1;
+	}
+
+	const integerPart = Math.floor(cents / 100);
+	const decimalPart = String(cents % 100).padStart(2, '0');
+	const sign = isNegative && cents > 0 ? '-' : '';
+	return `${sign}${integerPart}.${decimalPart}`;
+};
+
+export const roundStandardDecimal = (value: unknown): string => {
+	if (value === undefined || value === null) return '0.00';
+	const rawValue =
+		typeof value === 'string'
+			? value.trim().replace(/,/g, '')
+			: String(value);
+
+	if (!/^-?\d+(\.\d+)?$/.test(rawValue)) return '0.00';
+
+	const isNegative = rawValue.startsWith('-');
+	const absoluteValue = isNegative ? rawValue.slice(1) : rawValue;
+	const [rawIntPart = '0', rawDecPart = ''] = absoluteValue.split('.');
+	const decEight = rawDecPart.slice(0, 8).padEnd(8, '0');
+
+	let intPart = Number(rawIntPart);
+	let twoDecimals = Number(decEight.slice(0, 2));
+	const thirdDecimal = Number(decEight[2] ?? '0');
+
+	// Regla estándar: redondear según el tercer decimal.
+	if (thirdDecimal >= 5) {
+		twoDecimals += 1;
+		if (twoDecimals === 100) {
+			intPart += 1;
+			twoDecimals = 0;
+		}
+	}
+
+	const sign = isNegative && (intPart > 0 || twoDecimals > 0) ? '-' : '';
+	return `${sign}${intPart}.${String(twoDecimals).padStart(2, '0')}`;
+};
+
 export const formatMoneyIfValid = (val: string | number | undefined | null): string => {
 	if (val === undefined || val === null) return '';
 	const raw = `${val}`.trim();
@@ -386,7 +446,10 @@ export const formatMoneyIfValid = (val: string | number | undefined | null): str
 	const isValidNumber = /^-?\d+(\.\d+)?$/.test(normalized);
 	if (!isValidNumber) return raw;
 
-	const [intPart = '', decPart] = normalized.split('.');
+	const rounded = roundStandardDecimal(normalized);
+	const [intPart = '0', decPart = '00'] = rounded.split('.');
 	const groupedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	return decPart !== undefined ? `${groupedInt}.${decPart}` : groupedInt;
+	return `${groupedInt}.${decPart}`;
 };
+
+

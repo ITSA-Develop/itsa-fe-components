@@ -434,10 +434,6 @@
   z-index: 50;
 }
 
-.col-span-1{
-  grid-column: span 1 / span 1;
-}
-
 .col-span-2{
   grid-column: span 2 / span 2;
 }
@@ -2893,10 +2889,6 @@ body,
 }
 
 @media (min-width: 768px){
-  .md\:col-span-1{
-    grid-column: span 1 / span 1;
-  }
-
   .md\:mt-\[-13px\]{
     margin-top: -13px;
   }
