@@ -216,7 +216,7 @@ export const TableDetails = <T extends object>({
 										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
 										min={column.min ?? 0}
 										disabled={isDisabled || disabledColumnActions}
-										suffix="USD"
+										// suffix="USD"
 										precision={2}
 										prefix="$"
 										maxDigits={column.maxDigits}
