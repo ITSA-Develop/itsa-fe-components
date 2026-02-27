@@ -26,6 +26,7 @@ export interface ITableDetailsProps<T extends object> {
 	showActions?: boolean;
 	/** Alto fijo del cuerpo de la tabla (ej: 400, '400px', '50vh'). Se aplica con o sin datos. */
 	height?: number | string;
+	loading?: boolean;
 }
 
 export const TableDetails = <T extends object>({
@@ -40,6 +41,7 @@ export const TableDetails = <T extends object>({
 	showHeader = true,
 	showActions = true,
 	height,
+	loading = false,
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
 		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
@@ -60,7 +62,6 @@ export const TableDetails = <T extends object>({
 	const antColumns = useMemo(
 		() =>
 			columns.map(column => {
-				// Allow min/max to drive sizing when width is not set.
 				const width = column.width;
 				const minWidth = column.minWidth ?? column.width ?? column.maxWidth ?? 150;
 				const maxWidth = column.maxWidth ?? column.width;
@@ -75,6 +76,7 @@ export const TableDetails = <T extends object>({
 					maxWidth,
 					display: column.display,
 					fixed: column.fixed,
+					align: column.align || 'left',
 					onHeaderCell: () => ({
 						style: {
 							paddingTop: 6,
@@ -261,7 +263,7 @@ export const TableDetails = <T extends object>({
 				fixed: 'right' as const,
 				width: ACTION_COL_WIDTH,
 				align: 'center',
-				render: ( value: any, record: T, index: number) => {
+				render: (value: any, record: T, index: number) => {
 					return (
 						<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 							<Button
@@ -324,6 +326,7 @@ export const TableDetails = <T extends object>({
 				bordered={true}
 				footer={footer ? () => footer : undefined}
 				showHeader={showHeader}
+				loading={loading}
 			/>
 		</div>
 	);
