@@ -125,4 +125,4 @@ export * from './utils/errors/errorMessages';
 
 export * from './store';
 
-import "./index.css";
+import './index.css';
