@@ -3,19 +3,22 @@ import { Title } from '../Title';
 import { useViewportStore } from '@/store/viewport.store';
 import { useViewportSize } from '@/hooks/useViewportSize/useViewportSize';
 import { FormLogin, LoginFormValuesBase } from './components/FormLogin';
-import { logoTomebambaNegro, login as loginImage } from '@/assets/images';
+import { logoTomebambaNegro, login as loginImage, logoCreditsa } from '@/assets/images';
 import type { FormEventHandler } from 'react';
+import { useMemo } from 'react';
 
 export interface ILogin<TFieldValues extends LoginFormValuesBase = LoginFormValuesBase> {
 	control: Control<TFieldValues>;
 	onSubmit?: FormEventHandler<HTMLFormElement>;
 	loading?: boolean;
+	logo?: "ERP" | "QUOTER";
 }
 
 export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValuesBase>({
 	control,
 	onSubmit,
 	loading,
+	logo = "ERP"
 }: ILogin<TFieldValues>) => {
 	useViewportSize(0);
 	const { width } = useViewportStore();
@@ -23,13 +26,21 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 		e.preventDefault();
 		onSubmit?.(e);
 	};
+
+	const logoImage = useMemo(() => {
+		if (logo === "QUOTER") {
+			return logoCreditsa;
+		}
+		return logoTomebambaNegro;
+	}, [logo]);
+
 	return (
 		<div className="w-full h-[100dvh] bg-gray-75 flex items-center justify-center">
 			{width >= 650 && (
 				<div className="flex flex-row rounded-2xl max-h-[481px] max-w-[840px] w-full shadow-xl/20 bg-white-100">
 					<div className="flex flex-col gap-4 justify-center items-center rounded-tl-2xl w-1/2 rounded-bl-2xl bg-transparent border-t border-l border-gray-200 shadow-l-md p-16">
 						<div>
-							<img src={logoTomebambaNegro} alt="logo" className="w-full h-full max-h-[50px] object-cover" />
+							<img src={logoImage} alt="logo" className="w-full h-full max-h-[50px] object-cover" />
 						</div>
 						<div>
 							<Title title="Iniciar sesión" level={4} />
