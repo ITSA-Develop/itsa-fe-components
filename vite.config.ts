@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { AliasOptions, defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import viteSvgr from 'vite-plugin-svgr';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 
@@ -14,6 +15,7 @@ export default defineConfig({
 		react({ jsxRuntime: 'automatic' }),
 		viteSvgr(),
 		viteTsconfigPaths(),
+		cssInjectedByJsPlugin(),
 		dts({ insertTypesEntry: true, exclude: ['src/storybook/**/*.stories.{ts,tsx}', 'src/test/**/*.test.{ts,tsx}'] }),
 	],
 	resolve: {
