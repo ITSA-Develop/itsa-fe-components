@@ -3,6 +3,7 @@ import { imageItsaLogo } from '@/assets/images';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
 import { DropdownIcon } from '@/components/DropdownIcon';
 import { useSidebarStore } from '@/hooks';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { ISelectOptionDropdownButton } from '@/interfaces';
 import { useViewportStore } from '@/store';
 import { useAppLayoutStore } from '@/store/appLayout.store';
@@ -29,6 +30,14 @@ export const HeaderLayout = ({
 	const { modulesAgency } = useAppLayoutStore();
 	const { userName } = useAppLayoutStore();
 	const { userRole } = useAppLayoutStore();
+	const environment = useEnvironment();
+	// const headerBackgroundClass = {
+	// 	DESARROLLO: 'bg-gray-300',
+	// 	QA: 'bg-black-100',
+	// 	PRODUCCION: 'bg-primary-700',
+	// }[environment];
+
+	// console.log('headerBackgroundClass =>',headerBackgroundClass);
 
 	const isActiveNotifications = Boolean(notifications?.items?.length);
 	const isActiveUserActions = Boolean(userActions?.items?.length);
@@ -62,11 +71,13 @@ export const HeaderLayout = ({
 			setCurrentAgency(agency);
 		}
 	};
-
 	return (
 		<header className="h-16">
-			<div className="flex flex-row text-white-100 items-center justify-between w-full rounded-xl h-16 pr-4 pl-6 bg-primary-700">
+			<div
+				className={`flex h-16 w-full flex-row items-center justify-between rounded-xl pr-4 pl-6 text-white-100 bg-gray-300`}
+			>
 				<div className="w-full flex flex-row items-center justify-start gap-4">
+					
 					{collapsed && (
 						<Button
 							type="text"
@@ -74,7 +85,12 @@ export const HeaderLayout = ({
 							onClick={() => setCollapsed(!collapsed)}
 						/>
 					)}
-					{width > 768 && (
+					{environment !== "PRODUCCION" && (
+						<div className='flex justify-center items-center bg-gray-75 rounded-full p-2'>
+							<strong>{environment}</strong>
+						</div>
+					)}
+					{width > 768 && environment !== "PRODUCCION" && (
 						<img
 							src={imageItsaLogo}
 							alt="logo"

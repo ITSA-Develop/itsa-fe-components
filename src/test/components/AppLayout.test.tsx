@@ -3,9 +3,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MenuProps } from 'antd';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import '@testing-library/jest-dom';
-import { AppLayout } from '../../components/AppLayout/AppLayout';
 import { TExtendedMenuItem } from '../../types';
 import { IAgency, IModule } from '../../interfaces';
+import { AppLayout } from '../../components/AppLayout';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -91,7 +91,6 @@ describe('AppLayout', () => {
 				{
 					id: 10,
 					name: 'Módulo Ventas',
-					path: '/ventas',
 					icon: 'shop',
 					entorno: 'production',
 					submodules: [],
@@ -99,7 +98,6 @@ describe('AppLayout', () => {
 				{
 					id: 11,
 					name: 'Módulo Inventario',
-					path: '/inventario',
 					icon: 'inventory',
 					entorno: 'production',
 					submodules: [],
@@ -113,7 +111,6 @@ describe('AppLayout', () => {
 				{
 					id: 20,
 					name: 'Módulo Compras',
-					path: '/compras',
 					icon: 'cart',
 					entorno: 'production',
 					submodules: [],
@@ -126,7 +123,6 @@ describe('AppLayout', () => {
 		{
 			id: 10,
 			name: 'Módulo Ventas',
-			path: '/ventas',
 			icon: 'shop',
 			entorno: 'production',
 			submodules: [],
@@ -134,7 +130,6 @@ describe('AppLayout', () => {
 		{
 			id: 11,
 			name: 'Módulo Inventario',
-			path: '/inventario',
 			icon: 'inventory',
 			entorno: 'production',
 			submodules: [],
@@ -156,7 +151,7 @@ describe('AppLayout', () => {
 	});
 
 	it('should render correctly with basic props', () => {
-		const { container } = render(<AppLayout {...defaultProps} />);
+		const { container } = render(<AppLayout {...defaultProps} navigateApp={vi.fn()} loadingAppLayout={false} />);
 
 		expect(screen.getByText('Test Content')).toBeInTheDocument();
 		expect(screen.getByTestId('header-layout')).toBeInTheDocument();

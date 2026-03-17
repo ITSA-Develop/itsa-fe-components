@@ -42,7 +42,7 @@ export interface ITableProps<T extends object> {
 	rowClassName?: AntTableProps<T>['rowClassName'];
 	locale?: TableLocale;
 	rowHoverable?: boolean;
-	apiKeyRefresh?: string;
+	refreshDataFunction?: () => void;
 }
 
 export const Table = <T extends object>({
@@ -65,6 +65,7 @@ export const Table = <T extends object>({
 		emptyText: 'No hay datos',
 	},
 	rowHoverable = true,
+	refreshDataFunction,
 }: ITableProps<T>) => {
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -326,7 +327,7 @@ export const Table = <T extends object>({
 					style={{ color: 'gray', border: 'none' }}
 					type='text'
 					loading={loading}
-					onClick={() => { }}
+					onClick={() => refreshDataFunction?.()}
 					icon={<ReloadOutlined />}
 				>
 					Refrescar
@@ -334,12 +335,19 @@ export const Table = <T extends object>({
 			</div>
 		),
 		children: [...tableColumns as ColumnsType<T>],
-	}]
+	}];
+
+	const validateRefreshDataFunction = (): ColumnsType<T> => {
+		if (!refreshDataFunction) {
+			return tableColumns as ColumnsType<T>;
+		};
+		return newTableHeaderTable;
+	};
 
 	return (
 		<>
 			<AntTable<T>
-				columns={newTableHeaderTable}
+				columns={validateRefreshDataFunction()}
 				dataSource={data}
 				loading={loading}
 				size="small"

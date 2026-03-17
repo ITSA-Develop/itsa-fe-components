@@ -12,6 +12,7 @@ import { useCallback, useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
 import { getNumberFromStorage } from '@/helpers';
 import { NavigateFunction } from 'react-router-dom';
+import { useEnvironment } from '@/hooks/useEnvironment';
 
 export interface HeaderLayoutProps {
 	loadingAppLayout: boolean;
@@ -33,6 +34,15 @@ export const HeaderLayout = ({
 	const { userName } = useAppLayoutStore();
 	const { currentModule } = useAppLayoutStore();
 	const { currentAgency } = useAppLayoutStore();
+	const environment = useEnvironment();
+
+	const headerBackgroundClass = {
+		LOCAL: 'bg-primary-700',
+		DESARROLLO: 'bg-gray-500',
+		QA: 'bg-black-100',
+		PRODUCCION: 'bg-primary-700',
+	}[environment];
+
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
 		useAppLayoutStore();
 
@@ -147,7 +157,7 @@ export const HeaderLayout = ({
 
 	return (
 		<header className="h-16">
-			<div className="flex flex-row text-white-100 items-center justify-between w-full rounded-xl h-16 pr-4 pl-6 bg-primary-700">
+			<div className={`flex flex-row text-white-100 items-center justify-between w-full rounded-xl h-16 pr-4 pl-6 ${headerBackgroundClass}`}>
 				<div className="w-full flex flex-row items-center justify-start gap-4">
 					{collapsed && (
 						<Button
@@ -156,9 +166,14 @@ export const HeaderLayout = ({
 							onClick={() => setCollapsed(!collapsed)}
 						/>
 					)}
-					<div className="hidden md:block">
+					{environment !== "PRODUCCION" && (
+						<div className='flex justify-center items-center bg-white-100 rounded-full p-2'>
+							<strong className='text-black-100'>{environment}</strong>
+						</div>
+					)}
+					{environment === "PRODUCCION" && <div className="hidden md:block">
 						<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
-					</div>
+					</div>}
 				</div>
 				<div className="block md:hidden">
 					<div className="flex flex-row items-center gap-4">
