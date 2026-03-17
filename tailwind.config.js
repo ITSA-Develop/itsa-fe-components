@@ -205,6 +205,7 @@ export default {
 			'2xl': '1536px',
 			'3xl': '1920px',
 			tablet: '800px',
+			desktop: '1024px',
 		},
 	},
 	container: {
