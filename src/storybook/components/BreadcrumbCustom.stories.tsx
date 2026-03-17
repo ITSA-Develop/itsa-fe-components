@@ -27,6 +27,10 @@ const meta: Meta<typeof BreadcrumbCustom> = {
 			action: 'clicked',
 			description: 'Función que se ejecuta al hacer clic en el botón de retroceso',
 		},
+		actionButtonDocumentation: {
+			action: 'clicked',
+			description: 'Función que se ejecuta al hacer clic en el botón de documentación',
+		},
 	},
 };
 
@@ -40,6 +44,7 @@ export const Default: Story = {
 		title: 'Mi Sección',
 		description: 'Detalle del contenido',
 		action: () => console.log('Navegando hacia atrás'),
+		actionButtonDocumentation: () => console.log('Mostrando documentación'),
 	},
 };
 

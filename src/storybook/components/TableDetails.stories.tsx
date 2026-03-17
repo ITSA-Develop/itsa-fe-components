@@ -244,6 +244,7 @@ export const WithData: Story = {
 };
 
 const HEIGHT_PRESETS = [200, 280, 360, 400, 500] as const;
+const EXPAND_WIDTH_PRESETS = [32, 56, 80] as const;
 
 export const FixedHeight: Story = {
 	render: args => {
@@ -306,6 +307,77 @@ export const FixedHeight: Story = {
 		docs: {
 			description: {
 				story: 'Tabla con alto fijo mediante la prop `height`. Mantiene el mismo tamaño con o sin datos. Usa los botones de eliminar para vaciar la tabla y ver que el contenedor conserva su altura.',
+			},
+		},
+	},
+};
+
+export const ExpandableColumnWidth: Story = {
+	render: args => {
+		const [rows, setRows] = useState<ITableDetailsData[]>(args.data);
+		const [expandWidth, setExpandWidth] = useState<number>(56);
+
+		const handleChangeData: NonNullable<ITableDetailsProps<ITableDetailsData>['onChangeData']> = ({
+			record,
+			dataIndex,
+			value,
+		}) => {
+			setRows(prev =>
+				prev.map(item => (item.id === record.id ? { ...record, [dataIndex as keyof ITableDetailsData]: value } : item)),
+			);
+		};
+
+		const handleDelete = (_value: any, record: ITableDetailsData) => {
+			setRows(prev => prev.filter(item => item.id !== record.id));
+		};
+
+		return (
+			<div className='space-y-4'>
+				<div className='flex flex-wrap items-center gap-2'>
+					<span className='text-sm text-gray-600'>Ancho expand:</span>
+					{EXPAND_WIDTH_PRESETS.map(width => (
+						<button
+							key={width}
+							type='button'
+							onClick={() => setExpandWidth(width)}
+							className={`rounded px-3 py-1.5 text-sm font-medium transition-colors ${
+								expandWidth === width ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+							}`}
+						>
+							{width}px
+						</button>
+					))}
+				</div>
+				<TableDetails
+					{...args}
+					data={rows}
+					onDelete={handleDelete}
+					onChangeData={handleChangeData}
+					rowKey={args.rowKey || 'id'}
+					expandable={{
+						columnWidth: expandWidth,
+						indentSize: 8,
+						defaultExpandedRowKeys: [1],
+						expandedRowRender: record => (
+							<div className='px-3 py-2 text-sm text-gray-700'>
+								<strong>Detalle:</strong> {record.name} - {record.description}
+							</div>
+						),
+					}}
+				/>
+			</div>
+		);
+	},
+	args: {
+		data: sampleData,
+		columns: sampleColumns,
+		rowKey: 'id',
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Ejemplo de filas expandibles con columna expand en distintos tamaños (32px, 56px y 80px) usando `expandable.columnWidth`.',
 			},
 		},
 	},
