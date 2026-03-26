@@ -17,7 +17,6 @@ type FormValues = z.infer<typeof schema>;
 const BoundFormInputDatePicker = (props: Omit<IInputProps<FormValues>, 'control'>) => {
 	const { control, watch } = useFormContext<FormValues>();
 	const date = watch('date');
-	console.log('TOMAS ===> date =>', JSON.stringify(structuredClone(date)));
 	return <FormInputDatePicker {...props} control={control as any} />;
 };
 
