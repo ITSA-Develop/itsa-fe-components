@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DocumentationGuide } from '../../components/DocumentationGuide';
+import type { UploadFile } from 'antd';
 
 const meta: Meta<typeof DocumentationGuide> = {
 	title: 'Components/DocumentationGuide',
@@ -34,7 +35,7 @@ export const Default: Story = {
 					'Kardex es una pantalla de consulta que te permite revisar el historial de movimientos de un producto dentro del inventario.',
 					'Aqui puedes identificar en que fechas tuvo movimientos un item, en que bodega se consultan esos datos y que cantidades estuvieron involucradas.',
 				],
-				images: ['kardex.png'],
+				images: [],
 			},
 			purpose: {
 				content: [
@@ -73,5 +74,8 @@ export const Default: Story = {
 		additionalImagesTitle: 'Referencias visuales',
 		additionalImagesDescription: 'Imagenes adicionales para complementar la documentacion.',
 		additionalImages: ['kardex.png', 'kardex.png'],
+		addImageCallback: (fileList: UploadFile[]) => {
+			console.log('addImageCallback', fileList);
+		},
 	},
 };

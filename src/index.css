@@ -1495,6 +1495,11 @@
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-primary-200{
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 181 181 / var(--tw-bg-opacity, 1));
+}
+
 .bg-opacity-50{
   --tw-bg-opacity: 0.5;
 }
@@ -2103,6 +2108,7 @@ body,
 
 .menu-options .ant-menu .ant-menu-title-content {
   padding-left: 2px !important;
+  font-size: 12px !important;
 }
 
 .menu-options .ant-menu {
@@ -2115,7 +2121,7 @@ body,
 
 .menu-options .ant-menu-submenu .ant-menu-submenu>.ant-menu .ant-menu-item {
   padding-left: 50px !important;
-  font-size: 12px !important;
+  font-size: 11px !important;
 }
 
 .scrollbar-none {
@@ -3038,6 +3044,10 @@ body,
 
   .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\]{
     grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:justify-end{
+    justify-content: flex-end;
   }
 
   .lg\:\!gap-4{
