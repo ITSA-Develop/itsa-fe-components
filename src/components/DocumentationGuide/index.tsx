@@ -32,6 +32,8 @@ export interface IDocumentationGuideProps {
 	additionalImagesDescription?: string;
 	documentationBasePath?: string;
 	className?: string;
+	loadingImage?: boolean;
+	basePathImages?: string;
 	addImageCallback?: UploadProps['onChange'];
 }
 
@@ -61,6 +63,20 @@ const getDefaultSectionTitle = (sectionKey: DocumentationGuideSectionKey, subjec
 };
 
 const buildImageSrc = (basePath: string, imageName: string) => {
+	if (/^https?:\/\//i.test(imageName)) {
+		return imageName;
+	}
+
+	if (/^https?:\/\//i.test(basePath)) {
+		const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
+		if (/\/files\/?$/i.test(normalizedBasePath)) {
+			return `${normalizedBasePath}?key=${encodeURIComponent(imageName)}`;
+		}
+
+		return `${normalizedBasePath}${imageName}`;
+	}
+
 	const normalizedBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
 
 	return `${normalizedBasePath}/${imageName}`;
@@ -134,6 +150,8 @@ export const DocumentationGuide = ({
 	additionalImagesDescription = 'Material visual complementario de apoyo.',
 	documentationBasePath = '/src/assets/documentation',
 	className = '',
+	loadingImage = false,
+	basePathImages,
 	addImageCallback,
 }: IDocumentationGuideProps) => {
 	const {openModal} = useModalResponsive();
@@ -142,8 +160,10 @@ export const DocumentationGuide = ({
 	const handleAddImage = () => {
 		openModal({
 			title: 'Agregar imagen',
-			content: <ModalAddImagenDocumentation onUpload={addImageCallback} fileList={[]} maxImages={1} />,
+			content: <ModalAddImagenDocumentation onUpload={addImageCallback}
+			 fileList={[]} maxImages={1} loading={loadingImage} />,
 			height: 'auto',
+			width: '50vw',
 		});
 	};
 
@@ -180,7 +200,7 @@ export const DocumentationGuide = ({
 										{sectionImages.map((imageName, index) => (
 											<div key={`${sectionKey}-${imageName}-${index}`}>
 												{renderPreviewImage({
-													basePath: documentationBasePath,
+													basePath: basePathImages ?? documentationBasePath,
 													imageName,
 													sectionTitle,
 													index,
