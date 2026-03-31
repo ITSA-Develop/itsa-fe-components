@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { FormInputDatePicker, IInputProps } from '../../components/FormInputDatePicker';
+import { EDateMaskFormat } from '../../enums';
 
 // ---------- Schema y tipos ----------
 const schema = z.object({
@@ -17,7 +18,6 @@ type FormValues = z.infer<typeof schema>;
 const BoundFormInputDatePicker = (props: Omit<IInputProps<FormValues>, 'control'>) => {
 	const { control, watch } = useFormContext<FormValues>();
 	const date = watch('date');
-	console.log('TOMAS ===> date =>', JSON.stringify(structuredClone(date)));
 	return <FormInputDatePicker {...props} control={control as any} />;
 };
 
@@ -107,6 +107,21 @@ export const Disabled: Story = {
 	},
 	render: args => (
 		<RHFForm defaultValues={{ date: undefined }}>
+			<BoundFormInputDatePicker {...args} />
+		</RHFForm>
+	),
+};
+
+export const WithTimeAndMinutes: Story = {
+	name: 'Con hora y minutos',
+	args: {
+		name: 'date',
+		label: 'Fecha y hora',
+		placeholder: 'YYYY-MM-DD HH:mm',
+		format: EDateMaskFormat.YYYYMMDD_HHMM,
+	},
+	render: args => (
+		<RHFForm defaultValues={{ date: '2026-03-21 00:00' }}>
 			<BoundFormInputDatePicker {...args} />
 		</RHFForm>
 	),
