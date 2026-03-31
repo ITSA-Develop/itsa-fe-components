@@ -1,10 +1,10 @@
 import { Image as AntdImage } from 'antd';
 import type { UploadProps } from 'antd';
-import { Button } from '../Button';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useModalResponsive } from '@/hooks';
 import { ModalAddImagenDocumentation } from './components/ModalAddImagenDocumentation';
+import { Button } from '../Button';
 
 export interface IDocumentationGuideSection {
 	title?: string;
@@ -125,19 +125,17 @@ const renderPreviewImage = ({
 };
 
 const renderAddImageButton = (
-	sectionKey: DocumentationGuideSectionKey,
-	addImageCallback?: (sectionKey?: DocumentationGuideSectionKey) => void,
+	addImageCallback?: () => void,
 ) => (
 	<Button
-		type="text"
-		label={
-			<div className="flex items-center gap-2">
-				<Icon path={mdiPlus} className="h-5 w-5" />
-				<span>Agregar imagen</span>
-			</div>
-		}
-		onClick={() => addImageCallback?.(sectionKey)}
+		type="secondary"
+		onClick={() => addImageCallback?.()}
+		label={<div className="flex items-center gap-2">
+			<Icon path={mdiPlus} className="h-5 w-5" />
+			<span>Agregar imagen</span>
+		</div>}
 	/>
+
 );
 
 export const DocumentationGuide = ({
@@ -154,14 +152,14 @@ export const DocumentationGuide = ({
 	basePathImages,
 	addImageCallback,
 }: IDocumentationGuideProps) => {
-	const {openModal} = useModalResponsive();
+	const { openModal } = useModalResponsive();
 
 
 	const handleAddImage = () => {
 		openModal({
 			title: 'Agregar imagen',
 			content: <ModalAddImagenDocumentation onUpload={addImageCallback}
-			 fileList={[]} maxImages={1} loading={loadingImage} />,
+				loading={loadingImage} />,
 			height: 'auto',
 			width: '50vw',
 		});
@@ -169,9 +167,16 @@ export const DocumentationGuide = ({
 
 	return (
 		<div className={`flex max-h-[80vh] min-w-[90wv] md:min-w-[60vw] flex-col gap-3 overflow-y-auto pr-2 text-sm text-gray-800 ${className}`.trim()}>
-			<div className="flex flex-col gap-1">
-				<h1 className="text-base font-semibold">{title}</h1>
-				<p>{description}</p>
+			<div className="flex flex-col gap-3">
+				<div className="flex flex-row items-start justify-between gap-2">
+					<div className="flex flex-col gap-1 w-full">
+						<h1 className="text-base font-semibold">{title}</h1>
+						<p>{description}</p>
+					</div>
+					<div className="flex items-center">
+						{addImageCallback && renderAddImageButton(handleAddImage)}
+					</div>
+				</div>
 			</div>
 
 			<AntdImage.PreviewGroup>
@@ -208,13 +213,10 @@ export const DocumentationGuide = ({
 											</div>
 										))}
 									</div>
-									<div className="flex justify-center">
-										{renderAddImageButton(sectionKey, handleAddImage)}
-									</div>
 								</div>
 							) : (
-								<div className="flex-1 flex min-h-0 justify-center items-center">
-									{renderAddImageButton(sectionKey, handleAddImage)}
+								<div className="flex min-h-0 flex-1 items-center justify-center text-sm text-gray-400">
+									Sin imagen asociada
 								</div>
 							)}
 						</section>

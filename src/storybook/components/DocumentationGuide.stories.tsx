@@ -2,11 +2,19 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DocumentationGuide } from '../../components/DocumentationGuide';
 import type { UploadFile } from 'antd';
+import { ControlActionsProvider } from '../../HOC/ControlActions';
 
 const meta: Meta<typeof DocumentationGuide> = {
 	title: 'Components/DocumentationGuide',
 	component: DocumentationGuide,
 	tags: ['autodocs'],
+	decorators: [
+		Story => (
+			<ControlActionsProvider fnApiValidatePermissionAction={async () => true}>
+				<Story />
+			</ControlActionsProvider>
+		),
+	],
 	parameters: {
 		layout: 'fullscreen',
 		docs: {
