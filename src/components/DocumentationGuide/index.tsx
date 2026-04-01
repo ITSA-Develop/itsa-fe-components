@@ -2,6 +2,7 @@ import { Image as AntdImage } from 'antd';
 import type { UploadProps } from 'antd';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
+import { Carousel } from '@/components/Carousel';
 import { Button } from '../Button';
 import { ImagePreview } from '../ImagePreview';
 
@@ -145,7 +146,7 @@ export const DocumentationGuide = ({
 	addImageCallback,
 	handleAddImage,
 }: IDocumentationGuideProps) => {
-
+	const additionalImagesBasePath = basePathImages ?? documentationBasePath;
 
 	// const handleAddImage = () => {};
 
@@ -185,22 +186,39 @@ export const DocumentationGuide = ({
 
 							{sectionImages.length > 0 ? (
 								<div className="flex flex-col gap-1">
-									<div className="grid gap-1">
-										{sectionImages.map((imageName, index) => (
-											<div key={`${sectionKey}-${imageName}-${index}`}>
-												{renderPreviewImage({
-													basePath: basePathImages ?? documentationBasePath,
-													imageName,
-													sectionTitle,
-													index,
-												})}
-											</div>
-										))}
-									</div>
+									{sectionImages.length === 1 ? (
+										renderPreviewImage({
+											basePath: basePathImages ?? documentationBasePath,
+											imageName: sectionImages[0] ?? '',
+											sectionTitle,
+											index: 0,
+										})
+									) : (
+										<Carousel.Root loop>
+											<Carousel.Content aspectRatio="4/3" className="rounded-md bg-slate-50">
+												{sectionImages.map((imageName, index) => (
+													<Carousel.Item
+														key={`${sectionKey}-${imageName}-${index}`}
+														className="flex items-center justify-center p-3"
+													>
+														{renderPreviewImage({
+															basePath: basePathImages ?? documentationBasePath,
+															imageName,
+															sectionTitle,
+															index,
+														})}
+													</Carousel.Item>
+												))}
+											</Carousel.Content>
+											<Carousel.PrevButton />
+											<Carousel.NextButton />
+											<Carousel.Indicators position="bottom" variant="dots" />
+										</Carousel.Root>
+									)}
 								</div>
 							) : (
 								<div className="flex min-h-0 flex-1 items-center justify-center text-sm text-gray-400">
-									Sin imagen asociada
+									Sin imagen asociada 2
 								</div>
 							)}
 						</section>
@@ -214,18 +232,29 @@ export const DocumentationGuide = ({
 							<p>{additionalImagesDescription}</p>
 						</div>
 
-						<div className="grid gap-3 md:grid-cols-2">
-							{additionalImages.map((imageName, index) => (
-								<div key={`${imageName}-${index}`} className="flex flex-col gap-2">
-									{renderPreviewImage({
-										basePath: documentationBasePath,
-										imageName,
-										sectionTitle: additionalImagesTitle,
-										index,
-										imageClassName: 'max-h-[240px]',
-									})}
-								</div>
-							))}
+						<div className="mx-auto w-full max-w-4xl">
+							<Carousel.Root loop={additionalImages.length > 1}>
+								<Carousel.Content aspectRatio="16/9" className="rounded-md bg-slate-50">
+									{additionalImages.map((imageName, index) => (
+										<Carousel.Item key={`${imageName}-${index}`} className="flex items-center justify-center p-4 md:p-8">
+											{renderPreviewImage({
+												basePath: additionalImagesBasePath,
+												imageName,
+												sectionTitle: additionalImagesTitle,
+												index,
+												imageClassName: 'max-h-[360px] mx-auto',
+											})}
+										</Carousel.Item>
+									))}
+								</Carousel.Content>
+								{additionalImages.length > 1 && (
+									<>
+										<Carousel.PrevButton />
+										<Carousel.NextButton />
+										<Carousel.Indicators position="bottom" variant="dots" />
+									</>
+								)}
+							</Carousel.Root>
 						</div>
 					</section>
 				)}
