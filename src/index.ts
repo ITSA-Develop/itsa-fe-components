@@ -42,6 +42,8 @@ export { FormSelect } from './components/FormSelect';
 export { FormCheckBox } from './components/FormCheckBox';
 export { FormRadio } from './components/FormRadio';
 export { FormInputPassword } from './components/FormInputPassword';
+export { FormDateTimePicker } from './components/FormDateTimePicker';
+export type { IFormDateTimePickerProps } from './components/FormDateTimePicker';
 export { FormInputDatePicker } from './components/FormInputDatePicker';
 export { FormInputTimePicker } from './components/FormInputTimePicker';
 export { FormSwitch } from './components/FormSwitch';
