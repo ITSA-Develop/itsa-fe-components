@@ -2,9 +2,8 @@ import { Image as AntdImage } from 'antd';
 import type { UploadProps } from 'antd';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import { useModalResponsive } from '@/hooks';
-import { ModalAddImagenDocumentation } from './components/ModalAddImagenDocumentation';
 import { Button } from '../Button';
+import { ImagePreview } from '../ImagePreview';
 
 export interface IDocumentationGuideSection {
 	title?: string;
@@ -35,6 +34,7 @@ export interface IDocumentationGuideProps {
 	loadingImage?: boolean;
 	basePathImages?: string;
 	addImageCallback?: UploadProps['onChange'];
+	handleAddImage?: () => void;
 }
 
 const orderedSectionKeys: DocumentationGuideSectionKey[] = [
@@ -107,19 +107,12 @@ const renderPreviewImage = ({
 
 	return (
 		<div className="flex w-full flex-col gap-2">
-			<div className="overflow-hidden rounded-md border border-gray-200 bg-gray-50">
-				<AntdImage
-					alt={getImageAlt(sectionTitle, imageName, index)}
-					src={imageSrc}
-					width="100%"
-					className={`cursor-zoom-in object-contain ${imageClassName}`}
-					style={{ width: '100%', objectFit: 'contain' }}
-					preview={{
-						movable: true,
-						mask: <span className="text-xs">Click para ampliar</span>,
-					}}
-				/>
-			</div>
+			<ImagePreview
+				src={imageSrc}
+				alt={getImageAlt(sectionTitle, imageName, index)}
+				minHeight={imageClassName === 'max-h-[240px]' ? 240 : 320}
+				imageClassName={imageClassName}
+			/>
 		</div>
 	);
 };
@@ -148,22 +141,13 @@ export const DocumentationGuide = ({
 	additionalImagesDescription = 'Material visual complementario de apoyo.',
 	documentationBasePath = '/src/assets/documentation',
 	className = '',
-	loadingImage = false,
 	basePathImages,
 	addImageCallback,
+	handleAddImage,
 }: IDocumentationGuideProps) => {
-	const { openModal } = useModalResponsive();
 
 
-	const handleAddImage = () => {
-		openModal({
-			title: 'Agregar imagen',
-			content: <ModalAddImagenDocumentation onUpload={addImageCallback}
-				loading={loadingImage} />,
-			height: 'auto',
-			width: '50vw',
-		});
-	};
+	// const handleAddImage = () => {};
 
 	return (
 		<div className={`flex max-h-[80vh] min-w-[90wv] md:min-w-[60vw] flex-col gap-3 overflow-y-auto pr-2 text-sm text-gray-800 ${className}`.trim()}>
