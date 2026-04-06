@@ -76,6 +76,7 @@ export { Modal } from './components/Modal/Modal';
 export { ModalResponsive } from './components/ModalResponsive';
 export { Notification } from './components/Notification';
 export { Progress } from './components/Progress/Progress';
+export { ProductCatalogList } from './components/ProductCatalogList';
 export { Redirect } from './components/Redirect/Redirect';
 export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
@@ -114,6 +115,10 @@ export type {
 	FieldType,
 	TableColumnConfig as DetailTableColumnConfig,
 } from './components/DetailView';
+export type {
+	IProductCatalogListItem,
+	IProductCatalogListProps,
+} from './components/ProductCatalogList';
 
 export { UIProvider } from './HOC/UIProvider';
 export { ControlActionsProvider } from './HOC/ControlActions';
