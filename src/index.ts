@@ -76,6 +76,8 @@ export { Progress } from './components/Progress/Progress';
 export { Redirect } from './components/Redirect/Redirect';
 export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
+export { Segmented } from './components/Segmented/Segmented';
+export type { ISegmentedProps } from './components/Segmented/Segmented';
 export { Skeleton } from './components/Skeleton/Skeleton';
 export { Spin } from './components/Spin';
 export { StackedCards } from './components/StackedCards';
