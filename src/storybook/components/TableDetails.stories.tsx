@@ -199,7 +199,13 @@ export const Default: Story = {
 		};
 
 		return (
-			<div>
+			<div className='nested-expanded-row-reset'>
+				<style>{`
+					.nested-expanded-row-reset .ant-table-expanded-row-fixed {
+						margin: 0 !important;
+						padding: 0 !important;
+					}
+				`}</style>
 				<TableDetails
 					{...args}
 					data={rows}
@@ -461,10 +467,11 @@ export const ExpandableWithNestedTable: Story = {
 					onChangeData={handleChangeData}
 					rowKey={args.rowKey || 'id'}
 					expandable={{
+						expandedRowClassName: () => 'itsa-expanded-row-no-spacing',
 						expandedRowRender: record => {
 							const lines = nestedLinesByParentId[record.id] ?? [];
 							return (
-								<div className='bg-gray-50 px-2 py-2'>
+								<div className='m-0 p-0'>
 									<p className='mb-2 text-sm font-medium text-gray-700'>Líneas del registro</p>
 									<Table<NestedLineRow>
 										size='small'
@@ -477,6 +484,7 @@ export const ExpandableWithNestedTable: Story = {
 							);
 						},
 					}}
+					height={"60dvh"}
 				/>
 			</div>
 		);

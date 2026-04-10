@@ -2364,6 +2364,37 @@ body,
 
 /* ===== ITSA Table customizations (included in package build) ===== */
 
+/* Set expandable wrapper background to white */
+
+.itsa-expanded-row-no-spacing .ant-table-expanded-row-fixed {
+  background-color: #ffffff !important;
+  padding: 0 !important;
+}
+
+/* Expand column: AntD uses 16px cell padding — matches body cells in TableDetails (less row height) */
+
+.itsa-table-details .ant-table-row-expand-icon-cell {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  vertical-align: middle !important;
+}
+
+/* Expand icon: use app primary color when expanded (scoped to TableDetails) */
+
+.itsa-table-details .ant-table-row-expand-icon.ant-table-row-expand-icon-expanded {
+  color: var(--itsa-primary) !important;
+  border-color: var(--itsa-primary) !important;
+}
+
+.itsa-table-details .ant-table-row-expand-icon.ant-table-row-expand-icon-expanded:hover,
+.itsa-table-details .ant-table-row-expand-icon.ant-table-row-expand-icon-expanded:focus-visible {
+  color: #ffffff !important;
+  background-color: var(--itsa-primary) !important;
+  border-color: var(--itsa-primary) !important;
+}
+
 /* Header rounding and container */
 
 .itsa-table--head-rounded .ant-table-container {
