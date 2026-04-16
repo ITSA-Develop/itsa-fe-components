@@ -52,6 +52,7 @@ export const Table = <T extends object>({
 	loading,
 	onChange,
 	bordered = false,
+	className,
 	rowSelection,
 	selectionMode = 'multiple',
 	showPagination = false,
@@ -72,6 +73,8 @@ export const Table = <T extends object>({
 	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const finalPagination = showPagination ? paginationConfig : false;
+	const baseTableScopeClass = 'itsa-table--head-rounded';
+	const resolvedRootClassName = [baseTableScopeClass, rootClassName, className].filter(Boolean).join(' ');
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
@@ -359,7 +362,8 @@ export const Table = <T extends object>({
 				pagination={finalPagination}
 				scroll={getFinalScroll(tableColumns)}
 				locale={locale}
-				rootClassName={rootClassName}
+				className={resolvedRootClassName}
+				rootClassName={resolvedRootClassName}
 				rowClassName={rowClassName}
 				rowKey={rowKey}
 				components={{

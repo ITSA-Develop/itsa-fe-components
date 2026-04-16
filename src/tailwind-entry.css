@@ -481,6 +481,26 @@ body,
 	box-shadow: 0 0 0 3px #EA3B48 !important;
 }
 
+/* Selection radio colors (single mode) */
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio .ant-radio-inner {
+	border-color: var(--itsa-primary) !important;
+}
+
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio-wrapper:hover .ant-radio-inner,
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio:hover .ant-radio-inner,
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio-input:focus + .ant-radio-inner {
+	border-color: var(--itsa-primary) !important;
+}
+
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio-checked .ant-radio-inner {
+	border-color: var(--itsa-primary) !important;
+	background-color: var(--itsa-primary) !important;
+}
+
+.itsa-table--head-rounded .ant-table-selection-column .ant-radio-checked .ant-radio-inner::after {
+	background-color: #ffffff !important;
+}
+
 /* ===== Pagination customizations ===== */
 .itsa-table--head-rounded {
 	--itsa-pagination-active-bg: var(--itsa-primary);
@@ -489,6 +509,9 @@ body,
 	--itsa-pagination-font-size: 12px;
 	/* Default hover background for table rows */
 	--itsa-table-row-hover-bg: #F5F5F5;
+	/* Selected row backgrounds */
+	--itsa-table-row-selected-bg: rgba(234, 59, 72, 0.12);
+	--itsa-table-row-selected-hover-bg: rgba(234, 59, 72, 0.18);
 	/* Horizontal padding for table cells */
 	--itsa-table-cell-padding-x: 12px;
 }
@@ -559,6 +582,15 @@ body,
 /* Row hover background color */
 .itsa-table--head-rounded .ant-table-tbody > tr:hover > td {
 	background-color: var(--itsa-table-row-hover-bg) !important;
+}
+
+/* Selected row backgrounds (checkbox/radio) */
+.itsa-table--head-rounded .ant-table-tbody > tr.ant-table-row-selected > td {
+	background-color: var(--itsa-table-row-selected-bg) !important;
+}
+
+.itsa-table--head-rounded .ant-table-tbody > tr.ant-table-row-selected:hover > td {
+	background-color: var(--itsa-table-row-selected-hover-bg) !important;
 }
 
 /* Apply horizontal padding to header and body cells */
