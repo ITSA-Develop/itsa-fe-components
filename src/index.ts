@@ -59,6 +59,7 @@ export { InputAddress } from './components/InputAddress';
 export { Input } from './components/Input/Input';
 export { InputSearch } from './components/InputSearch';
 export { Image } from './components/Image';
+export { ImageCatalog } from './components/ImageCatalog';
 export { ImagePreview } from './components/ImagePreview';
 export { ImageMaintenance } from './components/ImageMaintenance';
 export { UploadImage } from './components/UploadImage';
@@ -121,6 +122,11 @@ export type {
 	FieldType,
 	TableColumnConfig as DetailTableColumnConfig,
 } from './components/DetailView';
+export type {
+	IImageCatalogProps,
+	ImageCatalogItemValue,
+	ImageCatalogSource,
+} from './components/ImageCatalog';
 export type {
 	IProductCatalogListItem,
 	IProductCatalogListProps,

@@ -546,6 +546,10 @@
   margin-top: auto;
 }
 
+.box-border{
+  box-sizing: border-box;
+}
+
 .block{
   display: block;
 }
@@ -734,6 +738,10 @@
   max-height: 88vh;
 }
 
+.max-h-\[clamp\(180px\2c 22vw\2c 340px\)\]{
+  max-height: clamp(180px,22vw,340px);
+}
+
 .min-h-0{
   min-height: 0px;
 }
@@ -892,6 +900,10 @@
 
 .max-w-6xl{
   max-width: 72rem;
+}
+
+.max-w-7xl{
+  max-width: 80rem;
 }
 
 .max-w-\[150px\]{
@@ -1421,6 +1433,11 @@
 .border-primary-700{
   --tw-border-opacity: 1;
   border-color: rgb(234 61 72 / var(--tw-border-opacity, 1));
+}
+
+.border-red-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(255 201 200 / var(--tw-border-opacity, 1));
 }
 
 .border-red-300{
@@ -1993,6 +2010,11 @@
 .text-red-500{
   --tw-text-opacity: 1;
   color: rgb(245 66 62 / var(--tw-text-opacity, 1));
+}
+
+.text-red-600{
+  --tw-text-opacity: 1;
+  color: rgb(229 57 53 / var(--tw-text-opacity, 1));
 }
 
 .text-white-100{
@@ -2999,6 +3021,10 @@ body,
     width: 100px;
   }
 
+  .sm\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sm\:gap-1\.5{
     gap: 0.375rem;
   }
@@ -3219,6 +3245,10 @@ body,
 
   .lg\:grid-cols-\[minmax\(0\2c 1fr\)_320px\]{
     grid-template-columns: minmax(0,1fr) 320px;
+  }
+
+  .lg\:grid-cols-3{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:\!gap-4{
