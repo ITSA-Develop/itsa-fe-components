@@ -89,6 +89,19 @@ import {
 	updateChildUnderParent,
 } from './treeNode';
 
+
+import {
+	encryptData,
+	decryptData,
+	decryptDataFromStorage,
+	setDataEncryptedInStorage,
+} from './encrypt';
+
+
+
+
+
+
 export {
 	addOrderParamIfMissing,
 	buildQueryParams,
@@ -99,6 +112,9 @@ export {
 	clearURLParams,
 	codeUserInputValidation,
 	createValueLabelMap,
+	decryptData,
+	decryptDataFromStorage,
+	encryptData,
 	fillRoute,
 	filterMenuSidebar,
 	filterMenuTree,
@@ -164,4 +180,5 @@ export {
 	validateArgument,
 	validateArgumentUnified,
 	validateArgumentWithIA,
+	setDataEncryptedInStorage
 };

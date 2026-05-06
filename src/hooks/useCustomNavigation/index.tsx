@@ -80,7 +80,7 @@ export const useCustomNavigation = () => {
         }
 
         setIsLoading(true);
-        const agenId = getNumberFromStorage(ELocalStorageKeys.agencyId);
+        const agenId = getNumberFromStorage(ELocalStorageKeys.agency);
 
         const { data } = await securityApi.get<IValidateRouteResponse>(
           API_VERSIONS_MODULE.security + "validate-route/",

@@ -1,6 +1,6 @@
 import { Button, Dropdown, MenuProps } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
-import { useSidebarStore } from '@/hooks';
+import { useEncrypt, useSidebarStore } from '@/hooks';
 import { useAppLayoutStore } from '@/store';
 import { imageItsaLogo } from '@/assets/images';
 import { DropdownIcon } from '@/components/DropdownIcon';
@@ -27,6 +27,7 @@ export const HeaderLayout = ({
 	notifications = { items: [] },
 	navigateApp,
 }: HeaderLayoutProps) => {
+	const { encryptKey } = useEncrypt();
 	const { collapsed, setCollapsed } = useSidebarStore();
 	const { modulesAgency } = useAppLayoutStore();
 	const { agencies } = useAppLayoutStore();
@@ -52,11 +53,11 @@ export const HeaderLayout = ({
 
 	const selectModule = (module?: (typeof modulesAgency)[number], shouldNavigate = true) => {
 		if (!module) return false;
-		setCurrentModule(module);
+		setCurrentModule(module, encryptKey);
 		setSubmodulesAgency(module.submodules);
 		const currentSubmodule = module.submodules[0];
 		if (currentSubmodule) {
-			setCurrentSubmodule(currentSubmodule);
+			setCurrentSubmodule(currentSubmodule, encryptKey);
 		}
 		if (shouldNavigate) {
 			redirectToHome();
@@ -66,7 +67,7 @@ export const HeaderLayout = ({
 
 	const selectAgency = (agency?: IAgency, navigateWhenNoModule = true) => {
 		if (!agency) return false;
-		setCurrentAgency(agency);
+		setCurrentAgency(agency, encryptKey);
 		setModulesAgency(agency.modules);
 		const hasModule = selectModule(agency.modules[0], false);
 		if (hasModule || navigateWhenNoModule) {
@@ -96,39 +97,39 @@ export const HeaderLayout = ({
 
 	const setModulesAgencyCallback = useCallback(
 		(agencies: IAgency[]) => {
-			const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
+			const moduleId = getNumberFromStorage(ELocalStorageKeys.module);
 			if (moduleId) {
 				for (const agency of agencies) {
 					if (!agency.modules) continue;
 					for (const module of agency.modules) {
 						if (module.id === moduleId) {
-							setCurrentModule(module);
+							setCurrentModule(module, encryptKey);
 							setModulesAgency(agency.modules);
-							setCurrentAgency(agency);
+							setCurrentAgency(agency, encryptKey);
 							return;
 						}
 					}
 				}
 			} else {
-				const agencyId = getNumberFromStorage(ELocalStorageKeys.agencyId);
+				const agencyId = getNumberFromStorage(ELocalStorageKeys.agency);
 				if (agencyId) {
 					const agency = agencies.find(a => a.id === agencyId);
 					if (agency) {
-						setCurrentAgency(agency);
+						setCurrentAgency(agency, encryptKey);
 						setModulesAgency(agency.modules);
 						const currentModule = agency.modules[0];
 						if (currentModule) {
-							setCurrentModule(currentModule);
+							setCurrentModule(currentModule, encryptKey);
 						}
 					}
 				} else {
 					const newAgency = agencies[0];
 					if (newAgency) {
-						setCurrentAgency(newAgency);
+						setCurrentAgency(newAgency, encryptKey);
 						setModulesAgency(newAgency.modules);
 						const currentModule = newAgency.modules[0];
 						if (currentModule) {
-							setCurrentModule(currentModule);
+							setCurrentModule(currentModule, encryptKey);
 						}
 					}
 				}
