@@ -17,6 +17,7 @@ export interface AppLayoutProps {
 	userActions?: MenuProps;
 	notifications?: MenuProps;
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
+	accessDenied: boolean;
 }
 
 export const AppLayout = ({
@@ -34,19 +35,19 @@ export const AppLayout = ({
 	useEffect(() => {
 		// Initialize collapsed from localStorage
 		const storedCollapsed = localStorage.getItem(ELocalStorageKeys.collapsedSidebar);
-		if (storedCollapsed && storedCollapsed === 'true') {
+		if (storedCollapsed !== undefined && storedCollapsed === 'true') {
 			setCollapsed(true);
 		} else {
 			setCollapsed(false);
 		}
-	}, []);
+	}, [setCollapsed]);
 
 	useEffect(() => {
 		if (currentModule) {
 			const menuData = transformModuleToMenuData(currentModule);
 			setMenuData(menuData ?? []);
 		}
-	}, [currentModule]);
+	}, [currentModule, setMenuData]);
 
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">

@@ -35,7 +35,7 @@ export const MenuOptions = ({
 		if (currentPathModule) {
 			setCurrentItemMenu(currentPathModule);
 		}
-	}, [currentPathModule]);
+	}, [currentPathModule, setCurrentItemMenu]);
 
 	const handleMenuClick: MenuProps['onClick'] = info => {
 		const findMenuItem = (menuItems: TExtendedMenuItem[], key: string): TExtendedMenuItem | null => {
@@ -43,7 +43,7 @@ export const MenuOptions = ({
 				if (item.key === key) {
 					return item;
 				}
-				if ('children' in item && item.children) {
+				if ('children' in item && item.children !== undefined) {
 					const found = findMenuItem(item.children as TExtendedMenuItem[], key);
 					if (found) return found;
 				}
@@ -52,10 +52,10 @@ export const MenuOptions = ({
 		};
 
 		const clickedItem = findMenuItem(items, info.key);
-		if (clickedItem && onClickOptionMenu) {
+		if (clickedItem !== null && onClickOptionMenu !== undefined) {
 			const path = clickedItem.data?.path;
-			if (path && currentModule) {
-				const program = getProgramActionsbyPath(path, currentModule);
+			if (path !== null && currentModule !== undefined) {
+				const program = getProgramActionsbyPath(path ?? '', currentModule);
 				if (program) {
 					setCurrentProgram(program.program);
 				}

@@ -1,9 +1,9 @@
 import { useControlActions } from '@/hooks';
 import { ButtonAntd } from '../ButtonAntd';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { EActionType } from '@/enums';
 import { isDisabledAction } from '@/helpers/functions';
-import { useAppLayoutStore, useUserActionPermissions } from '@/store';
+import { useActionsUser, useAppLayoutStore } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 
 export interface IButtonProps {
@@ -19,7 +19,10 @@ export interface IButtonProps {
 	shape?: 'default' | 'round' | 'circle' | undefined;
 	actionType?: EActionType;
 	validateWithApiAction?: boolean;
-	showBtnDisabled?: boolean;
+	/**
+	 * When offline or `disabled` prop is true: `true` (default) renders the button with disabled styling;
+	 * `false` hides the button (`null`). Forbidden actions (`actionType` + user permissions) are always hidden when disabled.
+	 */
 	loading?: boolean;
 	allowEnterKey?: boolean;
 }
@@ -28,23 +31,34 @@ export const Button = (props: IButtonProps) => {
 	const isOnline = useOnlineStatus();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const { userActionPermissions } = useUserActionPermissions();
-	// const { width, block = false, actionType, validateWithApiAction = false, showBtnDisabled, loading = false } = props;
-	const { width, block = false, actionType, validateWithApiAction = false, loading = false } = props;
+	const { actionsUser } = useActionsUser();
+	const {
+		width,
+		block = false,
+		actionType,
+		validateWithApiAction = false,
+		loading = false,
+	} = props;
+
+	const isDisabledActionButtonByUserActions = useMemo(() => {
+		if (actionType) {
+			const isDisabled = isDisabledAction(actionsUser, actionType);
+			return isDisabled;
+		}
+		return false;
+	}, [actionType, actionsUser]);
+
 	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick, allowEnterKey = false } = props;
-	const isDisabledByState = disabled === true || isOnline === false;
+	const isUnavailableByPropOrNetwork = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
 	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';
 	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
 
-	const disabledClass = isDisabledByState ? [className, 'itsa-btn--disabled', 'rounded-[12px]'].join(' ') : '';
+	const disabledClass = isUnavailableByPropOrNetwork ? [className, 'itsa-btn--disabled', 'rounded-[12px]'].join(' ') : '';
 
 	const labelContent = <span className="block w-full overflow-hidden text-ellipsis whitespace-nowrap">{label}</span>;
-
-	const isActionForbidden = actionType ? isDisabledAction(userActionPermissions, actionType) : false;
-	const isDisabledActionButton = isDisabledByState || isActionForbidden;
 
 	const handleClick = async () => {
 		const agencyId = currentAgency?.id;
@@ -58,15 +72,13 @@ export const Button = (props: IButtonProps) => {
 			onClick?.();
 		}
 	};
-	const appliedClassName = isDisabledActionButton === true ? disabledClass : className;
 
-	// if (actionType) {
-	// 	if (isOnline === true) {
-	// 		if (showBtnDisabled !== true && isActionForbidden) {
-	// 			return null;
-	// 		}
-	// 	}
-	// }
+	const appliedClassName = isUnavailableByPropOrNetwork ? disabledClass : className;
+
+	// SOLO ocultar si el usuario no tiene permisos para la acción
+	if (actionType && isDisabledActionButtonByUserActions) {
+		return null;
+	}
 
 	return (
 		<ButtonAntd
@@ -74,7 +86,7 @@ export const Button = (props: IButtonProps) => {
 			size={size}
 			type={antdType}
 			htmlType={htmlType}
-			disabled={isDisabledActionButton}
+			disabled={isUnavailableByPropOrNetwork}
 			onClick={handleClick}
 			onKeyDown={e => {
 				if (!allowEnterKey && e.key === 'Enter') {

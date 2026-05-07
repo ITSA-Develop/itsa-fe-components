@@ -19,7 +19,6 @@ import {
 	getLabelFromValue,
 	getSchemaColumns,
 	getSchemaFields,
-	getNumberFromStorage,
 	getStringFromStorage,
 	parseValidDateITSA,
 } from './formats';
@@ -128,7 +127,6 @@ export {
 	formatMoneyIfValid,
 	getOriginFromUrl,
 	generateUuid,
-	getNumberFromStorage,
 	getStringFromStorage,
 	getInstance,
 	parseValidDateITSA,

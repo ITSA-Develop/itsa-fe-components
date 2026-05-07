@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
-import { IActions, IActionsValidatePermission, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
+import { IActions, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
 import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
@@ -154,7 +154,7 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 	return true;
 };
 
-export const isDisabledAction = (actionsPermissions?: IActionsValidatePermission, operation?: EActionType) => {
+export const isDisabledAction = (actionsPermissions?: IActions, operation?: EActionType) => {
 
 	if (!operation || !actionsPermissions) {
 		return false;
