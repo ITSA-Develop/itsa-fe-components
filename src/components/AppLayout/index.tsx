@@ -1,7 +1,7 @@
 import { Layout, MenuProps } from 'antd';
 import { SidebarLayout } from './components/SidebarLayout';
 import { HeaderLayout } from './components/HeaderLayout';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useSidebarStore, useViewportSize } from '@/hooks';
 import { useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
@@ -28,11 +28,14 @@ export const AppLayout = ({
 	onClickOptionMenu,
 	navigateApp,
 }: AppLayoutProps) => {
+	const initCollapsed = useRef(false);
 	useViewportSize();
 	const { setCollapsed } = useSidebarStore();
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const setMenuData = useMenuDataStore(state => state.setMenuData);
 	useEffect(() => {
+		if (initCollapsed.current) return;
+		initCollapsed.current = true;
 		// Initialize collapsed from localStorage
 		const storedCollapsed = localStorage.getItem(ELocalStorageKeys.collapsedSidebar);
 		if (storedCollapsed !== undefined && storedCollapsed === 'true') {

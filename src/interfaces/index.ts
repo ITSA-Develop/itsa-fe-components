@@ -32,6 +32,8 @@ export interface ISubmodule {
 	groups?: ISubmodule[];
 	programs?: ISubmodule[];
 	actions?: IActions;
+	root?: boolean;
+	roleId?: number;
 }
 
 export interface IActions {

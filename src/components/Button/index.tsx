@@ -41,7 +41,7 @@ export const Button = (props: IButtonProps) => {
 	} = props;
 
 	const isDisabledActionButtonByUserActions = useMemo(() => {
-		if (actionType) {
+		if (actionType !== undefined) {
 			const isDisabled = isDisabledAction(actionsUser, actionType);
 			return isDisabled;
 		}
@@ -52,7 +52,7 @@ export const Button = (props: IButtonProps) => {
 	const isUnavailableByPropOrNetwork = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
 	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
-	const defaultSecondaryClass = type === 'secondary' && props.default ? 'itsa-btn--default' : '';
+	const defaultSecondaryClass = type === 'secondary' && (props.default ?? false) ? 'itsa-btn--default' : '';
 	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
 	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
 
@@ -62,7 +62,7 @@ export const Button = (props: IButtonProps) => {
 
 	const handleClick = async () => {
 		const agencyId = currentAgency?.id;
-		if (validateWithApiAction && programId && agencyId && actionType) {
+		if (validateWithApiAction && programId !== undefined && agencyId !== undefined && (actionType !== undefined)) {
 			const isValid = await fnApiValidatePermissionAction(actionType, programId, agencyId);
 			if (isValid) {
 				onClick?.();
@@ -76,7 +76,7 @@ export const Button = (props: IButtonProps) => {
 	const appliedClassName = isUnavailableByPropOrNetwork ? disabledClass : className;
 
 	// SOLO ocultar si el usuario no tiene permisos para la acción
-	if (actionType && isDisabledActionButtonByUserActions) {
+	if ((actionType !== undefined) && isDisabledActionButtonByUserActions) {
 		return null;
 	}
 
@@ -95,7 +95,7 @@ export const Button = (props: IButtonProps) => {
 				}
 			}}
 			block={block}
-			style={{ width: block ? '100%' : width ? `${width}%` : undefined }}
+			style={{ width: block ? '100%' : (width !== undefined) ? `${width}%` : undefined }}
 			loading={loading}
 		>
 			{labelContent}

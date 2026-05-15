@@ -134,7 +134,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 };
 
 export const disabledActionButton = (actionExecute?: EActionType, actions?: IActions) => {
-	if (!actionExecute) return false;
+	if (actionExecute === undefined) return false;
 	if (!actions) return true;
 	if (actions.allActions === true) {
 		return false;
@@ -156,7 +156,7 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 
 export const isDisabledAction = (actionsPermissions?: IActions, operation?: EActionType) => {
 
-	if (!operation || !actionsPermissions) {
+	if ((operation === undefined) || (actionsPermissions === undefined)) {
 		return false;
 	}
 	if (actionsPermissions.allActions === true) {

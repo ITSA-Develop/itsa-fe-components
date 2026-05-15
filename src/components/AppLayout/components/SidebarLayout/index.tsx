@@ -1,5 +1,5 @@
 import { Button, Input, Layout } from 'antd';
-import { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useAppLayoutFooter } from '@/HOC/AppLayoutFooterContext';
 import { Content } from 'antd/es/layout/layout';
@@ -26,12 +26,17 @@ export const SidebarLayout = ({ children, width = 266, loadingAppLayout, onClick
 	const currentPath = window.location.pathname;
 	const viewportWidth = useViewportStore(state => state.width);
 	const isMobile = viewportWidth < 1024;
+	const prevIsMobileRef = useRef(isMobile);
 
 	useEffect(() => {
-		if (isMobile && !collapsed) {
+		const wasMobile = prevIsMobileRef.current;
+		prevIsMobileRef.current = isMobile;
+
+		// Solo al pasar de escritorio a móvil: cerrar el drawer. Evita bloquear abrir el menú en móvil.
+		if (!wasMobile && isMobile) {
 			setCollapsed(true);
 		}
-	}, [collapsed, isMobile, setCollapsed]);
+	}, [isMobile, setCollapsed]);
 
 	const getParentKeys = useCallback((menuItems: TExtendedMenuItem[], targetKey: string, parents: string[] = []): string[] | null => {
 		for (const item of menuItems) {
