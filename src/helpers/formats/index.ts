@@ -29,8 +29,7 @@ export const getFormattedAddress = ({
 
 const formatters: Partial<Record<TFieldDisplayType, (value: any, populateValue?: any) => string>> = {
 	text: value => value,
-	dropdown: (value, populateValue) =>
-		populateValue ? (populateValue.find((populate: any) => populate.value === value)?.label ?? '') : '',
+	dropdown: (value, populateValue) => populateValue ? (populateValue.find((populate: any) => populate.value === value)?.label ?? '') : '',
 	radio: value => value?.label ?? '',
 	currency: value => value,
 	checkbox: value => (value ? 'Sí' : 'No'),
@@ -64,7 +63,7 @@ export const getFormattedSchemaValues = (
 
 export const getSchemaColumns = (schema: IEntitySchema): string[] => {
 	return Object.values(schema.fields)
-		.filter(config => !config.excludeFromColumns)
+		.filter(config => config?.excludeFromColumns !== true)
 		.map(config => config.label)
 		.filter((label): label is string => typeof label === 'string')
 		.concat('actions');
@@ -72,7 +71,7 @@ export const getSchemaColumns = (schema: IEntitySchema): string[] => {
 
 export const getSchemaFields = (schema: IEntitySchema): string[] => {
 	return Object.entries(schema.fields)
-		.filter(([, config]) => !config.excludeFromFields)
+		.filter(([, config]) => config?.excludeFromFields !== true)
 		.map(([key]) => key)
 		.concat('actions');
 };
@@ -83,17 +82,17 @@ export const getLabelFromValue = (value: number | string, options: TInputOptions
 };
 
 
-export function getNumberFromStorage(key: string, defaultValue = 0): number {
-	try {
-		const raw = localStorage.getItem(key);
-		if (!raw) return defaultValue;
+// export function getNumberFromStorage(key: string, defaultValue = 0): number {
+// 	try {
+// 		const raw = localStorage.getItem(key);
+// 		if (!raw) return defaultValue;
 
-		const num = Number(raw);
-		return Number.isNaN(num) ? defaultValue : num;
-	} catch {
-		return defaultValue;
-	}
-}
+// 		const num = Number(raw);
+// 		return Number.isNaN(num) ? defaultValue : num;
+// 	} catch {
+// 		return defaultValue;
+// 	}
+// }
 
 export function getStringFromStorage(key: string, defaultValue = ''): string {
 	try {

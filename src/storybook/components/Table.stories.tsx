@@ -268,7 +268,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const TableWithPaginationState = () => {
-	const { pagination, filters, sorter, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
+	const { pagination, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
 	
 
 	const handleTableChange: ITableProps<ITablePersonData>['onChange'] = (
@@ -473,6 +473,38 @@ export const WithActionsDisabledPerRow: Story = {
 		docs: {
 			description: {
 				story: 'Deshabilita todo el Dropdown de acciones por fila; en este ejemplo, para age ≥ 50.',
+			},
+		},
+	},
+};
+
+export const WithExpandableRows: Story = {
+	render: () => (
+		<Table
+			columns={sampleColumns}
+			data={sampleData.slice(0, 5)}
+			loading={false}
+			bordered={false}
+			showPagination={false}
+			showColumnActions={false}
+			onChange={() => {}}
+			rowKey="id"
+			expandable={{
+				expandedRowRender: record => (
+					<div style={{ margin: 0, padding: '8px 0' }}>
+						<p style={{ margin: 0, fontSize: 12, color: '#666' }}>
+							Detalle de <strong>{record.name}</strong>: edad {record.age}, dirección {record.address}
+						</p>
+					</div>
+				),
+			}}
+		/>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Filas expandibles: la prop `expandable` se reenvía a la tabla de Ant Design (por ejemplo `expandedRowRender`).',
 			},
 		},
 	},

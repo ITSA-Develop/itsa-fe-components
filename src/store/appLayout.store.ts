@@ -1,4 +1,5 @@
 import { ELocalStorageKeys } from '@/enums';
+import { setDataEncryptedInStorage } from '@/helpers/encrypt';
 import { IAgency, IModule, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
 import { create } from 'zustand';
 
@@ -12,11 +13,11 @@ export interface AppLayoutStore {
 	setSubmodulesAgency: (submodules: ISubmodule[]) => void;
 
 	currentAgency?: IAgency;
-	setCurrentAgency: (agency: IAgency) => void;
+	setCurrentAgency: (agency: IAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
 	currentModule?: IModule;
-	setCurrentModule: (module: IModule) => void;
+	setCurrentModule: (module: IModule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
 	currentSubmodule?: ISubmodule;
-	setCurrentSubmodule: (submodule: ISubmodule) => void;
+	setCurrentSubmodule: (submodule: ISubmodule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
 
 	userName?: string;
 	setUserName: (userName: string) => void;
@@ -46,16 +47,19 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		set({ submodulesAgency: submodules });
 	},
 	currentAgency: undefined,
-	setCurrentAgency: (agency: IAgency) => {
+	setCurrentAgency: (agency: IAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
 		set({
 			currentAgency: agency,
 		});
-		localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
+		// localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
+		setDataEncryptedInStorage(ELocalStorageKeys.agency, String(agency.id), KEY_ENCRYPT);
 	},
 	currentModule: undefined,
-	setCurrentModule: (module: IModule) => {
-		localStorage.setItem(ELocalStorageKeys.moduleHomeSelectedId, String(module.id));
-		localStorage.setItem(ELocalStorageKeys.moduleId, String(module.id));
+	setCurrentModule: (module: IModule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
+		// localStorage.setItem(ELocalStorageKeys.moduleHomeSelectedId, String(module.id));
+		// localStorage.setItem(ELocalStorageKeys.moduleId, String(module.id));
+		setDataEncryptedInStorage(ELocalStorageKeys.module, String(module.id), KEY_ENCRYPT);
+		setDataEncryptedInStorage(ELocalStorageKeys.moduleHomeSelected, String(module.id), KEY_ENCRYPT);
 		const newSubmodule = module?.submodules?.[0];
 		set({
 			currentModule: module,
@@ -64,8 +68,9 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		});
 	},
 	currentSubmodule: undefined,
-	setCurrentSubmodule: (submodule: ISubmodule) => {
-		localStorage.setItem(ELocalStorageKeys.submoduleId, String(submodule.id));
+	setCurrentSubmodule: (submodule: ISubmodule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
+		// localStorage.setItem(ELocalStorageKeys.submoduleId, String(submodule.id));
+		setDataEncryptedInStorage(ELocalStorageKeys.submodule, String(submodule.id), KEY_ENCRYPT);
 		set({ currentSubmodule: submodule });
 	},
 

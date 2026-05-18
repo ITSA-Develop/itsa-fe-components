@@ -13,6 +13,8 @@ export interface IDropdownButtonItem {
 	label: string;
 	icon?: ReactNode;
 	onClick: () => void;
+	/** visual intent for the action (affects item styling) */
+	type?: 'danger' | 'primary' | 'secondary' | 'success' | 'warning';
 	disabled?: boolean;
 }
 
@@ -78,8 +80,13 @@ export const DropdownButton = ({
 		() => ({
 			items: items.map(item => ({
 				key: item.key,
-				label: item.label,
-				icon: item.icon,
+				label: (
+					<div className={`itsa-dropdown-item itsa-dropdown-item--${item.type || 'default'}`}>
+						{item.icon && <span className="itsa-dropdown-item__icon">{item.icon}</span>}
+						<span className="itsa-dropdown-item__label">{item.label}</span>
+					</div>
+				),
+				icon: null,
 				disabled: item.disabled,
 			})),
 			onClick: handleMenuClick,
@@ -95,7 +102,9 @@ export const DropdownButton = ({
 					{loading && <LoadingOutlined className="itsa-dropdown-btn__icon" spin />}
 					{!loading && icon && <span className="itsa-dropdown-btn__icon">{icon}</span>}
 					<span className="itsa-dropdown-btn__label">{label}</span>
-					{showDropdownIcon && <DownOutlined className="itsa-dropdown-btn__arrow" />}
+					{showDropdownIcon && (
+						<DownOutlined className={`itsa-dropdown-btn__arrow ${placement.startsWith('top') ? 'itsa-dropdown-btn__arrow--up' : ''}`} />
+					)}
 				</button>
 			</Dropdown>
 		</>

@@ -9,9 +9,16 @@ module.exports = {
 	],
 	ignorePatterns: ['dist', '.eslintrc.cjs'],
 	parser: '@typescript-eslint/parser',
+	parserOptions: {
+		ecmaVersion: 'latest',
+		sourceType: 'module',
+		project: ['./tsconfig.eslint.json'],
+		tsconfigRootDir: __dirname,
+	},
 	plugins: ['react-refresh'],
 	rules: {
 		'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+		'react-hooks/exhaustive-deps': 'warn',
 		'@typescript-eslint/no-non-null-assertion': 'error',
 		'@typescript-eslint/strict-boolean-expressions': 'error',
 	},
