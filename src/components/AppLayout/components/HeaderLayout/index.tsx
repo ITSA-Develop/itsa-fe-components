@@ -1,6 +1,6 @@
 import { Button, Dropdown, MenuProps } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
-import { useSidebarStore } from '@/hooks';
+import { useEncrypt, useSidebarStore } from '@/hooks';
 import { useAppLayoutStore } from '@/store';
 import { imageItsaLogo } from '@/assets/images';
 import { DropdownIcon } from '@/components/DropdownIcon';
@@ -10,7 +10,6 @@ import { IAgency, ISelectOptionDropdownButton } from '@/interfaces';
 import { DropdownCustomLabel } from '@/components/DropdownCustomLabel';
 import { useCallback, useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
-import { getNumberFromStorage } from '@/helpers';
 import { NavigateFunction } from 'react-router-dom';
 import { useEnvironment } from '@/hooks/useEnvironment';
 
@@ -27,6 +26,7 @@ export const HeaderLayout = ({
 	notifications = { items: [] },
 	navigateApp,
 }: HeaderLayoutProps) => {
+	const { encryptKey, getDecryptDataFromStorage } = useEncrypt();
 	const { collapsed, setCollapsed } = useSidebarStore();
 	const { modulesAgency } = useAppLayoutStore();
 	const { agencies } = useAppLayoutStore();
@@ -52,11 +52,11 @@ export const HeaderLayout = ({
 
 	const selectModule = (module?: (typeof modulesAgency)[number], shouldNavigate = true) => {
 		if (!module) return false;
-		setCurrentModule(module);
+		setCurrentModule(module, encryptKey);
 		setSubmodulesAgency(module.submodules);
 		const currentSubmodule = module.submodules[0];
 		if (currentSubmodule) {
-			setCurrentSubmodule(currentSubmodule);
+			setCurrentSubmodule(currentSubmodule, encryptKey);
 		}
 		if (shouldNavigate) {
 			redirectToHome();
@@ -66,7 +66,7 @@ export const HeaderLayout = ({
 
 	const selectAgency = (agency?: IAgency, navigateWhenNoModule = true) => {
 		if (!agency) return false;
-		setCurrentAgency(agency);
+		setCurrentAgency(agency, encryptKey);
 		setModulesAgency(agency.modules);
 		const hasModule = selectModule(agency.modules[0], false);
 		if (hasModule || navigateWhenNoModule) {
@@ -96,47 +96,53 @@ export const HeaderLayout = ({
 
 	const setModulesAgencyCallback = useCallback(
 		(agencies: IAgency[]) => {
-			const moduleId = getNumberFromStorage(ELocalStorageKeys.moduleId);
-			if (moduleId) {
+			const moduleIdStorage = getDecryptDataFromStorage(ELocalStorageKeys.module);
+			
+			let moduleFound = false;
+
+			if (moduleIdStorage !== undefined) {
+				const moduleId = Number(moduleIdStorage);
+				// Intenta encontrar el módulo guardado
 				for (const agency of agencies) {
-					if (!agency.modules) continue;
 					for (const module of agency.modules) {
 						if (module.id === moduleId) {
-							setCurrentModule(module);
+							setCurrentModule(module, encryptKey);
 							setModulesAgency(agency.modules);
-							setCurrentAgency(agency);
+							setCurrentAgency(agency, encryptKey);
+							moduleFound = true;
 							return;
 						}
 					}
 				}
-			} else {
-				const agencyId = getNumberFromStorage(ELocalStorageKeys.agencyId);
-				if (agencyId) {
-					const agency = agencies.find(a => a.id === agencyId);
-					if (agency) {
-						setCurrentAgency(agency);
-						setModulesAgency(agency.modules);
-						const currentModule = agency.modules[0];
-						if (currentModule) {
-							setCurrentModule(currentModule);
-						}
-					}
-				} else {
-					const newAgency = agencies[0];
-					if (newAgency) {
-						setCurrentAgency(newAgency);
-						setModulesAgency(newAgency.modules);
-						const currentModule = newAgency.modules[0];
-						if (currentModule) {
-							setCurrentModule(currentModule);
-						}
+			}
+
+			// Si no encuentra el módulo guardado, carga por defecto
+			if (!moduleFound) {
+				const agencyIdStorage = getDecryptDataFromStorage(ELocalStorageKeys.agency);
+				const normalizedAgencyIdStorage = agencyIdStorage ?? '0';
+				const agencyId = Number(normalizedAgencyIdStorage);
+				let selectedAgency: IAgency | undefined;
+
+				if (agencyId !== 0) {
+					selectedAgency = agencies.find(a => a.id === agencyId);
+				}
+
+				selectedAgency = selectedAgency || agencies[0];
+				if (selectedAgency) {
+					setCurrentAgency(selectedAgency, encryptKey);
+					setModulesAgency(selectedAgency.modules);
+					const currentModule = selectedAgency.modules?.[0];
+					if (currentModule) {
+						setCurrentModule(currentModule, encryptKey);
 					}
 				}
 			}
+			
 		},
-		[setCurrentModule, setModulesAgency],
+		[encryptKey, getDecryptDataFromStorage, setCurrentAgency, setCurrentModule, setModulesAgency],
 	);
 
+	// Descomenta este useEffect
 	useEffect(() => {
 		setModulesAgencyCallback(agencies);
 	}, [agencies, setModulesAgencyCallback]);
@@ -145,7 +151,7 @@ export const HeaderLayout = ({
 		if (currentAgency) {
 			setModulesAgencyCallback([currentAgency]);
 		}
-	}, [currentAgency]);
+	}, [currentAgency, setModulesAgencyCallback]);
 
 	const handleSetCurrentModule = (moduleId: string) => {
 		selectModule(modulesAgency.find(m => m.id.toString() === moduleId));

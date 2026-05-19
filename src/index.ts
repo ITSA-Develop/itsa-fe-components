@@ -57,9 +57,15 @@ export { FormLabelError } from './components/FormLabelError';
 export { InputPassword } from './components/InputPassword';
 export { InputAddress } from './components/InputAddress';
 export { Input } from './components/Input/Input';
+export { InputNumber } from './components/InputNumber';
+export type { InputNumberProps } from './components/InputNumber';
 export { InputSearch } from './components/InputSearch';
 export { Image } from './components/Image';
+export { ImageCatalog } from './components/ImageCatalog';
+export { ImagePreview } from './components/ImagePreview';
 export { ImageMaintenance } from './components/ImageMaintenance';
+export { UploadImage } from './components/UploadImage';
+export type { IUploadImageProps, UploadImageFileType } from './components/UploadImage';
 export { InfoRow } from './components/InfoRow/InfoRow';
 export { reportBaseHtml, reportHeaderHtml } from './components/HtmlCssReport';
 export { ItemList } from './components/ItemList';
@@ -73,6 +79,7 @@ export { Modal } from './components/Modal/Modal';
 export { ModalResponsive } from './components/ModalResponsive';
 export { Notification } from './components/Notification';
 export { Progress } from './components/Progress/Progress';
+export { ProductCatalogList } from './components/ProductCatalogList';
 export { Redirect } from './components/Redirect/Redirect';
 export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
@@ -91,6 +98,8 @@ export { Tag } from './components/Tag';
 export { TagStatus } from './components/TagStatus';
 export { Table } from './components/Table';
 export { TableDetails } from './components/TableDetails';
+export { TableMobile } from './components/TableMobile/TableMobile';
+export type { ITableMobileProps, ITableMobileRow, ITableMobileCell } from './components/TableMobile/TableMobile';
 export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';
 export { TabsItemContent } from './components/TabsItemContent';
@@ -117,6 +126,15 @@ export type {
 	FieldType,
 	TableColumnConfig as DetailTableColumnConfig,
 } from './components/DetailView';
+export type {
+	IImageCatalogProps,
+	ImageCatalogItemValue,
+	ImageCatalogSource,
+} from './components/ImageCatalog';
+export type {
+	IProductCatalogListItem,
+	IProductCatalogListProps,
+} from './components/ProductCatalogList';
 
 export { UIProvider } from './HOC/UIProvider';
 export { ControlActionsProvider } from './HOC/ControlActions';

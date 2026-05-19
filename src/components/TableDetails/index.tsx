@@ -29,6 +29,7 @@ export interface ITableDetailsProps<T extends object> {
 	height?: number | string;
 	loading?: boolean;
 	expandable?: TableProps<T>['expandable'];
+	rowClassName?: TableProps<T>['rowClassName'];
 }
 
 export const TableDetails = <T extends object>({
@@ -45,6 +46,7 @@ export const TableDetails = <T extends object>({
 	height,
 	loading = false,
 	expandable,
+	rowClassName,
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
 		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
@@ -343,9 +345,38 @@ export const TableDetails = <T extends object>({
 		[bodyHeight, scroll],
 	);
 
+	const expandableWithRowClass = useMemo(() => {
+		if (!expandable) return expandable;
+
+		const defaultExpandedRowClass = 'itsa-expanded-row-no-spacing';
+		const currentExpandedRowClass = expandable.expandedRowClassName;
+
+		if (!currentExpandedRowClass) {
+			return {
+				...expandable,
+				expandedRowClassName: () => defaultExpandedRowClass,
+			};
+		}
+
+		if (typeof currentExpandedRowClass === 'string') {
+			return {
+				...expandable,
+				expandedRowClassName: `${currentExpandedRowClass} ${defaultExpandedRowClass}`.trim(),
+			};
+		}
+
+		return {
+			...expandable,
+			expandedRowClassName: (record: T, index: number, indent: number) => {
+				const userClassName = currentExpandedRowClass(record, index, indent);
+				return `${userClassName ?? ''} ${defaultExpandedRowClass}`.trim();
+			},
+		};
+	}, [expandable]);
+
 	return (
 		<div
-			className={bodyHeight ? 'itsa-table-details-fixed-height' : undefined}
+			className={bodyHeight ? 'itsa-table-details itsa-table-details-fixed-height' : 'itsa-table-details'}
 			style={bodyHeight ? ({ '--itsa-table-body-height': bodyHeight } as React.CSSProperties) : undefined}
 		>
 			<Table
@@ -359,7 +390,8 @@ export const TableDetails = <T extends object>({
 				footer={footer ? () => footer : undefined}
 				showHeader={showHeader}
 				loading={loading}
-				expandable={expandable}
+				expandable={expandableWithRowClass}
+				rowClassName={rowClassName}
 			/>
 		</div>
 	);

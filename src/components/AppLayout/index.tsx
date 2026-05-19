@@ -1,7 +1,7 @@
 import { Layout, MenuProps } from 'antd';
 import { SidebarLayout } from './components/SidebarLayout';
 import { HeaderLayout } from './components/HeaderLayout';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useSidebarStore, useViewportSize } from '@/hooks';
 import { useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
@@ -17,6 +17,7 @@ export interface AppLayoutProps {
 	userActions?: MenuProps;
 	notifications?: MenuProps;
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
+	accessDenied: boolean;
 }
 
 export const AppLayout = ({
@@ -27,26 +28,29 @@ export const AppLayout = ({
 	onClickOptionMenu,
 	navigateApp,
 }: AppLayoutProps) => {
+	const initCollapsed = useRef(false);
 	useViewportSize();
 	const { setCollapsed } = useSidebarStore();
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const setMenuData = useMenuDataStore(state => state.setMenuData);
 	useEffect(() => {
+		if (initCollapsed.current) return;
+		initCollapsed.current = true;
 		// Initialize collapsed from localStorage
 		const storedCollapsed = localStorage.getItem(ELocalStorageKeys.collapsedSidebar);
-		if (storedCollapsed && storedCollapsed === 'true') {
+		if (storedCollapsed !== undefined && storedCollapsed === 'true') {
 			setCollapsed(true);
 		} else {
 			setCollapsed(false);
 		}
-	}, []);
+	}, [setCollapsed]);
 
 	useEffect(() => {
 		if (currentModule) {
 			const menuData = transformModuleToMenuData(currentModule);
 			setMenuData(menuData ?? []);
 		}
-	}, [currentModule]);
+	}, [currentModule, setMenuData]);
 
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">

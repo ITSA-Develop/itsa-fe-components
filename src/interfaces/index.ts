@@ -32,6 +32,8 @@ export interface ISubmodule {
 	groups?: ISubmodule[];
 	programs?: ISubmodule[];
 	actions?: IActions;
+	root?: boolean;
+	roleId?: number;
 }
 
 export interface IActions {
@@ -252,7 +254,7 @@ export interface IModalResponsiveProps {
 
 export interface ITabsMaintenanceItem {
 	key: string;
-	label: string;
+	label: string | ReactNode;
 	children: ReactNode;
 	icon?: ReactNode;
 }

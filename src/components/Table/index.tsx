@@ -2,12 +2,12 @@ import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useAppLayoutStore } from '@/store';
+import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
-import { MoreOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal } from 'antd';
+import { InfoCircleOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import type { TableProps as RcTableProps } from 'rc-table';
 import { ISorterTable } from '@/interfaces';
 
@@ -43,6 +43,7 @@ export interface ITableProps<T extends object> {
 	locale?: TableLocale;
 	rowHoverable?: boolean;
 	refreshDataFunction?: () => void;
+	expandable?: TableProps<T>['expandable'];
 }
 
 export const Table = <T extends object>({
@@ -52,6 +53,7 @@ export const Table = <T extends object>({
 	loading,
 	onChange,
 	bordered = false,
+	className,
 	rowSelection,
 	selectionMode = 'multiple',
 	showPagination = false,
@@ -68,10 +70,14 @@ export const Table = <T extends object>({
 	refreshDataFunction,
 	rowClassName,
 	rootClassName,
+	expandable,
 }: ITableProps<T>) => {
-	const { programId, actions, fnApiValidatePermissionAction } = useControlActions();
+	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const { actionsUser } = useActionsUser();
 	const finalPagination = showPagination ? paginationConfig : false;
+	const baseTableScopeClass = 'itsa-table--head-rounded';
+	const resolvedRootClassName = [baseTableScopeClass, rootClassName, className].filter(Boolean).join(' ');
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
@@ -83,10 +89,10 @@ export const Table = <T extends object>({
 		record: null,
 	});
 
-	const clickAction = async (action: ITableColumnAction<T>, record: T) => {
-		const isPermitted = disabledActionButton(action.actionType, actions);
+	const clickAction = useCallback(async (action: ITableColumnAction<T>, record: T) => {
+		const isPermitted = disabledActionButton(action.actionType, actionsUser);
 		if (isPermitted) return;
-		const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
+		const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : action.disabled ?? false;
 		if (isDisabled) return;
 		if (action.confirmDelete) {
 			setConfirmModalState({
@@ -97,10 +103,10 @@ export const Table = <T extends object>({
 			return;
 		}
 
-		if (action.validateWithApiAction) {
+		if (action.validateWithApiAction ?? false) {
 			const agencyId = currentAgency?.id;
 			const actionTypeNumber = action.actionType as EActionType;
-			if (!actionTypeNumber || !programId || !agencyId) return;
+			if (actionTypeNumber === undefined || programId === undefined || agencyId === undefined) return;
 			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
 			if (isValid) {
 				action.action(record);
@@ -108,7 +114,7 @@ export const Table = <T extends object>({
 		} else {
 			action.action(record);
 		}
-	};
+	}, [currentAgency, programId, fnApiValidatePermissionAction, actionsUser]);
 
 	const handleConfirmAction = async () => {
 		const { action, record } = confirmModalState;
@@ -116,10 +122,10 @@ export const Table = <T extends object>({
 
 		setConfirmModalState({ open: false, action: null, record: null });
 
-		if (action.validateWithApiAction) {
+		if (action.validateWithApiAction ?? false) {
 			const agencyId = currentAgency?.id;
 			const actionTypeNumber = action.actionType as EActionType;
-			if (!actionTypeNumber || !programId || !agencyId) return;
+			if (programId === undefined || agencyId === undefined) return;
 			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
 			if (isValid) {
 				action.action(record);
@@ -132,6 +138,47 @@ export const Table = <T extends object>({
 	const handleCancelConfirm = () => {
 		setConfirmModalState({ open: false, action: null, record: null });
 	};
+	//tomas
+
+	// const isDisabledActionButtonByUserActions = useCallback((record: T) => {
+	// 	if (actionType) {
+	// 		const isDisabled = isDisabledAction(actionsUser, actionType);
+	// 		return isDisabled;
+	// 	}
+	// 	return false;
+	// }, [actionType, actionsUser]);
+
+	const itemsDropdown = useCallback((record: T) => {
+		const resultActionsItems = (columnActions || [])
+			.filter(action => {
+				const isDisabled = disabledActionButton(action.actionType, actionsUser);
+				if (isDisabled === true) {
+					return false;
+				}
+				const actionDisabled =
+					typeof action.disabled === 'function' ? action.disabled(record) : action.disabled ?? false;
+				return !actionDisabled;
+			})
+			.map((action, index) => ({
+				label: action.title,
+				key: action.key || `action-${index}`,
+				icon: typeof action.icon === 'function' ? action.icon(record) : action.icon,
+				onClick: () => clickAction(action, record),
+				danger: action.danger,
+			}));
+			if(resultActionsItems.length > 0){
+				return resultActionsItems;
+			}
+			return [{
+				label: 'Sin acciones disponibles',
+				key: 'no-actions',
+				icon: <InfoCircleOutlined />,
+				onClick: () => {},
+				danger: false,
+				disabled: true,
+			}];
+			
+	}, [columnActions, actionsUser, clickAction]);
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
 		if (showColumnActions) {
@@ -143,23 +190,10 @@ export const Table = <T extends object>({
 				fixed: 'right',
 				render: (record: T) => (
 					<Dropdown
-						disabled={!!getActionsDisabled?.(record)}
+						disabled={getActionsDisabled?.(record) ?? false}
 						placement="bottomRight"
 						menu={{
-							items: (columnActions || [])
-								.filter(action => {
-									// const hasPermission = false;//! disabledActionButton(action.actionType, actions);
-									const actionDisabled =
-										typeof action.disabled === 'function' ? action.disabled(record) : !!action.disabled;
-									return !actionDisabled;
-								})
-								.map((action, index) => ({
-									label: action.title,
-									key: action.key || `action-${index}`,
-									icon: typeof action.icon === 'function' ? action.icon(record) : action.icon,
-									onClick: () => clickAction(action, record),
-									danger: action.danger,
-								})),
+							items: itemsDropdown(record),
 						}}
 					>
 						<Button
@@ -167,7 +201,7 @@ export const Table = <T extends object>({
 							shape="round"
 							size="small"
 							className="w-full"
-							disabled={!!getActionsDisabled?.(record) || !!getActionsTriggerDisabled?.(record)}
+							disabled={(getActionsDisabled?.(record) ?? false) || (getActionsTriggerDisabled?.(record) ?? false)}
 						>
 							<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
 						</Button>
@@ -196,7 +230,7 @@ export const Table = <T extends object>({
 		}
 
 		// Si hay columnas fijas, asegurar que scroll.x esté definido y sea un valor válido
-		if (scroll && typeof scroll === 'object' && 'x' in scroll && scroll.x !== undefined && scroll.x !== null) {
+		if (scroll != null && typeof scroll === 'object' && 'x' in scroll && scroll.x !== undefined && scroll.x !== null) {
 			return scroll;
 		}
 
@@ -204,12 +238,12 @@ export const Table = <T extends object>({
 		const totalWidth = getColumnsTotalWidth(tableColumns);
 
 		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
-		const baseScroll = scroll && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
+		const baseScroll = scroll != null && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
 
 		return {
 			...baseScroll,
 			x:
-				scroll && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null
+				scroll != null && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null
 					? scroll.x
 					: totalWidth > 0
 						? totalWidth
@@ -342,7 +376,7 @@ export const Table = <T extends object>({
 	const validateRefreshDataFunction = (): ColumnsType<T> => {
 		if (!refreshDataFunction) {
 			return tableColumns as ColumnsType<T>;
-		};
+		}
 		return newTableHeaderTable;
 	};
 
@@ -359,12 +393,13 @@ export const Table = <T extends object>({
 				pagination={finalPagination}
 				scroll={getFinalScroll(tableColumns)}
 				locale={locale}
-				rootClassName={rootClassName}
+				className={resolvedRootClassName}
+				rootClassName={resolvedRootClassName}
 				rowClassName={rowClassName}
 				rowKey={rowKey}
 				components={{
 					header: {
-						wrapper: (props: any) => (
+						wrapper: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
 							<thead
 								{...props}
 								style={{
@@ -375,7 +410,7 @@ export const Table = <T extends object>({
 								}}
 							/>
 						),
-						cell: (props: any) => {
+						cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => {
 							return (
 								<th
 									{...props}
@@ -392,7 +427,7 @@ export const Table = <T extends object>({
 						},
 					},
 					body: {
-						cell: (props: any) => (
+						cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
 							<td
 								{...props}
 								style={{
@@ -410,6 +445,7 @@ export const Table = <T extends object>({
 				onRow={record => ({
 					onClick: handleRowClick(record),
 				})}
+				expandable={expandable}
 				rowHoverable={rowHoverable}
 			/>
 
