@@ -19,7 +19,6 @@ import {
 	getLabelFromValue,
 	getSchemaColumns,
 	getSchemaFields,
-	getNumberFromStorage,
 	getStringFromStorage,
 	parseValidDateITSA,
 } from './formats';
@@ -89,6 +88,19 @@ import {
 	updateChildUnderParent,
 } from './treeNode';
 
+
+import {
+	encryptData,
+	decryptData,
+	decryptDataFromStorage,
+	setDataEncryptedInStorage,
+} from './encrypt';
+
+
+
+
+
+
 export {
 	addOrderParamIfMissing,
 	buildQueryParams,
@@ -99,6 +111,9 @@ export {
 	clearURLParams,
 	codeUserInputValidation,
 	createValueLabelMap,
+	decryptData,
+	decryptDataFromStorage,
+	encryptData,
 	fillRoute,
 	filterMenuSidebar,
 	filterMenuTree,
@@ -112,7 +127,6 @@ export {
 	formatMoneyIfValid,
 	getOriginFromUrl,
 	generateUuid,
-	getNumberFromStorage,
 	getStringFromStorage,
 	getInstance,
 	parseValidDateITSA,
@@ -164,4 +178,5 @@ export {
 	validateArgument,
 	validateArgumentUnified,
 	validateArgumentWithIA,
+	setDataEncryptedInStorage
 };

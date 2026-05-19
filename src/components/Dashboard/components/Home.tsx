@@ -1,6 +1,6 @@
 import { IModule, ISubmodule } from '@/interfaces';
 import { useAppLayoutStore } from '@/store/appLayout.store';
-import { useSidebarStore } from '@/hooks';
+import { useEncrypt, useSidebarStore } from '@/hooks';
 import { ButtonActiveModule } from './ButtonActiveModule';
 import { ButtonInactiveModule } from './ButtonInactiveModule';
 import { useMemo, useState, useEffect, useRef } from 'react';
@@ -29,7 +29,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 	const tabsContainerRef = useRef<HTMLDivElement | null>(null);
 	const tabRefs = useRef<Record<ISubmodule['id'], HTMLDivElement | null>>({} as any);
 	const [indicator, setIndicator] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
-
+	const { encryptKey } = useEncrypt();
 	const recomputeIndicator = () => {
 		if (!currentSubmodule) return;
 		const el = tabRefs.current[currentSubmodule.id];
@@ -57,10 +57,10 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 
 	const buttonHeader = (module: IModule) => {
 		if (module.id === currentModule?.id) {
-			return <ButtonActiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module)} />;
+			return <ButtonActiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module, encryptKey)} />;
 		}
 
-		return <ButtonInactiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module)} />;
+		return <ButtonInactiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module, encryptKey)} />;
 	};
 
 	const uniqueById = (items: ISubmodule[] = []) => {
@@ -181,7 +181,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 					name={submodule.name}
 					icon={submodule.icon ?? ''}
 					onclick={() => {
-						setCurrentSubmodule(submodule);
+						setCurrentSubmodule(submodule, encryptKey);
 					}}
 				/>
 			);
@@ -191,7 +191,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 				name={submodule.name}
 				icon={submodule.icon ?? ''}
 				onclick={() => {
-					setCurrentSubmodule(submodule);
+					setCurrentSubmodule(submodule, encryptKey);
 				}}
 			/>
 		);

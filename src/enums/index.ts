@@ -242,12 +242,13 @@ export enum ETransmissionType {
 }
 
 export enum ELocalStorageKeys {
-	agencyId = 'agencyId',
-	moduleId = 'moduleId',
-	submoduleId = 'submoduleId',
+	agency = 'agency',
+	module = 'module',
+	role = 'role',
+	submodule = 'submodule',
 	refreshToken = 'refreshToken',
 	currentEnvironment = 'currentEnvironment',
-	moduleHomeSelectedId = 'moduleHomeSelectedId',
+	moduleHomeSelected = 'moduleHomeSelected',
 	collapsedSidebar = 'collapsedSidebar',
 }
 
