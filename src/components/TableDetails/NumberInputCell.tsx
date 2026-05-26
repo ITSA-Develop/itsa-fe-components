@@ -27,9 +27,11 @@ export const NumberInputCell = ({
 	status,
 }: INumberInputCellProps) => {
 	const [innerValue, setInnerValue] = useState(value);
+	const [isDirty, setIsDirty] = useState(false);
 
 	useEffect(() => {
 		setInnerValue(value);
+		setIsDirty(false);
 	}, [value]);
 
 	const handleChange = (val: string | number | null) => {
@@ -39,13 +41,21 @@ export const NumberInputCell = ({
 		}
 
 		setInnerValue(val);
+		setIsDirty(true);
+	};
+
+	const handleBlur = () => {
+		if (!isDirty) return;
+
+		onCommit(innerValue);
+		setIsDirty(false);
 	};
 
 	return (
 		<InputNumber
 			value={innerValue}
 			onChange={handleChange}
-			onBlur={() => onCommit(innerValue)}
+			onBlur={handleBlur}
 			style={{ width: '100%' }}
 			min={min}
 			max={max}
@@ -57,4 +67,3 @@ export const NumberInputCell = ({
 		/>
 	);
 };
-

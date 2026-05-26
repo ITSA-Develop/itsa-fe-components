@@ -50,16 +50,23 @@ export const TableDetails = <T extends object>({
 }: ITableDetailsProps<T>) => {
 	const handleChangeData = useCallback(
 		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
+			const currentValue = record[dataIndex as keyof T];
+
+			if (Object.is(currentValue, value)) return;
+
 			const updatedRecord = {
 				...record,
 				[dataIndex]: value,
 			};
 
-			onChangeData?.({
-				record: updatedRecord,
-				dataIndex,
-				value,
-			}, index);
+			onChangeData?.(
+				{
+					record: updatedRecord,
+					dataIndex,
+					value,
+				},
+				index,
+			);
 		},
 		[onChangeData],
 	);
@@ -123,7 +130,6 @@ export const TableDetails = <T extends object>({
 						};
 					},
 					render: (value: any, record: T, index: number) => {
-
 						if (column.render) {
 							return column.render(value, record, index);
 						}
@@ -253,7 +259,9 @@ export const TableDetails = <T extends object>({
 										}}
 										showTime={column.includeTime ? { format: 'HH:mm' } : false}
 										value={dateValue}
-										onChange={date => handleChangeData(record, column.dataIndex, date ? date.format(format) : '', index)}
+										onChange={date =>
+											handleChangeData(record, column.dataIndex, date ? date.format(format) : '', index)
+										}
 										disabled={isDisabled || disabledColumnActions}
 										status={error ? 'error' : undefined}
 										allowClear
@@ -276,7 +284,7 @@ export const TableDetails = <T extends object>({
 					},
 				};
 			}) as ColumnsType<T>,
-		[columns, handleChangeData],
+		[columns, disabledColumnActions, handleChangeData],
 	);
 
 	const ACTION_COL_WIDTH = 40;
@@ -351,7 +359,7 @@ export const TableDetails = <T extends object>({
 		const defaultExpandedRowClass = 'itsa-expanded-row-no-spacing';
 		const currentExpandedRowClass = expandable.expandedRowClassName;
 
-		if (!currentExpandedRowClass) {
+		if (currentExpandedRowClass === undefined) {
 			return {
 				...expandable,
 				expandedRowClassName: () => defaultExpandedRowClass,

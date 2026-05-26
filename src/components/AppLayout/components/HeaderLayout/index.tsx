@@ -97,7 +97,7 @@ export const HeaderLayout = ({
 	const setModulesAgencyCallback = useCallback(
 		(agencies: IAgency[]) => {
 			const moduleIdStorage = getDecryptDataFromStorage(ELocalStorageKeys.module);
-			
+
 			let moduleFound = false;
 
 			if (moduleIdStorage !== undefined) {
@@ -137,10 +137,23 @@ export const HeaderLayout = ({
 					}
 				}
 			}
-			
 		},
 		[encryptKey, getDecryptDataFromStorage, setCurrentAgency, setCurrentModule, setModulesAgency],
 	);
+
+	// useEffect para detectar una combinacion de teclas para abrir el menu lateral o cerrar el menu lateral
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.ctrlKey && event.key === 'c') {
+				setCollapsed(!collapsed);
+			}
+		};
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [collapsed, setCollapsed]);
 
 	// Descomenta este useEffect
 	useEffect(() => {
@@ -158,14 +171,14 @@ export const HeaderLayout = ({
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
-		selectAgency(agencies.find(a => a.id.toString() === agencyId), false);
+		selectAgency(
+			agencies.find(a => a.id.toString() === agencyId),
+			false,
+		);
 	};
 
 	const renderBackgroundText = () => {
-
-		const textRender = Array.from({ length: 28 }).map((_, index) => (
-			<span key={index}>{headerBackgroundClass}</span>
-		));
+		const textRender = Array.from({ length: 28 }).map((_, index) => <span key={index}>{headerBackgroundClass}</span>);
 
 		switch (headerBackgroundClass) {
 			case 'LOCAL':
@@ -173,16 +186,18 @@ export const HeaderLayout = ({
 			case 'DESARROLLO':
 				return textRender;
 			case 'QA':
-				return <div>
-					{textRender}
-					{textRender}
-				</div>;
+				return (
+					<div>
+						{textRender}
+						{textRender}
+					</div>
+				);
 			case 'PRODUCCION':
 				return textRender;
 			default:
 				return textRender;
 		}
-	}
+	};
 
 	return (
 		<header className="h-16">

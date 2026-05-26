@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-	--font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto,
-		"Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-		"Segoe UI Emoji", "Noto Color Emoji";
+	--font-sans:
+		'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
 }
 
 /* Variable de color primario global para este paquete */
 :root {
-	--itsa-primary: #EA3B48;
+	--itsa-primary: #ea3b48;
 }
 
 html,
@@ -43,11 +43,11 @@ body,
 	overflow-x: hidden !important;
 }
 
-.menu-options .ant-menu-submenu .ant-menu-submenu>.ant-menu-submenu-title {
+.menu-options .ant-menu-submenu .ant-menu-submenu > .ant-menu-submenu-title {
 	padding-left: 38px !important;
 }
 
-.menu-options .ant-menu-submenu .ant-menu-submenu>.ant-menu .ant-menu-item {
+.menu-options .ant-menu-submenu .ant-menu-submenu > .ant-menu .ant-menu-item {
 	padding-left: 50px !important;
 	font-size: 11px !important;
 }
@@ -65,14 +65,13 @@ body,
 	font-size: 14px;
 }
 
-
 .itsa-checkbox--default .ant-checkbox .ant-checkbox-inner {
 	border-color: var(--itsa-primary) !important;
 }
 
 .itsa-checkbox--default .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .itsa-checkbox--default .ant-checkbox:hover .ant-checkbox-inner,
-.itsa-checkbox--default .ant-checkbox-input:focus+.ant-checkbox-inner {
+.itsa-checkbox--default .ant-checkbox-input:focus + .ant-checkbox-inner {
 	border-color: var(--itsa-primary) !important;
 }
 
@@ -82,7 +81,7 @@ body,
 
 .mi-clase-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .mi-clase-checkbox .ant-checkbox:hover .ant-checkbox-inner,
-.mi-clase-checkbox .ant-checkbox-input:focus+.ant-checkbox-inner {
+.mi-clase-checkbox .ant-checkbox-input:focus + .ant-checkbox-inner {
 	border-color: var(--itsa-primary) !important;
 }
 
@@ -107,13 +106,13 @@ body,
 }
 
 .itsa-radio--default .ant-radio .ant-radio-inner {
-  border-color: var(--ant-colorBorder, #d9d9d9) !important;
+	border-color: var(--ant-colorBorder, #d9d9d9) !important;
 }
 
 .itsa-radio--default .ant-radio-wrapper:hover .ant-radio-inner,
 .itsa-radio--default .ant-radio:hover .ant-radio-inner,
-.itsa-radio--default .ant-radio-input:focus+.ant-radio-inner {
-  border-color: var(--ant-colorBorder, #d9d9d9) !important;
+.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
+	border-color: var(--ant-colorBorder, #d9d9d9) !important;
 }
 
 .itsa-radio--default .ant-radio-checked .ant-radio-inner {
@@ -143,7 +142,7 @@ body,
 	border-color: var(--itsa-primary) !important;
 }
 
-.itsa-radio--default .ant-radio-input:focus+.ant-radio-inner {
+.itsa-radio--default .ant-radio-input:focus + .ant-radio-inner {
 	box-shadow: 0 0 0 3px rgba(234, 61, 72, 0.24) !important;
 }
 
@@ -181,7 +180,7 @@ body,
 
 	/* Fallback para cuando no es AntD */
 	.itsa-btn--primary:active {
-		background-color: #CF0021;
+		background-color: #cf0021;
 	}
 
 	.itsa-btn--secondary {
@@ -203,15 +202,15 @@ body,
 
 	/* Disabled fallback: secundario default */
 	.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled {
-		color: #D9D9D9;
-		border-color: #D9D9D9;
+		color: #d9d9d9;
+		border-color: #d9d9d9;
 		background-color: #ffffff;
 		cursor: not-allowed;
 	}
 
 	.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:hover {
-		color: #D9D9D9;
-		border-color: #D9D9D9;
+		color: #d9d9d9;
+		border-color: #d9d9d9;
 		background-color: #ffffff;
 	}
 
@@ -221,8 +220,75 @@ body,
 
 	/* Fallback para cuando no es AntD */
 	.itsa-btn--secondary:active {
-		color: #CF0021;
-		border-color: #CF0021;
+		color: #cf0021;
+		border-color: #cf0021;
+	}
+
+	.itsa-btn--danger,
+	.itsa-btn--warning,
+	.itsa-btn--success,
+	.itsa-btn--info {
+		background-color: var(--itsa-btn-bg) !important;
+		border: 1px solid var(--itsa-btn-border);
+		color: var(--itsa-btn-color);
+	}
+
+	.itsa-btn--danger:hover,
+	.itsa-btn--warning:hover,
+	.itsa-btn--success:hover,
+	.itsa-btn--info:hover {
+		background-color: var(--itsa-btn-hover-bg) !important;
+		border-color: var(--itsa-btn-border);
+		color: var(--itsa-btn-color);
+	}
+
+	.itsa-btn--danger:active,
+	.itsa-btn--warning:active,
+	.itsa-btn--success:active,
+	.itsa-btn--info:active {
+		background-color: var(--itsa-btn-active-bg) !important;
+		border-color: var(--itsa-btn-active-border);
+		color: var(--itsa-btn-active-color);
+	}
+
+	.itsa-btn--danger {
+		--itsa-btn-bg: #fef2f2;
+		--itsa-btn-hover-bg: #ffe2e1;
+		--itsa-btn-active-bg: #ffc9c8;
+		--itsa-btn-border: #f5423e;
+		--itsa-btn-active-border: #be1b17;
+		--itsa-btn-color: #be1b17;
+		--itsa-btn-active-color: #9d1a17;
+	}
+
+	.itsa-btn--warning {
+		--itsa-btn-bg: #fff8eb;
+		--itsa-btn-hover-bg: #ffedc6;
+		--itsa-btn-active-bg: #ffd888;
+		--itsa-btn-border: #ef8329;
+		--itsa-btn-active-border: #b73d06;
+		--itsa-btn-color: #942e0c;
+		--itsa-btn-active-color: #7a260d;
+	}
+
+	.itsa-btn--success {
+		--itsa-btn-bg: #f6fef6;
+		--itsa-btn-hover-bg: #e3fde5;
+		--itsa-btn-active-bg: #bff8c3;
+		--itsa-btn-border: #4cae4f;
+		--itsa-btn-active-border: #26782a;
+		--itsa-btn-color: #26782a;
+		--itsa-btn-active-color: #226325;
+	}
+
+	.itsa-btn--info {
+		--itsa-btn-bg: #f6fdfe;
+		--itsa-btn-hover-bg: #e1faff;
+		--itsa-btn-active-bg: #b0eeff;
+		--itsa-btn-border: #54b0cf;
+		--itsa-btn-active-border: #2279a2;
+		--itsa-btn-color: #2279a2;
+		--itsa-btn-active-color: #055988;
 	}
 
 	/* Tamaños */
@@ -251,7 +317,7 @@ body,
 	.ant-btn.itsa-btn--secondary:hover,
 	.ant-btn.itsa-btn--secondary:focus {
 		color: var(--itsa-primary) !important;
-		background-color: #FCEEEE !important;
+		background-color: #fceeee !important;
 		border-color: var(--itsa-primary) !important;
 	}
 
@@ -279,8 +345,8 @@ body,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled {
-		color: #D9D9D9 !important;
-		border-color: #D9D9D9 !important;
+		color: #d9d9d9 !important;
+		border-color: #d9d9d9 !important;
 		background-color: #ffffff !important;
 		cursor: not-allowed !important;
 		box-shadow: none !important;
@@ -296,28 +362,58 @@ body,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default.itsa-btn--disabled:active,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default:disabled:active,
 	.ant-btn.itsa-btn--secondary.itsa-btn--default.ant-btn-disabled:active {
-		color: #D9D9D9 !important;
-		border-color: #D9D9D9 !important;
+		color: #d9d9d9 !important;
+		border-color: #d9d9d9 !important;
 		background-color: #ffffff !important;
 	}
 
 	.ant-btn.itsa-btn--secondary:active {
-		color: #CF0021 !important;
-		border-color: #CF0021 !important;
+		color: #cf0021 !important;
+		border-color: #cf0021 !important;
+	}
+
+	.ant-btn.itsa-btn--danger,
+	.ant-btn.itsa-btn--warning,
+	.ant-btn.itsa-btn--success,
+	.ant-btn.itsa-btn--info {
+		background-color: var(--itsa-btn-bg) !important;
+		border-color: var(--itsa-btn-border) !important;
+		color: var(--itsa-btn-color) !important;
+	}
+
+	.ant-btn.itsa-btn--danger:hover,
+	.ant-btn.itsa-btn--danger:focus,
+	.ant-btn.itsa-btn--warning:hover,
+	.ant-btn.itsa-btn--warning:focus,
+	.ant-btn.itsa-btn--success:hover,
+	.ant-btn.itsa-btn--success:focus,
+	.ant-btn.itsa-btn--info:hover,
+	.ant-btn.itsa-btn--info:focus {
+		background-color: var(--itsa-btn-hover-bg) !important;
+		border-color: var(--itsa-btn-border) !important;
+		color: var(--itsa-btn-color) !important;
+	}
+
+	.ant-btn.itsa-btn--danger:active,
+	.ant-btn.itsa-btn--warning:active,
+	.ant-btn.itsa-btn--success:active,
+	.ant-btn.itsa-btn--info:active {
+		background-color: var(--itsa-btn-active-bg) !important;
+		border-color: var(--itsa-btn-active-border) !important;
+		color: var(--itsa-btn-active-color) !important;
 	}
 
 	/* Primario AntD: usa tokens CSS para hover/active (reduce duplicación) */
 	.ant-btn.itsa-btn--primary {
 		--ant-colorPrimary: var(--itsa-primary);
-		--ant-colorPrimaryHover: #D90022;
-		--ant-colorPrimaryActive: #CF0021;
-		color: #FFFFFF !important;
-
+		--ant-colorPrimaryHover: #d90022;
+		--ant-colorPrimaryActive: #cf0021;
+		color: #ffffff !important;
 	}
 
 	.ant-btn.itsa-btn--disabled {
-		background-color: #D9D9D9 !important;
-		border-color: #D9D9D9 !important;
+		background-color: #d9d9d9 !important;
+		border-color: #d9d9d9 !important;
 		color: #ffffff !important;
 		cursor: not-allowed !important;
 		box-shadow: none !important;
@@ -343,8 +439,6 @@ body,
 .tabs-maintenance .ant-tabs-tab:hover .ant-tabs-tab-btn {
 	color: var(--ant-colorPrimary) !important;
 }
-
-
 
 /* ===== ITSA Table customizations (included in package build) ===== */
 
@@ -408,7 +502,7 @@ body,
 }
 
 .itsa-table--head-rounded .ant-table-thead > tr > th:not(:last-child)::after {
-	content: "";
+	content: '';
 	position: absolute;
 	right: 0;
 	top: 50%;
@@ -441,7 +535,7 @@ body,
 .itsa-table--head-rounded .ant-table-selection-column .ant-checkbox:hover .ant-checkbox-inner,
 .itsa-table--head-rounded .ant-table-selection-column .ant-checkbox-input:focus + .ant-checkbox-inner {
 	border-color: var(--itsa-primary) !important;
-	box-shadow: 0 0 0 3px #EA3B48 !important;
+	box-shadow: 0 0 0 3px #ea3b48 !important;
 }
 
 .itsa-table--head-rounded .ant-table-selection-column .ant-checkbox-checked .ant-checkbox-inner {
@@ -464,21 +558,39 @@ body,
 }
 
 /* Unchecked state should remain gray */
-.itsa-table--head-rounded .ant-table-selection-column .ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate) .ant-checkbox-inner {
-	border-color: #B0BCD5 !important;
+.itsa-table--head-rounded
+	.ant-table-selection-column
+	.ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate)
+	.ant-checkbox-inner {
+	border-color: #b0bcd5 !important;
 	background-color: #ffffff !important;
 }
 
-.itsa-table--head-rounded .ant-table-selection-column .ant-checkbox-wrapper:hover .ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate) .ant-checkbox-inner,
-.itsa-table--head-rounded .ant-table-selection-column .ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate):hover .ant-checkbox-inner,
-.itsa-table--head-rounded .ant-table-selection-column .ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate) .ant-checkbox-input:focus + .ant-checkbox-inner {
-	border-color: #B0BCD5 !important;
+.itsa-table--head-rounded
+	.ant-table-selection-column
+	.ant-checkbox-wrapper:hover
+	.ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate)
+	.ant-checkbox-inner,
+.itsa-table--head-rounded
+	.ant-table-selection-column
+	.ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate):hover
+	.ant-checkbox-inner,
+.itsa-table--head-rounded
+	.ant-table-selection-column
+	.ant-checkbox:not(.ant-checkbox-checked):not(.ant-checkbox-indeterminate)
+	.ant-checkbox-input:focus
+	+ .ant-checkbox-inner {
+	border-color: #b0bcd5 !important;
 	box-shadow: none !important;
 }
 
 /* Focus ring only when checked */
-.itsa-table--head-rounded .ant-table-selection-column .ant-checkbox-checked .ant-checkbox-input:focus + .ant-checkbox-inner {
-	box-shadow: 0 0 0 3px #EA3B48 !important;
+.itsa-table--head-rounded
+	.ant-table-selection-column
+	.ant-checkbox-checked
+	.ant-checkbox-input:focus
+	+ .ant-checkbox-inner {
+	box-shadow: 0 0 0 3px #ea3b48 !important;
 }
 
 /* Selection radio colors (single mode) */
@@ -508,7 +620,7 @@ body,
 	--itsa-pagination-item-size: 26px;
 	--itsa-pagination-font-size: 12px;
 	/* Default hover background for table rows */
-	--itsa-table-row-hover-bg: #F5F5F5;
+	--itsa-table-row-hover-bg: #f5f5f5;
 	/* Selected row backgrounds */
 	--itsa-table-row-selected-bg: rgba(234, 59, 72, 0.12);
 	--itsa-table-row-selected-hover-bg: rgba(234, 59, 72, 0.18);
@@ -552,8 +664,16 @@ body,
 	height: var(--itsa-pagination-item-size) !important;
 }
 
-.itsa-table--head-rounded .ant-table-pagination .ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis,
-.itsa-table--head-rounded .ant-table-pagination .ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis {
+.itsa-table--head-rounded
+	.ant-table-pagination
+	.ant-pagination-jump-prev
+	.ant-pagination-item-container
+	.ant-pagination-item-ellipsis,
+.itsa-table--head-rounded
+	.ant-table-pagination
+	.ant-pagination-jump-next
+	.ant-pagination-item-container
+	.ant-pagination-item-ellipsis {
 	line-height: var(--itsa-pagination-item-size) !important;
 }
 
@@ -638,7 +758,7 @@ body,
    NOTE: This file is compiled into `dist/styles.css` for consumers. */
 .itsa-autocomplete--subtle.ant-select-dropdown {
 	/* Transparent + blurred container */
-	background: rgba(255, 255, 255, 0.10) !important;
+	background: rgba(255, 255, 255, 0.1) !important;
 	-webkit-backdrop-filter: blur(10px);
 	backdrop-filter: blur(10px);
 	border: 1px solid rgba(0, 0, 0, 0.04) !important;
@@ -675,4 +795,3 @@ body,
 	background: rgba(234, 59, 72, 0.06) !important;
 	font-weight: 400 !important;
 }
-
