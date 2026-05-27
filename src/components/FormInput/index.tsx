@@ -3,7 +3,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Input } from '@/components/Input/Input';
-import { memo, useId, useMemo } from 'react';
+import { memo, useId } from 'react';
 import { EInput } from '@/enums';
 import { TTextTransform } from '@/types';
 
@@ -39,15 +39,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 			control={control}
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message as string | undefined;
-				const validatMsg = useMemo(() => {
-					if (errorMsg) {
-						return errorMsg;
-					}
-					if (errorIdentificationExists) {
-						return errorIdentificationExists;
-					}
-					return undefined;
-				}, [errorMsg, errorIdentificationExists]);
+				const validatMsg = errorMsg ?? errorIdentificationExists;
 
 				const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 					const inputValue = e.target.value ?? '';
@@ -65,9 +57,9 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 
 				const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 					field.onBlur();
-					const inputValue = e.target.value ?? '';
+					const inputValue = e.target.value;
 					let transformedValue = inputValue;
-					
+
 					if (textTransform === 'uppercase') {
 						transformedValue = inputValue.toUpperCase();
 					} else if (textTransform === 'lowercase') {
@@ -88,16 +80,16 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							onBlur={handleOnBlur}
 							ref={field.ref}
 							name={field.name}
-							status={validatMsg ? 'error' : undefined}
-							aria-invalid={!!validatMsg}
-							aria-describedby={validatMsg ? errId : undefined}
+							status={validatMsg !== undefined ? 'error' : undefined}
+							aria-invalid={validatMsg !== undefined}
+							aria-describedby={validatMsg !== undefined ? errId : undefined}
 							showCountCharacters={showCaracteres}
 							placeholder={placeholder}
 							autoComplete={autoComplete}
 							disabled={disabled}
 							style={{ textTransform: textTransform }}
 						/>
-						{(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
+						{validatMsg !== undefined && <FormLabelError label={validatMsg} id={errId} />}
 					</div>
 				);
 			}}

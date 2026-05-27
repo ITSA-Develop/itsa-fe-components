@@ -23,6 +23,7 @@ export type {
 	IDocumentationGuideSections,
 } from './components/DocumentationGuide';
 export { Drawer } from './components/Drawer/Drawer';
+export { Dropdown } from './components/Dropdown/Dropdown';
 export { DropdownButton } from './components/DropdownButton/DropdownButton';
 export type { IDropdownButtonProps, IDropdownButtonItem } from './components/DropdownButton/DropdownButton';
 export { DropdownCustomLabel } from './components/DropdownCustomLabel';

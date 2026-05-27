@@ -3,7 +3,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Textarea } from '@/components/Textarea/Textarea';
-import { memo, useId, useMemo } from 'react';
+import { memo, useId } from 'react';
 import { TTextTransform } from '@/types';
 
 export interface IFormTextareaProps<TFieldValues extends FieldValues> extends Omit<TextAreaProps, 'form' | 'name'> {
@@ -26,7 +26,7 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
   errorIdentificationExists,
   autoComplete = 'off',
   disabled = false,
-  textTransform = 'none',
+  textTransform = 'uppercase',
   ...rest
 }: IFormTextareaProps<TFieldValues>) => {
   const id = useId();
@@ -38,15 +38,7 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => {
         const errorMsg = fieldState.error?.message as string | undefined;
-        const validatMsg = useMemo(() => {
-          if (errorMsg) {
-            return errorMsg;
-          }
-          if (errorIdentificationExists) {
-            return errorIdentificationExists;
-          }
-          return undefined;
-        }, [errorMsg, errorIdentificationExists]);
+        const validatMsg = errorMsg ?? errorIdentificationExists ?? undefined;
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
           const inputValue = e.target.value ?? '';
@@ -69,16 +61,16 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
               onChange={handleChange}
               onBlur={field.onBlur}
               name={field.name}
-              status={validatMsg ? 'error' : undefined}
-              aria-invalid={!!validatMsg}
-              aria-describedby={validatMsg ? errId : undefined}
+              status={validatMsg !== undefined ? 'error' : undefined}
+              aria-invalid={validatMsg !== undefined}
+              aria-describedby={validatMsg !== undefined ? errId : undefined}
               placeholder={placeholder}
               autoComplete={autoComplete}
               disabled={disabled}
               style={{ textTransform: textTransform }}
               {...rest}
             />
-            {(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
+            {validatMsg !== undefined && <FormLabelError label={validatMsg} id={errId} />}
           </div>
         );
       }}
