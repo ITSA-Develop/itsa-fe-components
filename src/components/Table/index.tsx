@@ -4,7 +4,7 @@ import { disabledActionButton, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
 import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
-import { InfoCircleOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
 import { MouseEvent, useCallback, useState } from 'react';
@@ -77,7 +77,14 @@ export const Table = <T extends object>({
 	const { actionsUser } = useActionsUser();
 	const finalPagination = showPagination ? paginationConfig : false;
 	const baseTableScopeClass = 'itsa-table--head-rounded';
-	const resolvedRootClassName = [baseTableScopeClass, rootClassName, className].filter(Boolean).join(' ');
+	const resolvedRootClassName = [
+		baseTableScopeClass,
+		refreshDataFunction ? 'itsa-table--with-refresh' : '',
+		rootClassName,
+		className,
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
@@ -138,15 +145,6 @@ export const Table = <T extends object>({
 	const handleCancelConfirm = () => {
 		setConfirmModalState({ open: false, action: null, record: null });
 	};
-	//tomas
-
-	// const isDisabledActionButtonByUserActions = useCallback((record: T) => {
-	// 	if (actionType) {
-	// 		const isDisabled = isDisabledAction(actionsUser, actionType);
-	// 		return isDisabled;
-	// 	}
-	// 	return false;
-	// }, [actionType, actionsUser]);
 
 	const itemsDropdown = useCallback((record: T) => {
 		const resultActionsItems = (columnActions || [])
@@ -356,98 +354,92 @@ export const Table = <T extends object>({
 		resolvedRowSelection.onChange?.(nextKeys, nextRows, { type: isSingle ? 'single' : 'multiple' });
 	};
 
-	const newTableHeaderTable: ColumnsType<T> = [{
-		title: (
-			<div className="flex w-full justify-start desktop:justify-end">
-				<Button
-					style={{ color: 'gray', border: 'none' }}
-					type='text'
-					loading={loading}
-					onClick={() => refreshDataFunction?.()}
-					icon={<ReloadOutlined />}
-				>
-					Refrescar
-				</Button>
-			</div>
-		),
-		children: [...tableColumns as ColumnsType<T>],
-	}];
-
-	const validateRefreshDataFunction = (): ColumnsType<T> => {
-		if (!refreshDataFunction) {
-			return tableColumns as ColumnsType<T>;
-		}
-		return newTableHeaderTable;
-	};
-
 	return (
 		<>
-			<AntTable<T>
-				columns={validateRefreshDataFunction()}
-				dataSource={data}
-				loading={loading}
-				size="small"
-				bordered={bordered}
-				rowSelection={resolvedRowSelection}
-				onChange={handleChangePagination}
-				pagination={finalPagination}
-				scroll={getFinalScroll(tableColumns)}
-				locale={locale}
-				className={resolvedRootClassName}
-				rootClassName={resolvedRootClassName}
-				rowClassName={rowClassName}
-				rowKey={rowKey}
-				components={{
-					header: {
-						wrapper: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-							<thead
-								{...props}
-								style={{
-									...props?.style,
-									overflow: 'hidden',
-									borderTopLeftRadius: 8,
-									borderTopRightRadius: 8,
-								}}
-							/>
-						),
-						cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => {
-							return (
-								<th
+			<div className={refreshDataFunction ? 'itsa-table-wrapper itsa-table-wrapper--refresh' : 'itsa-table-wrapper'}>
+				{refreshDataFunction && (
+					<div className="itsa-table-refresh-bar">
+						<Button
+							style={{ color: 'gray', border: 'none' }}
+							type="text"
+							onClick={() => refreshDataFunction()}
+							className="itsa-table-refresh-button"
+						>
+							<div className="flex flex-row items-center justify-center gap-1">
+								{loading ? <LoadingOutlined spin={loading} style={{ fontSize: 9 }} /> : <ReloadOutlined style={{ fontSize: 12 }} />}
+								<span className="text-[11px] leading-none">Refrescar</span>
+							</div>
+							
+						</Button>
+					</div>
+				)}
+				<AntTable<T>
+					columns={tableColumns as ColumnsType<T>}
+					dataSource={data}
+					loading={loading}
+					size="small"
+					bordered={bordered}
+					rowSelection={resolvedRowSelection}
+					onChange={handleChangePagination}
+					pagination={finalPagination}
+					scroll={getFinalScroll(tableColumns)}
+					locale={locale}
+					className={resolvedRootClassName}
+					rootClassName={resolvedRootClassName}
+					rowClassName={rowClassName}
+					rowKey={rowKey}
+					components={{
+						header: {
+							wrapper: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+								<thead
 									{...props}
 									style={{
 										...props?.style,
-										background: '#EEF1F3',
+										overflow: 'hidden',
+										borderTopLeftRadius: refreshDataFunction ? 0 : 8,
+										borderTopRightRadius: refreshDataFunction ? 0 : 8,
+									}}
+								/>
+							),
+							cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => {
+								return (
+									<th
+										{...props}
+										style={{
+											...props?.style,
+											background: '#EEF1F3',
+											color: 'black',
+											fontSize: '12px',
+											height: '42px',
+											padding: '4px 8px',
+										}}
+									/>
+								);
+							},
+						},
+						body: {
+							cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
+								<td
+									{...props}
+									style={{
+										...props?.style,
 										color: 'black',
 										fontSize: '12px',
-										height: '42px',
+										height: '30px',
+										lineHeight: '18px',
 										padding: '4px 8px',
 									}}
 								/>
-							);
+							),
 						},
-					},
-					body: {
-						cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
-							<td
-								{...props}
-								style={{
-									...props?.style,
-									color: 'black',
-									fontSize: '12px',
-									height: '30px',
-									lineHeight: '18px',
-									padding: '4px 8px',
-								}}
-							/>
-						),
-					},
-				}}
-				onRow={record => ({
-					onClick: handleRowClick(record),
-				})}
-				expandable={expandable}
-				rowHoverable={rowHoverable}
-			/>
+					}}
+					onRow={record => ({
+						onClick: handleRowClick(record),
+					})}
+					expandable={expandable}
+					rowHoverable={rowHoverable}
+				/>
+			</div>
 
 			{confirmModalState.open && (
 				<Modal

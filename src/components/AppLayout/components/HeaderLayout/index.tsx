@@ -144,7 +144,7 @@ export const HeaderLayout = ({
 	// useEffect para detectar una combinacion de teclas para abrir el menu lateral o cerrar el menu lateral
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.ctrlKey && event.key === 'c') {
+			if (event.ctrlKey && event.key === 'z') {
 				setCollapsed(!collapsed);
 			}
 		};

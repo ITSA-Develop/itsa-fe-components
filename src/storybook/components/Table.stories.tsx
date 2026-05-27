@@ -11,6 +11,7 @@ import { FilterSelect } from '../../components/FilterSelect';
 import { FilterInput } from '../../components/FilterInput';
 import { FilterValue, TableCurrentDataSource } from 'antd/es/table/interface';
 import { ISorterTable } from '../../interfaces';
+import { message } from 'antd';
 
 export type ITablePersonData = {
 	id: number;
@@ -110,6 +111,60 @@ export const sampleData: ITablePersonData[] = [
 		age: 39,
 		address: 'Atlanta No. 40 Peach St',
 	},
+];
+
+export type ITableCreditNoteData = {
+	id: number;
+	observations: string;
+	noteNumber: string;
+	invoiceNumber: string;
+	type: string;
+	documentType: string;
+	reason: string;
+	status: string;
+	issueDate: string;
+	registerDate: string;
+	sriStatus: string;
+	sriDocumentId: string;
+	discount: number;
+	subtotal: number;
+	total: number;
+};
+
+const creditNoteSampleData: ITableCreditNoteData[] = Array.from({ length: 20 }, (_, index) => ({
+	id: index + 1,
+	observations: index % 2 === 0 ? 'TEST NOTA DE DESCUENTO' : 'TEST NOTA DE CREDITO COMPLETA',
+	noteNumber: `NC-${String(index + 1).padStart(6, '0')}`,
+	invoiceNumber: `FAC-${String(index + 100).padStart(6, '0')}`,
+	type: 'NOTA DE CREDITO',
+	documentType: 'ELECTRONICO',
+	reason: 'DEVOLUCION TOTAL DE FACTURA',
+	status: 'ACTIVO',
+	issueDate: '2026-05-20',
+	registerDate: '2026-05-21',
+	sriStatus: 'AUTORIZADO',
+	sriDocumentId: `DOC-${index + 1}`,
+	discount: 30 + index,
+	subtotal: 800 + index * 12.34,
+	total: 830 + index * 12.34,
+}));
+
+const creditNoteColumns: ColumnsType<ITableCreditNoteData> = [
+	{ title: 'ID', dataIndex: 'id', width: 80 },
+	{ title: 'Observaciones', dataIndex: 'observations', width: 220 },
+	{ title: 'Número de nota', dataIndex: 'noteNumber', width: 160 },
+	{ title: '# de factura', dataIndex: 'invoiceNumber', width: 150 },
+	{ title: 'Tipo', dataIndex: 'type', width: 170 },
+	{ title: 'Tipo de documento', dataIndex: 'documentType', width: 170 },
+	{ title: 'Razón de la nota', dataIndex: 'reason', width: 220 },
+	{ title: 'Estado de la nota', dataIndex: 'status', width: 150 },
+	{ title: 'Fecha de emisión', dataIndex: 'issueDate', width: 150 },
+	{ title: 'Fecha de registro', dataIndex: 'registerDate', width: 150 },
+	{ title: 'Estado de verificación SRI', dataIndex: 'sriStatus', width: 190 },
+	{ title: 'ID de documento electrónico SRI', dataIndex: 'sriDocumentId', width: 240 },
+	{ title: 'Descuento', dataIndex: 'discount', width: 120 },
+	{ title: 'Subtotal', dataIndex: 'subtotal', width: 120 },
+	{ title: 'Total', dataIndex: 'total', width: 120 },
 ];
 
 const sampleColumns: ColumnsType<ITablePersonData> = [
@@ -377,6 +432,81 @@ const TableWithSingleSelection = () => {
 			rowKey={'id'}
 		/>
 	);
+};
+
+const TableWithRefreshAndHorizontalScroll = () => {
+	const { pagination, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
+	const [loading, setLoading] = React.useState(false);
+
+	const handleRefresh = () => {
+		setLoading(true);
+		window.setTimeout(() => {
+			setLoading(false);
+			message.success('Datos actualizados');
+		}, 1200);
+	};
+
+	return (
+		<div className="h-full flex flex-col gap-2 p-2">
+			<div className="grid grid-cols-3 gap-1 bg-gray-250 p-2 rounded-md">
+				<FilterInput
+					type="text"
+					defaultValue={undefined}
+					placeholder="Número interno"
+					onSearch={() => {}}
+					loading={false}
+					disabled={false}
+					title="Número interno"
+				/>
+				<FilterInput
+					type="text"
+					defaultValue={undefined}
+					placeholder="Número de factura"
+					onSearch={() => {}}
+					loading={false}
+					disabled={false}
+					title="Número de factura"
+				/>
+				<FilterSelect
+					label="Estado"
+					options={OPTIONS_STATUS}
+					value={1}
+					onChange={value => console.log(value)}
+					disabled={false}
+					placeholder="Todos"
+				/>
+			</div>
+			<Table
+				columns={creditNoteColumns}
+				data={creditNoteSampleData}
+				loading={loading}
+				bordered={false}
+				showPagination
+				paginationConfig={{ ...pagination, total: creditNoteSampleData.length }}
+				onChange={onChangePagination}
+				rowKey="id"
+				refreshDataFunction={handleRefresh}
+				scroll={{ x: 2200, y: 'calc(100dvh - 323px)' }}
+			/>
+		</div>
+	);
+};
+
+export const WithRefreshAndHorizontalScroll: Story = {
+	render: () => (
+		<div className="h-full flex flex-col">
+			<TableWithRefreshAndHorizontalScroll />
+		</div>
+	),
+	parameters: {
+		layout: 'fullscreen',
+		docs: {
+			description: {
+				story:
+					'Tabla ancha con scroll horizontal y barra de Refrescar integrada sobre el header. Las columnas conservan sus títulos y el botón permanece visible al hacer scroll.',
+			},
+		},
+	},
 };
 
 export const WithPaginationAndPageSizeChange: Story = {
