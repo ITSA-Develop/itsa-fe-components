@@ -1,7 +1,7 @@
 import { Select, SelectProps } from "antd";
 
 export interface IFilterSelectProps extends SelectProps {
-    label: string;
+	label: string;
 }
 
 type AnyOption = { value: unknown; options?: AnyOption[] };
@@ -55,7 +55,8 @@ export const FilterSelect = ({ label, ...rest }: IFilterSelectProps) => {
 	if (Array.isArray(rawValue)) {
 		hasValue = rawValue.length > 0;
 	} else if (rawValue && typeof rawValue === 'object' && 'value' in (rawValue as any)) {
-		hasValue = !!(rawValue as any).value;
+		const objectValue = (rawValue as { value?: unknown }).value;
+		hasValue = objectValue !== undefined && objectValue !== null && objectValue !== '';
 	} else if (typeof rawValue === 'string') {
 		hasValue = rawValue.trim().length > 0;
 	} else if (typeof rawValue === 'number') {
@@ -65,39 +66,28 @@ export const FilterSelect = ({ label, ...rest }: IFilterSelectProps) => {
 	}
 
 	const shouldHighlight = hasValue;
-
-	const mergedStyles = {
-		...restAny.styles,
-		selector: {
-			...(restAny.styles?.selector ?? {}),
-			transition: 'box-shadow 160ms ease, border-color 160ms ease',
-			...(shouldHighlight
-				? {
-						borderColor: '#93c5fd',
-						boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.15)',
-				  }
-				: {}),
-		},
-	};
+	const mergedRootClassName = [restAny.rootClassName, shouldHighlight ? 'itsa-select-has-value' : undefined]
+		.filter(Boolean)
+		.join(' ');
 
 	return (
 		<div className="flex flex-col gap-0">
-            <small className="font-bold flex-1 min-w-0 truncate">
-                {label}
-            </small>
+			<small className="font-bold flex-1 min-w-0 truncate">
+				{label}
+			</small>
 			<Select
 				{...rest}
-				value={safeValue as any}
-				defaultValue={safeDefaultValue as any}
+				value={safeValue}
+				defaultValue={safeDefaultValue}
 				status={undefined}
-				className={`${restAny.className || ''} ${shouldHighlight ? 'itsa-select-has-value' : ''}`.trim()}
-				styles={mergedStyles as any}
+				rootClassName={mergedRootClassName || undefined}
+				className={restAny.className}
 				style={{
 					height: '28px',
 					lineHeight: '18px',
 					padding: '1px 2px',
-                    fontSize: '11px',
-					transition: 'box-shadow 160ms ease, border-color 160ms ease',
+					fontSize: '11px',
+					...(restAny.style ?? {}),
 				}}
 			/>
 		</div>

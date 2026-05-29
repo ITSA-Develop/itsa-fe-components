@@ -23,6 +23,8 @@ type Story = StoryObj<typeof meta>;
 
 export const CheckboxDefault: Story = {
 	args: {
+		variant: 'default',
+		children: 'Opción de ejemplo',
 		onChange: () => console.log('changed'),
 	},
 };
