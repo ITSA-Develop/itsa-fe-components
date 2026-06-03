@@ -36,7 +36,6 @@ export const AppLayout = ({
 	useEffect(() => {
 		if (initCollapsed.current) return;
 		initCollapsed.current = true;
-		// Initialize collapsed from localStorage
 		const storedCollapsed = localStorage.getItem(ELocalStorageKeys.collapsedSidebar);
 		if (storedCollapsed !== undefined && storedCollapsed === 'true') {
 			setCollapsed(true);
