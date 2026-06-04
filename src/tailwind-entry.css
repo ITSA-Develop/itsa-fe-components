@@ -65,6 +65,22 @@ body,
 	font-size: 14px;
 }
 
+/* TableMobileTypeCollapse: header visible con acciones a la derecha */
+.itsa-table-mobile-collapse .ant-collapse-header {
+	align-items: center !important;
+	overflow: visible !important;
+}
+
+.itsa-table-mobile-collapse .ant-collapse-header-text {
+	flex: 1 1 auto !important;
+	min-width: 0 !important;
+	overflow: visible !important;
+}
+
+.itsa-table-mobile-collapse .ant-collapse-expand-icon {
+	padding-inline-start: 8px !important;
+}
+
 /* FilterSelect: highlight border when a value is selected */
 .itsa-select-has-value.ant-select:not(.ant-select-disabled) .ant-select-selector {
 	border-color: #93c5fd !important;
