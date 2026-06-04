@@ -3,9 +3,10 @@ import { disabledActionButton } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
 import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictTableColumnsType } from '@/types';
-import { Collapse, Empty, Modal } from 'antd';
+import { LoadingOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Button, Collapse, Empty, Modal, Pagination, Spin, TablePaginationConfig } from 'antd';
 import { useCallback, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { Key, ReactNode } from 'react';
 import { CollapseLabel } from './components/CollapseLabel';
 import { DetailRowDataCollapse } from './components/DetailRowDataCollapse';
 import { RowActionsDropdown } from './components/RowActionsDropdown';
@@ -15,19 +16,32 @@ export interface ITableMobileTypeCollapseProps<T extends object> {
 	emptyContent?: ReactNode;
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
+	rowKey?: Extract<keyof T, string> | ((record: T) => Key);
+	loading?: boolean;
 	showColumnActions?: boolean;
 	columnActions?: ITableColumnAction<T>[];
 	getActionsDisabled?: (record: T) => boolean;
 	getActionsTriggerDisabled?: (record: T) => boolean;
+	refreshDataFunction?: () => void;
+	showPagination?: boolean;
+	paginationConfig?: TablePaginationConfig;
+	onChange?: (pagination?: TablePaginationConfig) => void;
 }
 
 export const TableMobileTypeCollapse = <T extends object>({
+	emptyContent,
 	columns,
 	data,
+	rowKey,
+	loading = false,
 	showColumnActions = false,
 	columnActions,
 	getActionsDisabled,
 	getActionsTriggerDisabled,
+	refreshDataFunction,
+	showPagination = false,
+	paginationConfig,
+	onChange,
 }: ITableMobileTypeCollapseProps<T>) => {
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -106,45 +120,108 @@ export const TableMobileTypeCollapse = <T extends object>({
 	const shouldShowActions =
 		!!columnActions && columnActions.length > 0 && (showColumnActions ?? true);
 
-	if (data.length === 0) {
-		return <Empty description="No hay datos disponibles" />;
-	}
+	const getRecordKey = (record: T, rowIndex: number): Key => {
+		if (typeof rowKey === 'function') return rowKey(record);
+		if (rowKey !== undefined) return (record as Record<string, Key | undefined>)[rowKey] ?? rowIndex;
+		return rowIndex;
+	};
+
+	const pageSize = paginationConfig?.pageSize ?? 10;
+	const currentPage = paginationConfig?.current ?? 1;
+	const totalItems = paginationConfig?.total ?? data.length;
+	const shouldShowPagination = showPagination && totalItems > pageSize;
+	const shouldPaginateLocalData = shouldShowPagination && totalItems <= data.length;
+	const visibleData = shouldPaginateLocalData
+		? data.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+		: data;
+
+	const handlePaginationChange = (page: number, size: number) => {
+		onChange?.({
+			...paginationConfig,
+			current: page,
+			pageSize: size,
+			total: totalItems,
+		});
+	};
+
+	const content =
+		visibleData.length === 0 ? (
+			<Empty description={emptyContent ?? 'No hay datos disponibles'} />
+		) : (
+			<Collapse
+				size="small"
+				expandIconPosition="end"
+				className="itsa-table-mobile-collapse__panel"
+				items={visibleData.map((row, rowIndex) => {
+					const originalRowIndex = shouldPaginateLocalData ? (currentPage - 1) * pageSize + rowIndex : rowIndex;
+					const values = leadingColumns.map(column => getCellValue(column, row, originalRowIndex));
+
+					return {
+						key: String(getRecordKey(row, originalRowIndex)),
+						label: (
+							<CollapseLabel
+								title={values[0]}
+								value={values[1]}
+								actions={
+									shouldShowActions ? (
+										<RowActionsDropdown
+											record={row}
+											columnActions={columnActions}
+											onActionClick={clickAction}
+											getActionsDisabled={getActionsDisabled}
+											getActionsTriggerDisabled={getActionsTriggerDisabled}
+										/>
+									) : undefined
+								}
+							/>
+						),
+						children: <DetailRowDataCollapse columns={columns} row={row} rowIndex={originalRowIndex} />,
+					};
+				})}
+			/>
+		);
 
 	return (
 		<>
-			<div className="w-full min-w-0 max-w-full itsa-table-mobile-collapse">
-				<Collapse
-					size="small"
-					expandIconPosition="end"
-					className="itsa-table-mobile-collapse__panel"
-					items={data.map((row, rowIndex) => {
-						const values = leadingColumns.map(column => getCellValue(column, row, rowIndex));
-
-						return {
-							key: String(rowIndex),
-							label: (
-								<CollapseLabel
-									title={values[0]}
-									value={values[1]}
-									actions={
-										shouldShowActions ? (
-											<RowActionsDropdown
-												record={row}
-												columnActions={columnActions}
-												onActionClick={clickAction}
-												getActionsDisabled={getActionsDisabled}
-												getActionsTriggerDisabled={getActionsTriggerDisabled}
-											/>
-										) : undefined
-									}
-								/>
-							),
-							children: (
-								<DetailRowDataCollapse columns={columns} row={row} rowIndex={rowIndex} />
-							),
-						};
-					})}
-				/>
+			<div
+				className={
+					refreshDataFunction
+						? 'w-full min-w-0 max-w-full itsa-table-wrapper itsa-table-wrapper--refresh itsa-table-mobile-collapse'
+						: 'w-full min-w-0 max-w-full itsa-table-mobile-collapse'
+				}
+			>
+				{refreshDataFunction && (
+					<div className="itsa-table-refresh-bar">
+						<Button
+							style={{ color: 'gray', border: 'none' }}
+							type="text"
+							onClick={() => refreshDataFunction()}
+							className="itsa-table-refresh-button"
+						>
+							<div className="flex flex-row items-center justify-center gap-1">
+								{loading ? <LoadingOutlined spin={loading} style={{ fontSize: 9 }} /> : <ReloadOutlined style={{ fontSize: 12 }} />}
+								<span className="text-[11px] leading-none">Refrescar</span>
+							</div>
+						</Button>
+					</div>
+				)}
+				<Spin spinning={loading}>
+					<div className="max-h-[calc(80dvh-180px)] overflow-y-auto overscroll-contain pr-1">
+						{content}
+					</div>
+				</Spin>
+				{shouldShowPagination && (
+					<div className="mt-2 flex shrink-0 justify-end border-t border-gray-100 pt-2">
+						<Pagination
+							{...paginationConfig}
+							size="small"
+							current={currentPage}
+							pageSize={pageSize}
+							total={totalItems}
+							onChange={handlePaginationChange}
+						/>
+					</div>
+				)}
 			</div>
 
 			{confirmModalState.open && (

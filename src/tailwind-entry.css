@@ -68,13 +68,28 @@ body,
 /* TableMobileTypeCollapse: header visible con acciones a la derecha */
 .itsa-table-mobile-collapse .ant-collapse-header {
 	align-items: center !important;
+	background: #f8fafc !important;
+	border-bottom: 1px solid #e5e7eb !important;
 	overflow: visible !important;
+}
+
+.itsa-table-mobile-collapse .ant-collapse-item {
+	background: #ffffff !important;
 }
 
 .itsa-table-mobile-collapse .ant-collapse-header-text {
 	flex: 1 1 auto !important;
 	min-width: 0 !important;
 	overflow: visible !important;
+}
+
+.itsa-table-mobile-collapse .ant-collapse-content,
+.itsa-table-mobile-collapse .ant-collapse-content-box {
+	background: #ffffff !important;
+}
+
+.itsa-table-mobile-collapse .ant-collapse-content-box {
+	padding: 0 !important;
 }
 
 .itsa-table-mobile-collapse .ant-collapse-expand-icon {

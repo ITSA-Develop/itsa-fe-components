@@ -101,6 +101,8 @@ export { Table } from './components/Table';
 export { TableDetails } from './components/TableDetails';
 export { TableMobile } from './components/TableMobile/TableMobile';
 export type { ITableMobileProps, ITableMobileRow, ITableMobileCell } from './components/TableMobile/TableMobile';
+export { TableMobileTypeCollapse } from './components/TableMobileTypeCollapse/TableMobileTypeCollapse';
+export type { ITableMobileTypeCollapseProps } from './components/TableMobileTypeCollapse/TableMobileTypeCollapse';
 export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';
 export { TabsItemContent } from './components/TabsItemContent';

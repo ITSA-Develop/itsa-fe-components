@@ -40,13 +40,13 @@ export const DetailRowDataCollapse = <T extends object>({
 	}
 
 	return (
-		<dl className="m-0 flex flex-col divide-y divide-gray-100">
+		<dl className="m-0 flex flex-col divide-y divide-gray-200 bg-white">
 			{detailColumns.map(column => {
 				const label = column.title as ReactNode;
 				const value = formatDisplayValue(getCellValue(column, row, rowIndex));
 
 				return (
-					<div key={String(column.key)} className="flex flex-col gap-1 px-1 py-2 first:pt-1 last:pb-1">
+					<div key={String(column.key)} className="flex flex-col gap-0 bg-white px-2 py-1.5">
 						<dt className="m-0 text-[10px] font-semibold uppercase tracking-wide text-gray-500">{label}</dt>
 						<dd className="m-0 text-xs leading-snug text-gray-900 break-words">{value}</dd>
 					</div>

@@ -7,12 +7,20 @@ import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useEffect, useState } from 'react';
 import type { TableProps as RcTableProps } from 'rc-table';
 import { ISorterTable } from '@/interfaces';
+import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/TableMobileTypeCollapse';
 
 const DEFAULT_COLUMN_MIN_WIDTH = 140;
 const ACTIONS_COLUMN_WIDTH = 64;
+const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 767px)';
+
+const getIsMobileTableView = () => {
+	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+	return window.matchMedia(MOBILE_TABLE_MEDIA_QUERY).matches;
+};
+
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
@@ -75,6 +83,7 @@ export const Table = <T extends object>({
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
+	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
 	const finalPagination = showPagination ? paginationConfig : false;
 	const baseTableScopeClass = 'itsa-table--head-rounded';
 	const resolvedRootClassName = [
@@ -95,6 +104,22 @@ export const Table = <T extends object>({
 		action: null,
 		record: null,
 	});
+
+	useEffect(() => {
+		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+		const mediaQueryList = window.matchMedia(MOBILE_TABLE_MEDIA_QUERY);
+		const handleMediaChange = (event: MediaQueryListEvent) => {
+			setIsMobileTableView(event.matches);
+		};
+
+		setIsMobileTableView(mediaQueryList.matches);
+		mediaQueryList.addEventListener('change', handleMediaChange);
+
+		return () => {
+			mediaQueryList.removeEventListener('change', handleMediaChange);
+		};
+	}, []);
 
 	const clickAction = useCallback(async (action: ITableColumnAction<T>, record: T) => {
 		const isPermitted = disabledActionButton(action.actionType, actionsUser);
@@ -164,18 +189,20 @@ export const Table = <T extends object>({
 				onClick: () => clickAction(action, record),
 				danger: action.danger,
 			}));
-			if(resultActionsItems.length > 0){
-				return resultActionsItems;
-			}
-			return [{
+		if (resultActionsItems.length > 0) {
+			return resultActionsItems;
+		}
+
+		return [
+			{
 				label: 'Sin acciones disponibles',
 				key: 'no-actions',
 				icon: <InfoCircleOutlined />,
 				onClick: () => {},
 				danger: false,
 				disabled: true,
-			}];
-			
+			},
+		];
 	}, [columnActions, actionsUser, clickAction]);
 
 	const finalColumns = (): TStrictTableColumnsType<T> => {
@@ -353,6 +380,31 @@ export const Table = <T extends object>({
 		resolvedRowSelection.onSelect?.(record, !exists, nextRows, event as unknown as Event);
 		resolvedRowSelection.onChange?.(nextKeys, nextRows, { type: isSingle ? 'single' : 'multiple' });
 	};
+
+	const getMobileEmptyContent = () => {
+		const emptyText = locale?.emptyText;
+		return typeof emptyText === 'function' ? emptyText() : emptyText;
+	};
+
+	if (isMobileTableView) {
+		return (
+			<TableMobileTypeCollapse<T>
+				columns={columns}
+				data={data}
+				rowKey={rowKey}
+				loading={loading}
+				showColumnActions={showColumnActions}
+				columnActions={columnActions}
+				getActionsDisabled={getActionsDisabled}
+				getActionsTriggerDisabled={getActionsTriggerDisabled}
+				emptyContent={getMobileEmptyContent()}
+				refreshDataFunction={refreshDataFunction}
+				showPagination={showPagination}
+				paginationConfig={paginationConfig}
+				onChange={onChange}
+			/>
+		);
+	}
 
 	return (
 		<>
