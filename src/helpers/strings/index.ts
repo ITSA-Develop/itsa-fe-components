@@ -35,23 +35,40 @@ export const filterNumericOnly = (value: string): number => {
 
 export const filterPositiveNumbersOnly = (value: string): string => {
 	if (!value || typeof value !== 'string') return '';
-	
-	// Permitir solo dígitos y un punto decimal
-	const cleanValue = value.replace(/[^0-9.]/g, '');
-	
-	// Asegurar que solo haya un punto decimal
+
+	let cleanValue = value.replace(/[^0-9.]/g, '');
+
 	const parts = cleanValue.split('.');
 	if (parts.length > 2) {
-		return parts[0] + '.' + parts.slice(1).join('');
+		cleanValue = parts[0] + '.' + parts.slice(1).join('');
 	}
-	
-	// Convertir a número para validar que sea >= 0
+
+	if (cleanValue === '' || cleanValue === '.') {
+		return cleanValue;
+	}
+
+	if (/^\.\d*$/.test(cleanValue)) {
+		return cleanValue;
+	}
+
+	if (/^\d+\.$/.test(cleanValue)) {
+		return cleanValue;
+	}
+
 	const numValue = Number(cleanValue);
 	if (isNaN(numValue) || numValue < 0) {
 		return '';
 	}
-	
+
 	return cleanValue;
+};
+
+export const parsePositiveDecimal = (value: string): number | null => {
+	const cleanValue = filterPositiveNumbersOnly(value);
+	if (cleanValue === '' || cleanValue === '.') return null;
+
+	const numValue = Number(cleanValue);
+	return Number.isNaN(numValue) || numValue < 0 ? null : numValue;
 };
 
 export const splitDelimitedValues = (

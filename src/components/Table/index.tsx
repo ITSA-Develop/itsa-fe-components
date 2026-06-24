@@ -52,6 +52,8 @@ export interface ITableProps<T extends object> {
 	rowHoverable?: boolean;
 	refreshDataFunction?: () => void;
 	expandable?: TableProps<T>['expandable'];
+	showHeader?: boolean;
+	heightMobile?: number | string;
 }
 
 export const Table = <T extends object>({
@@ -79,6 +81,8 @@ export const Table = <T extends object>({
 	rowClassName,
 	rootClassName,
 	expandable,
+	showHeader = true,
+	heightMobile,
 }: ITableProps<T>) => {
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -389,6 +393,7 @@ export const Table = <T extends object>({
 	if (isMobileTableView) {
 		return (
 			<TableMobileTypeCollapse<T>
+				heightMobile={heightMobile}
 				columns={columns}
 				data={data}
 				rowKey={rowKey}
@@ -490,6 +495,7 @@ export const Table = <T extends object>({
 					})}
 					expandable={expandable}
 					rowHoverable={rowHoverable}
+					showHeader={showHeader}
 				/>
 			</div>
 

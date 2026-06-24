@@ -13,6 +13,7 @@ import { RowActionsDropdown } from './components/RowActionsDropdown';
 import { getCellValue } from './utils/getCellValue';
 
 export interface ITableMobileTypeCollapseProps<T extends object> {
+	heightMobile?: number | string;
 	emptyContent?: ReactNode;
 	columns: TStrictTableColumnsType<T>;
 	data: T[];
@@ -29,6 +30,7 @@ export interface ITableMobileTypeCollapseProps<T extends object> {
 }
 
 export const TableMobileTypeCollapse = <T extends object>({
+	heightMobile,
 	emptyContent,
 	columns,
 	data,
@@ -206,7 +208,7 @@ export const TableMobileTypeCollapse = <T extends object>({
 					</div>
 				)}
 				<Spin spinning={loading}>
-					<div className="max-h-[calc(80dvh-180px)] overflow-y-auto overscroll-contain pr-1">
+					<div className={`max-h-[${heightMobile}] overflow-y-auto overscroll-contain pr-1`}>
 						{content}
 					</div>
 				</Spin>
