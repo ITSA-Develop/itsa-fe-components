@@ -20,7 +20,7 @@ export interface IMoneyInputCellProps {
 
 const toFormattedDisplay = (value: unknown): string => {
 	if (value === null || value === undefined || value === '') return '';
-	return formatMoneyIfValid(value);
+	return formatMoneyIfValid(value as string | number | null | undefined);
 };
 
 const toRawDisplay = (value: string): string => value.replace(/,/g, '');
@@ -86,8 +86,7 @@ export const MoneyInputCell = ({
 	onCommit,
 	disabled,
 	min,
-	max,
-	precision = 2,
+	max,	
 	suffix,
 	prefix,
 	maxDigits,
