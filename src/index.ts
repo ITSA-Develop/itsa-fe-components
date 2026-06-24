@@ -99,6 +99,7 @@ export { Tag } from './components/Tag';
 export { TagStatus } from './components/TagStatus';
 export { Table } from './components/Table';
 export { TableDetails } from './components/TableDetails';
+export { TableDetailsMobile } from './components/TableDetailsMobile';
 export { TableMobile } from './components/TableMobile/TableMobile';
 export type { ITableMobileProps, ITableMobileRow, ITableMobileCell } from './components/TableMobile/TableMobile';
 export { TableMobileTypeCollapse } from './components/TableMobileTypeCollapse/TableMobileTypeCollapse';

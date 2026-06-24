@@ -25,15 +25,18 @@ const formatDisplayValue = (value: ReactNode): ReactNode => {
 	return value;
 };
 
+const shouldIncludeDetailColumn = <T extends object>(column: TStrictTableColumnsType<T>[number]) => {
+	if (column.key === 'actions' && column.render == null) return false;
+	return column.title != null && String(column.title).trim() !== '';
+};
+
 export const DetailRowDataCollapse = <T extends object>({
 	columns,
 	row,
 	rowIndex,
 	skipLeadingColumns = DEFAULT_SKIP_LEADING_COLUMNS,
 }: IDetailRowDataCollapseProps<T>) => {
-	const detailColumns = columns
-		.slice(skipLeadingColumns)
-		.filter(column => column.key !== 'actions' && column.title != null && String(column.title).trim() !== '');
+	const detailColumns = columns.slice(skipLeadingColumns).filter(column => shouldIncludeDetailColumn(column));
 
 	if (detailColumns.length === 0) {
 		return <p className="m-0 px-1 py-0.5 text-xs text-gray-400">Sin datos adicionales</p>;

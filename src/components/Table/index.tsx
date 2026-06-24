@@ -393,7 +393,7 @@ export const Table = <T extends object>({
 	if (isMobileTableView) {
 		return (
 			<TableMobileTypeCollapse<T>
-				heightMobile={heightMobile}
+				heightMobile={heightMobile ?? "200px"}
 				columns={columns}
 				data={data}
 				rowKey={rowKey}

@@ -1,13 +1,19 @@
-import { ReactNode, useCallback, useMemo } from 'react';
-import { DatePicker, Table, Tooltip } from 'antd';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { Select } from '@/components/Select';
 import { Button } from '../Button';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ITableDetailsColumn } from '@/interfaces';
-import { MoneyInputCell, NumberInputCell, TextInputCell } from './Cells';
 import { GetRowKey } from 'antd/es/table/interface';
-import dayjs from 'dayjs';
+import { TableDetailsMobile } from '../TableDetailsMobile';
+import { renderTableDetailsCell } from './renderTableDetailsCell';
+
+const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 767px)';
+
+const getIsMobileTableView = () => {
+	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+	return window.matchMedia(MOBILE_TABLE_MEDIA_QUERY).matches;
+};
 
 export interface ITableDetailsProps<T extends object> {
 	columns: ITableDetailsColumn<T>[];
@@ -48,8 +54,26 @@ export const TableDetails = <T extends object>({
 	expandable,
 	rowClassName,
 }: ITableDetailsProps<T>) => {
+	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
+
+	useEffect(() => {
+		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+		const mediaQueryList = window.matchMedia(MOBILE_TABLE_MEDIA_QUERY);
+		const handleMediaChange = (event: MediaQueryListEvent) => {
+			setIsMobileTableView(event.matches);
+		};
+
+		setIsMobileTableView(mediaQueryList.matches);
+		mediaQueryList.addEventListener('change', handleMediaChange);
+
+		return () => {
+			mediaQueryList.removeEventListener('change', handleMediaChange);
+		};
+	}, []);
+
 	const handleChangeData = useCallback(
-		(record: T, dataIndex: keyof T | string | number, value: any, index: number) => {
+		(record: T, dataIndex: keyof T | string | number, value: unknown, index: number) => {
 			const currentValue = record[dataIndex as keyof T];
 
 			if (Object.is(currentValue, value)) return;
@@ -129,159 +153,15 @@ export const TableDetails = <T extends object>({
 							},
 						};
 					},
-					render: (value: any, record: T, index: number) => {
-						if (column.render) {
-							return column.render(value, record, index);
-						}
-
-						const isDisabled =
-							typeof column.disabled === 'function' ? column.disabled(record, index, column) : !!column.disabled;
-
-						const errorFromAccessor = column.errorAccessor?.(record, column);
-						const errorFromKeyObject = (record as any)?.[(column.errorKey as keyof T) || 'keyObjectError']?.[
-							column.dataIndex as string
-						] as string | undefined;
-						const error = errorFromAccessor ?? errorFromKeyObject;
-
-						if (column.type === 'select') {
-							const defaultOptionValue = column.options?.[0]?.value;
-							const safeValue = typeof value === 'string' || typeof value === 'number' ? value : undefined;
-							const rawDefault =
-								safeValue === undefined
-									? typeof column.defaultValue === 'function'
-										? column.defaultValue(record, index, column)
-										: column.defaultValue
-									: undefined;
-							const resolvedValue = safeValue ?? rawDefault ?? defaultOptionValue;
-
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<Select
-										value={resolvedValue}
-										options={column.options || []}
-										onChange={val => handleChangeData(record, column.dataIndex, val, index)}
-										placeholder="Seleccione una opción"
-										style={{ width: '100%' }}
-										disabled={isDisabled || disabledColumnActions}
-										status={error && column.type === 'select' ? 'error' : undefined}
-									/>
-									{error && column.type === 'select' && (
-										<small className="text-[9px] text-red-500 italic">{error}</small>
-									)}
-								</div>
-							);
-						}
-
-						if (column.type === 'text') {
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<TextInputCell
-										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										disabled={isDisabled || disabledColumnActions}
-										status={error ? 'error' : undefined}
-										textTransform={column.textTransform}
-									/>
-									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
-								</div>
-							);
-						}
-
-						if (column.type === 'number') {
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<NumberInputCell
-										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										min={0}
-										disabled={isDisabled || disabledColumnActions}
-										maxDigits={column.maxDigits}
-										status={error ? 'error' : undefined}
-									/>
-									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
-								</div>
-							);
-						}
-
-						if (column.type === 'percentage') {
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<NumberInputCell
-										suffix="%"
-										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										min={0}
-										max={100}
-										disabled={isDisabled || disabledColumnActions}
-										maxDigits={column.maxDigits}
-										status={error ? 'error' : undefined}
-									/>
-									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
-								</div>
-							);
-						}
-
-						if (column.type === 'money') {
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<MoneyInputCell
-										value={value}
-										onCommit={val => handleChangeData(record, column.dataIndex, val, index)}
-										min={column.min ?? 0}
-										disabled={isDisabled || disabledColumnActions}
-										// suffix="USD"
-										precision={2}
-										prefix="$"
-										maxDigits={column.maxDigits}
-										status={error ? 'error' : undefined}
-									/>
-									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
-								</div>
-							);
-						}
-
-						if (column.type === 'date') {
-							const format = column.dateFormat ?? (column.includeTime ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD');
-							const dateValue =
-								typeof value === 'string' && dayjs(value, format).isValid()
-									? dayjs(value, format)
-									: value && dayjs(value).isValid()
-										? dayjs(value)
-										: null;
-
-							return (
-								<div className="flex flex-col gap-0.5" style={{ width: '100%', minWidth: 0, display: 'flex' }}>
-									<DatePicker
-										className="w-full"
-										format={{
-											format,
-											type: 'mask',
-										}}
-										showTime={column.includeTime ? { format: 'HH:mm' } : false}
-										value={dateValue}
-										onChange={date =>
-											handleChangeData(record, column.dataIndex, date ? date.format(format) : '', index)
-										}
-										disabled={isDisabled || disabledColumnActions}
-										status={error ? 'error' : undefined}
-										allowClear
-									/>
-									{error && <small className="text-[9px] text-red-500 italic">{error}</small>}
-								</div>
-							);
-						}
-
-						const canTooltip = typeof value === 'string' || typeof value === 'number';
-						const tooltipValue = canTooltip ? String(value) : undefined;
-
-						return (
-							<div className="w-full min-w-0">
-								<Tooltip title={tooltipValue} placement="topLeft">
-									<span className="block truncate">{value}</span>
-								</Tooltip>
-							</div>
-						);
-					},
+					render: (value: unknown, record: T, index: number) =>
+						renderTableDetailsCell({
+							column,
+							value,
+							record,
+							index,
+							disabledColumnActions,
+							onChangeData: handleChangeData,
+						}),
 				};
 			}) as ColumnsType<T>,
 		[columns, disabledColumnActions, handleChangeData],
@@ -290,7 +170,7 @@ export const TableDetails = <T extends object>({
 	const ACTION_COL_WIDTH = 40;
 
 	const handleDelete = useCallback(
-		(value: any, record: T, index: number) => {
+		(value: unknown, record: T, index: number) => {
 			onDelete(value, record, index);
 		},
 		[onDelete],
@@ -305,7 +185,7 @@ export const TableDetails = <T extends object>({
 				fixed: 'right' as const,
 				width: ACTION_COL_WIDTH,
 				align: 'center',
-				render: (value: any, record: T, index: number) => {
+				render: (value: unknown, record: T, index: number) => {
 					return (
 						<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
 							<Button
@@ -382,10 +262,25 @@ export const TableDetails = <T extends object>({
 		};
 	}, [expandable]);
 
+	if (isMobileTableView) {
+		return (
+			<TableDetailsMobile
+				rowKey={rowKey}
+				columns={columns}
+				data={data}
+				onDelete={onDelete}
+				onChangeData={onChangeData}
+				disabledColumnActions={disabledColumnActions}
+				showActions={showActions}
+				loading={loading}
+			/>
+		);
+	}
+
 	return (
 		<div
-			className={bodyHeight ? 'itsa-table-details itsa-table-details-fixed-height' : 'itsa-table-details'}
-			style={bodyHeight ? ({ '--itsa-table-body-height': bodyHeight } as React.CSSProperties) : undefined}
+			className={bodyHeight !== undefined ? 'itsa-table-details itsa-table-details-fixed-height' : 'itsa-table-details'}
+			style={bodyHeight !== undefined ? ({ '--itsa-table-body-height': bodyHeight } as React.CSSProperties) : undefined}
 		>
 			<Table
 				columns={disabledColumnActions || !showActions ? antColumns : antdWithActions}
@@ -395,7 +290,7 @@ export const TableDetails = <T extends object>({
 				tableLayout="fixed"
 				scroll={scrollConfig}
 				bordered={true}
-				footer={footer ? () => footer : undefined}
+				footer={footer !== undefined ? () => footer : undefined}
 				showHeader={showHeader}
 				loading={loading}
 				expandable={expandableWithRowClass}

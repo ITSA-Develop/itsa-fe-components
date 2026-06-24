@@ -2,6 +2,7 @@ import React, { type ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
+import { Button } from '../../components/Button';
 import {
 	TableMobileTypeCollapse,
 	type ITableMobileTypeCollapseProps,
@@ -115,4 +116,60 @@ export const Empty: Story = {
 		data: [],
 	},
 	render: StoryWrapper,
+};
+
+type VehicleModelRow = {
+	id: number;
+	itemCode: string;
+	itemDescription: string;
+	itemSuffix: string;
+};
+
+const vehicleModelColumns: TStrictTableColumnsType<VehicleModelRow> = [
+	{ title: 'Código del modelo', dataIndex: 'itemCode', key: 'itemCode' },
+	{ title: 'Descripción del modelo', dataIndex: 'itemDescription', key: 'itemDescription' },
+	{ title: 'Sufijo', dataIndex: 'itemSuffix', key: 'itemSuffix' },
+	{
+		title: 'Acciones',
+		dataIndex: 'id',
+		key: 'actions',
+		render: (_value: unknown, record: VehicleModelRow) => (
+			<Button size="small" type="text" label="Seleccionar" onClick={() => console.log('select', record)} />
+		),
+	},
+];
+
+const vehicleModelData: VehicleModelRow[] = [
+	{
+		id: 1,
+		itemCode: 'A251LA',
+		itemDescription: 'TEST CREACION DE VEHICULO EXONERADO',
+		itemSuffix: 'TME',
+	},
+	{
+		id: 2,
+		itemCode: 'LC250',
+		itemDescription: 'LAND CRUISER PRADO 250 AC 2.4 5P 4X4 TM',
+		itemSuffix: 'GMLF',
+	},
+];
+
+export const WithInlineActionsColumn: StoryObj<ITableMobileTypeCollapseProps<VehicleModelRow>> = {
+	args: {
+		columns: vehicleModelColumns,
+		data: vehicleModelData,
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Columnas con `key: "actions"` y `render` personalizado (ej. botón Seleccionar) se muestran en el detalle del collapse.',
+			},
+		},
+	},
+	render: (args: ITableMobileTypeCollapseProps<VehicleModelRow>) => (
+		<div style={{ maxWidth: 480, margin: '0 auto' }}>
+			<TableMobileTypeCollapse {...args} />
+		</div>
+	),
 };
