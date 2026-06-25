@@ -5,8 +5,6 @@ import { useSidebarStore } from '@/hooks';
 import { findMenuItemByRoute, getProgramActionsbyPath } from '@/helpers/functions';
 import { useAppLayoutStore, useMenuDataStore } from '@/store';
 import { useEffect, useMemo } from 'react';
-// import { cleanObject } from '@/helpers';
-// import { cleanObject } from '@/helpers';
 export interface MenuOptionsProps {
 	loadingAppLayout: boolean;
 	openKeysMenuOptions: string[];
@@ -25,11 +23,12 @@ export const MenuOptions = ({
 }: MenuOptionsProps) => {
 	const setCurrentProgram = useSidebarStore(state => state.setCurrentProgram);
 	const setCurrentItemMenu = useMenuDataStore(state => state.setCurrenItemMenu);
-
 	const currentModule = useAppLayoutStore(state => state.currentModule);
 	const localPath = window.location.pathname;
 	const currentPathModule = useMemo(() => findMenuItemByRoute(items, localPath), [items, localPath]);
 	const currentPathKeyString = currentPathModule?.key?.toString() ?? '';
+
+
 
 	useEffect(() => {
 		if (currentPathModule) {

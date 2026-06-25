@@ -56,6 +56,7 @@ import {
 	isNumericOnly,
 	filterNumericOnly,
 	filterPositiveNumbersOnly,
+	parsePositiveDecimal,
 	splitDelimitedValues,
 } from './strings';
 import {
@@ -119,6 +120,7 @@ export {
 	filterMenuTree,
 	filterNumericOnly,
 	filterPositiveNumbersOnly,
+	parsePositiveDecimal,
 	splitDelimitedValues,
 	findLastChild,
 	findProgramIdByPath,

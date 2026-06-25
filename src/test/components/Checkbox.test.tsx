@@ -6,6 +6,7 @@ describe('Checkbox component', () => {
 	it('renders with label text', () => {
 		const { container } = render(<Checkbox>Check me</Checkbox>);
 		expect(screen.getByText('Check me')).toBeInTheDocument();
+		expect(container.querySelector('.itsa-checkbox--default')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 

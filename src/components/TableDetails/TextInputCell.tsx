@@ -18,9 +18,11 @@ export const TextInputCell = ({
 	textTransform = 'uppercase',
 }: ITextInputCellProps) => {
 	const [innerValue, setInnerValue] = useState(value);
+	const [isDirty, setIsDirty] = useState(false);
 
 	useEffect(() => {
 		setInnerValue(value);
+		setIsDirty(false);
 	}, [value]);
 
 	const normalizedValue = useCallback(
@@ -35,13 +37,17 @@ export const TextInputCell = ({
 	const handleChange = useCallback(
 		(e: ChangeEvent<HTMLInputElement>) => {
 			setInnerValue(normalizedValue(e.target.value));
+			setIsDirty(true);
 		},
 		[normalizedValue],
 	);
 
 	const handleBlur = useCallback(() => {
+		if (!isDirty) return;
+
 		onCommit(normalizedValue(innerValue));
-	}, [normalizedValue, innerValue, onCommit]);
+		setIsDirty(false);
+	}, [isDirty, normalizedValue, innerValue, onCommit]);
 
 	return (
 		<Input
@@ -55,4 +61,3 @@ export const TextInputCell = ({
 		/>
 	);
 };
-

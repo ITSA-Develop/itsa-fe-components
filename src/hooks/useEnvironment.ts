@@ -1,7 +1,7 @@
 export const useEnvironment = (): "LOCAL" | "DESARROLLO" | "QA" | "PRODUCCION" => {
 
     const fullUrl = typeof window !== "undefined" ? window.location.href : "";
-    if (fullUrl.includes("frontoffice.127.0.0.1")) {
+    if (fullUrl.includes("frontoffice.127.0.0.1") || fullUrl.includes("localhost")) {
         return "LOCAL";
     }
     if (fullUrl.includes("erp-dev")) {

@@ -23,6 +23,7 @@ export type {
 	IDocumentationGuideSections,
 } from './components/DocumentationGuide';
 export { Drawer } from './components/Drawer/Drawer';
+export { Dropdown } from './components/Dropdown/Dropdown';
 export { DropdownButton } from './components/DropdownButton/DropdownButton';
 export type { IDropdownButtonProps, IDropdownButtonItem } from './components/DropdownButton/DropdownButton';
 export { DropdownCustomLabel } from './components/DropdownCustomLabel';
@@ -98,8 +99,11 @@ export { Tag } from './components/Tag';
 export { TagStatus } from './components/TagStatus';
 export { Table } from './components/Table';
 export { TableDetails } from './components/TableDetails';
+export { TableDetailsMobile } from './components/TableDetailsMobile';
 export { TableMobile } from './components/TableMobile/TableMobile';
 export type { ITableMobileProps, ITableMobileRow, ITableMobileCell } from './components/TableMobile/TableMobile';
+export { TableMobileTypeCollapse } from './components/TableMobileTypeCollapse/TableMobileTypeCollapse';
+export type { ITableMobileTypeCollapseProps } from './components/TableMobileTypeCollapse/TableMobileTypeCollapse';
 export { Tabs } from './components/Tabs/Tabs';
 export { TabsMaintenance } from './components/TabsMaintenance';
 export { TabsItemContent } from './components/TabsItemContent';

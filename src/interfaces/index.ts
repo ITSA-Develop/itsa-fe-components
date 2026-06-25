@@ -428,6 +428,8 @@ export interface ITableDetailsColumn<T extends object> {
 	align?: 'left' | 'center' | 'right';
 	render?: (value: any, record: T, index: number) => ReactNode;
 	fixed?: 'left' | 'right';
+	/** Muestra esta columna en el encabezado del collapse de `TableDetailsMobile`. */
+	mobileTitle?: boolean;
 }
 
 //test
