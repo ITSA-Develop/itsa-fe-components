@@ -3,7 +3,7 @@
 exports[`Checkbox component > calls onChange when clicked 1`] = `
 <div>
   <label
-    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+    class="ant-checkbox-wrapper itsa-checkbox--default css-dev-only-do-not-override-l9pxc0"
   >
     <span
       class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-checked"
@@ -28,7 +28,7 @@ exports[`Checkbox component > calls onChange when clicked 1`] = `
 exports[`Checkbox component > can be disabled 1`] = `
 <div>
   <label
-    class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled css-dev-only-do-not-override-l9pxc0"
+    class="ant-checkbox-wrapper ant-checkbox-wrapper-disabled itsa-checkbox--default css-dev-only-do-not-override-l9pxc0"
   >
     <span
       class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-disabled"
@@ -54,7 +54,7 @@ exports[`Checkbox component > can be disabled 1`] = `
 exports[`Checkbox component > is checked when defaultChecked is true 1`] = `
 <div>
   <label
-    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+    class="ant-checkbox-wrapper itsa-checkbox--default css-dev-only-do-not-override-l9pxc0"
   >
     <span
       class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0 ant-checkbox-checked"
@@ -80,7 +80,7 @@ exports[`Checkbox component > is checked when defaultChecked is true 1`] = `
 exports[`Checkbox component > renders with label text 1`] = `
 <div>
   <label
-    class="ant-checkbox-wrapper css-dev-only-do-not-override-l9pxc0"
+    class="ant-checkbox-wrapper itsa-checkbox--default css-dev-only-do-not-override-l9pxc0"
   >
     <span
       class="ant-checkbox ant-wave-target css-dev-only-do-not-override-l9pxc0"

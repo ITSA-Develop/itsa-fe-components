@@ -37,10 +37,10 @@ export const HeaderLayout = ({
 	const environment = useEnvironment();
 
 	const headerBackgroundClass = {
-		LOCAL: 'bg-primary-700',
-		DESARROLLO: 'bg-gray-500',
-		QA: 'bg-black-100',
-		PRODUCCION: 'bg-primary-700',
+		LOCAL: 'LOCAL',
+		DESARROLLO: 'DESARROLLO',
+		QA: 'QA',
+		PRODUCCION: 'PRODUCCIÓN',
 	}[environment];
 
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
@@ -97,7 +97,7 @@ export const HeaderLayout = ({
 	const setModulesAgencyCallback = useCallback(
 		(agencies: IAgency[]) => {
 			const moduleIdStorage = getDecryptDataFromStorage(ELocalStorageKeys.module);
-			
+
 			let moduleFound = false;
 
 			if (moduleIdStorage !== undefined) {
@@ -137,10 +137,23 @@ export const HeaderLayout = ({
 					}
 				}
 			}
-			
 		},
 		[encryptKey, getDecryptDataFromStorage, setCurrentAgency, setCurrentModule, setModulesAgency],
 	);
+
+	// useEffect para detectar una combinacion de teclas para abrir el menu lateral o cerrar el menu lateral
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.ctrlKey && event.key === 'z') {
+				setCollapsed(!collapsed);
+			}
+		};
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [collapsed, setCollapsed]);
 
 	// Descomenta este useEffect
 	useEffect(() => {
@@ -158,87 +171,125 @@ export const HeaderLayout = ({
 	};
 
 	const handleSetCurrentAgency = (agencyId: string) => {
-		selectAgency(agencies.find(a => a.id.toString() === agencyId), false);
+		selectAgency(
+			agencies.find(a => a.id.toString() === agencyId),
+			false,
+		);
+	};
+
+	const renderBackgroundText = () => {
+		const textRender = Array.from({ length: 28 }).map((_, index) => <span key={index}>{headerBackgroundClass}</span>);
+
+		switch (headerBackgroundClass) {
+			case 'LOCAL':
+				return textRender;
+			case 'DESARROLLO':
+				return textRender;
+			case 'QA':
+				return (
+					<div>
+						{textRender}
+						{textRender}
+					</div>
+				);
+			case 'PRODUCCION':
+				return textRender;
+			default:
+				return textRender;
+		}
 	};
 
 	return (
 		<header className="h-16">
-			<div className={`flex flex-row text-white-100 items-center justify-between w-full rounded-xl h-16 pr-4 pl-6 ${headerBackgroundClass}`}>
-				<div className="w-full flex flex-row items-center justify-start gap-4">
-					{collapsed && (
-						<Button
-							type="text"
-							icon={<MenuUnfoldOutlined className="text-white-100" />}
-							onClick={() => setCollapsed(!collapsed)}
-						/>
-					)}
-					{environment !== "PRODUCCION" && (
-						<div className='flex justify-center items-center rounded-full p-2' style={{ border: '1px solid #f0f0f0' }}>
-							<strong className='text-white-100'>{environment}</strong>
-						</div>
-					)}
-					{environment === "PRODUCCION" && <div className="hidden md:block">
-						<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
-					</div>}
+			<div className={`relative overflow-hidden rounded-xl h-16 bg-primary-700`}>
+				<div
+					aria-hidden="true"
+					className="absolute inset-0 flex flex-wrap items-center gap-x-4 gap-y-1 px-12 text-white-100/20 text-sm font-bold uppercase tracking-[0.35em] select-none pointer-events-none"
+				>
+					{renderBackgroundText()}
 				</div>
-				<div className="block md:hidden">
-					<div className="flex flex-row items-center gap-4">
-						<DropdownIcon
-							options={modulesData}
-							loading={loadingAppLayout}
-							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
-							onChange={handleSetCurrentModule}
-						/>
-						<DropdownIcon
-							options={agenciesData}
-							loading={loadingAppLayout}
-							icon={<PinIcon className="text-white-100 w-4 h-4" />}
-							onChange={handleSetCurrentAgency}
-						/>
+				<div className="relative z-10 flex flex-row text-white-100 items-center justify-between w-full h-full pr-4 pl-6">
+					<div className="w-full flex flex-row items-center justify-start gap-4">
+						{collapsed && (
+							<Button
+								type="text"
+								icon={<MenuUnfoldOutlined className="text-white-100" />}
+								onClick={() => setCollapsed(!collapsed)}
+							/>
+						)}
+						{environment !== 'PRODUCCION' && (
+							<div
+								className="flex justify-center items-center rounded-full p-2"
+								style={{ border: '1px solid #f0f0f0' }}
+							>
+								<strong className="text-white-100">{environment}</strong>
+							</div>
+						)}
+						{environment === 'PRODUCCION' && (
+							<div className="hidden md:block">
+								<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
+							</div>
+						)}
 					</div>
-				</div>
-				<div className="hidden md:block">
-					<div className="flex flex-row items-center gap-4">
-						<DropdownCustomLabel
-							defaultValue={currentModule?.id?.toString()}
-							options={modulesData}
-							loading={loadingAppLayout}
-							icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
-							emptyLabel="Sin módulos asignados"
-							onChange={handleSetCurrentModule}
-						/>
-						<DropdownCustomLabel
-							defaultValue={currentAgency?.id?.toString()}
-							options={agenciesData}
-							loading={loadingAppLayout}
-							icon={<PinIcon className="text-white-100 w-4 h-4" />}
-							emptyLabel="Sin agencias asignadas"
-							onChange={handleSetCurrentAgency}
-						/>
-						<div className="flex flex-col">
-							<span className="text-4 whitespace-nowrap">{userName ?? ''}</span>
-							<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">
-								{userRole?.name ?? ''}
-							</span>
+					<div className="block md:hidden">
+						<div className="flex flex-row items-center gap-4">
+							<DropdownIcon
+								options={modulesData}
+								loading={loadingAppLayout}
+								icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
+								onChange={handleSetCurrentModule}
+							/>
+							<DropdownIcon
+								options={agenciesData}
+								loading={loadingAppLayout}
+								icon={<PinIcon className="text-white-100 w-4 h-4" />}
+								onChange={handleSetCurrentAgency}
+							/>
 						</div>
 					</div>
-				</div>
-				<div className="flex flex-row pl-4">
-					<Dropdown menu={userActions} placement="bottomRight" disabled={!isActiveUserActions}>
-						<Button type="text" icon={<UserIcon className="text-white-100 w-6 h-6" />} />
-					</Dropdown>
-					<Dropdown menu={notifications} placement="bottomRight" disabled={!isActiveNotifications}>
-						<Button
-							type="text"
-							icon={
-								isActiveNotifications ? (
-									<ActiveNotificationIcon className="fill-white-100 w-6 h-6" />
-								) : (
-									<NotificationIcon className="text-white-100 w-6 h-6" />
-								)
-							}
-						/>
-					</Dropdown>
+					<div className="hidden md:block">
+						<div className="flex flex-row items-center gap-4">
+							<DropdownCustomLabel
+								defaultValue={currentModule?.id?.toString()}
+								options={modulesData}
+								loading={loadingAppLayout}
+								icon={<SettingOutlined className="text-white-100 w-4 h-4" />}
+								emptyLabel="Sin módulos asignados"
+								onChange={handleSetCurrentModule}
+							/>
+							<DropdownCustomLabel
+								defaultValue={currentAgency?.id?.toString()}
+								options={agenciesData}
+								loading={loadingAppLayout}
+								icon={<PinIcon className="text-white-100 w-4 h-4" />}
+								emptyLabel="Sin agencias asignadas"
+								onChange={handleSetCurrentAgency}
+							/>
+							<div className="flex flex-col">
+								<span className="text-4 whitespace-nowrap">{userName ?? ''}</span>
+								<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">
+									{userRole?.name ?? ''}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div className="flex flex-row pl-4">
+						<Dropdown menu={userActions} placement="bottomRight" disabled={!isActiveUserActions}>
+							<Button type="text" icon={<UserIcon className="text-white-100 w-6 h-6" />} />
+						</Dropdown>
+						<Dropdown menu={notifications} placement="bottomRight" disabled={!isActiveNotifications}>
+							<Button
+								type="text"
+								icon={
+									isActiveNotifications ? (
+										<ActiveNotificationIcon className="fill-white-100 w-6 h-6" />
+									) : (
+										<NotificationIcon className="text-white-100 w-6 h-6" />
+									)
+								}
+							/>
+						</Dropdown>
+					</div>
 				</div>
 			</div>
 		</header>

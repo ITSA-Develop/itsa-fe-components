@@ -3,8 +3,22 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Textarea } from '@/components/Textarea/Textarea';
-import { memo, useId, useMemo } from 'react';
+import { memo, useId } from 'react';
 import { TTextTransform } from '@/types';
+
+const applyTextTransform = (value: string, transform: TTextTransform): string => {
+	if (transform === 'uppercase') return value.toUpperCase();
+	if (transform === 'lowercase') return value.toLowerCase();
+	return value;
+};
+
+const restoreTextareaSelection = (textarea: HTMLTextAreaElement, start: number | null, end: number | null) => {
+	if (start === null || end === null) return;
+
+	requestAnimationFrame(() => {
+		textarea.setSelectionRange(start, end);
+	});
+};
 
 export interface IFormTextareaProps<TFieldValues extends FieldValues> extends Omit<TextAreaProps, 'form' | 'name'> {
   name: Path<TFieldValues>;
@@ -26,7 +40,7 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
   errorIdentificationExists,
   autoComplete = 'off',
   disabled = false,
-  textTransform = 'none',
+  textTransform = 'uppercase',
   ...rest
 }: IFormTextareaProps<TFieldValues>) => {
   const id = useId();
@@ -38,28 +52,25 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => {
         const errorMsg = fieldState.error?.message as string | undefined;
-        const validatMsg = useMemo(() => {
-          if (errorMsg) {
-            return errorMsg;
-          }
-          if (errorIdentificationExists) {
-            return errorIdentificationExists;
-          }
-          return undefined;
-        }, [errorMsg, errorIdentificationExists]);
+        const validatMsg = errorMsg ?? errorIdentificationExists ?? undefined;
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-          const inputValue = e.target.value ?? '';
-          let transformedValue = inputValue;
-
-          if (textTransform === 'uppercase') {
-            transformedValue = inputValue.toUpperCase();
-          } else if (textTransform === 'lowercase') {
-            transformedValue = inputValue.toLowerCase();
-          }
+          const textarea = e.target;
+          const { selectionStart, selectionEnd } = textarea;
+          const transformedValue = applyTextTransform(textarea.value ?? '', textTransform);
 
           field.onChange(transformedValue);
+
+          if (textTransform === 'uppercase' || textTransform === 'lowercase') {
+            restoreTextareaSelection(textarea, selectionStart, selectionEnd);
+          }
         };
+
+        const handleOnBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+          field.onBlur();
+          field.onChange(applyTextTransform(e.target.value ?? '', textTransform));
+        };
+
         return (
           <div className="flex flex-col gap-1">
             <FormLabel label={label} htmlFor={id} />
@@ -67,18 +78,22 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
               id={id as string}
               value={field.value}
               onChange={handleChange}
-              onBlur={field.onBlur}
+              onBlur={handleOnBlur}
               name={field.name}
-              status={validatMsg ? 'error' : undefined}
-              aria-invalid={!!validatMsg}
-              aria-describedby={validatMsg ? errId : undefined}
+              status={validatMsg !== undefined ? 'error' : undefined}
+              aria-invalid={validatMsg !== undefined}
+              aria-describedby={validatMsg !== undefined ? errId : undefined}
               placeholder={placeholder}
               autoComplete={autoComplete}
               disabled={disabled}
-              style={{ textTransform: textTransform }}
+              style={
+                textTransform === 'uppercase' || textTransform === 'lowercase'
+                  ? undefined
+                  : { textTransform }
+              }
               {...rest}
             />
-            {(validatMsg || errorIdentificationExists) && <FormLabelError label={validatMsg ?? ''} id={errId} />}
+            {validatMsg !== undefined && <FormLabelError label={validatMsg} id={errId} />}
           </div>
         );
       }}

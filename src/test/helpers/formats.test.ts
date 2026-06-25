@@ -4,9 +4,11 @@ import {
 	getFormattedFieldValue,
 	getFormattedSchemaValues,
 	getLabelFromValue,
+	parseValidDateITSA,
 	getSchemaColumns,
 	getSchemaFields,
 } from '@/helpers/formats';
+import { EDateMaskFormat } from '@/enums';
 import type { TInputOptions } from '@/types';
 import type { IEntitySchema, TFieldDisplayType } from '@/types/schema';
 
@@ -151,6 +153,12 @@ describe('Utility functions', () => {
 		it('returns "" if no match is found', () => {
 			expect(getLabelFromValue('y', options)).toBe('');
 			expect(getLabelFromValue(2, options)).toBe('');
+		});
+	});
+
+	describe('parseValidDateITSA', () => {
+		it('parses day-first date strings with short time', () => {
+			expect(parseValidDateITSA('21/05/2026 14:06', EDateMaskFormat.FULL_DATETIME)).toBe('21/05/2026 14:06:00');
 		});
 	});
 });

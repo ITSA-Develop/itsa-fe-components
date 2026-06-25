@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { NotificationsProvider } from '../src/HOC/NotificationsProviders';
 import { ControlActionsProvider } from '../src/HOC/ControlActions';
 import { AppLayoutFooterProvider } from '../src/HOC/AppLayoutFooterContext';
+import { EncryptProvider } from '../src/hooks/useEncrypt/EncryptProvider';
 const preview: Preview = {
 	parameters: {
 		controls: {
@@ -20,6 +21,7 @@ const preview: Preview = {
 		Story => {
 			return (
 				<UIProvider>
+					<EncryptProvider aesKeyHex={""}>
 					<BrowserRouter>
 						<NotificationsProvider>
 							<ControlActionsProvider fnApiValidatePermissionAction={async () => true}>
@@ -29,6 +31,7 @@ const preview: Preview = {
 							</ControlActionsProvider>
 						</NotificationsProvider>
 					</BrowserRouter>
+					</EncryptProvider>
 				</UIProvider>
 			);
 		},

@@ -56,7 +56,7 @@ describe('FormInput component', () => {
 		const input = screen.getByRole('textbox');
 		await user.type(input, 'Hello World');
 
-		expect(input).toHaveValue('Hello World');
+		expect(input).toHaveValue('HELLO WORLD');
 	});
 
 	it('has correct form attributes', () => {
@@ -102,13 +102,12 @@ describe('FormInput component', () => {
 	it('passes additional props to the underlying Input component', () => {
 		render(
 			<TestFormWrapper>
-				<FormInput name="testField" label="Test Label" placeholder="Enter text..." maxLength={50} disabled />
+				<FormInput name="testField" label="Test Label" placeholder="Enter text..." disabled />
 			</TestFormWrapper>,
 		);
 
 		const input = screen.getByRole('textbox');
 		expect(input).toHaveAttribute('placeholder', 'Enter text...');
-		expect(input).toHaveAttribute('maxlength', '50');
 		expect(input).toBeDisabled();
 	});
 

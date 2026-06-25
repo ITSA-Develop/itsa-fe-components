@@ -36,9 +36,10 @@ describe('FormInputNumber component', () => {
 		);
 
 		expect(screen.getByText('Test Number')).toBeInTheDocument();
-		const input = screen.getByRole('spinbutton'); // input type="number" has role spinbutton
+		const input = screen.getByRole('textbox');
 		expect(input).toBeInTheDocument();
-		expect(input).toHaveAttribute('type', 'number');
+		expect(input).toHaveAttribute('type', 'text');
+		expect(input).toHaveAttribute('inputmode', 'decimal');
 	});
 
 	it('displays initial numeric value from form context', () => {
@@ -48,7 +49,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		expect(input.value).toBe('12345');
 	});
 
@@ -60,7 +61,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Focus the input first
 		await user.click(input);
@@ -86,7 +87,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		await user.click(input);
 		await user.type(input, '1!2@3#');
@@ -104,7 +105,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Clear the input completely
 		await user.clear(input);
@@ -122,7 +123,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Focus and type mixed content
 		await user.click(input);
@@ -136,7 +137,7 @@ describe('FormInputNumber component', () => {
 		});
 	});
 
-	it('handles decimal points and negative signs by filtering them out', async () => {
+	it('handles decimal values correctly', async () => {
 		const user = userEvent.setup();
 		render(
 			<TestFormWrapperWithControl>
@@ -144,13 +145,49 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
-		
+		const input = screen.getByRole('textbox') as HTMLInputElement;
+
+		await user.click(input);
+		await user.type(input, '20.05');
+
+		await waitFor(() => {
+			expect(input.value).toBe('20.05');
+		});
+	});
+
+	it('allows values starting with a decimal point', async () => {
+		const user = userEvent.setup();
+		render(
+			<TestFormWrapperWithControl>
+				{(control) => <FormInput name="testField" label="Test Number" control={control} />}
+			</TestFormWrapperWithControl>,
+		);
+
+		const input = screen.getByRole('textbox') as HTMLInputElement;
+
+		await user.click(input);
+		await user.type(input, '.04');
+
+		await waitFor(() => {
+			expect(input.value).toBe('.04');
+		});
+	});
+
+	it('normalizes multiple decimal points while typing', async () => {
+		const user = userEvent.setup();
+		render(
+			<TestFormWrapperWithControl>
+				{(control) => <FormInput name="testField" label="Test Number" control={control} />}
+			</TestFormWrapperWithControl>,
+		);
+
+		const input = screen.getByRole('textbox') as HTMLInputElement;
+
 		await user.click(input);
 		await user.type(input, '1.2.3');
 
 		await waitFor(() => {
-			expect(input.value).toBe('123');
+			expect(input.value).toBe('1.23');
 		});
 	});
 
@@ -161,10 +198,11 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		expect(input).toHaveAttribute('name', 'testField');
 		expect(input).toHaveAttribute('aria-invalid', 'false');
-		expect(input).toHaveAttribute('type', 'number');
+		expect(input).toHaveAttribute('type', 'text');
+		expect(input).toHaveAttribute('inputmode', 'decimal');
 		expect(input).toHaveClass('ant-input');
 	});
 
@@ -176,7 +214,7 @@ describe('FormInputNumber component', () => {
 		);
 
 		const label = screen.getByText('Test Number');
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 
 		expect(label).toHaveAttribute('for');
 		expect(input).toHaveAttribute('id');
@@ -204,7 +242,7 @@ describe('FormInputNumber component', () => {
 		const user = userEvent.setup();
 		render(<TestComponent />);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Type and then clear to trigger validation
 		await user.type(input, '123');
@@ -222,7 +260,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		expect(input).not.toHaveAttribute('aria-describedby');
 	});
 
@@ -242,9 +280,8 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
-		expect(input).toHaveAttribute('placeholder', 'Enter numbers only...');
-		expect(input).toHaveAttribute('maxlength', '10');
+		const input = screen.getByRole('textbox') as HTMLInputElement;
+		expect(input).toHaveAttribute('placeholder', 'ENTER NUMBERS ONLY...');
 		expect(input).toBeDisabled();
 	});
 
@@ -262,7 +299,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		expect(input).toBeInTheDocument();
 		// Note: Character count functionality is handled by Ant Design's Input component
 	});
@@ -275,7 +312,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		const reasonableNumber = '123456789';
 		
 		await user.click(input);
@@ -286,7 +323,7 @@ describe('FormInputNumber component', () => {
 		});
 	});
 
-	it('handles leading zeros correctly (note: type="number" removes leading zeros)', async () => {
+	it('handles leading zeros while typing', async () => {
 		const user = userEvent.setup();
 		render(
 			<TestFormWrapperWithControl>
@@ -294,15 +331,13 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		await user.click(input);
 		await user.type(input, '00123');
 
 		await waitFor(() => {
-			// Note: input type="number" automatically removes leading zeros
-			// This is standard browser behavior
-			expect(input.value).toBe('123');
+			expect(input.value).toBe('00123');
 		});
 	});
 
@@ -314,7 +349,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Type mixed content character by character
 		await user.click(input);
@@ -337,7 +372,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		await user.click(input);
 		await user.type(input, '1 2 3');
@@ -355,7 +390,7 @@ describe('FormInputNumber component', () => {
 			</TestFormWrapperWithControl>,
 		);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		
 		// Test that typing individual characters works correctly
 		await user.click(input);
@@ -395,7 +430,7 @@ describe('FormInputNumber component', () => {
 		const user = userEvent.setup();
 		render(<TestComponentWithValidation />);
 
-		const input = screen.getByRole('spinbutton') as HTMLInputElement;
+		const input = screen.getByRole('textbox') as HTMLInputElement;
 		const valueDisplay = screen.getByTestId('form-value');
 		
 		// Type mixed content
