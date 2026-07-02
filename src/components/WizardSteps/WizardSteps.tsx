@@ -1,6 +1,7 @@
 import { Steps, type StepsProps } from 'antd';
 import { getWizardStepsStyles } from './WizardSteps.styles';
 import { getWizardStepsDefaultStyles } from './WizardSteps.default.styles';
+import { useViewportStore } from '@/store';
 
 export interface IWizardStepsProps {
 	current: number;
@@ -13,6 +14,7 @@ export interface IWizardStepsProps {
 	withContainer?: boolean;
 	containerPadding?: string;
 	labelPlacement?: 'horizontal' | 'vertical';
+	size?: 'small' | 'default';
 }
 
 export const WizardSteps = ({ 
@@ -25,8 +27,11 @@ export const WizardSteps = ({
 	arrowWidth = 24,
 	withContainer = true,
 	containerPadding = 'p-2',
-	labelPlacement = 'horizontal'
+	labelPlacement = 'horizontal',
+	size = 'default'
 }: IWizardStepsProps) => {
+	const {width} = useViewportStore();
+	const isMobile = width < 650;
 	const containerId = `wizard-steps-${Math.random().toString(36).substr(2, 9)}`;
 	const isItsaPanel = type === 'itsa-panel';
 
@@ -47,6 +52,7 @@ export const WizardSteps = ({
 						items={items} 
 						onChange={onChange}
 						labelPlacement={labelPlacement}
+						size={isMobile ? 'small' : size}
 					/>
 				</div>
 			</>
@@ -61,7 +67,7 @@ export const WizardSteps = ({
 				className={withContainer ? `bg-white ${containerPadding} rounded-lg shadow-sm ${className}` : className}
 				style={containerStyles}
 			>
-				<Steps className="wizard-steps" current={current} items={items} onChange={onChange} />
+				<Steps className="wizard-steps" current={current} items={items} onChange={onChange} size={isMobile ? 'small' : size} />
 			</div>
 		</>
 	);

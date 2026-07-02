@@ -27,17 +27,18 @@ const FormSwitchComponent = <TFieldValues extends FieldValues>({
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message as string | undefined;
 				return (
-					<div className="flex flex-col gap-1">
-						<div className="flex items-center gap-2" onBlur={field.onBlur}>
+					<div className="flex flex-col gap-0.5">
+						<div className="flex  items-center gap-2" onBlur={field.onBlur}>
 							<Switch
 								checked={field.value}
 								onChange={field.onChange}
 								checkedLabel={checkedLabel}
 								uncheckedLabel={uncheckedLabel}
 							/>
-							{label && <label className="text-sm">{label}</label>}
+							{label !== undefined && <label className="text-sm hidden md:block">{label}</label>}
 						</div>
-						{errorMsg && <FormLabelError label={errorMsg} />}
+						{label !== undefined && <label className="text-sm block md:hidden">{label}</label>}
+						{errorMsg !== undefined && <FormLabelError label={errorMsg} />}
 					</div>
 				);
 			}}

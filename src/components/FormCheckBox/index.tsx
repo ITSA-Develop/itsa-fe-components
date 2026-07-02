@@ -39,7 +39,7 @@ const FormCheckBoxComponent = <TFieldValues extends FieldValues>({
 						>
 							{label}
 						</Checkbox>
-						{errorMsg && <FormLabelError label={errorMsg} />}
+						{errorMsg !== undefined && <FormLabelError label={errorMsg} />}
 					</div>
 				);
 			}}
