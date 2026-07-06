@@ -53,7 +53,7 @@ export const AppLayout = ({
 
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">
-			<Layout className="p-2 gap-2">
+			<Layout className="md:p-2 gap-0.5 md:gap-2">
 				<HeaderLayout
 					loadingAppLayout={loadingAppLayout}
 					userActions={userActions}

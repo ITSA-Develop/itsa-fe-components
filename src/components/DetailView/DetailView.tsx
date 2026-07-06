@@ -30,7 +30,7 @@ export const DetailView = <T extends object = object>({
 		);
 	}
 
-	if (!data) {
+	if (data === null || data === undefined) {
 		return (
 			<div className="flex items-center justify-center min-h-[400px]">
 				<Empty description={emptyMessage} />
@@ -38,8 +38,16 @@ export const DetailView = <T extends object = object>({
 		);
 	}
 
+	// const containerClassName = [
+	// 	'max-h-[88vh] overflow-y-auto px-2',
+	// 	schema.className,
+	// 	className,
+	// ]
+	// 	.filter(Boolean)
+	// 	.join(' ');
+
 	const containerClassName = [
-		'max-h-[88vh] overflow-y-auto px-2',
+		'px-2',
 		schema.className,
 		className,
 	]
@@ -48,14 +56,14 @@ export const DetailView = <T extends object = object>({
 
 	return (
 		<div className={containerClassName}>
-			{(schema.title || schema.description) && (
+			{(schema.title !== null || schema.title !== undefined || schema.description !== null || schema.description !== undefined) && (
 				<div className="mb-4">
-					{schema.title && (
+					{schema.title !== null && schema.title !== undefined && (
 						<Title level={3} className="!mb-1">
 							{schema.title}
 						</Title>
 					)}
-					{schema.description && (
+					{schema.description !== null && schema.description !== undefined && (
 						<Paragraph type="secondary" className="!mb-0">
 							{schema.description}
 						</Paragraph>
@@ -70,7 +78,7 @@ export const DetailView = <T extends object = object>({
 					{visibleSections.map((section, index) => (
 						<div
 							key={`${section.title}-${index}`}
-							className={`h-full ${section.fullWidth ? 'md:col-span-2' : ''}`}
+							className={`h-full ${section.fullWidth !== null && section.fullWidth !== undefined ? 'md:col-span-2' : ''}`}
 						>
 							<DetailSection
 								section={section}

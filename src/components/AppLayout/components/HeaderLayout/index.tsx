@@ -201,7 +201,7 @@ export const HeaderLayout = ({
 
 	return (
 		<header className="h-16">
-			<div className={`relative overflow-hidden rounded-xl h-16 bg-primary-700`}>
+			<div className={`relative overflow-hidden rounded-tr-none rounded-tl-none rounded-br-xl rounded-bl-xl md:rounded-xl h-16 bg-primary-700`}>
 				<div
 					aria-hidden="true"
 					className="absolute inset-0 flex flex-wrap items-center gap-x-4 gap-y-1 px-12 text-white-100/20 text-sm font-bold uppercase tracking-[0.35em] select-none pointer-events-none"
