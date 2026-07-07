@@ -3,9 +3,9 @@ import { Title } from '../Title';
 import { useViewportStore } from '@/store/viewport.store';
 import { useViewportSize } from '@/hooks/useViewportSize/useViewportSize';
 import { FormLogin, LoginFormValuesBase } from './components/FormLogin';
-import { logoTomebambaNegro, login as loginImage, logoCreditsa } from '@/assets/images';
+import { LogoKAI } from './components/LogoKAI';
+import { login as loginImage, logoCreditsa } from '@/assets/images';
 import type { FormEventHandler } from 'react';
-import { useMemo } from 'react';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import { ENVIRONMENT_WATERMARK_LAYER_CLASSNAME, renderEnvironmentWatermark } from '@/helpers/environmentWatermark';
 
@@ -31,17 +31,16 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 		onSubmit?.(e);
 	};
 
-	const logoImage = useMemo(() => {
-		if (logo === "QUOTER") {
-			return logoCreditsa;
+	const renderLogo = () => {
+		if (logo === 'QUOTER') {
+			return <img src={logoCreditsa} alt="logo Creditosa" className="w-full h-full max-h-[50px] object-cover" />;
 		}
-		return logoTomebambaNegro;
-	}, [logo]);
-
+		return <LogoKAI />;
+	};
 
 	return (
 		<div className="relative overflow-hidden w-full min-h-[100dvh] bg-gray-25">
-			<div aria-hidden="true" className={ENVIRONMENT_WATERMARK_LAYER_CLASSNAME}>
+			<div aria-hidden="true" className={`${ENVIRONMENT_WATERMARK_LAYER_CLASSNAME} text-gray-75`}>
 				{renderEnvironmentWatermark(environment)}
 			</div>
 			<div className="relative z-10 flex min-h-[100dvh] w-full items-center justify-center">
@@ -51,9 +50,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 							<div className='flex justify-center items-center bg-gray-75 rounded-full p-2'>
 								<strong>{environment}</strong>
 							</div>
-							<div>
-								<img src={logoImage} alt="logo" className="w-full h-full max-h-[50px] object-cover" />
-							</div>
+							<div>{renderLogo()}</div>
 							<div>
 								<Title title="Iniciar sesión" level={4} />
 							</div>
@@ -70,9 +67,7 @@ export const Login = <TFieldValues extends LoginFormValuesBase = LoginFormValues
 							<img src={loginImage} alt="logo" className="w-full h-full max-h-[481px] object-cover" />
 						</div>
 						<div className="flex-1 flex flex-col gap-4 justify-center items-center rounded-tl-2xl rounded-tr-2xl -mt-5 bg-white relative z-10">
-							<div>
-								<img src={logoTomebambaNegro} alt="logo" className="w-full h-full max-h-[50px] object-cover" />
-							</div>
+							<div>{renderLogo()}</div>
 							<div>
 								<Title title="Iniciar sesión" level={4} />
 							</div>

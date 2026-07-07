@@ -894,3 +894,135 @@ body,
 	background: rgba(234, 59, 72, 0.06) !important;
 	font-weight: 400 !important;
 }
+
+/* ===== LogoKAI — Foco Secuencial (Login) ===== */
+.itsa-logo-kai-wrap {
+	--itsa-logo-kai-focus-ease: cubic-bezier(0.4, 0, 0.2, 1);
+	width: 220px;
+	max-width: 100%;
+}
+
+.itsa-logo-kai-wrap--header {
+	width: 120px;
+	max-height: 48px;
+}
+
+.itsa-logo-kai-wrap--header .itsa-logo-kai-diamond-outer,
+.itsa-logo-kai-wrap--header .itsa-logo-kai-bar-left,
+.itsa-logo-kai-wrap--header .itsa-logo-kai-k-arms {
+	fill: #ffffff !important;
+}
+
+.itsa-logo-kai-wrap--header .itsa-logo-kai-diamond-inner,
+.itsa-logo-kai-wrap--header .itsa-logo-kai-main-body,
+.itsa-logo-kai-wrap--header .itsa-logo-kai-bar-right {
+	fill: rgba(255, 255, 255, 0.82) !important;
+}
+
+.itsa-logo-kai-wrap svg {
+	width: 100%;
+	height: auto;
+	display: block;
+	overflow: visible;
+}
+
+@keyframes itsa-logo-kai-blur-to-focus {
+	0% {
+		filter: blur(14px);
+		transform: scale(1.08);
+		opacity: 0;
+	}
+	16% {
+		opacity: 0.85;
+	}
+	56% {
+		filter: blur(3.5px);
+		transform: scale(1.025);
+		opacity: 0.92;
+	}
+	100% {
+		filter: blur(0px);
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes itsa-logo-kai-lens-sweep {
+	from {
+		transform: translateX(-110%);
+		opacity: 0.5;
+	}
+	55% {
+		opacity: 0.5;
+	}
+	to {
+		transform: translateX(110%);
+		opacity: 0;
+	}
+}
+
+@keyframes itsa-logo-kai-heartbeat {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	15% {
+		transform: scale(1.034);
+	}
+	30% {
+		transform: scale(1);
+	}
+	45% {
+		transform: scale(1.017);
+	}
+	60% {
+		transform: scale(1);
+	}
+}
+
+.itsa-logo-kai-diamond-outer {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation:
+		itsa-logo-kai-blur-to-focus 1.05s var(--itsa-logo-kai-focus-ease) 200ms both,
+		itsa-logo-kai-heartbeat 4.4s ease-in-out 2900ms infinite;
+}
+
+.itsa-logo-kai-diamond-inner {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: itsa-logo-kai-blur-to-focus 1s var(--itsa-logo-kai-focus-ease) 430ms both;
+}
+
+.itsa-logo-kai-bar-left {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation:
+		itsa-logo-kai-blur-to-focus 1s var(--itsa-logo-kai-focus-ease) 660ms both,
+		itsa-logo-kai-heartbeat 4.4s ease-in-out 3100ms infinite;
+}
+
+.itsa-logo-kai-k-arms {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation:
+		itsa-logo-kai-blur-to-focus 1s var(--itsa-logo-kai-focus-ease) 880ms both,
+		itsa-logo-kai-heartbeat 4.4s ease-in-out 3300ms infinite;
+}
+
+.itsa-logo-kai-main-body {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: itsa-logo-kai-blur-to-focus 1.05s var(--itsa-logo-kai-focus-ease) 1100ms both;
+}
+
+.itsa-logo-kai-bar-right {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: itsa-logo-kai-blur-to-focus 0.9s var(--itsa-logo-kai-focus-ease) 1320ms both;
+}
+
+.itsa-logo-kai-lens-sweep {
+	animation: itsa-logo-kai-lens-sweep 1.05s cubic-bezier(0.22, 1, 0.36, 1) 2540ms 1 both;
+	pointer-events: none;
+}

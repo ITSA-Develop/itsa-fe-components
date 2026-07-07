@@ -1,4 +1,4 @@
-export const useEnvironment = (): "LOCAL" | "DESARROLLO" | "QA" | "PRODUCCION" => {
+export const useEnvironment = (): "LOCAL" | "DESARROLLO" | "PRUEBAS" | "PRODUCCION" => {
 
     const fullUrl = typeof window !== "undefined" ? window.location.href : "";
     if (fullUrl.includes("frontoffice.127.0.0.1") || fullUrl.includes("localhost")) {
@@ -8,7 +8,7 @@ export const useEnvironment = (): "LOCAL" | "DESARROLLO" | "QA" | "PRODUCCION" =
         return "DESARROLLO";
     }
     if (fullUrl.includes("erp-qa")) {
-        return "QA";
+        return "PRUEBAS";
     }
     return "PRODUCCION";   
 }
