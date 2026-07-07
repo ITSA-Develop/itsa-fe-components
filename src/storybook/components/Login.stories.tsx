@@ -8,7 +8,7 @@ const RHFWrapper: React.FC<{ children: (props: any) => React.ReactNode }> = ({ c
 	const methods = useForm({ mode: 'onSubmit' });
 	return (
 		<FormProvider {...methods}>
-			{children({ control: methods.control, onSubmit: (data: any) => console.log('login submit', data), logo: "QUOTER" })}
+			{children({ control: methods.control, onSubmit: (data: any) => console.log('login submit', data) })}
 		</FormProvider>
 	);
 };
@@ -18,7 +18,12 @@ const meta: Meta<typeof Login> = {
 	component: Login,
 	tags: ['autodocs'],
 	parameters: { layout: 'fullscreen' },
-	argTypes: {},
+	argTypes: {
+		logo: {
+			control: 'select',
+			options: ['ERP', 'QUOTER'],
+		},
+	},
 };
 export default meta;
 
@@ -27,8 +32,21 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	render: args => (
 		<RHFWrapper>
-			{({ control, onSubmit }) => <Login {...args} control={control} onSubmit={onSubmit} logo="QUOTER" />}
+			{({ control, onSubmit }) => <Login {...args} control={control} onSubmit={onSubmit} />}
 		</RHFWrapper>
 	),
-	args: {},
+	args: {
+		logo: 'ERP',
+	},
+};
+
+export const Quoter: Story = {
+	render: args => (
+		<RHFWrapper>
+			{({ control, onSubmit }) => <Login {...args} control={control} onSubmit={onSubmit} />}
+		</RHFWrapper>
+	),
+	args: {
+		logo: 'QUOTER',
+	},
 };

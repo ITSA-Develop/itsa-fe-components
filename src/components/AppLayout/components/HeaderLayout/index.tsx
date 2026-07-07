@@ -2,7 +2,6 @@ import { Button, Dropdown, MenuProps } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 import { useEncrypt, useSidebarStore } from '@/hooks';
 import { useAppLayoutStore } from '@/store';
-import { imageItsaLogo } from '@/assets/images';
 import { DropdownIcon } from '@/components/DropdownIcon';
 import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
 import { SettingOutlined } from '@ant-design/icons';
@@ -12,6 +11,11 @@ import { useCallback, useEffect } from 'react';
 import { ELocalStorageKeys } from '@/enums';
 import { NavigateFunction } from 'react-router-dom';
 import { useEnvironment } from '@/hooks/useEnvironment';
+import {
+	HEADER_ENVIRONMENT_WATERMARK_LAYER_CLASSNAME,
+	renderHeaderEnvironmentWatermark,
+} from '@/helpers/environmentWatermark';
+import { LogoKAI } from '@/components/Login/components/LogoKAI';
 
 export interface HeaderLayoutProps {
 	loadingAppLayout: boolean;
@@ -36,12 +40,12 @@ export const HeaderLayout = ({
 	const { currentAgency } = useAppLayoutStore();
 	const environment = useEnvironment();
 
-	const headerBackgroundClass = {
-		LOCAL: 'LOCAL',
-		DESARROLLO: 'DESARROLLO',
-		QA: 'QA',
-		PRODUCCION: 'PRODUCCIÓN',
-	}[environment];
+	// const headerBackgroundClass = {
+	// 	LOCAL: 'LOCAL',
+	// 	DESARROLLO: 'DESARROLLO',
+	// 	QA: 'QA',
+	// 	PRODUCCION: 'PRODUCCIÓN',
+	// }[environment];
 
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
 		useAppLayoutStore();
@@ -177,37 +181,39 @@ export const HeaderLayout = ({
 		);
 	};
 
-	const renderBackgroundText = () => {
-		const textRender = Array.from({ length: 28 }).map((_, index) => <span key={index}>{headerBackgroundClass}</span>);
+	// const renderBackgroundText = () => {
+	// 	const textRender = Array.from({ length: 28 }).map((_, index) => <span key={index}>{headerBackgroundClass}</span>);
 
-		switch (headerBackgroundClass) {
-			case 'LOCAL':
-				return textRender;
-			case 'DESARROLLO':
-				return textRender;
-			case 'QA':
-				return (
-					<div>
-						{textRender}
-						{textRender}
-					</div>
-				);
-			case 'PRODUCCION':
-				return textRender;
-			default:
-				return textRender;
-		}
-	};
+	// 	switch (headerBackgroundClass) {
+	// 		case 'LOCAL':
+	// 			return textRender;
+	// 		case 'DESARROLLO':
+	// 			return textRender;
+	// 		case 'QA':
+	// 			return (
+	// 				<div>
+	// 					{textRender}
+	// 					{textRender}
+	// 				</div>
+	// 			);
+	// 		case 'PRODUCCION':
+	// 			return textRender;
+	// 		default:
+	// 			return textRender;
+	// 	}
+	// };
 
 	return (
 		<header className="h-16">
 			<div className={`relative overflow-hidden rounded-tr-none rounded-tl-none rounded-br-xl rounded-bl-xl md:rounded-xl h-16 bg-primary-700`}>
-				<div
-					aria-hidden="true"
-					className="absolute inset-0 flex flex-wrap items-center gap-x-4 gap-y-1 px-12 text-white-100/20 text-sm font-bold uppercase tracking-[0.35em] select-none pointer-events-none"
-				>
-					{renderBackgroundText()}
-				</div>
+				{environment !== 'PRODUCCION' && (
+					<div
+						aria-hidden="true"
+						className={`${HEADER_ENVIRONMENT_WATERMARK_LAYER_CLASSNAME} text-gray-75/25`}
+					>
+						{renderHeaderEnvironmentWatermark(environment)}
+					</div>
+				)}
 				<div className="relative z-10 flex flex-row text-white-100 items-center justify-between w-full h-full pr-4 pl-6">
 					<div className="w-full flex flex-row items-center justify-start gap-4">
 						{collapsed && (
@@ -227,7 +233,7 @@ export const HeaderLayout = ({
 						)}
 						{environment === 'PRODUCCION' && (
 							<div className="hidden md:block">
-								<img src={imageItsaLogo} alt="logo" className="h-full max-h-12 max-w-[150px] object-cover" />
+								<LogoKAI variant="header" />
 							</div>
 						)}
 					</div>
