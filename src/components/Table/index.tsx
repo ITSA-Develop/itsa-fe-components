@@ -14,7 +14,7 @@ import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/Ta
 
 const DEFAULT_COLUMN_MIN_WIDTH = 140;
 const ACTIONS_COLUMN_WIDTH = 64;
-const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 767px)';
+const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
 
 const getIsMobileTableView = () => {
 	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
@@ -82,7 +82,7 @@ export const Table = <T extends object>({
 	rootClassName,
 	expandable,
 	showHeader = true,
-	heightMobile,
+	heightMobile = '50vh',
 }: ITableProps<T>) => {
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -393,7 +393,7 @@ export const Table = <T extends object>({
 	if (isMobileTableView) {
 		return (
 			<TableMobileTypeCollapse<T>
-				heightMobile={heightMobile ?? "200px"}
+				heightMobile={heightMobile}
 				columns={columns}
 				data={data}
 				rowKey={rowKey}
@@ -407,6 +407,8 @@ export const Table = <T extends object>({
 				showPagination={showPagination}
 				paginationConfig={paginationConfig}
 				onChange={onChange}
+				rowSelection={resolvedRowSelection}
+				selectionMode={selectionMode}
 			/>
 		);
 	}
