@@ -73,6 +73,7 @@ import {
 import {
 	normalizeStatus,
 	uppercaseStrings,
+	isDisabledAction,
 	findProgramIdByPath,
 	findProgramIdByPathFromAgencies,
 	generateUuid,
@@ -122,6 +123,7 @@ export {
 	filterPositiveNumbersOnly,
 	parsePositiveDecimal,
 	splitDelimitedValues,
+	isDisabledAction,
 	findLastChild,
 	findProgramIdByPath,
 	findProgramIdByPathFromAgencies,
