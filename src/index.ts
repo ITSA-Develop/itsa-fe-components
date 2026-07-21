@@ -84,6 +84,7 @@ export { ProductCatalogList } from './components/ProductCatalogList';
 export { Redirect } from './components/Redirect/Redirect';
 export { Radio } from './components/Radio/Radio';
 export { Select } from './components/Select';
+export { SelectMultiFilter } from './components/SelectMultiFilter';
 export { Segmented } from './components/Segmented/Segmented';
 export type { ISegmentedProps } from './components/Segmented/Segmented';
 export { Skeleton } from './components/Skeleton/Skeleton';

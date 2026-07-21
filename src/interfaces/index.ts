@@ -355,7 +355,7 @@ export interface FlattenOptionData<OptionType> {
 	group?: boolean;
 }
 
-export interface DebounceSelectProps<ValueType = any>
+export interface DebounceSelectProps<ValueType = unknown>
 	extends Omit<SelectProps<ValueType | ValueType[]>, 'options' | 'children'> {
 	fetchOptions: (search: string) => Promise<ValueType[]>;
 	debounceTimeout?: number;
@@ -426,7 +426,7 @@ export interface ITableDetailsColumn<T extends object> {
 	errorKey?: keyof T | string;
 	display?: 'flex' | 'block';
 	align?: 'left' | 'center' | 'right';
-	render?: (value: any, record: T, index: number) => ReactNode;
+	render?: (value: unknown, record: T, index: number) => ReactNode;
 	fixed?: 'left' | 'right';
 	/** Muestra esta columna en el encabezado del collapse de `TableDetailsMobile`. */
 	mobileTitle?: boolean;
@@ -483,3 +483,49 @@ export interface IActionsValidatePermission {
 	moduleId: number;
 	submoduleId: number;
 }
+
+
+export interface IDataTypesSelectMultiFilter {
+	code: string;
+	description: string;
+	value: string;
+}
+
+export interface IFiltersSelectMultiFilter {
+	code: string;
+	description: string;
+	value: string;
+}
+
+export interface SelectMultiFilterProps {
+	data: IDataTypesSelectMultiFilter[];
+	loading?: boolean;
+	value?: IDataTypesSelectMultiFilter | null;
+
+	labelInputCode?: string;
+	placeholderInputCode?: string;
+
+	labelInputDescription?: string;
+	placeholderInputDescription?: string;
+
+	labelInputName?: string;
+	placeholderInputName?: string;
+
+	showFilterCode?: boolean;
+	showFilterDescription?: boolean;
+	showFilterValue?: boolean;
+	showColumnValue?: boolean;
+
+	allowClear?: boolean;
+	filtersDebounceMs?: number;
+
+	onFiltersChange?: (filters: IFiltersSelectMultiFilter) => void;
+	onSelect?: (item: IDataTypesSelectMultiFilter) => void;
+	onClear?: () => void;
+}
+
+
+
+
+
+
