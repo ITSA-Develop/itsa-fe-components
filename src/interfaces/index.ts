@@ -426,7 +426,7 @@ export interface ITableDetailsColumn<T extends object> {
 	errorKey?: keyof T | string;
 	display?: 'flex' | 'block';
 	align?: 'left' | 'center' | 'right';
-	render?: (value: unknown, record: T, index: number) => ReactNode;
+	render?: (value: any, record: T, index: number) => ReactNode;
 	fixed?: 'left' | 'right';
 	/** Muestra esta columna en el encabezado del collapse de `TableDetailsMobile`. */
 	mobileTitle?: boolean;
