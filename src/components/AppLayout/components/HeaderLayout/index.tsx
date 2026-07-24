@@ -40,13 +40,6 @@ export const HeaderLayout = ({
 	const { currentAgency } = useAppLayoutStore();
 	const environment = useEnvironment();
 
-	// const headerBackgroundClass = {
-	// 	LOCAL: 'LOCAL',
-	// 	DESARROLLO: 'DESARROLLO',
-	// 	QA: 'QA',
-	// 	PRODUCCION: 'PRODUCCIÓN',
-	// }[environment];
-
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
 		useAppLayoutStore();
 
@@ -180,28 +173,6 @@ export const HeaderLayout = ({
 			false,
 		);
 	};
-
-	// const renderBackgroundText = () => {
-	// 	const textRender = Array.from({ length: 28 }).map((_, index) => <span key={index}>{headerBackgroundClass}</span>);
-
-	// 	switch (headerBackgroundClass) {
-	// 		case 'LOCAL':
-	// 			return textRender;
-	// 		case 'DESARROLLO':
-	// 			return textRender;
-	// 		case 'QA':
-	// 			return (
-	// 				<div>
-	// 					{textRender}
-	// 					{textRender}
-	// 				</div>
-	// 			);
-	// 		case 'PRODUCCION':
-	// 			return textRender;
-	// 		default:
-	// 			return textRender;
-	// 	}
-	// };
 
 	return (
 		<header className="h-16">

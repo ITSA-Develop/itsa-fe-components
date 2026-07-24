@@ -4,7 +4,8 @@ import { useControlActions } from '@/hooks';
 import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictTableColumnsType } from '@/types';
 import { LoadingOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Collapse, Empty, Modal, Pagination, Spin, TablePaginationConfig } from 'antd';
+import { Button, Checkbox, Collapse, Empty, Modal, Pagination, Radio, Spin, TablePaginationConfig } from 'antd';
+import type { TableProps } from 'antd';
 import { useCallback, useState } from 'react';
 import type { Key, ReactNode } from 'react';
 import { CollapseLabel } from './components/CollapseLabel';
@@ -27,6 +28,8 @@ export interface ITableMobileTypeCollapseProps<T extends object> {
 	showPagination?: boolean;
 	paginationConfig?: TablePaginationConfig;
 	onChange?: (pagination?: TablePaginationConfig) => void;
+	rowSelection?: TableProps<T>['rowSelection'];
+	selectionMode?: 'single' | 'multiple';
 }
 
 export const TableMobileTypeCollapse = <T extends object>({
@@ -44,6 +47,8 @@ export const TableMobileTypeCollapse = <T extends object>({
 	showPagination = false,
 	paginationConfig,
 	onChange,
+	rowSelection,
+	selectionMode = 'multiple',
 }: ITableMobileTypeCollapseProps<T>) => {
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
@@ -59,6 +64,7 @@ export const TableMobileTypeCollapse = <T extends object>({
 		action: null,
 		record: null,
 	});
+	const [internalSelectedRowKeys, setInternalSelectedRowKeys] = useState<Key[]>([]);
 
 	const clickAction = useCallback(
 		async (action: ITableColumnAction<T>, record: T) => {
@@ -128,6 +134,66 @@ export const TableMobileTypeCollapse = <T extends object>({
 		return rowIndex;
 	};
 
+	const selectedRowKeys =
+		(rowSelection?.selectedRowKeys as Key[] | undefined) ?? internalSelectedRowKeys;
+	const isSingleSelection = selectionMode === 'single' || rowSelection?.type === 'radio';
+
+	const getSelectedRows = (keys: Key[]) =>
+		data.filter((item, index) => keys.includes(getRecordKey(item, index)));
+
+	const handleSelectionChange = (record: T, rowIndex: number, checked: boolean) => {
+		if (!rowSelection) return;
+
+		const recordKey = getRecordKey(record, rowIndex);
+		const nextSelectedRowKeys = isSingleSelection
+			? checked
+				? [recordKey]
+				: []
+			: checked
+				? [...selectedRowKeys.filter(key => key !== recordKey), recordKey]
+				: selectedRowKeys.filter(key => key !== recordKey);
+		const nextSelectedRows = getSelectedRows(nextSelectedRowKeys);
+
+		if (rowSelection.selectedRowKeys === undefined) {
+			setInternalSelectedRowKeys(nextSelectedRowKeys);
+		}
+
+		rowSelection.onSelect?.(record, checked, nextSelectedRows, undefined as unknown as Event);
+		rowSelection.onChange?.(nextSelectedRowKeys, nextSelectedRows, {
+			type: isSingleSelection ? 'single' : 'multiple',
+		});
+	};
+
+	const renderSelectionControl = (record: T, rowIndex: number) => {
+		if (!rowSelection) return undefined;
+
+		const recordKey = getRecordKey(record, rowIndex);
+		const checked = selectedRowKeys.includes(recordKey);
+		const checkboxProps = rowSelection.getCheckboxProps?.(record);
+		const disabled = checkboxProps?.disabled;
+		const control = isSingleSelection ? (
+			<Radio
+				{...checkboxProps}
+				checked={checked}
+				disabled={disabled}
+				onChange={event => handleSelectionChange(record, rowIndex, event.target.checked)}
+			/>
+		) : (
+			<Checkbox
+				{...checkboxProps}
+				checked={checked}
+				disabled={disabled}
+				onChange={event => handleSelectionChange(record, rowIndex, event.target.checked)}
+			/>
+		);
+
+		return (
+			<div className="shrink-0" onClick={event => event.stopPropagation()}>
+				{control}
+			</div>
+		);
+	};
+
 	const pageSize = paginationConfig?.pageSize ?? 10;
 	const currentPage = paginationConfig?.current ?? 1;
 	const totalItems = paginationConfig?.total ?? data.length;
@@ -164,6 +230,7 @@ export const TableMobileTypeCollapse = <T extends object>({
 							<CollapseLabel
 								title={values[0]}
 								value={values[1]}
+								selection={renderSelectionControl(row, originalRowIndex)}
 								actions={
 									shouldShowActions ? (
 										<RowActionsDropdown
@@ -208,7 +275,10 @@ export const TableMobileTypeCollapse = <T extends object>({
 					</div>
 				)}
 				<Spin spinning={loading}>
-					<div className={`max-h-[${heightMobile}] overflow-y-auto overscroll-contain pr-1`}>
+					<div
+						className="overflow-y-auto overscroll-contain pr-1"
+						style={heightMobile !== undefined ? { maxHeight: heightMobile } : undefined}
+					>
 						{content}
 					</div>
 				</Spin>
