@@ -31,7 +31,6 @@ export const SidebarLayout = ({ children, width = 266, loadingAppLayout, onClick
 	useEffect(() => {
 		const wasMobile = prevIsMobileRef.current;
 		prevIsMobileRef.current = isMobile;
-
 		// Solo al pasar de escritorio a móvil: cerrar el drawer. Evita bloquear abrir el menú en móvil.
 		if (!wasMobile && isMobile) {
 			setCollapsed(true);
@@ -42,11 +41,9 @@ export const SidebarLayout = ({ children, width = 266, loadingAppLayout, onClick
 		for (const item of menuItems) {
 			const itemKey = item?.key !== undefined ? String(item.key) : undefined;
 			const nextParents = itemKey !== undefined ? [...parents, itemKey] : parents;
-
 			if (itemKey === targetKey) {
 				return parents;
 			}
-
 			if ('children' in item && item.children?.length) {
 				const found = getParentKeys(item.children as TExtendedMenuItem[], targetKey, nextParents);
 				if (found !== null) return found;

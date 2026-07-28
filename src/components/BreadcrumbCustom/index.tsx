@@ -14,7 +14,7 @@ export const BreadcrumbCustom = ({ title, description, action, actionButtonDocum
 		<div className="flex flex-row items-center gap-2">
 			<ButtonAntd onClick={action} type="text" icon={<LeftOutlined className="font-bold" style={{ fontSize: '20px' }} />} />
 			<div className="flex flex-row items-center gap-2">
-				<h4 className="font-bold text-lg text-black-100">{title}</h4>
+				<h4 className="font-bold text-base md:text-lg text-black-100">{title}</h4>
 				<span className="text-black-100">|</span>
 				<small className="text-sm text-black-100">{description}</small>
 			</div>
