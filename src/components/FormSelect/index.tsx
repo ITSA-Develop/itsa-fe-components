@@ -51,7 +51,7 @@ const FormSelectComponent = <TFieldValues extends FieldValues>({
 				const validValues = options.map(o => o.value);
 				const safeValue = validValues.includes(field.value) ? field.value : undefined;
 				return (
-					<div className="flex flex-col gap-0.5">
+					<div className="flex flex-col">
 						<FormLabel label={label} htmlFor={id} />
 						<Select
 							id={id as string}

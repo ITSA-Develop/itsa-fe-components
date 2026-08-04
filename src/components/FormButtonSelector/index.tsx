@@ -56,7 +56,7 @@ export const FormButtonSelector = <TFieldValues extends FieldValues>({
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message as string | undefined;
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col">
 						<FormLabel label={title} />
 						<div className={`${closable ? 'flex items-center' : ''}`}>
 							<Button
