@@ -46,7 +46,7 @@ const FormDateTimePickerComponent = <TFieldValues extends FieldValues>({
 				const parsedValue = field.value ? dayjs(field.value as string) : null;
 
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col">
 						<FormLabel label={label} htmlFor={id} optional={optional} />
 						<DatePicker
 							id={id}
