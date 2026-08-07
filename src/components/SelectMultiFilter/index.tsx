@@ -4,11 +4,12 @@ import { CloseCircleFilled } from "@ant-design/icons";
 import { Input, Spin, Empty } from "antd";
 import { useEffect, useRef, useState } from "react";
 
-const inputCompactStyle: React.CSSProperties = {
+const compactControlStyle: React.CSSProperties = {
     height: "27px",
     lineHeight: "18px",
     padding: "4px 8px",
     fontSize: "13px",
+    boxSizing: "border-box",
 };
 
 const FilterField = ({
@@ -30,7 +31,7 @@ const FilterField = ({
             size="small"
             value={value}
             placeholder={placeholder}
-            style={inputCompactStyle}
+            style={compactControlStyle}
             onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => onChange(e.target.value)}
@@ -122,12 +123,13 @@ export const SelectMultiFilter = <T extends object,>({
     return (
         <div ref={containerRef} className="relative w-full text-sm">
             <div
-                className="flex min-h-[32px] cursor-pointer items-center rounded-md border border-gray-300 bg-white px-2.5 py-1 transition-colors hover:border-primary-400"
+                className="flex min-w-0 cursor-pointer items-center rounded-md border border-gray-300 bg-white transition-colors hover:border-primary-400"
+                style={compactControlStyle}
                 onClick={() => setOpen((prev) => !prev)}
             >
                 {value != null ? (
                     <div
-                        className="grid min-w-0 flex-1 gap-2 text-[13px]"
+                        className="grid min-w-0 flex-1 gap-2 overflow-hidden leading-[18px]"
                         style={{ gridTemplateColumns }}
                     >
                         {visibleFields.map((field, index) => (
@@ -144,7 +146,7 @@ export const SelectMultiFilter = <T extends object,>({
                         ))}
                     </div>
                 ) : (
-                    <span className="text-[13px] text-gray-400">
+                    <span className="min-w-0 flex-1 truncate leading-[18px] text-gray-400">
                         {placeholder}
                     </span>
                 )}
@@ -153,7 +155,7 @@ export const SelectMultiFilter = <T extends object,>({
                     <button
                         type="button"
                         aria-label="Limpiar selección"
-                        className="ml-2 flex shrink-0 items-center text-gray-400 transition-colors hover:text-gray-600"
+                        className="ml-1 flex h-[18px] w-[18px] shrink-0 items-center justify-center text-gray-400 transition-colors hover:text-gray-600"
                         onMouseDown={(e) => e.stopPropagation()}
                         onClick={handleClear}
                     >
