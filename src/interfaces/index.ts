@@ -485,42 +485,28 @@ export interface IActionsValidatePermission {
 }
 
 
-export interface IDataTypesSelectMultiFilter {
-	code: string;
-	description: string;
-	value: string;
+export type IFiltersSelectMultiFilter = Record<string, string>;
+
+export interface IFieldConfig<T extends object = Record<string, unknown>> {
+	key: Extract<keyof T, string>;
+	label: string;
+	placeholder: string;
+	visible?: boolean;
 }
 
-export interface IFiltersSelectMultiFilter {
-	code: string;
-	description: string;
-	value: string;
-}
-
-export interface SelectMultiFilterProps {
-	data: IDataTypesSelectMultiFilter[];
+export interface SelectMultiFilterProps<T extends object = Record<string, unknown>> {
+	data: T[];
 	loading?: boolean;
-	value?: IDataTypesSelectMultiFilter | null;
-
-	labelInputCode?: string;
-	placeholderInputCode?: string;
-
-	labelInputDescription?: string;
-	placeholderInputDescription?: string;
-
-	labelInputName?: string;
-	placeholderInputName?: string;
-
-	showFilterCode?: boolean;
-	showFilterDescription?: boolean;
-	showFilterValue?: boolean;
-	showColumnValue?: boolean;
+	value?: T | null;
+	fields: IFieldConfig<T>[];
+	valueKey: Extract<keyof T, string>;
+	placeholder?: string;
 
 	allowClear?: boolean;
 	filtersDebounceMs?: number;
 
 	onFiltersChange?: (filters: IFiltersSelectMultiFilter) => void;
-	onSelect?: (item: IDataTypesSelectMultiFilter) => void;
+	onSelect?: (item: T) => void;
 	onClear?: () => void;
 }
 

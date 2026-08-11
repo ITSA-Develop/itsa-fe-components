@@ -8,7 +8,7 @@ import { GetRowKey } from 'antd/es/table/interface';
 import { TableDetailsMobile } from '../TableDetailsMobile';
 import { renderTableDetailsCell } from './renderTableDetailsCell';
 
-const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 767px)';
+const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
 
 const getIsMobileTableView = () => {
 	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;

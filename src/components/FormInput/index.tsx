@@ -73,7 +73,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 				};
 
 				return (
-					<div className="flex flex-col gap-0.5">
+					<div className="flex flex-col">
 						<FormLabel label={label} htmlFor={id} />
 						<Input
 							id={id as string}
