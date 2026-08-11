@@ -59,6 +59,7 @@ import {
 	parsePositiveDecimal,
 	splitDelimitedValues,
 } from './strings';
+import { filterOptions } from './filterOptions';
 import {
 	addOrderParamIfMissing,
 	buildQueryParams,
@@ -117,6 +118,7 @@ export {
 	decryptDataFromStorage,
 	encryptData,
 	fillRoute,
+	filterOptions,
 	filterMenuSidebar,
 	filterMenuTree,
 	filterNumericOnly,

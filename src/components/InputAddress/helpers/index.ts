@@ -22,11 +22,5 @@ export const getPostalCodeFromLatLng = (lat: number, lng: number): void => {
 };
 
 
-export interface DefaultOptionType extends BaseOptionType {
-    label?: React.ReactNode;
-    value?: string | number | null;
-    children?: Omit<DefaultOptionType, 'children'>[];
-}
-
-export const filterOptions = (input: string, option?: DefaultOptionType) =>
-    ((option?.label as string) ?? "").toLowerCase().includes(input.toLowerCase());
+export { filterOptions } from '@/helpers/filterOptions';
+export type { DefaultOptionType } from 'antd/es/select';

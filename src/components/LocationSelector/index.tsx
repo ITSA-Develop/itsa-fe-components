@@ -1,6 +1,6 @@
 import { FormLabel } from '@/components/FormLabel';
 import { Select } from '@/components/Select';
-import { filterOptions } from '../InputAddress/helpers';
+import { filterOptions } from '@/helpers/filterOptions';
 import { ILocationSelectorProps } from '@/interfaces';
 import { Col, Row } from 'antd';
 import { FormLabelError } from '@/index';

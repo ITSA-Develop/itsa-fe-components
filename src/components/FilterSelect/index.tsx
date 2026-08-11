@@ -1,4 +1,5 @@
 import { Select, SelectProps } from "antd";
+import { filterOptions } from "@/helpers/filterOptions";
 
 export interface IFilterSelectProps extends SelectProps {
 	label: string;
@@ -20,9 +21,17 @@ const valueExistsInOptions = (val: unknown, options?: AnyOption[]): boolean => {
 	return false;
 };
 
-export const FilterSelect = ({ label, ...rest }: IFilterSelectProps) => {
+export const FilterSelect = ({
+	label,
+	showSearch,
+	filterOption,
+	...rest
+}: IFilterSelectProps) => {
 	const restAny = rest as any;
 	const options: AnyOption[] | undefined = restAny.options;
+
+	// Con showSearch activo, usa filterOptions de la librería salvo que se pase filterOption custom.
+	const resolvedFilterOption = showSearch ? (filterOption ?? filterOptions) : filterOption;
 
 	// Sanea el value: si no existe en options, lo convierte en undefined
 	// para que el Select muestre el placeholder en lugar del valor "crudo".
@@ -77,6 +86,8 @@ export const FilterSelect = ({ label, ...rest }: IFilterSelectProps) => {
 			</small>
 			<Select
 				{...rest}
+				showSearch={showSearch}
+				filterOption={resolvedFilterOption}
 				value={safeValue}
 				defaultValue={safeDefaultValue}
 				status={undefined}
