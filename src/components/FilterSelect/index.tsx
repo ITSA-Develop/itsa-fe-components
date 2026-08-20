@@ -75,7 +75,11 @@ export const FilterSelect = ({
 	}
 
 	const shouldHighlight = hasValue;
-	const mergedRootClassName = [restAny.rootClassName, shouldHighlight ? 'itsa-select-has-value' : undefined]
+	const mergedRootClassName = [
+		'itsa-filter-select',
+		restAny.rootClassName,
+		shouldHighlight ? 'itsa-select-has-value' : undefined,
+	]
 		.filter(Boolean)
 		.join(' ');
 
@@ -94,10 +98,9 @@ export const FilterSelect = ({
 				rootClassName={mergedRootClassName || undefined}
 				className={restAny.className}
 				style={{
-					height: '28px',
+					height: '27px',
 					lineHeight: '18px',
-					padding: '1px 2px',
-					fontSize: '11px',
+					fontSize: '13px',
 					...(restAny.style ?? {}),
 				}}
 			/>
