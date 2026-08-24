@@ -2507,6 +2507,27 @@ body,
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15) !important;
 }
 
+/* Table column drag overlay */
+
+.itsa-table-column-drag-overlay {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 4px 12px;
+  background: #eef1f3;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  color: #111827;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.itsa-table--column-drag .ant-table-thead > tr > th {
+  touch-action: none;
+}
+
 .itsa-checkbox--default,
 .mi-clase-checkbox {
   --ant-colorPrimary: var(--itsa-primary);

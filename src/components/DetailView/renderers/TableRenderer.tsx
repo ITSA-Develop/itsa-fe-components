@@ -81,10 +81,8 @@ export const TableRenderer = ({ value, config }: TableRendererProps) => {
 				loading={false}
 				onChange={() => {}}
 				bordered={bordered}
-				showPagination={false}
-				showColumnActions={false}
-				scroll={{ y: "calc(100dvh - 320px)" }}
 				className="detail-view-embedded-table"
+				refreshDataFunction={() => {}}
 			/>
 		</div>
 	);
