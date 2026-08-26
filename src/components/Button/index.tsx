@@ -6,9 +6,33 @@ import { isDisabledAction } from '@/helpers/functions';
 import { useActionsUser, useAppLayoutStore } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 
+export type TButtonType =
+	| 'primary'
+	| 'secondary'
+	| 'default'
+	| 'dashed'
+	| 'text'
+	| 'link'
+	| 'submit'
+	| 'danger'
+	| 'warning'
+	| 'success'
+	| 'info';
+
+export type TButtonColor = 'primary' | 'danger' | 'warning' | 'success' | 'info';
+type TButtonAppearance = 'primary' | 'secondary' | 'default' | 'dashed' | 'text' | 'link';
+
 export interface IButtonProps {
 	size?: 'small' | 'middle' | 'large';
-	type?: 'primary' | 'secondary' | 'submit' | 'text';
+	type?: TButtonType;
+	/**
+	 * Aplica una paleta pastel semántica sin alterar la lógica del botón.
+	 * Ejemplo confirmación: `<Button type="primary" color="success" label="Confirmar" />`
+	 * Atajo equivalente: `<Button type="success" label="Confirmar" />`
+	 */
+	color?: TButtonColor;
+	/** Alias compatible con Ant Design para color="danger". */
+	danger?: boolean;
 	htmlType?: 'button' | 'submit' | 'reset';
 	label?: ReactNode;
 	disabled?: boolean;
@@ -26,6 +50,30 @@ export interface IButtonProps {
 	loading?: boolean;
 	allowEnterKey?: boolean;
 }
+
+const colorClasses: Record<TButtonColor, string> = {
+	primary: 'itsa-btn--color-primary',
+	danger: 'itsa-btn--danger',
+	warning: 'itsa-btn--warning',
+	success: 'itsa-btn--success',
+	info: 'itsa-btn--info',
+};
+
+const statusTypes: TButtonType[] = ['danger', 'warning', 'success', 'info'];
+
+const getButtonAppearance = (type: TButtonType): TButtonAppearance => {
+	switch (type) {
+		case 'danger':
+		case 'warning':
+		case 'success':
+		case 'info':
+			return 'default';
+		case 'submit':
+			return 'primary';
+		default:
+			return type;
+	}
+};
 
 export const Button = (props: IButtonProps) => {
 	const isOnline = useOnlineStatus();
@@ -48,13 +96,39 @@ export const Button = (props: IButtonProps) => {
 		return false;
 	}, [actionType, actionsUser]);
 
-	const { size = 'middle', type = 'primary', htmlType, label, disabled = false, onClick, allowEnterKey = false } = props;
+	const {
+		size = 'middle',
+		type = 'primary',
+		color,
+		danger = false,
+		htmlType,
+		label,
+		disabled = false,
+		onClick,
+		allowEnterKey = false,
+		shape,
+	} = props;
 	const isUnavailableByPropOrNetwork = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
-	const variantClass = type === 'primary' ? 'itsa-btn--primary' : 'itsa-btn--secondary';
-	const defaultSecondaryClass = type === 'secondary' && (props.default ?? false) ? 'itsa-btn--default' : '';
-	const className = ['itsa-btn', sizeClass, variantClass, defaultSecondaryClass].filter(Boolean).join(' ');
-	const antdType: 'primary' | 'default' = type === 'primary' ? 'primary' : 'default';
+	const statusType = statusTypes.includes(type) ? (type as TButtonColor) : undefined;
+	const resolvedColor = danger ? 'danger' : (color ?? statusType);
+	const colorClass = resolvedColor ? colorClasses[resolvedColor] : '';
+
+	const appearance = getButtonAppearance(type);
+	const variantClass =
+		appearance === 'primary'
+			? 'itsa-btn--primary'
+			: appearance === 'secondary'
+				? 'itsa-btn--secondary'
+				: appearance === 'default'
+					? 'itsa-btn--secondary itsa-btn--default'
+					: `itsa-btn--${appearance}`;
+	const legacyDefaultClass = type === 'secondary' && (props.default ?? false) ? 'itsa-btn--default' : '';
+	const className = ['itsa-btn', sizeClass, colorClass, variantClass, legacyDefaultClass].filter(Boolean).join(' ');
+	const antdType =
+		appearance === 'secondary' || appearance === 'default'
+			? 'default'
+			: appearance;
 
 	const disabledClass = isUnavailableByPropOrNetwork ? [className, 'itsa-btn--disabled', 'rounded-[12px]'].join(' ') : '';
 
@@ -85,7 +159,9 @@ export const Button = (props: IButtonProps) => {
 			className={appliedClassName}
 			size={size}
 			type={antdType}
-			htmlType={htmlType}
+			htmlType={htmlType ?? (type === 'submit' ? 'submit' : 'button')}
+			danger={resolvedColor === 'danger'}
+			shape={shape}
 			disabled={isUnavailableByPropOrNetwork}
 			onClick={handleClick}
 			onKeyDown={e => {

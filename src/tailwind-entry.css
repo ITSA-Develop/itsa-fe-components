@@ -322,6 +322,27 @@ body,
 		border-color: #cf0021;
 	}
 
+	.itsa-btn--dashed {
+		color: var(--itsa-primary);
+		background-color: #ffffff;
+		border-color: var(--itsa-primary);
+		border-style: dashed;
+	}
+
+	.itsa-btn--text,
+	.itsa-btn--link {
+		color: var(--itsa-primary);
+		background-color: transparent;
+		border-color: transparent;
+		box-shadow: none;
+	}
+
+	.itsa-btn--link {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.itsa-btn--color-primary,
 	.itsa-btn--danger,
 	.itsa-btn--warning,
 	.itsa-btn--success,
@@ -331,6 +352,7 @@ body,
 		color: var(--itsa-btn-color);
 	}
 
+	.itsa-btn--color-primary:hover,
 	.itsa-btn--danger:hover,
 	.itsa-btn--warning:hover,
 	.itsa-btn--success:hover,
@@ -340,6 +362,7 @@ body,
 		color: var(--itsa-btn-color);
 	}
 
+	.itsa-btn--color-primary:active,
 	.itsa-btn--danger:active,
 	.itsa-btn--warning:active,
 	.itsa-btn--success:active,
@@ -347,6 +370,16 @@ body,
 		background-color: var(--itsa-btn-active-bg) !important;
 		border-color: var(--itsa-btn-active-border);
 		color: var(--itsa-btn-active-color);
+	}
+
+	.itsa-btn--color-primary {
+		--itsa-btn-bg: #fff1f2;
+		--itsa-btn-hover-bg: #ffe4e6;
+		--itsa-btn-active-bg: #fecdd3;
+		--itsa-btn-border: var(--itsa-primary);
+		--itsa-btn-active-border: #cf0021;
+		--itsa-btn-color: #b42335;
+		--itsa-btn-active-color: #8f1728;
 	}
 
 	.itsa-btn--danger {
@@ -470,6 +503,7 @@ body,
 		border-color: #cf0021 !important;
 	}
 
+	.ant-btn.itsa-btn--color-primary,
 	.ant-btn.itsa-btn--danger,
 	.ant-btn.itsa-btn--warning,
 	.ant-btn.itsa-btn--success,
@@ -479,6 +513,8 @@ body,
 		color: var(--itsa-btn-color) !important;
 	}
 
+	.ant-btn.itsa-btn--color-primary:hover,
+	.ant-btn.itsa-btn--color-primary:focus,
 	.ant-btn.itsa-btn--danger:hover,
 	.ant-btn.itsa-btn--danger:focus,
 	.ant-btn.itsa-btn--warning:hover,
@@ -492,6 +528,7 @@ body,
 		color: var(--itsa-btn-color) !important;
 	}
 
+	.ant-btn.itsa-btn--color-primary:active,
 	.ant-btn.itsa-btn--danger:active,
 	.ant-btn.itsa-btn--warning:active,
 	.ant-btn.itsa-btn--success:active,
@@ -501,12 +538,63 @@ body,
 		color: var(--itsa-btn-active-color) !important;
 	}
 
+	.ant-btn.itsa-btn--dashed {
+		border-style: dashed !important;
+	}
+
+	.ant-btn.itsa-btn--text:is(
+			.itsa-btn--color-primary,
+			.itsa-btn--danger,
+			.itsa-btn--warning,
+			.itsa-btn--success,
+			.itsa-btn--info
+		),
+	.ant-btn.itsa-btn--link:is(
+			.itsa-btn--color-primary,
+			.itsa-btn--danger,
+			.itsa-btn--warning,
+			.itsa-btn--success,
+			.itsa-btn--info
+		) {
+		background-color: transparent !important;
+		border-color: transparent !important;
+		color: var(--itsa-btn-color) !important;
+	}
+
+	.ant-btn.itsa-btn--text:is(
+			.itsa-btn--color-primary,
+			.itsa-btn--danger,
+			.itsa-btn--warning,
+			.itsa-btn--success,
+			.itsa-btn--info
+		):hover,
+	.ant-btn.itsa-btn--link:is(
+			.itsa-btn--color-primary,
+			.itsa-btn--danger,
+			.itsa-btn--warning,
+			.itsa-btn--success,
+			.itsa-btn--info
+		):hover {
+		background-color: var(--itsa-btn-bg) !important;
+		border-color: transparent !important;
+	}
+
 	/* Primario AntD: usa tokens CSS para hover/active (reduce duplicación) */
 	.ant-btn.itsa-btn--primary {
 		--ant-colorPrimary: var(--itsa-primary);
 		--ant-colorPrimaryHover: #d90022;
 		--ant-colorPrimaryActive: #cf0021;
 		color: #ffffff !important;
+	}
+
+	.ant-btn.itsa-btn--primary:is(
+			.itsa-btn--color-primary,
+			.itsa-btn--danger,
+			.itsa-btn--warning,
+			.itsa-btn--success,
+			.itsa-btn--info
+		) {
+		color: var(--itsa-btn-color) !important;
 	}
 
 	.ant-btn.itsa-btn--disabled {

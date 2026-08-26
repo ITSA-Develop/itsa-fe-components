@@ -231,5 +231,13 @@ export default {
 			});
 		},
 	],
-	safelist: ['itsa-table-details-fixed-height', 'ant-table-body'],
+	safelist: [
+		'itsa-table-details-fixed-height',
+		'ant-table-body',
+		'itsa-btn--color-primary',
+		'itsa-btn--danger',
+		'itsa-btn--warning',
+		'itsa-btn--success',
+		'itsa-btn--info',
+	],
 };
