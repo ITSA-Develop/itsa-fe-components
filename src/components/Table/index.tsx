@@ -7,10 +7,22 @@ import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
-import type { TableProps as RcTableProps } from 'rc-table';
+import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ISorterTable } from '@/interfaces';
 import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/TableMobileTypeCollapse';
+import {
+	createBaseBodyCell,
+	createBaseHeaderCell,
+	createDragTableBodyCell,
+	createDragTableHeaderCell,
+	TableColumnDragProvider,
+	useTableColumnDrag,
+} from '@/components/Table/TableColumnDrag';
+
+const BaseHeaderCell = createBaseHeaderCell();
+const BaseBodyCell = createBaseBodyCell();
+const DragHeaderCell = createDragTableHeaderCell(BaseHeaderCell);
+const DragBodyCell = createDragTableBodyCell(BaseBodyCell);
 
 const DEFAULT_COLUMN_MIN_WIDTH = 140;
 const ACTIONS_COLUMN_WIDTH = 64;
@@ -32,16 +44,11 @@ export interface ITableProps<T extends object> {
 		filters?: Record<string, FilterValue | null>,
 		extra?: TableCurrentDataSource<T>,
 	) => void;
+	refreshDataFunction?: () => void;
 	bordered?: boolean;
 	rowSelection?: AntTableProps<T>['rowSelection'];
-	showPagination?: boolean;
 	paginationConfig?: TablePaginationConfig;
-	scroll?: RcTableProps<T>['scroll'] & {
-		scrollToFirstRowOnChange?: boolean;
-	};
-	/** Controla si la selección debe ser única (radio) o múltiple (checkbox). */
 	selectionMode?: 'single' | 'multiple';
-	showColumnActions?: boolean;
 	columnActions?: ITableColumnAction<T>[];
 	getActionsDisabled?: (record: T) => boolean;
 	getActionsTriggerDisabled?: (record: T) => boolean;
@@ -50,10 +57,13 @@ export interface ITableProps<T extends object> {
 	rowClassName?: AntTableProps<T>['rowClassName'];
 	locale?: TableLocale;
 	rowHoverable?: boolean;
-	refreshDataFunction?: () => void;
 	expandable?: TableProps<T>['expandable'];
 	showHeader?: boolean;
 	heightMobile?: number | string;
+	enableColumnDrag?: boolean;
+	onColumnsOrderChange?: (columns: TStrictTableColumnsType<T>) => void;
+	scrollX?: number | string;
+	scrollY?: number | string;
 }
 
 export const Table = <T extends object>({
@@ -62,14 +72,11 @@ export const Table = <T extends object>({
 	rowKey,
 	loading,
 	onChange,
-	bordered = false,
+	bordered = true,
 	className,
 	rowSelection,
 	selectionMode = 'multiple',
-	showPagination = false,
 	paginationConfig = DEFAULT_PAGINATION_CONFIG,
-	scroll = TABLE_SCROLL,
-	showColumnActions = false,
 	columnActions,
 	getActionsDisabled,
 	getActionsTriggerDisabled,
@@ -83,15 +90,26 @@ export const Table = <T extends object>({
 	expandable,
 	showHeader = true,
 	heightMobile = '50vh',
+	enableColumnDrag = false,
+	scrollX = "max-content",
+	scrollY = "calc(100dvh - 390px)",
+	onColumnsOrderChange,
 }: ITableProps<T>) => {
+	const scroll = {
+		x: scrollX,
+		y: scrollY,
+	};
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
-	const finalPagination = showPagination ? paginationConfig : false;
+	const finalPagination = paginationConfig ? paginationConfig : false;
+	const showColumnActions = columnActions && columnActions.length > 0;
+	const showPagination = paginationConfig ? true : false;
 	const baseTableScopeClass = 'itsa-table--head-rounded';
 	const resolvedRootClassName = [
 		baseTableScopeClass,
+		enableColumnDrag ? 'itsa-table--column-drag' : '',
 		refreshDataFunction ? 'itsa-table--with-refresh' : '',
 		rootClassName,
 		className,
@@ -209,38 +227,44 @@ export const Table = <T extends object>({
 		];
 	}, [columnActions, actionsUser, clickAction]);
 
-	const finalColumns = (): TStrictTableColumnsType<T> => {
-		if (showColumnActions) {
-			const actionsColumn: TStrictColumnType<T> = {
-				title: '',
-				key: 'actions',
-				width: ACTIONS_COLUMN_WIDTH,
-				align: 'center',
-				fixed: 'right',
-				render: (record: T) => (
-					<Dropdown
-						disabled={getActionsDisabled?.(record) ?? false}
-						placement="bottomRight"
-						menu={{
-							items: itemsDropdown(record),
-						}}
+	const baseTableColumns = useMemo<TStrictTableColumnsType<T>>(() => {
+		if (!showColumnActions) return columns;
+
+		const actionsColumn: TStrictColumnType<T> = {
+			title: '',
+			key: 'actions',
+			width: ACTIONS_COLUMN_WIDTH,
+			align: 'center',
+			fixed: 'right',
+			render: (record: T) => (
+				<Dropdown
+					disabled={getActionsDisabled?.(record) ?? false}
+					placement="bottomRight"
+					menu={{
+						items: itemsDropdown(record),
+					}}
+				>
+					<Button
+						type="text"
+						shape="round"
+						size="small"
+						className="w-full"
+						disabled={(getActionsDisabled?.(record) ?? false) || (getActionsTriggerDisabled?.(record) ?? false)}
 					>
-						<Button
-							type="text"
-							shape="round"
-							size="small"
-							className="w-full"
-							disabled={(getActionsDisabled?.(record) ?? false) || (getActionsTriggerDisabled?.(record) ?? false)}
-						>
-							<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
-						</Button>
-					</Dropdown>
-				),
-			};
-			return [...columns, actionsColumn];
-		}
-		return columns;
-	};
+						<MoreOutlined style={{ fontSize: 24 }} rotate={90} />
+					</Button>
+				</Dropdown>
+			),
+		};
+
+		return [...columns, actionsColumn];
+	}, [
+		columns,
+		getActionsDisabled,
+		getActionsTriggerDisabled,
+		itemsDropdown,
+		showColumnActions,
+	]);
 
 	const getColumnsTotalWidth = (tableColumns: TStrictTableColumnsType<T>) =>
 		tableColumns.reduce((sum, col) => {
@@ -302,7 +326,44 @@ export const Table = <T extends object>({
 		onChange(pagination, sorterParsed, filters, extra);
 	};
 
-	const tableColumns = finalColumns();
+	const columnDrag = useTableColumnDrag({
+		columns: baseTableColumns,
+		enabled: enableColumnDrag,
+		onColumnsOrderChange,
+	});
+
+	const tableColumns = enableColumnDrag ? columnDrag.columnsWithDragMeta : baseTableColumns;
+
+	const tableComponents = useMemo(
+		() => ({
+			header: {
+				wrapper: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+					<thead
+						{...props}
+						style={{
+							...props?.style,
+							overflow: 'hidden',
+							borderTopLeftRadius: refreshDataFunction ? 0 : 8,
+							borderTopRightRadius: refreshDataFunction ? 0 : 8,
+						}}
+					/>
+				),
+				cell: enableColumnDrag
+					? (props: React.HTMLAttributes<HTMLTableCellElement> & { id?: string; draggable?: boolean }) => (
+							<DragHeaderCell {...props} />
+						)
+					: (props: React.HTMLAttributes<HTMLTableCellElement>) => <BaseHeaderCell {...props} />,
+			},
+			body: {
+				cell: enableColumnDrag
+					? (props: React.HTMLAttributes<HTMLTableCellElement> & { id?: string; draggable?: boolean }) => (
+							<DragBodyCell {...props} />
+						)
+					: (props: React.HTMLAttributes<HTMLTableCellElement>) => <BaseBodyCell {...props} />,
+			},
+		}),
+		[enableColumnDrag, refreshDataFunction],
+	);
 
 	const getRowSelection = (): AntTableProps<T>['rowSelection'] => {
 		if (!rowSelection) return undefined;
@@ -415,6 +476,15 @@ export const Table = <T extends object>({
 
 	return (
 		<>
+			<TableColumnDragProvider
+				enabled={enableColumnDrag}
+				dragIndex={columnDrag.dragIndex}
+				draggableColumnIds={columnDrag.draggableColumnIds}
+				sensors={columnDrag.sensors}
+				onDragEnd={columnDrag.handleDragEnd}
+				onDragOver={columnDrag.handleDragOver}
+				activeColumnTitle={columnDrag.activeColumnTitle}
+			>
 			<div className={refreshDataFunction ? 'itsa-table-wrapper itsa-table-wrapper--refresh' : 'itsa-table-wrapper'}>
 				{refreshDataFunction && (
 					<div className="itsa-table-refresh-bar">
@@ -447,51 +517,7 @@ export const Table = <T extends object>({
 					rootClassName={resolvedRootClassName}
 					rowClassName={rowClassName}
 					rowKey={rowKey}
-					components={{
-						header: {
-							wrapper: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-								<thead
-									{...props}
-									style={{
-										...props?.style,
-										overflow: 'hidden',
-										borderTopLeftRadius: refreshDataFunction ? 0 : 8,
-										borderTopRightRadius: refreshDataFunction ? 0 : 8,
-									}}
-								/>
-							),
-							cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => {
-								return (
-									<th
-										{...props}
-										style={{
-											...props?.style,
-											background: '#EEF1F3',
-											color: 'black',
-											fontSize: '12px',
-											height: '42px',
-											padding: '4px 8px',
-										}}
-									/>
-								);
-							},
-						},
-						body: {
-							cell: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
-								<td
-									{...props}
-									style={{
-										...props?.style,
-										color: 'black',
-										fontSize: '12px',
-										height: '30px',
-										lineHeight: '18px',
-										padding: '4px 8px',
-									}}
-								/>
-							),
-						},
-					}}
+					components={tableComponents}
 					onRow={record => ({
 						onClick: handleRowClick(record),
 					})}
@@ -500,6 +526,7 @@ export const Table = <T extends object>({
 					showHeader={showHeader}
 				/>
 			</div>
+			</TableColumnDragProvider>
 
 			{confirmModalState.open && (
 				<Modal

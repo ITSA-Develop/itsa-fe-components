@@ -49,7 +49,6 @@ export const SelectMultiFilter = <T extends object,>({
     fields,
     valueKey,
     placeholder = "Seleccione un registro...",
-
     allowClear = true,
     filtersDebounceMs = 500,
 

@@ -541,8 +541,8 @@
   margin-bottom: 1.5rem;
 }
 
-.ml-2{
-  margin-left: 0.5rem;
+.ml-1{
+  margin-left: 0.25rem;
 }
 
 .ml-auto{
@@ -689,6 +689,10 @@
   height: 100vh;
 }
 
+.h-\[18px\]{
+  height: 18px;
+}
+
 .h-\[1px\]{
   height: 1px;
 }
@@ -805,10 +809,6 @@
   min-height: 297mm;
 }
 
-.min-h-\[32px\]{
-  min-height: 32px;
-}
-
 .min-h-\[350px\]{
   min-height: 350px;
 }
@@ -879,6 +879,10 @@
 
 .w-8{
   width: 2rem;
+}
+
+.w-\[18px\]{
+  width: 18px;
 }
 
 .w-\[210mm\]{
@@ -2060,6 +2064,10 @@
   line-height: 1.2;
 }
 
+.leading-\[18px\]{
+  line-height: 18px;
+}
+
 .leading-none{
   line-height: 1;
 }
@@ -2466,6 +2474,25 @@ body,
   padding-inline-start: 8px !important;
 }
 
+/* FilterSelect: match FilterInput compact height (27px) */
+
+.itsa-filter-select.ant-select .ant-select-selector {
+  height: 27px !important;
+  min-height: 27px !important;
+  padding-inline: 4px !important;
+  font-size: 13px !important;
+}
+
+.itsa-filter-select.ant-select .ant-select-selection-item,
+.itsa-filter-select.ant-select .ant-select-selection-placeholder {
+  line-height: 18px !important;
+  font-size: 13px !important;
+}
+
+.itsa-filter-select.ant-select .ant-select-selection-search-input {
+  height: 18px !important;
+}
+
 /* FilterSelect: highlight border when a value is selected */
 
 .itsa-select-has-value.ant-select:not(.ant-select-disabled) .ant-select-selector {
@@ -2478,6 +2505,27 @@ body,
 .itsa-select-has-value.ant-select.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
   border-color: #93c5fd !important;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Table column drag overlay */
+
+.itsa-table-column-drag-overlay {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 4px 12px;
+  background: #eef1f3;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  color: #111827;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.itsa-table--column-drag .ant-table-thead > tr > th {
+  touch-action: none;
 }
 
 .itsa-checkbox--default,
@@ -2855,9 +2903,9 @@ body,
   --itsa-pagination-font-size: 12px;
   /* Default hover background for table rows */
   --itsa-table-row-hover-bg: #f5f5f5;
-  /* Selected row backgrounds */
-  --itsa-table-row-selected-bg: rgba(234, 59, 72, 0.12);
-  --itsa-table-row-selected-hover-bg: rgba(234, 59, 72, 0.18);
+  /* Keep selected backgrounds opaque so fixed cells hide scrolled content beneath them. */
+  --itsa-table-row-selected-bg: #fce7e9;
+  --itsa-table-row-selected-hover-bg: #fbdcde;
   /* Horizontal padding for table cells */
   --itsa-table-cell-padding-x: 12px;
 }

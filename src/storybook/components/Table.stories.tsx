@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Table, type ITableProps } from '../../components/Table';
 import { DEFAULT_PAGINATION_CONFIG, OPTIONS_STATUS } from '../../constants';
 import { useTable } from '../../hooks/useTable/useTable';
-import { ITableColumnAction } from '../../types';
+import { ITableColumnAction, TStrictTableColumnsType } from '../../types';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { Button } from '../../components/Button';
 import { FilterSelect } from '../../components/FilterSelect';
@@ -306,6 +306,10 @@ const meta: Meta<ITableProps<ITablePersonData>> = {
 			control: 'object',
 			description: 'Datos de la tabla',
 		},
+		enableColumnDrag: {
+			control: 'boolean',
+			description: 'Habilita reordenamiento de columnas arrastrando el header',
+		},
 	},
 	args: {
 		columns: sampleColumns,
@@ -431,6 +435,51 @@ const TableWithSingleSelection = () => {
 			onChange={() => {}}
 			rowKey={'id'}
 		/>
+	);
+};
+
+const columnDragSampleColumns: TStrictTableColumnsType<ITablePersonData> = [
+	{ title: 'Nombre', dataIndex: 'name', key: 'name', width: 180 },
+	{ title: 'Edad', dataIndex: 'age', key: 'age', width: 100 },
+	{ title: 'Dirección', dataIndex: 'address', key: 'address', width: 260 },
+];
+
+const TableWithColumnDrag = () => {
+	const [columns, setColumns] = React.useState(columnDragSampleColumns);
+	const [columnOrder, setColumnOrder] = React.useState(() =>
+		columnDragSampleColumns.map(column => String(column.key ?? column.dataIndex)),
+	);
+
+	return (
+		<div className="flex flex-col gap-3 p-2">
+			<p className="text-sm text-gray-600">
+				Arrastra los encabezados para reordenar columnas. Las columnas fijas y la columna de acciones no se mueven.
+			</p>
+			<p className="text-xs text-gray-500">
+				Orden actual: <strong>{columnOrder.join(' → ')}</strong>
+			</p>
+			<Table
+				columns={columns}
+				data={sampleData.slice(0, 6)}
+				loading={false}
+				bordered={false}
+				showPagination={false}
+				showColumnActions
+				columnActions={sampleColumnsWithActions}
+				enableColumnDrag
+				onColumnsOrderChange={nextColumns => {
+					setColumns(nextColumns);
+					setColumnOrder(
+						nextColumns.map((column: TStrictTableColumnsType<ITablePersonData>[number]) =>
+							String(column.key ?? column.dataIndex),
+						),
+					);
+				}}
+				onChange={() => {}}
+				rowKey="id"
+				scroll={{ x: 720 }}
+			/>
+		</div>
 	);
 };
 
@@ -603,6 +652,18 @@ export const WithActionsDisabledPerRow: Story = {
 		docs: {
 			description: {
 				story: 'Deshabilita todo el Dropdown de acciones por fila; en este ejemplo, para age ≥ 50.',
+			},
+		},
+	},
+};
+
+export const WithColumnDrag: Story = {
+	render: () => <TableWithColumnDrag />,
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Reordenamiento horizontal de columnas arrastrando el header (`enableColumnDrag`). La columna de acciones fija a la derecha permanece al final.',
 			},
 		},
 	},
