@@ -36,12 +36,14 @@ export const HeaderLayout = ({
 					{renderHeaderEnvironmentWatermark(environment)}
 				</div>
 			)}
-			<div className="relative z-10 grid grid-cols-4 items-center justify-between w-full h-full pr-2 pl-2">
-				<ButtonSidebarTitleUI environment={environment} />
-				<div>
+			<div className="relative z-10 flex h-full w-full items-center px-1 md:grid md:grid-cols-4 md:px-2">
+				<div className="shrink-0">
+					<ButtonSidebarTitleUI environment={environment} />
+				</div>
+				<div className="flex min-w-0 flex-1 justify-center md:block">
 					{showMultiCompanySelector && <MultiCompanySelectorUI optionsCompany={optionsCompany} />}
 				</div>
-				<div className="col-span-2 min-w-0">
+				<div className="min-w-0 shrink-0 md:col-span-2">
 					<UserActions
 						userActions={userActions}
 						notifications={notifications}

@@ -10,7 +10,7 @@ export interface ButtonSidebarTitleUIProps {
 export const ButtonSidebarTitleUI = ({ environment }: ButtonSidebarTitleUIProps) => {
   const { collapsed, setCollapsed } = useSidebarStore();
 
-  return <div className="w-full flex flex-row items-center justify-start gap-2">
+  return <div className="flex shrink-0 flex-row items-center justify-start gap-1 md:w-full md:gap-2">
     <Button
       type="text"
       icon={<MenuUnfoldOutlined className="text-white-100" />}
@@ -18,7 +18,7 @@ export const ButtonSidebarTitleUI = ({ environment }: ButtonSidebarTitleUIProps)
     />
     {environment !== 'PRODUCCION' && (
       <div
-        className="flex justify-center items-center rounded-full p-2"
+        className="hidden items-center justify-center rounded-full p-2 md:flex"
         style={{ border: '1px solid #f0f0f0' }}
       >
         <strong className="text-white-100">{environment}</strong>

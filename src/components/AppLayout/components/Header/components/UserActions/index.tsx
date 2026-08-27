@@ -14,12 +14,12 @@ export interface UserActionsProps {
 
 export const UserActions = ({ userActions, notifications, loadingAppLayout, navigateApp }: UserActionsProps) => {
 	return (
-		<div className="flex w-full min-w-0 items-center justify-end gap-3">
-			<div className="flex items-center gap-2">
+		<div className="flex min-w-0 items-center justify-end gap-0 md:w-full md:gap-3">
+			<div className="flex items-center gap-0 md:gap-2">
 				<UserModuleUI loadingAppLayout={loadingAppLayout} navigateApp={navigateApp} />
 				<UserSubAgencyUI />
 			</div>
-			<div className="flex shrink-0 items-center gap-1">
+			<div className="flex shrink-0 items-center gap-0 md:gap-1">
 				<UserInformationUI userActions={userActions} />
 				<NotificationsUI notifications={notifications} />
 			</div>

@@ -8,6 +8,9 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 const TREE_SELECT_CLASSNAME =
   'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
 
+const MOBILE_TREE_SELECT_CLASSNAME =
+  `${TREE_SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
+
 const SELECT_WRAPPER_CLASSNAME = 'w-[200px] min-w-[160px] max-w-[220px] shrink-0';
 
 // El trigger en mobile solo muestra el icono, por lo que el popup no puede heredar su ancho.
@@ -125,12 +128,13 @@ export const UserSubAgencyUI = ({ loadRootNodes, loadChildren }: UserSubAgencyUI
         />
       </div>
 
-      <div className="block shrink-0 md:hidden">
+      <div className="block w-10 shrink-0 md:hidden">
         <TreeSelect<string>
           {...treeSelectProps}
           placeholder={<ShopFilled />}
+          suffixIcon={null}
           placement="bottomRight"
-          className={TREE_SELECT_CLASSNAME}
+          className={MOBILE_TREE_SELECT_CLASSNAME}
         />
       </div>
     </>

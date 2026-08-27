@@ -8,6 +8,9 @@ import { NavigateFunction } from 'react-router-dom';
 const SELECT_CLASSNAME =
 	'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
 
+const MOBILE_SELECT_CLASSNAME =
+	`${SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
+
 const SELECT_WRAPPER_CLASSNAME = 'w-[200px] min-w-[160px] max-w-[220px] shrink-0';
 
 const POPUP_STYLES: SelectProps['styles'] = {
@@ -69,12 +72,13 @@ export const UserModuleUI = ({ loadingAppLayout = false, navigateApp }: UserModu
 				/>
 			</div>
 
-			<div className="block shrink-0 md:hidden">
+			<div className="block w-10 shrink-0 md:hidden">
 				<Select
 					{...selectProps}
 					placeholder={<SettingOutlined />}
+					suffixIcon={null}
 					placement="bottomRight"
-					className={SELECT_CLASSNAME}
+					className={MOBILE_SELECT_CLASSNAME}
 				/>
 			</div>
 		</>
