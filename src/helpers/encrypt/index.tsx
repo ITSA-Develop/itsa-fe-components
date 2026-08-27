@@ -53,6 +53,6 @@ export const decryptDataFromStorage = (key: string, KEY_ENCRYPT: CryptoJS.lib.Wo
 };
 
 export const setDataEncryptedInStorage = (key: string, value: string, KEY_ENCRYPT: CryptoJS.lib.WordArray): void => {
-    const encrypted = encryptData(value, KEY_ENCRYPT);
+    const encrypted = encryptData(value, KEY_ENCRYPT);  
     localStorage.setItem(key, encrypted);
 };

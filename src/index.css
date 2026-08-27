@@ -3832,3 +3832,73 @@ body,
     color: rgb(217 223 227 / var(--tw-text-opacity, 1));
   }
 }
+
+.\[\&\.ant-select-focused_\.ant-select-selector\]\:\!border-primary-700.ant-select-focused .ant-select-selector{
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
+}
+
+.\[\&\.ant-select-focused_\.ant-select-selector\]\:\!bg-red-500.ant-select-focused .ant-select-selector{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(245 66 62 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.\[\&\.ant-select-focused_\.ant-select-selector\]\:\!bg-primary-700.ant-select-focused .ant-select-selector{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(234 61 72 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-arrow\]\:\!text-white-100 .ant-select-arrow{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selection-item\]\:\!text-white-100 .ant-select-selection-item{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!text-white-100 .ant-select-selection-placeholder{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!border-primary-900 .ant-select-selector{
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(217 0 34 / var(--tw-border-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!border-primary-700 .ant-select-selector{
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!bg-primary-700\/10 .ant-select-selector{
+  background-color: rgb(234 61 72 / 0.1) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!bg-primary-600 .ant-select-selector{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(242 81 98 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!shadow-none .ant-select-selector{
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
+
+.hover\:\[\&_\.ant-select-selector\]\:\!border-primary-700 .ant-select-selector:hover{
+  --tw-border-opacity: 1 !important;
+  border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
+}
+
+.hover\:\[\&_\.ant-select-selector\]\:\!bg-red-500 .ant-select-selector:hover{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(245 66 62 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.hover\:\[\&_\.ant-select-selector\]\:\!bg-primary-700 .ant-select-selector:hover{
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(234 61 72 / var(--tw-bg-opacity, 1)) !important;
+}

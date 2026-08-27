@@ -1,6 +1,5 @@
 import { Layout, MenuProps } from 'antd';
 import { SidebarLayout } from './components/SidebarLayout';
-import { HeaderLayout } from './components/HeaderLayout';
 import { ReactNode, useRef } from 'react';
 import { useSidebarStore, useViewportSize } from '@/hooks';
 import { useEffect } from 'react';
@@ -9,6 +8,8 @@ import { TExtendedMenuItem } from '@/types';
 import { useAppLayoutStore, useMenuDataStore } from '@/store';
 import { transformModuleToMenuData } from '@/helpers';
 import { NavigateFunction } from 'react-router-dom';
+import { HeaderLayout } from './components/Header';
+import { DefaultOptionType } from 'antd/es/select';
 
 export interface AppLayoutProps {
 	children: ReactNode;
@@ -18,6 +19,8 @@ export interface AppLayoutProps {
 	notifications?: MenuProps;
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
 	accessDenied: boolean;
+	showMultiCompanySelector: boolean;
+	optionsCompany: DefaultOptionType[];
 }
 
 export const AppLayout = ({
@@ -27,6 +30,8 @@ export const AppLayout = ({
 	notifications = { items: [] },
 	onClickOptionMenu,
 	navigateApp,
+	showMultiCompanySelector,
+	optionsCompany,
 }: AppLayoutProps) => {
 	const initCollapsed = useRef(false);
 	useViewportSize();
@@ -54,10 +59,18 @@ export const AppLayout = ({
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">
 			<Layout className="md:p-2 gap-0.5 md:gap-2">
-				<HeaderLayout
+				{/* <HeaderLayout
 					loadingAppLayout={loadingAppLayout}
 					userActions={userActions}
 					notifications={notifications}
+					navigateApp={navigateApp}
+				/> */}
+				<HeaderLayout
+					showMultiCompanySelector={showMultiCompanySelector}
+					optionsCompany={optionsCompany}
+					userActions={userActions}
+					notifications={notifications}
+					loadingAppLayout={loadingAppLayout}
 					navigateApp={navigateApp}
 				/>
 				<SidebarLayout loadingAppLayout={loadingAppLayout} onClickOptionMenu={onClickOptionMenu}>

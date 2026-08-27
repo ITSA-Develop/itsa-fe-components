@@ -243,6 +243,8 @@ export enum ETransmissionType {
 
 export enum ELocalStorageKeys {
 	agency = 'agency',
+	subagency = 'subagency',
+	company = 'company',
 	module = 'module',
 	role = 'role',
 	submodule = 'submodule',

@@ -27,5 +27,8 @@ export const Default: Story = {
 		navigateApp: () => {},
 		loadingAppLayout: false,
 		onClickOptionMenu: () => {},
+		showMultiCompanySelector: true,
+		optionsCompany: [],
+		accessDenied: false,
 	},
 };
