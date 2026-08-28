@@ -10,10 +10,10 @@ import {
 } from '../../utils/headerSelectLabel';
 
 const SELECT_CLASSNAME =
-	'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-item]:!truncate [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
+	'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
 
 const MOBILE_SELECT_CLASSNAME =
-	`${SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
+	`${SELECT_CLASSNAME} [&_.ant-select-selection-item]:!truncate [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
 
 const SELECT_WRAPPER_CLASSNAME = 'w-[200px] min-w-[160px] max-w-[220px] shrink-0';
 
@@ -57,7 +57,7 @@ export const UserModuleUI = ({ loadingAppLayout = false, navigateApp }: UserModu
 
 	const currentModuleValue = currentModule?.id ? String(currentModule.id) : undefined;
 
-	const labelRender: SelectProps['labelRender'] = ({ label }) => {
+	const labelRenderMobile: SelectProps['labelRender'] = ({ label }) => {
 		const text = String(label ?? '');
 		return (
 			<span title={text}>{truncateHeaderSelectLabel(text, MODULE_SELECT_LABEL_MAX_LENGTH)}</span>
@@ -71,7 +71,6 @@ export const UserModuleUI = ({ loadingAppLayout = false, navigateApp }: UserModu
 		loading: loadingAppLayout,
 		popupMatchSelectWidth: false,
 		styles: POPUP_STYLES,
-		labelRender,
 	};
 
 	return (
@@ -87,6 +86,7 @@ export const UserModuleUI = ({ loadingAppLayout = false, navigateApp }: UserModu
 			<div className="block shrink-0 md:hidden mr-2">
 				<Select
 					{...selectProps}
+					labelRender={labelRenderMobile}
 					placeholder={<SettingOutlined />}
 					suffixIcon={null}
 					placement="bottomRight"

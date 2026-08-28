@@ -9,10 +9,10 @@ import {
 } from "../utils/headerSelectLabel";
 
 const SELECT_CLASSNAME =
-  "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-item]:!truncate [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
+  "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
 
 const MOBILE_SELECT_CLASSNAME =
-  `${SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
+  `${SELECT_CLASSNAME} [&_.ant-select-selection-item]:!truncate [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
 
 // El trigger en mobile solo muestra el icono, por lo que el popup no puede heredar su ancho.
 const POPUP_STYLES: SelectProps['styles'] = {
@@ -35,7 +35,7 @@ export const MultiCompanySelectorUI = ({ optionsCompany }: MultiCompanySelectorU
 
   const currentCompanyValue = currentCompany?.value ? String(currentCompany.value) : undefined;
 
-  const labelRender: SelectProps['labelRender'] = ({ label }) => {
+  const labelRenderMobile: SelectProps['labelRender'] = ({ label }) => {
     const text = String(label ?? '');
     return (
       <span title={text}>{truncateHeaderSelectLabel(text, COMPANY_SELECT_LABEL_MAX_LENGTH)}</span>
@@ -48,7 +48,6 @@ export const MultiCompanySelectorUI = ({ optionsCompany }: MultiCompanySelectorU
     value: currentCompanyValue,
     popupMatchSelectWidth: false,
     styles: POPUP_STYLES,
-    labelRender,
   };
 
   return <div className="flex flex-row items-center justify-center">
@@ -61,6 +60,7 @@ export const MultiCompanySelectorUI = ({ optionsCompany }: MultiCompanySelectorU
     <div className="block shrink-0 md:hidden">
       <Select className={MOBILE_SELECT_CLASSNAME}
         {...selectProps}
+        labelRender={labelRenderMobile}
         placeholder={<DeploymentUnitOutlined />}
         suffixIcon={null}
         placement="bottomRight"

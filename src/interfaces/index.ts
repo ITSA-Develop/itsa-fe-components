@@ -510,7 +510,16 @@ export interface SelectMultiFilterProps<T extends object = Record<string, unknow
 	onClear?: () => void;
 }
 
-
+export interface IItemNotification {
+	key: string;
+	title: string;
+	description: string;
+	date: string;
+	onClick: () => void;
+	entity: string;
+	icon?: ReactNode;
+	isReadDate?: string;
+}
 
 
 

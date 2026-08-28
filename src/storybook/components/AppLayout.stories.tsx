@@ -5,6 +5,7 @@ import { AppLayout } from '../../components/AppLayout';
 import { AGENCIES_DATA } from '../../constants/agencies';
 import { useEncrypt } from '../../hooks/useEncrypt/useEncrypt';
 import { useAppLayoutStore } from '../../store/appLayout.store';
+import { BellOutlined } from '@ant-design/icons';
 
 const OPTIONS_COMPANY = [
 	{ value: '1', label: 'IMPORTADORA TOMEBAMBA' },
@@ -19,9 +20,26 @@ const USER_ACTIONS_ITEMS = [
 ];
 
 const NOTIFICATIONS_ITEMS = [
-	{ key: '1', label: 'Nueva solicitud pendiente de aprobación' },
-	{ key: '2', label: 'Actualización del sistema disponible' },
-	{ key: '3', label: 'Recordatorio: cierre de inventario' },
+	{ key: '1', icon: <BellOutlined />, title: 'Nueva solicitud pendiente de aprobación', description: 'La solicitud de la empresa ABC ha sido pendiente de aprobación', entity: 'Empresa ABC', date: '2026-08-28' },
+	{ key: '2', icon: <BellOutlined />, title: 'Actualización del sistema disponible', description: 'Actualización del sistema disponible', entity: 'Sistema', date: '2026-08-28' },
+	{ key: '3', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '4', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '5', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '6', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '7', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '8', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '9', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '10', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '11', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '12', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '13', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '14', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '15', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '16', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '17', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '18', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '19', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
+	{ key: '20', icon: <BellOutlined />, title: 'Recordatorio: cierre de inventario', description: 'Recordatorio: cierre de inventario', entity: 'Inventario', date: '2026-08-28' },
 ];
 
 const withAppLayoutData = (Story: React.ComponentType, context: object) => {
@@ -128,7 +146,7 @@ export const WithData: Story = {
 				navigateApp={navigate}
 				optionsCompany={OPTIONS_COMPANY}
 				userActions={{ items: USER_ACTIONS_ITEMS }}
-				notifications={{ items: NOTIFICATIONS_ITEMS }}
+				notifications={NOTIFICATIONS_ITEMS}
 			/>
 		);
 	},

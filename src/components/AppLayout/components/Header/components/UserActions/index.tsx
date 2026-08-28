@@ -1,13 +1,14 @@
 import { MenuProps } from 'antd';
 import { NavigateFunction } from 'react-router-dom';
 import { UserInformationUI } from './UserInformationUI.view';
-import { NotificationsUI } from './UserNotificationsUI.view';
+import { NotificationsUI } from './Notifications/UserNotificationsUI.controller';
 import { UserSubAgencyUI } from './UserSubAgencyUI.view';
 import { UserModuleUI } from './UserModuleUI.view';
+import { IItemNotification } from '@/interfaces';
 
 export interface UserActionsProps {
 	userActions?: MenuProps;
-	notifications?: MenuProps;
+	notifications?: IItemNotification[];
 	loadingAppLayout?: boolean;
 	navigateApp?: NavigateFunction;
 }

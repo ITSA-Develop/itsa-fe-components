@@ -10,13 +10,14 @@ import { transformModuleToMenuData } from '@/helpers';
 import { NavigateFunction } from 'react-router-dom';
 import { HeaderLayout } from './components/Header';
 import { DefaultOptionType } from 'antd/es/select';
+import { IItemNotification } from '@/interfaces';
 
 export interface AppLayoutProps {
 	children: ReactNode;
 	navigateApp: NavigateFunction;
 	loadingAppLayout: boolean;
 	userActions?: MenuProps;
-	notifications?: MenuProps;
+	notifications?: IItemNotification[];
 	onClickOptionMenu: (info: { key: string; item: TExtendedMenuItem }) => void;
 	accessDenied: boolean;
 	showMultiCompanySelector: boolean;
@@ -27,7 +28,7 @@ export const AppLayout = ({
 	children,
 	loadingAppLayout,
 	userActions = { items: [] },
-	notifications = { items: [] },
+	notifications = [],
 	onClickOptionMenu,
 	navigateApp,
 	showMultiCompanySelector,
@@ -59,12 +60,6 @@ export const AppLayout = ({
 	return (
 		<div className="flex h-[100dvh] w-full overflow-hidden">
 			<Layout className="md:p-2 gap-0.5 md:gap-2">
-				{/* <HeaderLayout
-					loadingAppLayout={loadingAppLayout}
-					userActions={userActions}
-					notifications={notifications}
-					navigateApp={navigateApp}
-				/> */}
 				<HeaderLayout
 					showMultiCompanySelector={showMultiCompanySelector}
 					optionsCompany={optionsCompany}

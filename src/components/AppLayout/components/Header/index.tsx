@@ -7,12 +7,13 @@ import { DefaultOptionType } from "antd/es/select";
 import { UserActions } from "./components/UserActions";
 import { MenuProps } from 'antd';
 import { NavigateFunction } from 'react-router-dom';
+import { IItemNotification } from '@/interfaces';
 
 export interface HeaderLayoutProps {
 	showMultiCompanySelector: boolean;
 	optionsCompany: DefaultOptionType[];
 	userActions?: MenuProps;
-	notifications?: MenuProps;
+	notifications?: IItemNotification[];
 	loadingAppLayout?: boolean;
 	navigateApp?: NavigateFunction;
 }
