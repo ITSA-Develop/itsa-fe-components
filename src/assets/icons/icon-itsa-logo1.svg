@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+  <!-- Ícono T estilizado con la línea diagonal inclinada y pie vertical en color blanco -->
+  <path fill="#FFFFFF" d="
+    M 15 20
+    L 50 20
+    L 38 42
+    L 38 85
+    Q 38 90 43 90
+    L 57 90
+    Q 62 90 62 85
+    L 62 42
+    L 85 42
+    Q 90 42 90 37
+    L 90 25
+    Q 90 20 85 20
+    L 60 20
+    L 75 20
+    Z
+  "/>
+</svg>

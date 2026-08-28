@@ -27,7 +27,7 @@ export const HeaderLayout = ({
 }: HeaderLayoutProps) => {
 	const environment = useEnvironment();
 	return <header className="h-16">
-		<div className={`relative overflow-hidden rounded-tr-none rounded-tl-none rounded-br-xl rounded-bl-xl md:rounded-xl h-16 bg-primary-700`}>
+		<div className={`relative overflow-hidden rT_lineas_rectas_transparente.svgounded-tr-none rounded-tl-none rounded-br-xl rounded-bl-xl md:rounded-xl h-16 bg-primary-700`}>
 			{environment !== 'PRODUCCION' && (
 				<div
 					aria-hidden="true"
@@ -36,7 +36,7 @@ export const HeaderLayout = ({
 					{renderHeaderEnvironmentWatermark(environment)}
 				</div>
 			)}
-			<div className="relative z-10 flex h-full w-full items-center px-1 md:grid md:grid-cols-4 md:px-2">
+			<div className="relative z-10 flex flex-row h-full w-full items-center">
 				<div className="shrink-0">
 					<ButtonSidebarTitleUI environment={environment} />
 				</div>

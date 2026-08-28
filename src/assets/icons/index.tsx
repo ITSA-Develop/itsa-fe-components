@@ -152,6 +152,7 @@ import WorkshopRedIcon from './icon-workshop-red.svg?react';
 import XIcon from './icon-x.svg?react';
 import XCircleIcon from './icon-x-circle.svg?react';
 import HouseholdIcon from './icon-household.svg?react';
+import ITSALogoIcon from './icon-itsa-logo.svg?react';
 
 
 export {
@@ -205,6 +206,7 @@ export {
   ImportsRedIcon,
   InfoIcon,
   InvoiceIcon,
+  ITSALogoIcon,
   KeyIcon,
   LimpiarNotificacionesIcon,
   ListIcon,

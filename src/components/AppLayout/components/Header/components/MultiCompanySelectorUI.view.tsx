@@ -3,9 +3,13 @@ import { useAppLayoutStore } from "@/store";
 import { Select, SelectProps } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import { DeploymentUnitOutlined } from "@ant-design/icons";
+import {
+  COMPANY_SELECT_LABEL_MAX_LENGTH,
+  truncateHeaderSelectLabel,
+} from "../utils/headerSelectLabel";
 
 const SELECT_CLASSNAME =
-  "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
+  "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-item]:!truncate [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
 
 const MOBILE_SELECT_CLASSNAME =
   `${SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
@@ -31,28 +35,35 @@ export const MultiCompanySelectorUI = ({ optionsCompany }: MultiCompanySelectorU
 
   const currentCompanyValue = currentCompany?.value ? String(currentCompany.value) : undefined;
 
+  const labelRender: SelectProps['labelRender'] = ({ label }) => {
+    const text = String(label ?? '');
+    return (
+      <span title={text}>{truncateHeaderSelectLabel(text, COMPANY_SELECT_LABEL_MAX_LENGTH)}</span>
+    );
+  };
+
+  const selectProps = {
+    options: optionsCompany,
+    onChange: onSelect,
+    value: currentCompanyValue,
+    popupMatchSelectWidth: false,
+    styles: POPUP_STYLES,
+    labelRender,
+  };
+
   return <div className="flex flex-row items-center justify-center">
-    <div className="hidden md:block w-full min-w-0">
+    <div className="hidden md:block">
       <Select className={SELECT_CLASSNAME}
-        options={optionsCompany}
-        onChange={onSelect}
-        value={currentCompanyValue}
+        {...selectProps}
         placeholder="Seleccione una empresa"
-        popupMatchSelectWidth={false}
-        styles={POPUP_STYLES}
       />
     </div>
-
-    <div className="block w-10 shrink-0 md:hidden">
+    <div className="block shrink-0 md:hidden">
       <Select className={MOBILE_SELECT_CLASSNAME}
-        options={optionsCompany}
-        onChange={onSelect}
-        value={currentCompanyValue}
+        {...selectProps}
         placeholder={<DeploymentUnitOutlined />}
         suffixIcon={null}
-        popupMatchSelectWidth={false}
         placement="bottomRight"
-        styles={POPUP_STYLES}
       />
     </div>
   </div>;

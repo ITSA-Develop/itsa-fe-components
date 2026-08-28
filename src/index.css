@@ -553,6 +553,10 @@
   margin-right: 0.25rem;
 }
 
+.mr-2{
+  margin-right: 0.5rem;
+}
+
 .mt-1{
   margin-top: 0.25rem;
 }
@@ -885,6 +889,10 @@
   width: 18px;
 }
 
+.w-\[200px\]{
+  width: 200px;
+}
+
 .w-\[210mm\]{
   width: 210mm;
 }
@@ -927,6 +935,10 @@
 
 .min-w-0{
   min-width: 0px;
+}
+
+.min-w-\[160px\]{
+  min-width: 160px;
 }
 
 .min-w-\[70px\]{
@@ -1739,6 +1751,10 @@
   padding: 0px;
 }
 
+.p-0\.5{
+  padding: 0.125rem;
+}
+
 .p-1{
   padding: 0.25rem;
 }
@@ -1875,6 +1891,10 @@
 
 .pb-4{
   padding-bottom: 1rem;
+}
+
+.pl-1{
+  padding-left: 0.25rem;
 }
 
 .pl-2{
@@ -3669,6 +3689,10 @@ body,
     width: 115px;
   }
 
+  .md\:w-full{
+    width: 100%;
+  }
+
   .md\:min-w-\[60vw\]{
     min-width: 60vw;
   }
@@ -3693,8 +3717,16 @@ body,
     gap: 0.75rem !important;
   }
 
+  .md\:gap-1{
+    gap: 0.25rem;
+  }
+
   .md\:gap-2{
     gap: 0.5rem;
+  }
+
+  .md\:gap-3{
+    gap: 0.75rem;
   }
 
   .md\:rounded-xl{
@@ -3838,11 +3870,6 @@ body,
   border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
 }
 
-.\[\&\.ant-select-focused_\.ant-select-selector\]\:\!bg-red-500.ant-select-focused .ant-select-selector{
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(245 66 62 / var(--tw-bg-opacity, 1)) !important;
-}
-
 .\[\&\.ant-select-focused_\.ant-select-selector\]\:\!bg-primary-700.ant-select-focused .ant-select-selector{
   --tw-bg-opacity: 1 !important;
   background-color: rgb(234 61 72 / var(--tw-bg-opacity, 1)) !important;
@@ -3853,9 +3880,39 @@ body,
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
 }
 
+.\[\&_\.ant-select-selection-item\]\:\!block .ant-select-selection-item{
+  display: block !important;
+}
+
+.\[\&_\.ant-select-selection-item\]\:\!max-w-full .ant-select-selection-item{
+  max-width: 100% !important;
+}
+
+.\[\&_\.ant-select-selection-item\]\:\!truncate .ant-select-selection-item{
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
 .\[\&_\.ant-select-selection-item\]\:\!text-white-100 .ant-select-selection-item{
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!inset-0 .ant-select-selection-placeholder{
+  inset: 0px !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!flex .ant-select-selection-placeholder{
+  display: flex !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!items-center .ant-select-selection-placeholder{
+  align-items: center !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!justify-center .ant-select-selection-placeholder{
+  justify-content: center !important;
 }
 
 .\[\&_\.ant-select-selection-placeholder\]\:\!text-white-100 .ant-select-selection-placeholder{
@@ -3863,23 +3920,19 @@ body,
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
 }
 
-.\[\&_\.ant-select-selector\]\:\!border-primary-900 .ant-select-selector{
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(217 0 34 / var(--tw-border-opacity, 1)) !important;
-}
-
 .\[\&_\.ant-select-selector\]\:\!border-primary-700 .ant-select-selector{
   --tw-border-opacity: 1 !important;
   border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
 }
 
-.\[\&_\.ant-select-selector\]\:\!bg-primary-700\/10 .ant-select-selector{
-  background-color: rgb(234 61 72 / 0.1) !important;
-}
-
 .\[\&_\.ant-select-selector\]\:\!bg-primary-600 .ant-select-selector{
   --tw-bg-opacity: 1 !important;
   background-color: rgb(242 81 98 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!px-0 .ant-select-selector{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .\[\&_\.ant-select-selector\]\:\!shadow-none .ant-select-selector{
@@ -3891,11 +3944,6 @@ body,
 .hover\:\[\&_\.ant-select-selector\]\:\!border-primary-700 .ant-select-selector:hover{
   --tw-border-opacity: 1 !important;
   border-color: rgb(234 61 72 / var(--tw-border-opacity, 1)) !important;
-}
-
-.hover\:\[\&_\.ant-select-selector\]\:\!bg-red-500 .ant-select-selector:hover{
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(245 66 62 / var(--tw-bg-opacity, 1)) !important;
 }
 
 .hover\:\[\&_\.ant-select-selector\]\:\!bg-primary-700 .ant-select-selector:hover{

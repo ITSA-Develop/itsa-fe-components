@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1398" height="1536" viewBox="0 0 1398 1536">
+  <!-- Fondo transparente -->
+  <!-- T geométrica: líneas rectas y formas sólidas -->
+  <path fill="#000000" d="
+    M 70,60
+    L 280,60
+    L 910,405
+    L 910,1515
+    L 510,1515
+    L 510,410
+    L 70,410
+    Z"/>
+  <path fill="#000000" d="
+    M 550,60
+    L 1335,60
+    L 1335,390
+    L 1010,390
+    L 550,60
+    Z"/>
+</svg>
