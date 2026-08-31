@@ -118,16 +118,16 @@ export interface ITableColumnAction<T = any> {
 }
 export type TMenuItemData = {
 	path: string | null;
-	pathPadre: string | null;
+	// pathPadre: string | null;
 	icon: React.ReactNode | null;
-	url?: string | null;
-	actions?: {
-		allActions: boolean;
-		read: boolean;
-		create: boolean;
-		update: boolean;
-		delete: boolean;
-	};
+	// url?: string | null;
+	// actions?: {
+	// 	allActions: boolean;
+	// 	read: boolean;
+	// 	create: boolean;
+	// 	update: boolean;
+	// 	delete: boolean;
+	// };
 	type: 'program' | 'module' | 'submodule' | 'group';
 	parentGroup?: string;
 	parentSubmodule: string;

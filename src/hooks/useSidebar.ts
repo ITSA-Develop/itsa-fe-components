@@ -1,6 +1,6 @@
 import { ELocalStorageKeys } from '@/enums';
 import { create } from 'zustand';
-import { ISubmodule } from '..';
+import { IProgram } from '..';
 
 type SidebarStore = {
 	collapsed: boolean;
@@ -9,8 +9,8 @@ type SidebarStore = {
 	setSearchTerm: (searchTerm: string) => void;
 	openKeys: string[];
 	setOpenKeys: (openKeys: string[]) => void;
-	currentProgram?: ISubmodule;
-	setCurrentProgram: (program: ISubmodule) => void;
+		currentProgram?: IProgram;
+	setCurrentProgram: (program: IProgram) => void;
 };
 
 export const useSidebarStore = create<SidebarStore>(set => ({

@@ -1,4 +1,4 @@
-import { IModule, ISubmodule } from '@/interfaces';
+import { IModule, IProgram, ISubmodule } from '@/interfaces';
 import { useAppLayoutStore } from '@/store/appLayout.store';
 import { useEncrypt, useSidebarStore } from '@/hooks';
 import { ButtonActiveModule } from './ButtonActiveModule';
@@ -12,7 +12,7 @@ import { getIcon } from '@/helpers/menu/menuDataTransformer';
 import { RightOutlined, SearchOutlined, SettingOutlined, DownOutlined } from '@ant-design/icons';
 
 export interface IHomeProps {
-	handleNavigateProgram: (program: ISubmodule) => void;
+	handleNavigateProgram: (program: IProgram) => void;
 }
 
 export const Home = ({ handleNavigateProgram }: IHomeProps) => {
@@ -63,7 +63,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 		return <ButtonInactiveModule name={module.name} icon={module.icon} onclick={() => setCurrentModule(module, encryptKey)} />;
 	};
 
-	const uniqueById = (items: ISubmodule[] = []) => {
+	const uniqueById = (items: IProgram[] = []) => {
 		const seen = new Set<number>();
 		return items.filter(item => {
 			if (seen.has(item.id)) return false;
@@ -72,7 +72,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 		});
 	};
 
-	const programs = (programs: ISubmodule[], isNested = false) => {
+	const programs = (programs: IProgram[], isNested = false) => {
 		const paddingClass = isNested ? 'pl-2 sm:pl-3' : '';
 		return programs.map(program => {
 			const iconNode = program.icon
@@ -132,7 +132,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 		});
 	};
 
-	const filterUpdatePrograms = (items: ISubmodule[] = []) => {
+	const filterUpdatePrograms = (items: IProgram[] = []) => {
 		return items.filter(program => !(program.path ?? '').includes('/update'));
 	};
 
@@ -221,7 +221,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 			<div className="w-full">
 				<div className="flex flex-col w-full overflow-x-auto overflow-y-hidden">
 					<div className="flex flex-row flex-wrap gap-1.5 sm:gap-2 md:!gap-3 lg:!gap-4 justify-center py-3 sm:py-3">
-						{modules.map(module => (
+						{modules.map((module: IModule) => (
 							<div key={module.id}>{buttonHeader(module)}</div>
 						))}
 					</div>

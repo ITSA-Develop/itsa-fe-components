@@ -22,7 +22,6 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 		icon: getIcon('HomeIcon'),
 		data: {
 			path: '/home',
-			pathPadre: 'home',
 			icon: 'HomeIcon',
 			type: 'program',
 			parentModule: 'home',
@@ -48,10 +47,10 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 							icon: getIcon(program.icon),
 							data: {
 								path: program.path,
-								pathPadre: program.pathPadre,
-								url: program.url,
+								// pathPadre: program.pathPadre,
+								// url: program.url,
 								icon: getIcon(program.icon),
-								actions: program.actions,
+								// actions: program.actions,
 								type: 'program',
 								parentGroup: group.name,
 								parentSubmodule: submodule.name,
@@ -68,8 +67,6 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 					children: groupChildren,
 					data: {
 						path: null,
-						pathPadre: 'group',
-						url: null,
 						icon: getIcon('MenuIcon'),
 						type: 'group',
 						parentSubmodule: submodule.name,
@@ -88,10 +85,7 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 					icon: getIcon(program.icon),
 					data: {
 						path: program.path,
-						pathPadre: program.pathPadre,
-						url: program.url,
 						icon: getIcon(program.icon),
-						actions: program.actions,
 						type: 'program',
 						parentSubmodule: submodule.name,
 						parentModule: module.name,
@@ -109,8 +103,6 @@ export const transformModuleToMenuData = (module: IModule | null): TExtendedMenu
 				children: submoduleChildren,
 				data: {
 					path: null,
-					pathPadre: 'submodule',
-					url: null,
 					icon: getIcon('MenuIcon'),
 					type: 'submodule',
 					parentModule: module.name,

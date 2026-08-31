@@ -1,14 +1,15 @@
-export interface IGetPermissionResponse {
-	code: number;
-	message: string;
-	result: Result;
-}
 
-export interface Result {
+export interface IPermissions {
 	agencies: IAgency[];
 }
 
 export interface IAgency {
+	id: number;
+	name: string;
+	subAgencies: ISubAgency[];
+}
+
+export interface ISubAgency {
 	id: number;
 	name: string;
 	modules: IModule[];
@@ -18,23 +19,65 @@ export interface IModule {
 	id: number;
 	name: string;
 	icon: string;
-	entorno: string;
 	submodules: ISubmodule[];
 }
 
 export interface ISubmodule {
 	id: number;
 	name: string;
-	pathPadre: string | null;
-	path: string | null;
-	icon: string | null;
-	url?: string | null;
-	groups?: ISubmodule[];
-	programs?: ISubmodule[];
-	actions?: IActions;
-	root?: boolean;
-	roleId?: number;
+	icon: string;
+	groups: ISubmodule[];
+	programs: IProgram[];
 }
+
+export interface IProgram {
+	id: number;
+	roleId: number;
+	name: string;
+	root: boolean;
+	path: string;
+	icon: string;
+	actions: IActions;
+}
+
+
+// export interface IGetPermissionResponse {
+// 	code: number;
+// 	message: string;
+// 	result: Result;
+// }
+
+// export interface Result {
+// 	agencies: IAgency[];
+// }
+
+// export interface IAgency {
+// 	id: number;
+// 	name: string;
+// 	modules: IModule[];
+// }
+
+// export interface IModule {
+// 	id: number;
+// 	name: string;
+// 	icon: string;
+// 	entorno: string;
+// 	submodules: ISubmodule[];
+// }
+
+// export interface ISubmodule {
+// 	id: number;
+// 	name: string;
+// 	pathPadre: string | null;
+// 	path: string | null;
+// 	icon: string | null;
+// 	url?: string | null;
+// 	groups?: ISubmodule[];
+// 	programs?: ISubmodule[];
+// 	actions?: IActions;
+// 	root?: boolean;
+// 	roleId?: number;
+// }
 
 export interface IActions {
 	allActions: boolean;
@@ -321,7 +364,7 @@ export interface IUserInformation {
 }
 export interface IProgramActions {
 	actions: IActions;
-	program: ISubmodule;
+	program: IProgram;
 }
 
 export interface IMapLocation {

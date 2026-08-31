@@ -1,6 +1,6 @@
 import { ELocalStorageKeys } from '@/enums';
 import { setDataEncryptedInStorage } from '@/helpers/encrypt';
-import { IAgency, IModule, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
+import { IAgency, IModule, ISubAgency, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
 import { DefaultOptionType } from 'antd/es/select';
 import { create } from 'zustand';
 
@@ -17,8 +17,8 @@ export interface AppLayoutStore {
 	currentAgency?: IAgency;
 	setCurrentAgency: (agency: IAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
 
-	currentSubAgency?: IAgency;
-	setCurrentSubAgency: (subagency: IAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
+	currentSubAgency?: ISubAgency;
+	setCurrentSubAgency: (subagency: ISubAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
 
 	currentCompany?: DefaultOptionType;
 	setCurrentCompany: (company: DefaultOptionType, KEY_ENCRYPT: CryptoJS.lib.WordArray) => void;
@@ -63,7 +63,7 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		setDataEncryptedInStorage(ELocalStorageKeys.agency, String(agency.id), KEY_ENCRYPT);
 	},
 	currentSubAgency: undefined,
-	setCurrentSubAgency: (subagency: IAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
+	setCurrentSubAgency: (subagency: ISubAgency, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
 		set({
 			currentSubAgency: subagency,
 		});

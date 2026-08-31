@@ -1,12 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
-import { IActions, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
+import { IActions, IModule, IProgramActions, ISorterTable } from '@/interfaces';
 import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
-import { useAppLayoutStore } from '@/store';
 // import { act } from 'react';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
@@ -83,7 +82,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 		const programs = submodule.programs;
 		if (programs && programs.length > 0) {
 			for (const program of programs) {
-				const url = program.url ? program.url : undefined;
+				const url = program.path ? program.path : undefined;
 				const programPath = program.path ? program.path : undefined;
 
 				// Buscar tanto en url como en path
@@ -95,7 +94,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 					matchesPath(programPath, targetPath);
 
 				if (urlMatch || pathMatch) {
-					if (program.actions) {
+					if (program.id) {
 						return { actions: program.actions, program: program };
 					}
 				}
@@ -109,7 +108,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 				const groupPrograms = group.programs;
 				if (groupPrograms && groupPrograms.length > 0) {
 					for (const program of groupPrograms) {
-						const url = program.url ? program.url : undefined;
+						const url = program.path ? program.path : undefined;
 						const programPath = program.path ? program.path : undefined;
 
 						// Buscar tanto en url como en path
@@ -239,54 +238,6 @@ export interface ISorterColumn {
 	order: 'ascend' | 'descend';
 	field: string;
 }
-const normalizePath = (value: string | null | undefined): string => {
-	if (!value) return '';
-	return value.replace(/^\/+|\/+$/g, '').toLowerCase();
-};
-
-export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined, path: string): ISubmodule | null => {
-	if (!agencies || !Array.isArray(agencies) || !path) return null;
-
-	const target = normalizePath(path);
-	if (!target) return null;
-
-	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
-		if (!programs) return null;
-		for (const program of programs) {
-			if (normalizePath(program?.path ?? null) === target) {
-				return program;
-			}
-		}
-		return null;
-	};
-
-	for (const agency of agencies) {
-		const modules = agency?.modules ?? [];
-		for (const mod of modules ?? []) {
-			const foundAtModule = checkPrograms(mod?.submodules ?? []);
-			if (foundAtModule !== null) return foundAtModule;
-
-			const submodules = mod?.submodules ?? [];
-			for (const sub of submodules ?? []) {
-				const foundAtSub = checkPrograms(sub?.programs ?? []);
-				if (foundAtSub !== null) return foundAtSub;
-
-				const groups = sub?.groups ?? [];
-				for (const group of groups ?? []) {
-					const foundAtGroup = checkPrograms(group?.programs ?? []);
-					if (foundAtGroup !== null) return foundAtGroup;
-				}
-			}
-		}
-	}
-
-	return null;
-};
-
-export const findProgramIdByPath = (path: string): ISubmodule | null => {
-	const agencies: IAgency[] | undefined = useAppLayoutStore?.getState?.()?.agencies ?? [];
-	return findProgramIdByPathFromAgencies(agencies, path);
-};
 
 export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: string): TExtendedMenuItem | null => {
 	if (!Array.isArray(menuItems) || !route) return null;
