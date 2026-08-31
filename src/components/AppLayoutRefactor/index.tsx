@@ -1,5 +1,5 @@
-import { HeaderLayout } from "./components/header";
-import { SidebarLayout } from "./components/sidebar";
+
+import { SidebarLayout } from "./components/Sidebar";
 
 
 
