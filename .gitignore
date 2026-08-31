@@ -44,3 +44,7 @@ tmp
 
 .npmrc
 /scripts
+
+.cursor
+
+/temp
