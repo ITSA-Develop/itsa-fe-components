@@ -31,7 +31,7 @@ export const UserNotificationsUIView = ({
 				disabled={!isActiveNotifications}
 				icon={
 					isActiveNotifications ? (
-						<ActiveNotificationIcon className="h-6 w-6 text-white-100" />
+						<ActiveNotificationIcon className="h-6 w-6" />
 					) : (
 						<NotificationIcon className="h-6 w-6 text-white-100" />
 					)

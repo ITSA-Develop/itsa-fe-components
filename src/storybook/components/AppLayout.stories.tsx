@@ -22,7 +22,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {},
+	args: {
+		optionsCompany: [],
+		notifications: [],
+		loadingAppLayout: false,
+		children: <div>Hello World</div>,
+		permissions: undefined,
+	},
 };
 
 

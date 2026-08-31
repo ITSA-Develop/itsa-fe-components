@@ -376,32 +376,6 @@ export const getOriginFromUrl = (url: string): string | undefined => {
 	}
 };
 
-
-// export const roundUpDecimal = (value: unknown): number => {
-// 	if (value === undefined || value === null) return 0.00;
-// 	const normalizedValue =
-// 		typeof value === 'string'
-// 			? Number(value.trim().replace(/,/g, ''))
-// 			: Number(value);
-// 	if (!Number.isFinite(normalizedValue)) return 0.00;
-// 	const fixedToEight = normalizedValue.toFixed(8);
-// 	const isNegative = fixedToEight.startsWith('-');
-// 	const absoluteValue = isNegative ? fixedToEight.slice(1) : fixedToEight;
-// 	const [intPart = '0', decPart = ''] = absoluteValue.split('.');
-// 	const eightDecimals = decPart.padEnd(8, '0').slice(0, 8);
-// 	const firstTwoDecimals = eightDecimals.slice(0, 2);
-// 	const hasExtraDecimals = /[1-9]/.test(eightDecimals.slice(2));
-// 	let cents = Number(intPart) * 100 + Number(firstTwoDecimals);
-// 	if (!isNegative && hasExtraDecimals) {
-// 		cents += 1;
-// 	}
-// 	const integerPart = Math.floor(cents / 100);
-// 	const decimalPart = String(cents % 100).padStart(2, '0');
-// 	const sign = isNegative && cents > 0 ? '-' : '';
-// 	const refNumber = `${sign}${integerPart}.${decimalPart}`;
-// 	return Number(refNumber);
-// };
-
 export const roundStandardDecimal = (value: unknown): string => {
 	if (value === undefined || value === null) return '0.00';
 	const rawValue =
@@ -452,3 +426,5 @@ export const roundUpDecimal = (value: unknown): number => {
 		return 0.00;
 	}
 }
+
+

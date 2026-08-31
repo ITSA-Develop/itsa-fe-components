@@ -1,20 +1,20 @@
 import { Button } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
-import { useSidebarStore } from '@/hooks';
 import { LogoKAI } from '@/components/Login/components/LogoKAI';
+import { useSidebarLayoutStore } from '../../store/useSidebarLayoutStore';
 
 export interface ButtonSidebarTitleUIProps {
   environment: string;
 }
 
 export const ButtonSidebarTitleUI = ({ environment }: ButtonSidebarTitleUIProps) => {
-  const { collapsed, setCollapsed } = useSidebarStore();
+  const { open, setOpen } = useSidebarLayoutStore();
 
   return <div className="flex shrink-0 flex-row items-center justify-start gap-1 md:w-full md:gap-2">
     <Button
       type="text"
       icon={<MenuUnfoldOutlined className="text-white-100" />}
-      onClick={() => setCollapsed(!collapsed)}
+      onClick={() => setOpen(!open)}
     />
     {environment !== 'PRODUCCION' && (
       <div

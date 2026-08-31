@@ -7,9 +7,9 @@ import { DefaultOptionType } from "antd/es/select";
 import { UserActions } from "./components/UserActions";
 import { MenuProps } from 'antd';
 import { NavigateFunction } from 'react-router-dom';
+import { IItemNotification } from "@/interfaces";
 
 export interface HeaderLayoutProps {
-	showMultiCompanySelector: boolean;
 	optionsCompany: DefaultOptionType[];
 	userActions?: MenuProps;
 	notifications?: IItemNotification[];
@@ -19,13 +19,13 @@ export interface HeaderLayoutProps {
 
 export const HeaderLayout = ({
 	optionsCompany,
-	showMultiCompanySelector,
 	userActions,
 	notifications,
 	loadingAppLayout,
 	navigateApp,
 }: HeaderLayoutProps) => {
 	const environment = useEnvironment();
+  const isActiveMultiCompanySelector = optionsCompany.length > 0;
 	return <header className="h-16">
 		<div className={`relative overflow-hidden rT_lineas_rectas_transparente.svgounded-tr-none rounded-tl-none rounded-br-xl rounded-bl-xl md:rounded-xl h-16 bg-primary-700`}>
 			{environment !== 'PRODUCCION' && (
@@ -41,7 +41,7 @@ export const HeaderLayout = ({
 					<ButtonSidebarTitleUI environment={environment} />
 				</div>
 				<div className="flex min-w-0 flex-1 justify-center md:block">
-					{showMultiCompanySelector && <MultiCompanySelectorUI optionsCompany={optionsCompany} />}
+					{isActiveMultiCompanySelector && <MultiCompanySelectorUI optionsCompany={optionsCompany} />}
 				</div>
 				<div className="min-w-0 shrink-0 md:col-span-2">
 					<UserActions
