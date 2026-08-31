@@ -80,6 +80,7 @@
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
 		"@vis.gl/react-google-maps": "^1.6.1",
+		"ag-grid-react": "^36.1.0",
 		"antd": "^5.26.7",
 		"antd-img-crop": "^4.30.0",
 		"axios": "^1.8.4",
