@@ -7,7 +7,7 @@ import {
   renderTruncatedHeaderSelectLabel,
   truncateHeaderSelectLabel,
 } from "../utils/headerSelectLabel";
-import { useAppLayoutStore } from "../../store/useAppLayoutStore";
+import { useAppLayoutStore } from "../../store";
 import {
   HEADER_SELECT_CLASSNAME,
   MOBILE_SELECT_WRAPPER_CLASSNAME,

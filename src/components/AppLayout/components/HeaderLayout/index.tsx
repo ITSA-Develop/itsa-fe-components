@@ -1,7 +1,7 @@
 import { Button, Dropdown, MenuProps } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 import { useEncrypt, useSidebarStore } from '@/hooks';
-import { useAppLayoutStore } from '@/store';
+import { useLegacyAppLayoutStore } from '@/store';
 import { DropdownIcon } from '@/components/DropdownIcon';
 import { ActiveNotificationIcon, NotificationIcon, PinIcon, UserIcon } from '@/assets/icons';
 import { SettingOutlined } from '@ant-design/icons';
@@ -32,16 +32,16 @@ export const HeaderLayout = ({
 }: HeaderLayoutProps) => {
 	const { encryptKey, getDecryptDataFromStorage } = useEncrypt();
 	const { collapsed, setCollapsed } = useSidebarStore();
-	const { modulesAgency } = useAppLayoutStore();
-	const { agencies } = useAppLayoutStore();
-	const { userRole } = useAppLayoutStore();
-	const { userName } = useAppLayoutStore();
-	const { currentModule } = useAppLayoutStore();
-	const { currentAgency } = useAppLayoutStore();
+	const { modulesAgency } = useLegacyAppLayoutStore();
+	const { agencies } = useLegacyAppLayoutStore();
+	const { userRole } = useLegacyAppLayoutStore();
+	const { userName } = useLegacyAppLayoutStore();
+	const { currentModule } = useLegacyAppLayoutStore();
+	const { currentAgency } = useLegacyAppLayoutStore();
 	const environment = useEnvironment();
 
 	const { setCurrentModule, setModulesAgency, setCurrentAgency, setSubmodulesAgency, setCurrentSubmodule } =
-		useAppLayoutStore();
+		useLegacyAppLayoutStore();
 
 	const redirectToHome = () => {
 		navigateApp('/home');
@@ -64,8 +64,8 @@ export const HeaderLayout = ({
 	const selectAgency = (agency?: IAgency, navigateWhenNoModule = true) => {
 		if (!agency) return false;
 		setCurrentAgency(agency, encryptKey);
-		setModulesAgency(agency.modules);
-		const hasModule = selectModule(agency.modules[0], false);
+		setModulesAgency([]);
+		const hasModule = selectModule(agency.subAgencies[0]?.modules[0], false);
 		if (hasModule || navigateWhenNoModule) {
 			redirectToHome();
 		}
@@ -101,14 +101,14 @@ export const HeaderLayout = ({
 				const moduleId = Number(moduleIdStorage);
 				// Intenta encontrar el módulo guardado
 				for (const agency of agencies) {
-					for (const module of agency.modules) {
-						if (module.id === moduleId) {
-							setCurrentModule(module, encryptKey);
-							setModulesAgency(agency.modules);
-							setCurrentAgency(agency, encryptKey);
-							moduleFound = true;
-							return;
-						}
+					// for (const module of agency.subAgencies[0]?.modules) {
+						if (module.id === String(moduleId)) {
+					// 		setCurrentModule(module, encryptKey);
+							setModulesAgency(agency.subAgencies[0]?.modules ?? []);
+					// 		setCurrentAgency(agency, encryptKey);
+					// 		moduleFound = true;
+					// 		return;
+					// 	}
 					}
 				}
 			}
@@ -127,11 +127,11 @@ export const HeaderLayout = ({
 				selectedAgency = selectedAgency || agencies[0];
 				if (selectedAgency) {
 					setCurrentAgency(selectedAgency, encryptKey);
-					setModulesAgency(selectedAgency.modules);
-					const currentModule = selectedAgency.modules?.[0];
-					if (currentModule) {
-						setCurrentModule(currentModule, encryptKey);
-					}
+					// setModulesAgency(selectedAgency.modules);
+					// const currentModule = selectedAgency.modules?.[0];
+					// if (currentModule) {
+					// 	setCurrentModule(currentModule, encryptKey);
+					// }
 				}
 			}
 		},

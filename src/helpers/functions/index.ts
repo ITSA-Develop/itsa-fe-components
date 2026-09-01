@@ -6,7 +6,7 @@ import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
-import { useAppLayoutStore } from '@/store';
+import { useLegacyAppLayoutStore } from '@/store';
 // import { act } from 'react';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
@@ -284,7 +284,7 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 };
 
 export const findProgramIdByPath = (path: string): ISubmodule | null => {
-	const agencies: IAgency[] | undefined = useAppLayoutStore?.getState?.()?.agencies ?? [];
+	const agencies: IAgency[] | undefined = useLegacyAppLayoutStore?.getState?.()?.agencies ?? [];
 	return findProgramIdByPathFromAgencies(agencies, path);
 };
 

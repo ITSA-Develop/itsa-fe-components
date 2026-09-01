@@ -2,7 +2,7 @@ import { IAgency, ISubAgency } from '@/interfaces';
 import { ShopFilled } from '@ant-design/icons';
 import { TreeSelect, TreeSelectProps } from 'antd';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
-import { useAppLayoutStore } from '../../store/useAppLayoutStore';
+import { useAppLayoutStore } from '../../store';
 import {
   MOBILE_SELECT_WRAPPER_CLASSNAME,
   MOBILE_SELECT_WRAPPER_STYLE,

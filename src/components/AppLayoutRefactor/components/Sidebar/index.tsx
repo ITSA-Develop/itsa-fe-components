@@ -1,7 +1,7 @@
 import { Drawer } from "@/components/Drawer/Drawer";
 import { useAppLayoutFooter } from "@/hooks";
 import { ReactNode, useState } from "react";
-import { useSidebarLayoutStore } from "../store/useSidebarLayoutStore";
+import { useSidebarLayoutStore } from "../store";
 import { DoubleLeftOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import { sidebarStyles } from "./styles";

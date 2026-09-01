@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 import { LogoKAI } from '@/components/Login/components/LogoKAI';
-import { useSidebarLayoutStore } from '../../store/useSidebarLayoutStore';
+import { useSidebarLayoutStore } from '../../store';
 
 export interface ControlSidebarUIProps {
   environment: string;

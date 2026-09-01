@@ -1,5 +1,5 @@
 import { UserIcon } from '@/assets/icons';
-import { useAppLayoutStore } from '@/store';
+import { useLegacyAppLayoutStore } from '@/store';
 import { Button, Dropdown, MenuProps } from 'antd';
 
 export interface ControlUserInformationUIProps {
@@ -8,7 +8,7 @@ export interface ControlUserInformationUIProps {
 
 export const ControlUserInformationUI = ({ userActions = { items: [] } }: ControlUserInformationUIProps) => {
 	const isActiveUserActions = Boolean(userActions?.items?.length);
-	const { userName, userRole } = useAppLayoutStore();
+	const { userName, userRole } = useLegacyAppLayoutStore();
 	return (
 		<div className="flex shrink-0 items-center md:gap-1">
 			<div className="hidden flex-col md:flex">

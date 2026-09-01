@@ -2,7 +2,7 @@ import { IAgency, IPermissions } from '@/interfaces';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useAppLayoutStore } from '../../store/useAppLayoutStore';
+import { useAppLayoutStore } from '../../store';
 import { ControlBusinessLineSelectorUI } from './ControlBusinessLineSelectorUI.view';
 import { ControlMultiCompanySelectorUI } from './ControlMultiCompanySelectorUI.view';
 import { ControlSubAgencySelectorUI, MultiCompanyTreeNode } from './ControlSubAgencySelectorUI.view';

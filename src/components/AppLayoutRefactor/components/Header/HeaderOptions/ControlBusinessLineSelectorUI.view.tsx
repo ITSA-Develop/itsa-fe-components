@@ -3,7 +3,7 @@ import { SettingOutlined } from '@ant-design/icons';
 import { Select, SelectProps } from 'antd';
 import { useMemo } from 'react';
 import { MODULE_SELECT_LABEL_MAX_LENGTH, renderTruncatedHeaderSelectLabel, truncateHeaderSelectLabel } from '../utils/headerSelectLabel';
-import { useAppLayoutStore } from '../../store/useAppLayoutStore';
+import { useAppLayoutStore } from '../../store';
 import {
 	HEADER_SELECT_CLASSNAME,
 	MOBILE_SELECT_WRAPPER_CLASSNAME,

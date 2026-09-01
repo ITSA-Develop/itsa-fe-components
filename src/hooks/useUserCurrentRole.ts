@@ -1,6 +1,6 @@
-import { useAppLayoutStore } from '@/store/appLayout.store';
+import { useLegacyAppLayoutStore } from '@/store';
 
 export const useUserCurrentRole = () => {
-	const userRole = useAppLayoutStore(state => state.userRole);
+	const userRole = useLegacyAppLayoutStore(state => state.userRole);
 	return userRole;
 };

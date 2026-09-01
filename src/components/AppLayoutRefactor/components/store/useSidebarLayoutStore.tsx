@@ -1,7 +1,11 @@
-import { getStoredCollapsedSidebar } from "@/helpers/functions";
-import { create } from "zustand";
+import { ELocalStorageKeys } from '@/enums';
+import { dataFromLocalStorage } from '@/helpers/objects';
+import { create } from 'zustand';
 
-
+const getStoredCollapsedSidebar = () => {
+	const closeSidebar = dataFromLocalStorage(ELocalStorageKeys.collapsedSidebar);
+	return closeSidebar === 'true';
+};
 
 export interface SidebarLayoutStore {
   open: boolean;

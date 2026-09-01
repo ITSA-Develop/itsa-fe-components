@@ -3,7 +3,7 @@ import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { EActionType } from '@/enums';
 import { isDisabledAction } from '@/helpers/functions';
-import { useAppLayoutStore, useUserActionPermissions } from '@/store';
+import { useLegacyAppLayoutStore, useUserActionPermissions } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 import { useControlActions } from '@/hooks';
 import { getDropdownButtonStyles } from './DropdownButton.styles';
@@ -48,7 +48,7 @@ export const DropdownButton = ({
 	placement = 'bottomLeft',
 }: IDropdownButtonProps) => {
 	const isOnline = useOnlineStatus();
-	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const { userActionPermissions } = useUserActionPermissions();
 

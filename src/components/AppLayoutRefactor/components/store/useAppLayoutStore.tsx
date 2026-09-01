@@ -1,4 +1,4 @@
-import { IAgency, IModule, IPermissions, ISubAgency, ISubmodule } from '@/interfaces';
+import { IAgency, IModule, IPermissions, ISubAgency, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
 import { DefaultOptionType } from 'antd/es/select';
 import { create } from 'zustand';
 
@@ -83,12 +83,20 @@ export interface AppLayoutStore {
 	currentSubmodule?: ISubmodule;
 	currentCompany?: DefaultOptionType;
 
+	userRole?: IUserRole;
+	setUserRole: (userRole: IUserRole) => void;
+
+	userInformation?: IUserInformation;
+	setUserInformation: (userInformation: IUserInformation) => void;
+
+	
 	hydrateSelection: (selection: StoredAppLayoutSelection) => void;
 	setPermissions: (permissions: IPermissions) => void;
 	setCompanyOptions: (options: DefaultOptionType[], ready?: boolean) => void;
 	selectCompany: (value: string) => void;
 	selectSubAgency: (subAgencyId: number, agencyId?: number) => void;
 	selectModule: (moduleId: number) => void;
+	selectSubmodule: (submoduleId: number) => void;
 }
 
 export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
@@ -102,7 +110,7 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 	module: undefined,
 	currentSubmodule: undefined,
 	currentCompany: undefined,
-
+	userInformation: undefined,
 	hydrateSelection: selection => {
 		const state = get();
 		const currentCompany = state.companyOptionsReady
@@ -188,4 +196,27 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 			},
 		}));
 	},
+
+	selectSubmodule: submoduleId => {
+		const state = get();
+		if (!state.module) return;
+
+		const submodule = state.module.submodules.find(item => item.id === submoduleId) ?? state.module.submodules[0];
+		set(currentState => ({
+			currentSubmodule: submodule,
+			selectionIds: {
+				...currentState.selectionIds,
+				submoduleId: submodule?.id,
+			},
+		}));
+	},
+
+	setUserInformation: (userInformation: IUserInformation) => {
+		set({ userInformation });
+	},
+
+	setUserRole: (userRole: IUserRole) => {
+		set({ userRole });
+	},
+	
 }));

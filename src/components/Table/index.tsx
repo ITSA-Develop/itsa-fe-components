@@ -2,7 +2,7 @@ import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useAppLayoutStore } from '@/store';
+import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
@@ -100,7 +100,7 @@ export const Table = <T extends object>({
 		y: scrollY,
 	};
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
 	const finalPagination = paginationConfig ? paginationConfig : false;

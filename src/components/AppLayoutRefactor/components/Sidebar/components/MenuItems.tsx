@@ -3,7 +3,7 @@ import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useMemo } from "react";
 import { getIconByName } from "@/helpers/icons";
 import { IProgram, ISubmodule } from "@/interfaces";
-import { useAppLayoutStore } from "../../store/useAppLayoutStore";
+import { useAppLayoutStore } from "../../store";
 
 export interface MenuItemsProps {
   openKeysMenuOptions: string[];

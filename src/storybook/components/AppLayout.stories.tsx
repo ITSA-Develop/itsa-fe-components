@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import type { StoryObj } from '@storybook/react';
-import { AppLayout } from '../../components/AppLayoutRefactor';
-import { useAppLayoutStore } from '../../components/AppLayoutRefactor/components/store/useAppLayoutStore';
+import { AppLayout } from '../../components/AppLayout';
+import { useAppLayoutStore } from '../../store';
 import { PERMISSIONS_MOCK } from '../../components/AppLayoutRefactor/mocks/permissions.mock';
 import { IProgram } from '../../interfaces';
 
