@@ -1,18 +1,26 @@
 import { Menu, MenuProps } from "antd";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { getIconByName } from "@/helpers/icons";
 import { IProgram, ISubmodule } from "@/interfaces";
 import { useAppLayoutStore } from "../../store";
+import { collectSubmenuKeys, filterSubmodule } from "./filterSubmoduleMenu";
 
 export interface MenuItemsProps {
   openKeysMenuOptions: string[];
   onOpenKeysChange: (openKeys: string[]) => void;
   currentPathKeyString?: string;
+  searchTerm?: string;
   menuItemsNavigate: (program: IProgram) => void;
 }
 
-export const MenuItems = ({ currentPathKeyString, openKeysMenuOptions, onOpenKeysChange, menuItemsNavigate }: MenuItemsProps) => {
+export const MenuItems = ({
+  currentPathKeyString,
+  openKeysMenuOptions,
+  onOpenKeysChange,
+  searchTerm = '',
+  menuItemsNavigate,
+}: MenuItemsProps) => {
   const { module } = useAppLayoutStore();
 
   const { menuItems, programsByKey } = useMemo(() => {
@@ -24,6 +32,12 @@ export const MenuItems = ({ currentPathKeyString, openKeysMenuOptions, onOpenKey
     }
 
     const programMap = new Map<string, IProgram>();
+    const normalizedSearch = searchTerm.trim();
+    const filteredSubmodules = normalizedSearch
+      ? module.submodules
+          .map(submodule => filterSubmodule(submodule, normalizedSearch))
+          .filter((submodule): submodule is ISubmodule => submodule !== null)
+      : module.submodules;
 
     const createSubmoduleItem = (submodule: ISubmodule): ItemType<MenuItemType> | null => {
       const children: ItemType<MenuItemType>[] = [
@@ -56,7 +70,7 @@ export const MenuItems = ({ currentPathKeyString, openKeysMenuOptions, onOpenKey
       };
     };
 
-    const moduleChildren = module.submodules
+    const moduleChildren = filteredSubmodules
       .map(createSubmoduleItem)
       .filter((item): item is ItemType<MenuItemType> => item !== null);
 
@@ -64,7 +78,13 @@ export const MenuItems = ({ currentPathKeyString, openKeysMenuOptions, onOpenKey
       menuItems: moduleChildren,
       programsByKey: programMap,
     };
-  }, [module]);
+  }, [module, searchTerm]);
+
+  useEffect(() => {
+    if (!searchTerm.trim()) return;
+
+    onOpenKeysChange(collectSubmenuKeys(menuItems));
+  }, [menuItems, onOpenKeysChange, searchTerm]);
 
   const handleMenuClick: MenuProps['onClick'] = info => {
     const selectedProgram = programsByKey.get(info.key);

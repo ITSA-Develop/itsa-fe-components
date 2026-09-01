@@ -20,7 +20,7 @@ export interface IHeaderOptionsProps {
 export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, optionsCompany }: IHeaderOptionsProps) => {
 	const environment = useEnvironment();
 	return (
-		<div className="flex h-full min-h-0 min-w-0 flex-row items-center justify-between">
+		<div className="flex pl-2 pr-2 h-full min-h-0 min-w-0 flex-row items-center justify-between">
 			<ControlSidebarUI environment={environment} />
 			<ControlMultiCompanySelectorUI optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
 			<div className="flex min-w-0 flex-row gap-1">

@@ -18,6 +18,7 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
   const { footerComponent } = useAppLayoutFooter();
   const { open, setOpen } = useSidebarLayoutStore();
   const [openKeysMenuOptions, setOpenKeysMenuOptions] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const drawerTopOffset = "calc(4rem + 0.2rem)";
 
   const closeDrawer = () => {
@@ -44,7 +45,7 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
     </div>;
   }
 
-	return <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-white-100 p-4">
+	return <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pl-1 pr-1">
     <Drawer
       title={titleDrawer()}
       footer={footerDrawer()}
@@ -60,15 +61,23 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
       styles={sidebarStyles}
     >
       <div className="flex flex-col gap-2 p-2">
-        <Input type="text" placeholder="Buscar..." suffix={<SearchOutlined className="text-gray-300" />} />
+        <Input
+          type="text"
+          placeholder="Buscar..."
+          allowClear
+          value={searchTerm}
+          onChange={event => setSearchTerm(event.target.value)}
+          suffix={<SearchOutlined className="text-gray-300" />}
+        />
         <MenuItems
           openKeysMenuOptions={openKeysMenuOptions}
           onOpenKeysChange={setOpenKeysMenuOptions}
+          searchTerm={searchTerm}
           menuItemsNavigate={menuItemsNavigate}
         />
       </div>
     </Drawer>
-    <div className="min-h-0 min-w-0 max-w-full flex-1 overflow-auto">
+    <div className="min-h-0 min-w-0 max-w-full flex-1 overflow-auto rounded-lg bg-white-100">
       {children}
     </div>
     {footerComponent !== undefined && (

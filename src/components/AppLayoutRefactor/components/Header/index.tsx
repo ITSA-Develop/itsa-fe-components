@@ -5,13 +5,11 @@ import { HeaderOptions } from "./HeaderOptions";
 
 export interface HeaderLayoutProps {
 	optionsCompany: DefaultOptionType[];
-	// appNavigate: () => void;
 	loadingAppLayout: boolean;
 }
 
 export const HeaderLayout = ({
 	optionsCompany,
-	// appNavigate,
 	loadingAppLayout,
 }: HeaderLayoutProps) => {
 	const environment = useEnvironment();
@@ -25,8 +23,7 @@ export const HeaderLayout = ({
 					{renderHeaderEnvironmentWatermark(environment)}
 				</div>
 			)}
-		<HeaderOptions optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
-
-</div>
+			<HeaderOptions optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
+		</div>
 	</header>
 };
