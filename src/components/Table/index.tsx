@@ -109,6 +109,7 @@ export const Table = <T extends object>({
 	const baseTableScopeClass = 'itsa-table--head-rounded';
 	const resolvedRootClassName = [
 		baseTableScopeClass,
+		'w-full min-w-0 max-w-full',
 		enableColumnDrag ? 'itsa-table--column-drag' : '',
 		refreshDataFunction ? 'itsa-table--with-refresh' : '',
 		rootClassName,
@@ -485,7 +486,13 @@ export const Table = <T extends object>({
 				onDragOver={columnDrag.handleDragOver}
 				activeColumnTitle={columnDrag.activeColumnTitle}
 			>
-			<div className={refreshDataFunction ? 'itsa-table-wrapper itsa-table-wrapper--refresh' : 'itsa-table-wrapper'}>
+			<div
+				className={
+					refreshDataFunction
+						? 'itsa-table-wrapper itsa-table-wrapper--refresh w-full min-w-0 max-w-full overflow-hidden'
+						: 'itsa-table-wrapper w-full min-w-0 max-w-full overflow-hidden'
+				}
+			>
 				{refreshDataFunction && (
 					<div className="itsa-table-refresh-bar">
 						<Button

@@ -12,12 +12,12 @@ import { DefaultOptionType } from 'antd/es/select';
 export interface IHeaderOptionsProps {
 	loadingAppLayout: boolean;
 	optionsCompany: DefaultOptionType[];
-	appNavigate: () => void;
+	// appNavigate: () => void;
 	userActions?: MenuProps;
 	notifications?: IItemNotification[];
 }
 
-export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, appNavigate, optionsCompany }: IHeaderOptionsProps) => {
+export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, optionsCompany }: IHeaderOptionsProps) => {
 	const environment = useEnvironment();
 	return (
 		<div className="flex h-full min-h-0 min-w-0 flex-row items-center justify-between">
@@ -25,7 +25,7 @@ export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, ap
 			<ControlMultiCompanySelectorUI optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
 			<div className="flex min-w-0 flex-row gap-1">
 				<div className="flex min-w-0 flex-row gap-1">
-					<ControlBusinessLineSelectorUI loadingAppLayout={loadingAppLayout} appNavigate={appNavigate} />
+					<ControlBusinessLineSelectorUI loadingAppLayout={loadingAppLayout} />
 					<ControlSubAgencySelectorUI />
 				</div>
 				<div className="flex shrink-0 flex-row items-center gap-0.5">

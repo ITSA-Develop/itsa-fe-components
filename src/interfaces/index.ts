@@ -105,15 +105,15 @@ export interface IUserRole {
 	moduleId: number;
 }
 
-export interface IUserInformation {
-	identification: string;
-	identificationType: string;
-	businessLineId: number;
-	name: string;
-	picture: string;
-	email: string;
-	roles: IUserRole[];
-}
+// export interface IUserInformation {
+// 	identification: string;
+// 	identificationType: string;
+// 	businessLineId: number;
+// 	name: string;
+// 	picture: string;
+// 	email: string;
+// 	roles: IUserRole[];
+// }
 //--------------------------------------------------->
 // TODO: clean up this file after implementations starts
 import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
@@ -358,6 +358,7 @@ export interface IUserInformation {
 	picture: string;
 	email: string;
 	roles: IUserRole[];
+	userId: number;
 }
 export interface IProgramActions {
 	actions: IActions;

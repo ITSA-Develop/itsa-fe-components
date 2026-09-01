@@ -44,7 +44,7 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
     </div>;
   }
 
-	return <div className="flex flex-col h-full">
+	return <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-white-100 p-4">
     <Drawer
       title={titleDrawer()}
       footer={footerDrawer()}
@@ -68,9 +68,11 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
         />
       </div>
     </Drawer>
-    {children}
+    <div className="min-h-0 min-w-0 max-w-full flex-1 overflow-auto">
+      {children}
+    </div>
     {footerComponent !== undefined && (
-      <div className="h-auto w-full lg:z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>
+      <div className="h-auto w-full shrink-0 lg:z-50 rounded-bl-lg rounded-br-lg p-1">{footerComponent}</div>
     )}
   </div>;
 };

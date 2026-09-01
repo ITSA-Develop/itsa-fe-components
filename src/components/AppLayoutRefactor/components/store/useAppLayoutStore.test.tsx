@@ -171,7 +171,7 @@ describe('useAppLayoutSelectionPersistence', () => {
 			useAppLayoutStore.getState().setPermissions(permissions);
 		});
 		renderHook(
-			() => useAppLayoutSelectionPersistence(companyOptions, false, appNavigate),
+			() => useAppLayoutSelectionPersistence(companyOptions, false),
 			{ wrapper },
 		);
 

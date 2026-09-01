@@ -129,7 +129,7 @@ describe('AppLayoutRefactor header selectors', () => {
 	it('cascades module selection and preserves navigation', () => {
 		const appNavigate = vi.fn();
 		useAppLayoutStore.getState().setPermissions(permissions);
-		render(<ControlBusinessLineSelectorUI appNavigate={appNavigate} />);
+		render(<ControlBusinessLineSelectorUI loadingAppLayout={false} />);
 
 		fireEvent.change(firstSelector(), { target: { value: '101' } });
 

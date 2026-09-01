@@ -15,11 +15,10 @@ import {
 } from '@/constants';
 
 export interface ControlBusinessLineSelectorUIProps {
-	loadingAppLayout?: boolean;
-	appNavigate: () => void;
+	loadingAppLayout: boolean;
 }
 
-export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, appNavigate }: ControlBusinessLineSelectorUIProps) => {
+export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false }: ControlBusinessLineSelectorUIProps) => {
 	const { subAgency, module, selectModule } = useAppLayoutStore();
 
 	const modulesAgency = useMemo(() => subAgency?.modules ?? [], [subAgency]);
@@ -35,7 +34,8 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, appNav
 
 	const onSelect = (moduleId: string) => {
 		selectModule(Number(moduleId));
-		appNavigate?.();
+		//navegar al home
+		window.location.href = '/';
 	};
 
 	const currentModuleValue = module !== undefined ? String(module.id) : undefined;

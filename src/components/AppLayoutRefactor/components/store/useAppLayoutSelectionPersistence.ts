@@ -14,7 +14,7 @@ const parseStoredId = (value?: string): number | undefined => {
 export const useAppLayoutSelectionPersistence = (
 	optionsCompany: DefaultOptionType[],
 	loadingAppLayout: boolean,
-	appNavigate: () => void,
+	// appNavigate: () => void,
 ) => {
 	const { getDecryptDataFromStorage, setEncryptedDataInStorage } = useEncrypt();
 	const hydrateSelection = useAppLayoutStore(state => state.hydrateSelection);
@@ -94,6 +94,7 @@ export const useAppLayoutSelectionPersistence = (
 			return;
 
 		initialNavigationDone.current = true;
-		appNavigate();
-	}, [appNavigate, loadingAppLayout, module, permissions, storageReady]);
+		//navegar al home
+		// window.location.href = '/';
+	}, [loadingAppLayout, module, permissions, storageReady]);
 };
