@@ -20,9 +20,9 @@ export interface ControlBusinessLineSelectorUIProps {
 }
 
 export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, appNavigate }: ControlBusinessLineSelectorUIProps) => {
-	const { subAgency, module, setModule, setSubmodule } = useAppLayoutStore();
+	const { subAgency, module, selectModule } = useAppLayoutStore();
 
-	const modulesAgency = subAgency?.modules ?? [];
+	const modulesAgency = useMemo(() => subAgency?.modules ?? [], [subAgency]);
 
 	const moduleOptions = useMemo(
 		() =>
@@ -34,19 +34,11 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, appNav
 	);
 
 	const onSelect = (moduleId: string) => {
-		const module = modulesAgency.find(item => item.id.toString() === moduleId);
-		if (!module) return;
-
-		setModule(module);
-
-		const firstSubmodule = module.submodules[0];
-		if (firstSubmodule) {
-			setSubmodule(firstSubmodule);
-		}
+		selectModule(Number(moduleId));
 		appNavigate?.();
 	};
 
-	const currentModuleValue = module?.id ? String(module.id) : '';
+	const currentModuleValue = module !== undefined ? String(module.id) : undefined;
 
 	const labelRenderMobile: SelectProps['labelRender'] = ({ label }) => {
 		const text = String(label ?? '');

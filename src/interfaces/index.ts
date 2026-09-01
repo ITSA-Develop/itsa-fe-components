@@ -32,7 +32,7 @@ export interface ISubmodule {
 
 export interface IProgram {
 	id: number;
-	roleID: number;
+	roleId: number;
 	name: string;
 	root: boolean;
 	path: string;

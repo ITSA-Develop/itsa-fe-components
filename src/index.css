@@ -784,6 +784,10 @@
   max-height: 50vh;
 }
 
+.max-h-\[70dvh\]{
+  max-height: 70dvh;
+}
+
 .max-h-\[80vh\]{
   max-height: 80vh;
 }
@@ -1702,11 +1706,6 @@
 .bg-green-50{
   --tw-bg-opacity: 1;
   background-color: rgb(246 254 246 / var(--tw-bg-opacity, 1));
-}
-
-.bg-green-500{
-  --tw-bg-opacity: 1;
-  background-color: rgb(76 174 79 / var(--tw-bg-opacity, 1));
 }
 
 .bg-grey-100{

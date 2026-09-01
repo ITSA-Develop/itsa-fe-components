@@ -3,6 +3,7 @@ import type { StoryObj } from '@storybook/react';
 import { AppLayout } from '../../components/AppLayoutRefactor';
 import { useAppLayoutStore } from '../../components/AppLayoutRefactor/components/store/useAppLayoutStore';
 import { PERMISSIONS_MOCK } from '../../components/AppLayoutRefactor/mocks/permissions.mock';
+import { IProgram } from '../../interfaces';
 
 const meta = {
 	title: 'Components/AppLayout',
@@ -41,6 +42,9 @@ const defaultArgs = {
 	loadingAppLayout: false,
 	children: <div>Hello World</div>,
 	appNavigate: () => {},
+	menuItemsNavigate: (program: IProgram) => {
+		console.log('menuItemsNavigate', program);
+	},
 };
 
 const withPermissions = (Story: React.ComponentType) => {

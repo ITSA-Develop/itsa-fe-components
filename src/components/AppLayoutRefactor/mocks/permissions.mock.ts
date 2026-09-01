@@ -23,7 +23,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 114,
-											roleID: 51,
+											roleId: 51,
 											name: 'GESTIÓN DE CLIENTES',
 											root: true,
 											path: 'wholesale/customers-management',
@@ -31,7 +31,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 243,
-											roleID: 51,
+											roleId: 51,
 											name: 'PROMOCIONES',
 											root: true,
 											path: 'wholesale/promotions',
@@ -39,7 +39,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 254,
-											roleID: 51,
+											roleId: 51,
 											name: 'LISTADO DE PRECIOS',
 											root: true,
 											path: 'list/prices',
@@ -47,7 +47,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 256,
-											roleID: 51,
+											roleId: 51,
 											name: 'RESPONSABLES AUTORIZACIÓN',
 											root: true,
 											path: 'wholesale/autorizathion-responsibles',
@@ -55,7 +55,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 260,
-											roleID: 51,
+											roleId: 51,
 											name: 'GESTION ITEMS TIPO B',
 											root: true,
 											path: 'wholesale/item-serial-obsolescence',
@@ -63,7 +63,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 144,
-											roleID: 51,
+											roleId: 51,
 											name: 'GESTIÓN DE VENDEDORES',
 											root: true,
 											path: 'wholesale/sellers-management',
@@ -71,7 +71,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 136,
-											roleID: 51,
+											roleId: 51,
 											name: 'GESTIÓN DE PROVEEDORES',
 											root: true,
 											path: 'core/suppliers/list',
@@ -79,7 +79,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 164,
-											roleID: 51,
+											roleId: 51,
 											name: 'GESTIÓN DE ITEMS',
 											root: true,
 											path: 'wholesale/items/lph',
@@ -87,7 +87,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 189,
-											roleID: 51,
+											roleId: 51,
 											name: 'CLASES',
 											root: true,
 											path: 'inventory/classes',
@@ -95,7 +95,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 188,
-											roleID: 51,
+											roleId: 51,
 											name: 'MARCAS',
 											root: true,
 											path: 'inventory/brands',
@@ -103,7 +103,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 249,
-											roleID: 51,
+											roleId: 51,
 											name: 'PROMOCIONES DE MARCA',
 											root: true,
 											path: 'promotions/brands/list',
@@ -111,7 +111,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 277,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION DE CLIENTES LINEAS MAYORISTAS',
 											root: false,
 											path: 'wholesale/customers-management/create',
@@ -119,7 +119,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 278,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION DE ITEMS LINEAS MAYORISTAS',
 											root: false,
 											path: 'wholesale/items/lph/create',
@@ -127,7 +127,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 283,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREAR LISTA DE PRECIOS',
 											root: false,
 											path: 'list/prices/create',
@@ -135,7 +135,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 318,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREAR PROVEEDOR',
 											root: false,
 											path: 'core/suppliers/list/create',
@@ -143,7 +143,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 320,
-											roleID: 51,
+											roleId: 51,
 											name: 'ACTUALIZACION DE CLIENTES',
 											root: false,
 											path: 'wholesale/customers-management/update',
@@ -151,7 +151,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 321,
-											roleID: 51,
+											roleId: 51,
 											name: 'EDITAR PROVEEDOR',
 											root: false,
 											path: 'core/suppliers/list/update',
@@ -159,7 +159,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 363,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREAR VENDEDORES LPH',
 											root: false,
 											path: 'wholesale/sellers-management/create',
@@ -167,7 +167,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 364,
-											roleID: 51,
+											roleId: 51,
 											name: 'EDITAR VENDEDOR LPH',
 											root: false,
 											path: 'wholesale/sellers-management/update',
@@ -175,7 +175,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 140,
-											roleID: 51,
+											roleId: 51,
 											name: 'TRANSPORTISTAS',
 											root: true,
 											path: 'wholesale/carriers-management',
@@ -183,7 +183,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 273,
-											roleID: 51,
+											roleId: 51,
 											name: 'ACTUALIZACION DE ITEMS LPH',
 											root: false,
 											path: 'wholesale/items/lph/update',
@@ -204,7 +204,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 											programs: [
 												{
 													id: 375,
-													roleID: 51,
+													roleId: 51,
 													name: 'COMPRAS CONSIGNACIONES',
 													root: true,
 													path: 'wholesale/purchase-consignments/list',
@@ -212,7 +212,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 												},
 												{
 													id: 374,
-													roleID: 51,
+													roleId: 51,
 													name: 'CREAR COMPRA CONSIGNACION',
 													root: false,
 													path: 'wholesale/purchase-consignments/create',
@@ -220,7 +220,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 												},
 												{
 													id: 377,
-													roleID: 51,
+													roleId: 51,
 													name: 'CONSIGNACION PROVEEDOR',
 													root: true,
 													path: 'wholesale/purchase-supplier-consignments/list',
@@ -228,7 +228,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 												},
 												{
 													id: 378,
-													roleID: 51,
+													roleId: 51,
 													name: 'CREACION CONSIGNACION PROVEEDOR',
 													root: false,
 													path: 'wholesale/purchase-supplier-consignments/create',
@@ -236,7 +236,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 												},
 												{
 													id: 380,
-													roleID: 51,
+													roleId: 51,
 													name: 'ACTUALIZAR CONSIGNACION PROVEEDOR',
 													root: false,
 													path: 'wholesale/purchase-supplier-consignments/update',
@@ -248,7 +248,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 199,
-											roleID: 51,
+											roleId: 51,
 											name: 'AUTORIZACIONES',
 											root: true,
 											path: 'purchase-authorization/list',
@@ -256,7 +256,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 252,
-											roleID: 51,
+											roleId: 51,
 											name: 'FORMAS DE PAGO',
 											root: true,
 											path: 'payment-method/list',
@@ -264,7 +264,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 282,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION DE ORDEN DE COMPRA',
 											root: false,
 											path: 'purchases-orders/create',
@@ -272,7 +272,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 294,
-											roleID: 51,
+											roleId: 51,
 											name: 'ACTUALIZAR ORDEN DE COMPRA',
 											root: false,
 											path: 'purchases-orders/update',
@@ -280,7 +280,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 309,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREAR COMPRAS CRUCE DE INVENTARIO',
 											root: true,
 											path: 'wholesale/purchase/invoice-receipts/create',
@@ -288,7 +288,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 347,
-											roleID: 51,
+											roleId: 51,
 											name: 'ORDENES DE COMPRA',
 											root: true,
 											path: 'purchases-orders/list',
@@ -296,7 +296,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 365,
-											roleID: 51,
+											roleId: 51,
 											name: 'COMPRAS',
 											root: true,
 											path: 'wholesale/purchase/invoice-receipts/list',
@@ -304,7 +304,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 385,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION NOTA DE CREDITO LPH DEVOLUCION',
 											root: false,
 											path: 'wholesale/purchase/credit-note/return/create',
@@ -320,7 +320,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 264,
-											roleID: 51,
+											roleId: 51,
 											name: 'ACTUALIZACION PROFORMAS',
 											root: false,
 											path: 'wholesale/proforma/update',
@@ -328,7 +328,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 263,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREAR PROFORMA LINEA MAYORISTA',
 											root: false,
 											path: 'wholesale/proforma/create',
@@ -336,7 +336,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 275,
-											roleID: 51,
+											roleId: 51,
 											name: 'AUTORIZACIONES',
 											root: true,
 											path: 'wholesale/proforma-authorization/list',
@@ -344,7 +344,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 285,
-											roleID: 51,
+											roleId: 51,
 											name: 'PREVISUALIZACION DE PROFORMA',
 											root: false,
 											path: 'wholesale/proforma/preview',
@@ -352,7 +352,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 286,
-											roleID: 51,
+											roleId: 51,
 											name: 'AUTORIZACION Y PREVI DE PROFORMA',
 											root: false,
 											path: 'wholesale/proforma/preview-authorization',
@@ -360,7 +360,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 319,
-											roleID: 51,
+											roleId: 51,
 											name: 'PREVIEW FACTURACION',
 											root: false,
 											path: 'wholesale/proforma/preview-invoice',
@@ -368,7 +368,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 231,
-											roleID: 51,
+											roleId: 51,
 											name: 'PROFORMAS',
 											root: true,
 											path: 'wholesale/proforma/list',
@@ -384,7 +384,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 238,
-											roleID: 51,
+											roleId: 51,
 											name: 'KARDEX',
 											root: true,
 											path: 'inventory/kardex',
@@ -392,7 +392,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 359,
-											roleID: 51,
+											roleId: 51,
 											name: 'STOCK LINEAS MAYORISTAS',
 											root: true,
 											path: 'wholesale/inventory/stock-item',
@@ -400,7 +400,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 391,
-											roleID: 51,
+											roleId: 51,
 											name: 'DESPACHOS DE BODEGA',
 											root: true,
 											path: 'wholesale/inventory/warehouse-dispatches',
@@ -416,7 +416,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 287,
-											roleID: 51,
+											roleId: 51,
 											name: 'FACTURACION',
 											root: true,
 											path: 'wholesale/invoices/list',
@@ -424,7 +424,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 393,
-											roleID: 51,
+											roleId: 51,
 											name: 'DESPACHOS',
 											root: true,
 											path: 'wholesale/invoices/inventory/warehouse-dispatches',
@@ -432,7 +432,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 290,
-											roleID: 51,
+											roleId: 51,
 											name: 'PREVISUALIZACION DE FACTURA',
 											root: false,
 											path: 'wholesale/invoices/preview',
@@ -448,7 +448,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 292,
-											roleID: 51,
+											roleId: 51,
 											name: 'AUTORIZACIONES',
 											root: true,
 											path: 'processes/autorization-detail',
@@ -471,7 +471,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 245,
-											roleID: 86,
+											roleId: 86,
 											name: 'CONCILIACIÓN',
 											root: true,
 											path: 'treasury/banks/reconciliation/list',
@@ -479,7 +479,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 261,
-											roleID: 86,
+											roleId: 86,
 											name: 'CAJA',
 											root: true,
 											path: 'treasury/cash-receipts/list',
@@ -487,7 +487,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 269,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR INGRESO CAJA',
 											root: false,
 											path: 'treasury/cash-receipts/list/create',
@@ -495,7 +495,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 268,
-											roleID: 86,
+											roleId: 86,
 											name: 'ACTUALIZAR INGRESO CAJA',
 											root: true,
 											path: 'treasury/cash-receipts/update',
@@ -503,7 +503,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 279,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR REGISTRO RECONCILIACION',
 											root: false,
 											path: 'treasury/banks/reconciliation/create',
@@ -511,7 +511,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 280,
-											roleID: 86,
+											roleId: 86,
 											name: 'LISTAR CUENTAS BANCARIAS',
 											root: true,
 											path: 'treasury/bank-accounts/list',
@@ -519,7 +519,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 284,
-											roleID: 86,
+											roleId: 86,
 											name: 'EDITAR CUENTA BANCARIA',
 											root: false,
 											path: 'treasury/bank-accounts/update',
@@ -527,7 +527,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 289,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR TRANSFERENCIA CAJA CONCILIACION',
 											root: false,
 											path: 'treasury/banks/cash-register-transfer-reconciliation/create',
@@ -535,7 +535,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 288,
-											roleID: 86,
+											roleId: 86,
 											name: 'RECONCILIACIÓN DE TRANSFERENCIAS DE CAJA',
 											root: true,
 											path: 'treasury/banks/cash-register-transfer-reconciliation/list',
@@ -543,7 +543,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 293,
-											roleID: 86,
+											roleId: 86,
 											name: 'ABONOS',
 											root: true,
 											path: 'treasury/abonos/mock',
@@ -551,7 +551,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 314,
-											roleID: 86,
+											roleId: 86,
 											name: 'DEPOSITOS CAJA',
 											root: true,
 											path: 'treasury/cash-deposits',
@@ -559,7 +559,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 315,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR DEPOSITO CAJA ',
 											root: false,
 											path: 'treasury/cash-deposits/create',
@@ -567,7 +567,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 317,
-											roleID: 86,
+											roleId: 86,
 											name: 'EDITAR DEPOSITO CAJA',
 											root: false,
 											path: 'treasury/cash-deposits/update',
@@ -575,7 +575,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 324,
-											roleID: 86,
+											roleId: 86,
 											name: 'CIERRE DE CAJA',
 											root: true,
 											path: 'treasury/cash-closures/list',
@@ -583,7 +583,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 325,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR CIERRE DE CAJA',
 											root: false,
 											path: 'treasury/cash-closures/create',
@@ -591,7 +591,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 326,
-											roleID: 86,
+											roleId: 86,
 											name: 'EDITAR CIERRE DE CAJA',
 											root: false,
 											path: 'treasury/cash-closures/update',
@@ -599,7 +599,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 398,
-											roleID: 86,
+											roleId: 86,
 											name: 'IMPRIMIR CHEQUE',
 											root: true,
 											path: 'treasury/check-print',
@@ -607,7 +607,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 259,
-											roleID: 86,
+											roleId: 86,
 											name: 'INSTITUCIONES FINANCIERAS',
 											root: true,
 											path: 'treasury/financial-institutions',
@@ -615,7 +615,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 270,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR INSTITUCION FINANCIERA',
 											root: false,
 											path: 'treasury/financial-institutions/create',
@@ -623,7 +623,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 281,
-											roleID: 86,
+											roleId: 86,
 											name: 'CREAR CUENTA DE BANCO',
 											root: false,
 											path: 'treasury/bank-accounts/create',
@@ -652,7 +652,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 									programs: [
 										{
 											id: 386,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION NOTA DE CREDITO LPH DESCUENTO',
 											root: false,
 											path: 'wholesale/purchase/credit-note/discount/create',
@@ -660,7 +660,7 @@ export const PERMISSIONS_MOCK: IPermissions = {
 										},
 										{
 											id: 387,
-											roleID: 51,
+											roleId: 51,
 											name: 'CREACION NOTA DE CREDITO LPH PARCIAL',
 											root: false,
 											path: 'wholesale/purchase/credit-note/partial/create',

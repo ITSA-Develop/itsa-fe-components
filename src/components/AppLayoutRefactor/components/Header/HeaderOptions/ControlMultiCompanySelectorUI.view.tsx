@@ -23,16 +23,16 @@ export interface ControlMultiCompanySelectorUIProps {
   loadingAppLayout: boolean;
 }
 export const ControlMultiCompanySelectorUI = ({ optionsCompany, loadingAppLayout }: ControlMultiCompanySelectorUIProps) => {
-  const { currentCompany, setCurrentCompany } = useAppLayoutStore();
+  const { currentCompany, selectCompany } = useAppLayoutStore();
 
   const onSelect = (value: string) => {
-    const company = optionsCompany.find(company => company.value === value);
-    if (company) {
-      setCurrentCompany(company);
-    }
+    selectCompany(value);
   };
 
-  const currentCompanyValue = currentCompany?.value ? String(currentCompany.value) : undefined;
+  const currentCompanyValue =
+    currentCompany?.value !== undefined && currentCompany.value !== null
+      ? String(currentCompany.value)
+      : undefined;
 
   const labelRenderMobile: SelectProps['labelRender'] = ({ label }) => {
     const text = String(label ?? '');

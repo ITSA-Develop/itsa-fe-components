@@ -23,6 +23,7 @@ export interface MultiCompanyTreeNode {
   selectable?: boolean;
   children?: MultiCompanyTreeNode[];
   data?: ISubAgency;
+  agencyId?: number;
 }
 
 export interface ControlSubAgencySelectorUIProps {
@@ -50,18 +51,19 @@ const mapAgenciesToTreeNodes = (agencies: IAgency[]): MultiCompanyTreeNode[] =>
     isLeaf: false,
     selectable: false,
     children: agency.subAgencies.map(sub => ({
-      id: `subagency-${sub.id}`,
+      id: `subagency-${agency.id}-${sub.id}`,
       pId: `agency-${agency.id}`,
-      value: `subagency-${sub.id}`,
+      value: `subagency-${agency.id}-${sub.id}`,
       title: sub.name,
       isLeaf: true,
       selectable: true,
       data: sub,
+      agencyId: agency.id,
     })),
   }));
 
 export const ControlSubAgencySelectorUI = ({ loadChildren }: ControlSubAgencySelectorUIProps) => {
-  const { subAgency, setSubAgency, setModule, setSubmodule, permissions } = useAppLayoutStore();
+  const { agency, subAgency, selectSubAgency, permissions } = useAppLayoutStore();
   const [treeData, setTreeData] = useState<MultiCompanyTreeNode[]>([]);
 
   useEffect(() => {
@@ -92,15 +94,11 @@ export const ControlSubAgencySelectorUI = ({ loadChildren }: ControlSubAgencySel
   const onSelect = (value: string) => {
     const selectedNode = findNodeByValue(value);
     if (!selectedNode?.data) return;
-    const module = selectedNode.data.modules[0];
-    setModule(module);
-    const submodule = module?.submodules[0];
-    setSubmodule(submodule);
-    setSubAgency(selectedNode.data);
+    selectSubAgency(selectedNode.data.id, selectedNode.agencyId);
   };
 
   const selectedValue = subAgency
-    ? treeData.find(node => node.data?.id === subAgency.id)?.value
+    ? treeData.find(node => node.data?.id === subAgency.id && node.agencyId === agency?.id)?.value
     : undefined;
 
   const treeSelectProps = {

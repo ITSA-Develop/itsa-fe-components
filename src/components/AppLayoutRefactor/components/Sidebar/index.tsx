@@ -1,20 +1,23 @@
 import { Drawer } from "@/components/Drawer/Drawer";
 import { useAppLayoutFooter } from "@/hooks";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { useSidebarLayoutStore } from "../store/useSidebarLayoutStore";
 import { DoubleLeftOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import { sidebarStyles } from "./styles";
 import { MenuItems } from "./components/MenuItems";
+import { IProgram } from "@/interfaces";
 
 export interface SidebarLayoutProps {
 	loadingAppLayout: boolean;
   children: ReactNode;
+  menuItemsNavigate: (program: IProgram) => void;
 }
 
-export const SidebarLayout = ({ children }: SidebarLayoutProps) => {
+export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProps) => {
   const { footerComponent } = useAppLayoutFooter();
   const { open, setOpen } = useSidebarLayoutStore();
+  const [openKeysMenuOptions, setOpenKeysMenuOptions] = useState<string[]>([]);
   const drawerTopOffset = "calc(4rem + 0.2rem)";
 
   const closeDrawer = () => {
@@ -58,7 +61,11 @@ export const SidebarLayout = ({ children }: SidebarLayoutProps) => {
     >
       <div className="flex flex-col gap-2 p-2">
         <Input type="text" placeholder="Buscar..." suffix={<SearchOutlined className="text-gray-300" />} />
-        <MenuItems openKeysMenuOptions={[]} onOpenKeysChange={() => {}} />
+        <MenuItems
+          openKeysMenuOptions={openKeysMenuOptions}
+          onOpenKeysChange={setOpenKeysMenuOptions}
+          menuItemsNavigate={menuItemsNavigate}
+        />
       </div>
     </Drawer>
     {children}
