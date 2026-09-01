@@ -1,38 +1,35 @@
 import { MenuProps } from 'antd';
-import { NavigateFunction } from 'react-router-dom';
-import { UserInformationUI } from './UserInformationUI.view';
 import { NotificationsUI } from './Notifications/UserNotificationsUI.controller';
-import { UserSubAgencyUI } from './UserSubAgencyUI.view';
-import { UserModuleUI } from './UserModuleUI.view';
 import { IItemNotification } from '@/interfaces';
-import { ButtonSidebarTitleUI } from './ButtonSidebarUI.view';
 import { useEnvironment } from '@/hooks/useEnvironment';
-import { MultiCompanySelectorUI } from './MultiCompanySelectorUI.view';
+import { ControlSidebarUI } from './ControlSidebar.view';
+import { ControlMultiCompanySelectorUI } from './ControlMultiCompanySelectorUI.view';
+import { ControlBusinessLineSelectorUI } from './ControlBusinessLineSelectorUI.view';
+import { ControlSubAgencySelectorUI } from './ControlSubAgencySelectorUI.view';
+import { ControlUserInformationUI } from './ControlUserInformationUI.view';
+import { DefaultOptionType } from 'antd/es/select';
 
 export interface IHeaderOptionsProps {
+	loadingAppLayout: boolean;
+	optionsCompany: DefaultOptionType[];
+	appNavigate: () => void;
 	userActions?: MenuProps;
 	notifications?: IItemNotification[];
-	loadingAppLayout?: boolean;
-	navigateApp?: NavigateFunction;
 }
 
-export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, navigateApp }: IHeaderOptionsProps) => {
-	const environment = useEnvironment();	
+export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, appNavigate, optionsCompany }: IHeaderOptionsProps) => {
+	const environment = useEnvironment();
 	return (
-		<div>
-			<div className="shrink-0">
-				<ButtonSidebarTitleUI environment={environment} />
-			</div>
-			<div>
-				<MultiCompanySelectorUI optionsCompany={[]} />
-			</div>
-			<div className="flex min-w-0 items-center justify-end gap-0 md:w-full md:gap-3">
-				<div className="flex items-center gap-0 md:gap-2">
-					<UserModuleUI loadingAppLayout={loadingAppLayout} navigateApp={navigateApp} />
-					<UserSubAgencyUI />
+		<div className="flex h-full min-h-0 min-w-0 flex-row items-center justify-between">
+			<ControlSidebarUI environment={environment} />
+			<ControlMultiCompanySelectorUI optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
+			<div className="flex min-w-0 flex-row gap-1">
+				<div className="flex min-w-0 flex-row gap-1">
+					<ControlBusinessLineSelectorUI loadingAppLayout={loadingAppLayout} appNavigate={appNavigate} />
+					<ControlSubAgencySelectorUI />
 				</div>
-				<div className="flex shrink-0 items-center gap-0 md:gap-1">
-					<UserInformationUI userActions={userActions} />
+				<div className="flex shrink-0 flex-row items-center gap-0.5">
+					<ControlUserInformationUI userActions={userActions} />
 					<NotificationsUI notifications={notifications} />
 				</div>
 			</div>

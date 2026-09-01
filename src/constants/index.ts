@@ -1,4 +1,5 @@
 import { EOptionsFilterStatus } from '@/enums';
+import { TreeSelectProps } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
 export * from './icons';
@@ -120,3 +121,22 @@ export const LOCATION_DEFAULT = {
 	lng: -79.0039876216035,
 }
 export * from './carouselImages';
+
+export const HEADER_SELECT_CLASSNAME =
+	'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!min-w-0 [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-item]:!truncate [&_.ant-select-selection-item-content]:!block [&_.ant-select-selection-item-content]:!max-w-full [&_.ant-select-selection-item-content]:!truncate [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
+
+export const TREE_SELECT_CLASSNAME = HEADER_SELECT_CLASSNAME;
+
+export const MOBILE_TREE_SELECT_CLASSNAME =
+	`${HEADER_SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
+
+export const SELECT_WRAPPER_CLASSNAME = 'shrink-0';
+export const SELECT_WRAPPER_STYLE = {
+	width: 'clamp(160px, calc((100vw - 280px) / 3), 256px)',
+} as const;
+export const MOBILE_SELECT_WRAPPER_CLASSNAME = 'block min-w-0 shrink-0 md:hidden';
+export const MOBILE_SELECT_WRAPPER_STYLE = { width: 84 } as const;
+
+export const POPUP_STYLES: TreeSelectProps['styles'] = {
+	popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
+};

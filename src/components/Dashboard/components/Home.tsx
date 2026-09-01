@@ -221,7 +221,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 			<div className="w-full">
 				<div className="flex flex-col w-full overflow-x-auto overflow-y-hidden">
 					<div className="flex flex-row flex-wrap gap-1.5 sm:gap-2 md:!gap-3 lg:!gap-4 justify-center py-3 sm:py-3">
-						{modules.map(module => (
+						{modules.map(module  => (
 							<div key={module.id}>{buttonHeader(module)}</div>
 						))}
 					</div>

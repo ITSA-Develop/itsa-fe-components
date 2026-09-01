@@ -1,22 +1,18 @@
-import { useEncrypt } from '@/hooks/useEncrypt/useEncrypt';
-import { IAgency } from '@/interfaces';
-import { useAppLayoutStore } from '@/store/appLayout.store';
+import { IAgency, ISubAgency } from '@/interfaces';
 import { ShopFilled } from '@ant-design/icons';
 import { TreeSelect, TreeSelectProps } from 'antd';
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-
-const TREE_SELECT_CLASSNAME =
-  'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
-
-const MOBILE_TREE_SELECT_CLASSNAME =
-  `${TREE_SELECT_CLASSNAME} [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
-
-const SELECT_WRAPPER_CLASSNAME = 'w-[200px] min-w-[160px] max-w-[220px] shrink-0';
-
-// El trigger en mobile solo muestra el icono, por lo que el popup no puede heredar su ancho.
-const POPUP_STYLES: TreeSelectProps['styles'] = {
-  popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
-};
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { useAppLayoutStore } from '../../store/useAppLayoutStore';
+import {
+  MOBILE_SELECT_WRAPPER_CLASSNAME,
+  MOBILE_SELECT_WRAPPER_STYLE,
+  MOBILE_TREE_SELECT_CLASSNAME,
+  POPUP_STYLES,
+  SELECT_WRAPPER_CLASSNAME,
+  SELECT_WRAPPER_STYLE,
+  TREE_SELECT_CLASSNAME,
+} from '@/constants';
+import { renderTruncatedHeaderSelectLabel } from '../utils/headerSelectLabel';
 
 export interface MultiCompanyTreeNode {
   id: string | number;
@@ -26,55 +22,52 @@ export interface MultiCompanyTreeNode {
   isLeaf?: boolean;
   selectable?: boolean;
   children?: MultiCompanyTreeNode[];
-  data?: IAgency;
+  data?: ISubAgency;
 }
 
-export interface UserSubAgencyUIProps {
+export interface ControlSubAgencySelectorUIProps {
   loadRootNodes?: () => Promise<MultiCompanyTreeNode[]>;
   loadChildren?: (node: MultiCompanyTreeNode) => Promise<MultiCompanyTreeNode[]>;
 }
 
-// treeDataSimpleMode trabaja con una lista plana relacionada por pId, por lo que los
-// hijos anidados que devuelva el consumidor se aplanan conservando su jerarquía.
 const flattenNodes = (nodes: MultiCompanyTreeNode[], parentId?: string | number): MultiCompanyTreeNode[] =>
   nodes.flatMap(({ children, ...node }) => {
     const flatNode: MultiCompanyTreeNode = {
       ...node,
       pId: parentId ?? node.pId,
       selectable: node.isLeaf === true,
-    };
+    };  
 
     return [flatNode, ...(children ? flattenNodes(children, flatNode.id) : [])];
   });
 
-export const UserSubAgencyUI = ({ loadRootNodes, loadChildren }: UserSubAgencyUIProps) => {
-  const { encryptKey } = useEncrypt();
-  const { currentSubAgency, setCurrentSubAgency } = useAppLayoutStore();
+const mapAgenciesToTreeNodes = (agencies: IAgency[]): MultiCompanyTreeNode[] =>
+  agencies.map(agency => ({
+    id: `agency-${agency.id}`,
+    pId: null,
+    value: `agency-${agency.id}`,
+    title: agency.name,
+    isLeaf: false,
+    selectable: false,
+    children: agency.subAgencies.map(sub => ({
+      id: `subagency-${sub.id}`,
+      pId: `agency-${agency.id}`,
+      value: `subagency-${sub.id}`,
+      title: sub.name,
+      isLeaf: true,
+      selectable: true,
+      data: sub,
+    })),
+  }));
+
+export const ControlSubAgencySelectorUI = ({ loadChildren }: ControlSubAgencySelectorUIProps) => {
+  const { subAgency, setSubAgency, setModule, setSubmodule, permissions } = useAppLayoutStore();
   const [treeData, setTreeData] = useState<MultiCompanyTreeNode[]>([]);
-  const [loadingRootNodes, setLoadingRootNodes] = useState(false);
-  const rootNodesRequested = useRef(false);
 
   useEffect(() => {
-    if (rootNodesRequested.current || !loadRootNodes) return;
-    rootNodesRequested.current = true;
-
-    let isMounted = true;
-    const loadInitialData = async () => {
-      setLoadingRootNodes(true);
-      try {
-        const rootNodes = await loadRootNodes();
-        if (isMounted) setTreeData(flattenNodes(rootNodes));
-      } finally {
-        if (isMounted) setLoadingRootNodes(false);
-      }
-    };
-
-    void loadInitialData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [loadRootNodes]);
+    if (permissions === undefined) return;
+    setTreeData(flattenNodes(mapAgenciesToTreeNodes(permissions.agencies)));
+  }, [permissions]);
 
   const findNodeByValue = useCallback(
     (value: string) => treeData.find(node => node.value === value),
@@ -99,28 +92,33 @@ export const UserSubAgencyUI = ({ loadRootNodes, loadChildren }: UserSubAgencyUI
   const onSelect = (value: string) => {
     const selectedNode = findNodeByValue(value);
     if (!selectedNode?.data) return;
-
-    setCurrentSubAgency(selectedNode.data, encryptKey);
+    const module = selectedNode.data.modules[0];
+    setModule(module);
+    const submodule = module?.submodules[0];
+    setSubmodule(submodule);
+    setSubAgency(selectedNode.data);
   };
 
-  const selectedValue = currentSubAgency
-    ? treeData.find(node => node.data?.id === currentSubAgency.id)?.value
+  const selectedValue = subAgency
+    ? treeData.find(node => node.data?.id === subAgency.id)?.value
     : undefined;
 
   const treeSelectProps = {
     treeDataSimpleMode: true as const,
     treeData,
     loadData: onLoadData,
-    loading: loadingRootNodes,
+    loading: false,
     value: selectedValue,
     onSelect,
+    size: 'large' as const,
     popupMatchSelectWidth: false,
     styles: POPUP_STYLES,
+    labelRender: renderTruncatedHeaderSelectLabel,
   };
 
   return (
     <>
-      <div className={`hidden md:block ${SELECT_WRAPPER_CLASSNAME}`}>
+      <div className={`hidden md:block ${SELECT_WRAPPER_CLASSNAME}`} style={SELECT_WRAPPER_STYLE}>
         <TreeSelect<string>
           {...treeSelectProps}
           placeholder="Seleccione una agencia"
@@ -128,7 +126,7 @@ export const UserSubAgencyUI = ({ loadRootNodes, loadChildren }: UserSubAgencyUI
         />
       </div>
 
-      <div className="block w-10 shrink-0 md:hidden">
+      <div className={MOBILE_SELECT_WRAPPER_CLASSNAME} style={MOBILE_SELECT_WRAPPER_STYLE}>
         <TreeSelect<string>
           {...treeSelectProps}
           placeholder={<ShopFilled />}

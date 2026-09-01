@@ -83,7 +83,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 		const programs = submodule.programs;
 		if (programs && programs.length > 0) {
 			for (const program of programs) {
-				const url = program.url ? program.url : undefined;
+				const url = program.path ? program.path : undefined;
 				const programPath = program.path ? program.path : undefined;
 
 				// Buscar tanto en url como en path
@@ -95,9 +95,10 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 					matchesPath(programPath, targetPath);
 
 				if (urlMatch || pathMatch) {
-					if (program.actions) {
-						return { actions: program.actions, program: program };
-					}
+					// if (program.actions) {
+						// return { actions: program.actions, program: program };
+						return { actions: {} as IActions, program: program as unknown as ISubmodule};
+					// }
 				}
 			}
 		}
@@ -109,7 +110,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 				const groupPrograms = group.programs;
 				if (groupPrograms && groupPrograms.length > 0) {
 					for (const program of groupPrograms) {
-						const url = program.url ? program.url : undefined;
+						const url = program.path ? program.path : undefined;
 						const programPath = program.path ? program.path : undefined;
 
 						// Buscar tanto en url como en path
@@ -121,9 +122,10 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 							matchesPath(programPath, targetPath);
 
 						if (urlMatch || pathMatch) {
-							if (program.actions) {
-								return { actions: program.actions, program: program };
-							}
+							// if (program.actions) {
+								// return { actions: program.actions, program: program };
+								return { actions: {} as IActions, program: program as unknown as ISubmodule};
+							// }
 						}
 					}
 				}
@@ -253,7 +255,7 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
 		if (!programs) return null;
 		for (const program of programs) {
-			if (normalizePath(program?.path ?? null) === target) {
+			if (normalizePath(program?.name ?? null) === target) {
 				return program;
 			}
 		}
@@ -261,21 +263,19 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 	};
 
 	for (const agency of agencies) {
-		const modules = agency?.modules ?? [];
+		const modules = agency?.subAgencies ?? [];
 		for (const mod of modules ?? []) {
-			const foundAtModule = checkPrograms(mod?.submodules ?? []);
+			const foundAtModule = checkPrograms([]);
 			if (foundAtModule !== null) return foundAtModule;
 
-			const submodules = mod?.submodules ?? [];
+			const submodules = mod?.modules ?? [];
 			for (const sub of submodules ?? []) {
-				const foundAtSub = checkPrograms(sub?.programs ?? []);
+				const submodules = sub?.submodules ?? [];
+				const foundAtSub = checkPrograms(submodules);
 				if (foundAtSub !== null) return foundAtSub;
 
-				const groups = sub?.groups ?? [];
-				for (const group of groups ?? []) {
-					const foundAtGroup = checkPrograms(group?.programs ?? []);
-					if (foundAtGroup !== null) return foundAtGroup;
-				}
+				const foundAtGroup = checkPrograms([]);
+				if (foundAtGroup !== null) return foundAtGroup;
 			}
 		}
 	}

@@ -1,35 +1,28 @@
-import { useEncrypt } from '@/hooks/useEncrypt/useEncrypt';
-import { useAppLayoutStore } from '@/store/appLayout.store';
+
 import { SettingOutlined } from '@ant-design/icons';
 import { Select, SelectProps } from 'antd';
 import { useMemo } from 'react';
-import { NavigateFunction } from 'react-router-dom';
+import { MODULE_SELECT_LABEL_MAX_LENGTH, renderTruncatedHeaderSelectLabel, truncateHeaderSelectLabel } from '../utils/headerSelectLabel';
+import { useAppLayoutStore } from '../../store/useAppLayoutStore';
 import {
-	MODULE_SELECT_LABEL_MAX_LENGTH,
-	truncateHeaderSelectLabel,
-} from '../../utils/headerSelectLabel';
-
-const SELECT_CLASSNAME =
-	'w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700';
-
-const MOBILE_SELECT_CLASSNAME =
-	`${SELECT_CLASSNAME} [&_.ant-select-selection-item]:!truncate [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
-
-const SELECT_WRAPPER_CLASSNAME = 'w-[200px] min-w-[160px] max-w-[220px] shrink-0';
-
-const POPUP_STYLES: SelectProps['styles'] = {
-	popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
-};
+	HEADER_SELECT_CLASSNAME,
+	MOBILE_SELECT_WRAPPER_CLASSNAME,
+	MOBILE_SELECT_WRAPPER_STYLE,
+	MOBILE_TREE_SELECT_CLASSNAME,
+	POPUP_STYLES,
+	SELECT_WRAPPER_CLASSNAME,
+	SELECT_WRAPPER_STYLE,
+} from '@/constants';
 
 export interface ControlBusinessLineSelectorUIProps {
 	loadingAppLayout?: boolean;
-	navigateApp?: NavigateFunction;
+	appNavigate: () => void;
 }
 
-export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, navigateApp }: ControlBusinessLineSelectorUIProps) => {
-	const { encryptKey } = useEncrypt();
-	const { modulesAgency, currentModule, setCurrentModule, setSubmodulesAgency, setCurrentSubmodule } =
-		useAppLayoutStore();
+export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, appNavigate }: ControlBusinessLineSelectorUIProps) => {
+	const { subAgency, module, setModule, setSubmodule } = useAppLayoutStore();
+
+	const modulesAgency = subAgency?.modules ?? [];
 
 	const moduleOptions = useMemo(
 		() =>
@@ -44,18 +37,16 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, naviga
 		const module = modulesAgency.find(item => item.id.toString() === moduleId);
 		if (!module) return;
 
-		setCurrentModule(module, encryptKey);
-		setSubmodulesAgency(module.submodules);
+		setModule(module);
 
 		const firstSubmodule = module.submodules[0];
 		if (firstSubmodule) {
-			setCurrentSubmodule(firstSubmodule, encryptKey);
+			setSubmodule(firstSubmodule);
 		}
-
-		navigateApp?.('/home');
+		appNavigate?.();
 	};
 
-	const currentModuleValue = currentModule?.id ? String(currentModule.id) : undefined;
+	const currentModuleValue = module?.id ? String(module.id) : '';
 
 	const labelRenderMobile: SelectProps['labelRender'] = ({ label }) => {
 		const text = String(label ?? '');
@@ -68,6 +59,7 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, naviga
 		options: moduleOptions,
 		onChange: onSelect,
 		value: currentModuleValue,
+		size: 'large' as const,
 		loading: loadingAppLayout,
 		popupMatchSelectWidth: false,
 		styles: POPUP_STYLES,
@@ -75,22 +67,23 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, naviga
 
 	return (
 		<>
-			<div className={`hidden md:block ${SELECT_WRAPPER_CLASSNAME}`}>
+			<div className={`hidden md:block ${SELECT_WRAPPER_CLASSNAME}`} style={SELECT_WRAPPER_STYLE}>
 				<Select
 					{...selectProps}
 					placeholder="Sin módulos asignados"
-					className={SELECT_CLASSNAME}
+					className={HEADER_SELECT_CLASSNAME}
+					labelRender={renderTruncatedHeaderSelectLabel}
 				/>
 			</div>
 
-			<div className="block shrink-0 md:hidden mr-2">
+			<div className={MOBILE_SELECT_WRAPPER_CLASSNAME} style={MOBILE_SELECT_WRAPPER_STYLE}>
 				<Select
 					{...selectProps}
 					labelRender={labelRenderMobile}
-					placeholder={<SettingOutlined />}
+					placeholder={<SettingOutlined className="p-2" />}
 					suffixIcon={null}
 					placement="bottomRight"
-					className={MOBILE_SELECT_CLASSNAME}
+					className={MOBILE_TREE_SELECT_CLASSNAME}
 				/>
 			</div>
 		</>

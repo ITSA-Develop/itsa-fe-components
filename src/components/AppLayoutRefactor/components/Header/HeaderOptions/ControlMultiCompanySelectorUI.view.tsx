@@ -4,25 +4,25 @@ import { DefaultOptionType } from "antd/es/select";
 import { DeploymentUnitOutlined } from "@ant-design/icons";
 import {
   COMPANY_SELECT_LABEL_MAX_LENGTH,
+  renderTruncatedHeaderSelectLabel,
   truncateHeaderSelectLabel,
 } from "../utils/headerSelectLabel";
 import { useAppLayoutStore } from "../../store/useAppLayoutStore";
-
-const SELECT_CLASSNAME =
-  "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
-
-const MOBILE_SELECT_CLASSNAME =
-  `${SELECT_CLASSNAME} [&_.ant-select-selection-item]:!truncate [&_.ant-select-selector]:!px-0 [&_.ant-select-selection-placeholder]:!inset-0 [&_.ant-select-selection-placeholder]:!flex [&_.ant-select-selection-placeholder]:!items-center [&_.ant-select-selection-placeholder]:!justify-center`;
-
-// El trigger en mobile solo muestra el icono, por lo que el popup no puede heredar su ancho.
-const POPUP_STYLES: SelectProps['styles'] = {
-  popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
-};
+import {
+  HEADER_SELECT_CLASSNAME,
+  MOBILE_SELECT_WRAPPER_CLASSNAME,
+  MOBILE_SELECT_WRAPPER_STYLE,
+  MOBILE_TREE_SELECT_CLASSNAME,
+  POPUP_STYLES,
+  SELECT_WRAPPER_CLASSNAME,
+  SELECT_WRAPPER_STYLE,
+} from "@/constants";
 
 export interface ControlMultiCompanySelectorUIProps {
   optionsCompany: DefaultOptionType[];
+  loadingAppLayout: boolean;
 }
-export const ControlMultiCompanySelectorUI = ({ optionsCompany }: ControlMultiCompanySelectorUIProps) => {
+export const ControlMultiCompanySelectorUI = ({ optionsCompany, loadingAppLayout }: ControlMultiCompanySelectorUIProps) => {
   const { currentCompany, setCurrentCompany } = useAppLayoutStore();
 
   const onSelect = (value: string) => {
@@ -45,22 +45,30 @@ export const ControlMultiCompanySelectorUI = ({ optionsCompany }: ControlMultiCo
     options: optionsCompany,
     onChange: onSelect,
     value: currentCompanyValue,
+    size: 'large' as const,
     popupMatchSelectWidth: false,
     styles: POPUP_STYLES,
+    placeholder: <DeploymentUnitOutlined className="p-2" />,
+    loading: loadingAppLayout,
   };
 
-  return <div className="flex flex-row items-center justify-center">
-    <div className="hidden md:block">
-      <Select className={SELECT_CLASSNAME}
+  if (optionsCompany.length <= 1) {
+    return null;
+  }
+
+  return <div className="flex flex-row gap-1">
+    <div className={`hidden md:block ${SELECT_WRAPPER_CLASSNAME}`} style={SELECT_WRAPPER_STYLE}>
+      <Select
+        className={HEADER_SELECT_CLASSNAME}
         {...selectProps}
-        placeholder="Seleccione una empresa"
+        labelRender={renderTruncatedHeaderSelectLabel}
       />
     </div>
-    <div className="block shrink-0 md:hidden">
-      <Select className={MOBILE_SELECT_CLASSNAME}
+    <div className={MOBILE_SELECT_WRAPPER_CLASSNAME} style={MOBILE_SELECT_WRAPPER_STYLE}>
+      <Select
+        className={MOBILE_TREE_SELECT_CLASSNAME}
         {...selectProps}
         labelRender={labelRenderMobile}
-        placeholder={<DeploymentUnitOutlined />}
         suffixIcon={null}
         placement="bottomRight"
       />
