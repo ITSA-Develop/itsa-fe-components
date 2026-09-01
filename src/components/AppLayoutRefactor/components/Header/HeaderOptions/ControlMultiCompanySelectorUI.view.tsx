@@ -1,5 +1,4 @@
-import { useEncrypt } from "@/hooks/useEncrypt/useEncrypt";
-import { useAppLayoutStore } from "@/store";
+
 import { Select, SelectProps } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import { DeploymentUnitOutlined } from "@ant-design/icons";
@@ -7,6 +6,7 @@ import {
   COMPANY_SELECT_LABEL_MAX_LENGTH,
   truncateHeaderSelectLabel,
 } from "../utils/headerSelectLabel";
+import { useAppLayoutStore } from "../../store/useAppLayoutStore";
 
 const SELECT_CLASSNAME =
   "w-full min-w-0 [&_.ant-select-selector]:!bg-primary-600 [&_.ant-select-selector]:!border-primary-700 [&_.ant-select-selector]:!shadow-none [&_.ant-select-selection-item]:!text-white-100 [&_.ant-select-selection-item]:!block [&_.ant-select-selection-item]:!max-w-full [&_.ant-select-selection-placeholder]:!text-white-100 [&_.ant-select-arrow]:!text-white-100 hover:[&_.ant-select-selector]:!bg-primary-700 hover:[&_.ant-select-selector]:!border-primary-700 [&.ant-select-focused_.ant-select-selector]:!bg-primary-700 [&.ant-select-focused_.ant-select-selector]:!border-primary-700";
@@ -19,17 +19,16 @@ const POPUP_STYLES: SelectProps['styles'] = {
   popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
 };
 
-export interface MultiCompanySelectorUIProps {
+export interface ControlMultiCompanySelectorUIProps {
   optionsCompany: DefaultOptionType[];
 }
-export const MultiCompanySelectorUI = ({ optionsCompany }: MultiCompanySelectorUIProps) => {
+export const ControlMultiCompanySelectorUI = ({ optionsCompany }: ControlMultiCompanySelectorUIProps) => {
   const { currentCompany, setCurrentCompany } = useAppLayoutStore();
-  const { encryptKey } = useEncrypt();
 
   const onSelect = (value: string) => {
     const company = optionsCompany.find(company => company.value === value);
     if (company) {
-      setCurrentCompany(company, encryptKey);
+      setCurrentCompany(company);
     }
   };
 

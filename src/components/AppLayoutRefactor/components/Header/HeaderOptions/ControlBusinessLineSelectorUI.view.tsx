@@ -21,12 +21,12 @@ const POPUP_STYLES: SelectProps['styles'] = {
 	popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },
 };
 
-export interface UserModuleUIProps {
+export interface ControlBusinessLineSelectorUIProps {
 	loadingAppLayout?: boolean;
 	navigateApp?: NavigateFunction;
 }
 
-export const UserModuleUI = ({ loadingAppLayout = false, navigateApp }: UserModuleUIProps) => {
+export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, navigateApp }: ControlBusinessLineSelectorUIProps) => {
 	const { encryptKey } = useEncrypt();
 	const { modulesAgency, currentModule, setCurrentModule, setSubmodulesAgency, setCurrentSubmodule } =
 		useAppLayoutStore();

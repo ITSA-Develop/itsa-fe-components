@@ -2,11 +2,11 @@ import { UserIcon } from '@/assets/icons';
 import { useAppLayoutStore } from '@/store';
 import { Button, Dropdown, MenuProps } from 'antd';
 
-export interface UserInformationUIProps {
+export interface ControlUserInformationUIProps {
 	userActions?: MenuProps;
 }
 
-export const UserInformationUI = ({ userActions = { items: [] } }: UserInformationUIProps) => {
+export const ControlUserInformationUI = ({ userActions = { items: [] } }: ControlUserInformationUIProps) => {
 	const isActiveUserActions = Boolean(userActions?.items?.length);
 	const { userName, userRole } = useAppLayoutStore();
 	return (

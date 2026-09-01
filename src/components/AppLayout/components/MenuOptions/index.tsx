@@ -27,9 +27,7 @@ export const MenuOptions = ({
 	const localPath = window.location.pathname;
 	const currentPathModule = useMemo(() => findMenuItemByRoute(items, localPath), [items, localPath]);
 	const currentPathKeyString = currentPathModule?.key?.toString() ?? '';
-
-
-
+	
 	useEffect(() => {
 		if (currentPathModule) {
 			setCurrentItemMenu(currentPathModule);
