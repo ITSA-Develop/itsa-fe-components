@@ -5,6 +5,7 @@ export { AppLayoutAnterior } from './components/AppLayout';
 export { Avatar } from './components/Avatar/Avatar';
 export { Badge } from './components/Badge/Badge';
 export { Button } from './components/Button/';
+export type { IButtonProps, TButtonColor, TButtonType } from './components/Button/';
 export { ButtonAddItem } from './components/ButtonAddItem/';
 export { ButtonAntd } from './components/ButtonAntd/';
 export { ButtonIcon } from './components/ButtonIcon/';
