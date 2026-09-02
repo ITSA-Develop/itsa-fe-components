@@ -1,8 +1,8 @@
-import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
+import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
-import { disabledActionButton, parseSorter } from '@/helpers/functions';
+import { disabledActionButton, getTableHeight, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useAppLayoutStore } from '@/store';
+import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
@@ -10,6 +10,7 @@ import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLo
 import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ISorterTable } from '@/interfaces';
 import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/TableMobileTypeCollapse';
+import { useScreenViewport } from '@/hooks/useScreenViewport';
 import {
 	createBaseBodyCell,
 	createBaseHeaderCell,
@@ -24,7 +25,6 @@ const BaseBodyCell = createBaseBodyCell();
 const DragHeaderCell = createDragTableHeaderCell(BaseHeaderCell);
 const DragBodyCell = createDragTableBodyCell(BaseBodyCell);
 
-const DEFAULT_COLUMN_MIN_WIDTH = 140;
 const ACTIONS_COLUMN_WIDTH = 64;
 const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
 
@@ -62,8 +62,7 @@ export interface ITableProps<T extends object> {
 	heightMobile?: number | string;
 	enableColumnDrag?: boolean;
 	onColumnsOrderChange?: (columns: TStrictTableColumnsType<T>) => void;
-	scrollX?: number | string;
-	scrollY?: number | string;
+	scroll?: AntTableProps<T>['scroll'];
 }
 
 export const Table = <T extends object>({
@@ -91,16 +90,12 @@ export const Table = <T extends object>({
 	showHeader = true,
 	heightMobile = '50vh',
 	enableColumnDrag = false,
-	scrollX = "max-content",
-	scrollY = "calc(100dvh - 390px)",
+	scroll,
 	onColumnsOrderChange,
 }: ITableProps<T>) => {
-	const scroll = {
-		x: scrollX,
-		y: scrollY,
-	};
+	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
 	const finalPagination = paginationConfig ? paginationConfig : false;
@@ -109,6 +104,7 @@ export const Table = <T extends object>({
 	const baseTableScopeClass = 'itsa-table--head-rounded';
 	const resolvedRootClassName = [
 		baseTableScopeClass,
+		'w-full min-w-0 max-w-full',
 		enableColumnDrag ? 'itsa-table--column-drag' : '',
 		refreshDataFunction ? 'itsa-table--with-refresh' : '',
 		rootClassName,
@@ -126,6 +122,11 @@ export const Table = <T extends object>({
 		action: null,
 		record: null,
 	});
+
+	const normalizedScroll = useMemo(() => {
+		if (scroll) return scroll;
+		return { x: 'max-content', y: getTableHeight(viewportHeight) };
+	}, [scroll, viewportHeight]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
@@ -265,44 +266,6 @@ export const Table = <T extends object>({
 		itemsDropdown,
 		showColumnActions,
 	]);
-
-	const getColumnsTotalWidth = (tableColumns: TStrictTableColumnsType<T>) =>
-		tableColumns.reduce((sum, col) => {
-			if (typeof col.width === 'number') return sum + col.width;
-			if (col.key === 'actions') return sum + ACTIONS_COLUMN_WIDTH;
-			return sum + DEFAULT_COLUMN_MIN_WIDTH;
-		}, 0);
-
-	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
-	const getFinalScroll = (tableColumns: TStrictTableColumnsType<T>) => {
-		const columnsWithFixed = tableColumns.some(col => col.fixed === 'left' || col.fixed === 'right');
-		const shouldForceScrollX = columnsWithFixed || showColumnActions;
-
-		if (!shouldForceScrollX) {
-			return scroll;
-		}
-
-		// Si hay columnas fijas, asegurar que scroll.x esté definido y sea un valor válido
-		if (scroll != null && typeof scroll === 'object' && 'x' in scroll && scroll.x !== undefined && scroll.x !== null) {
-			return scroll;
-		}
-
-		// Calcular el ancho total de las columnas o usar el valor por defecto
-		const totalWidth = getColumnsTotalWidth(tableColumns);
-
-		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
-		const baseScroll = scroll != null && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
-
-		return {
-			...baseScroll,
-			x:
-				scroll != null && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null
-					? scroll.x
-					: totalWidth > 0
-						? totalWidth
-						: TABLE_SCROLL.x,
-		};
-	};
 
 	const getConfirmContent = () => {
 		if (!confirmModalState.action?.confirmDelete || !confirmModalState.record) return '';
@@ -485,7 +448,13 @@ export const Table = <T extends object>({
 				onDragOver={columnDrag.handleDragOver}
 				activeColumnTitle={columnDrag.activeColumnTitle}
 			>
-			<div className={refreshDataFunction ? 'itsa-table-wrapper itsa-table-wrapper--refresh' : 'itsa-table-wrapper'}>
+			<div
+				className={
+					refreshDataFunction
+						? 'itsa-table-wrapper itsa-table-wrapper--refresh w-full min-w-0 max-w-full overflow-hidden'
+						: 'itsa-table-wrapper w-full min-w-0 max-w-full overflow-hidden'
+				}
+			>
 				{refreshDataFunction && (
 					<div className="itsa-table-refresh-bar">
 						<Button
@@ -511,7 +480,7 @@ export const Table = <T extends object>({
 					rowSelection={resolvedRowSelection}
 					onChange={handleChangePagination}
 					pagination={finalPagination}
-					scroll={getFinalScroll(tableColumns)}
+					scroll={normalizedScroll}
 					locale={locale}
 					className={resolvedRootClassName}
 					rootClassName={resolvedRootClassName}

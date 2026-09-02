@@ -1,6 +1,6 @@
 import { getProgramActionsbyPath } from '@/helpers/functions';
 import { IActions } from '@/interfaces';
-import { useAppLayoutStore } from '@/store';
+import { useLegacyAppLayoutStore } from '@/store';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
 export interface ControlActionsContextType {
@@ -27,7 +27,7 @@ export const ControlActionsProvider = ({ children, fnApiValidatePermissionAction
 	};
 	
 	const [currentPath, setCurrentPath] = useState<string>(getInitialPath());
-	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const currentModule = useLegacyAppLayoutStore(state => state.currentModule);
 	const [actions, setActions] = useState<IActions>();
 	const [programId, setProgramId] = useState<number>();
 

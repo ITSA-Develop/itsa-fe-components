@@ -3,7 +3,7 @@ import { ButtonAntd } from '../ButtonAntd';
 import { ReactNode, useMemo } from 'react';
 import { EActionType } from '@/enums';
 import { isDisabledAction } from '@/helpers/functions';
-import { useActionsUser, useAppLayoutStore } from '@/store';
+import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 
 export type TButtonType =
@@ -43,10 +43,6 @@ export interface IButtonProps {
 	shape?: 'default' | 'round' | 'circle' | undefined;
 	actionType?: EActionType;
 	validateWithApiAction?: boolean;
-	/**
-	 * When offline or `disabled` prop is true: `true` (default) renders the button with disabled styling;
-	 * `false` hides the button (`null`). Forbidden actions (`actionType` + user permissions) are always hidden when disabled.
-	 */
 	loading?: boolean;
 	allowEnterKey?: boolean;
 }
@@ -77,7 +73,7 @@ const getButtonAppearance = (type: TButtonType): TButtonAppearance => {
 
 export const Button = (props: IButtonProps) => {
 	const isOnline = useOnlineStatus();
-	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const { actionsUser } = useActionsUser();
 	const {

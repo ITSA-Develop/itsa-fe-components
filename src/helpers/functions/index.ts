@@ -6,7 +6,7 @@ import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
-import { useAppLayoutStore } from '@/store';
+import { useLegacyAppLayoutStore } from '@/store';
 // import { act } from 'react';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
@@ -83,7 +83,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 		const programs = submodule.programs;
 		if (programs && programs.length > 0) {
 			for (const program of programs) {
-				const url = program.url ? program.url : undefined;
+				const url = program.path ? program.path : undefined;
 				const programPath = program.path ? program.path : undefined;
 
 				// Buscar tanto en url como en path
@@ -95,9 +95,10 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 					matchesPath(programPath, targetPath);
 
 				if (urlMatch || pathMatch) {
-					if (program.actions) {
-						return { actions: program.actions, program: program };
-					}
+					// if (program.actions) {
+						// return { actions: program.actions, program: program };
+						return { actions: {} as IActions, program: program as unknown as ISubmodule};
+					// }
 				}
 			}
 		}
@@ -109,7 +110,7 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 				const groupPrograms = group.programs;
 				if (groupPrograms && groupPrograms.length > 0) {
 					for (const program of groupPrograms) {
-						const url = program.url ? program.url : undefined;
+						const url = program.path ? program.path : undefined;
 						const programPath = program.path ? program.path : undefined;
 
 						// Buscar tanto en url como en path
@@ -121,9 +122,10 @@ export const getProgramActionsbyPath = (path: string, module: IModule): IProgram
 							matchesPath(programPath, targetPath);
 
 						if (urlMatch || pathMatch) {
-							if (program.actions) {
-								return { actions: program.actions, program: program };
-							}
+							// if (program.actions) {
+								// return { actions: program.actions, program: program };
+								return { actions: {} as IActions, program: program as unknown as ISubmodule};
+							// }
 						}
 					}
 				}
@@ -253,7 +255,7 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
 		if (!programs) return null;
 		for (const program of programs) {
-			if (normalizePath(program?.path ?? null) === target) {
+			if (normalizePath(program?.name ?? null) === target) {
 				return program;
 			}
 		}
@@ -261,21 +263,19 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 	};
 
 	for (const agency of agencies) {
-		const modules = agency?.modules ?? [];
+		const modules = agency?.subAgencies ?? [];
 		for (const mod of modules ?? []) {
-			const foundAtModule = checkPrograms(mod?.submodules ?? []);
+			const foundAtModule = checkPrograms([]);
 			if (foundAtModule !== null) return foundAtModule;
 
-			const submodules = mod?.submodules ?? [];
+			const submodules = mod?.modules ?? [];
 			for (const sub of submodules ?? []) {
-				const foundAtSub = checkPrograms(sub?.programs ?? []);
+				const submodules = sub?.submodules ?? [];
+				const foundAtSub = checkPrograms(submodules);
 				if (foundAtSub !== null) return foundAtSub;
 
-				const groups = sub?.groups ?? [];
-				for (const group of groups ?? []) {
-					const foundAtGroup = checkPrograms(group?.programs ?? []);
-					if (foundAtGroup !== null) return foundAtGroup;
-				}
+				const foundAtGroup = checkPrograms([]);
+				if (foundAtGroup !== null) return foundAtGroup;
 			}
 		}
 	}
@@ -284,7 +284,7 @@ export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined,
 };
 
 export const findProgramIdByPath = (path: string): ISubmodule | null => {
-	const agencies: IAgency[] | undefined = useAppLayoutStore?.getState?.()?.agencies ?? [];
+	const agencies: IAgency[] | undefined = useLegacyAppLayoutStore?.getState?.()?.agencies ?? [];
 	return findProgramIdByPathFromAgencies(agencies, path);
 };
 
@@ -376,32 +376,6 @@ export const getOriginFromUrl = (url: string): string | undefined => {
 	}
 };
 
-
-// export const roundUpDecimal = (value: unknown): number => {
-// 	if (value === undefined || value === null) return 0.00;
-// 	const normalizedValue =
-// 		typeof value === 'string'
-// 			? Number(value.trim().replace(/,/g, ''))
-// 			: Number(value);
-// 	if (!Number.isFinite(normalizedValue)) return 0.00;
-// 	const fixedToEight = normalizedValue.toFixed(8);
-// 	const isNegative = fixedToEight.startsWith('-');
-// 	const absoluteValue = isNegative ? fixedToEight.slice(1) : fixedToEight;
-// 	const [intPart = '0', decPart = ''] = absoluteValue.split('.');
-// 	const eightDecimals = decPart.padEnd(8, '0').slice(0, 8);
-// 	const firstTwoDecimals = eightDecimals.slice(0, 2);
-// 	const hasExtraDecimals = /[1-9]/.test(eightDecimals.slice(2));
-// 	let cents = Number(intPart) * 100 + Number(firstTwoDecimals);
-// 	if (!isNegative && hasExtraDecimals) {
-// 		cents += 1;
-// 	}
-// 	const integerPart = Math.floor(cents / 100);
-// 	const decimalPart = String(cents % 100).padStart(2, '0');
-// 	const sign = isNegative && cents > 0 ? '-' : '';
-// 	const refNumber = `${sign}${integerPart}.${decimalPart}`;
-// 	return Number(refNumber);
-// };
-
 export const roundStandardDecimal = (value: unknown): string => {
 	if (value === undefined || value === null) return '0.00';
 	const rawValue =
@@ -452,3 +426,14 @@ export const roundUpDecimal = (value: unknown): number => {
 		return 0.00;
 	}
 }
+
+export const getTableHeight = (viewportHeight: number) => {
+	const MIN_TABLE_HEIGHT = 180;
+	const MAX_TABLE_HEIGHT = 650;
+	const RESERVED_VERTICAL_SPACE = 380;
+
+	return Math.min(
+		MAX_TABLE_HEIGHT,
+		Math.max(MIN_TABLE_HEIGHT, Math.floor(viewportHeight - RESERVED_VERTICAL_SPACE)),
+	);
+};
