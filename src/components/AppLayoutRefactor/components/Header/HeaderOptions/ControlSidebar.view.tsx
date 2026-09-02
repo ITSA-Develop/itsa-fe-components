@@ -10,7 +10,7 @@ export interface ControlSidebarUIProps {
 export const ControlSidebarUI = ({ environment }: ControlSidebarUIProps) => {
   const { open, setOpen } = useSidebarLayoutStore();
 
-  return <div className="flex shrink-0 flex-row gap-0.5">
+  return <div className="flex shrink-0 flex-row gap-0.5 items-center justify-center">
     <Button
       type="text"
       icon={<MenuUnfoldOutlined className="text-white-100" />}

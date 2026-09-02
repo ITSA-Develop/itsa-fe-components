@@ -1,6 +1,6 @@
 import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
-import { disabledActionButton, parseSorter } from '@/helpers/functions';
+import { disabledActionButton, getTableHeight, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
 import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
@@ -10,6 +10,7 @@ import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLo
 import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ISorterTable } from '@/interfaces';
 import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/TableMobileTypeCollapse';
+import { useScreenViewport } from '@/hooks/useScreenViewport';
 import {
 	createBaseBodyCell,
 	createBaseHeaderCell,
@@ -89,9 +90,10 @@ export const Table = <T extends object>({
 	showHeader = true,
 	heightMobile = '50vh',
 	enableColumnDrag = false,
-	scroll = { x: "max-content", y: "54dvh" },
+	scroll,
 	onColumnsOrderChange,
 }: ITableProps<T>) => {
+	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
@@ -120,6 +122,11 @@ export const Table = <T extends object>({
 		action: null,
 		record: null,
 	});
+
+	const normalizedScroll = useMemo(() => {
+		if (scroll) return scroll;
+		return { x: 'max-content', y: getTableHeight(viewportHeight) };
+	}, [scroll, viewportHeight]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
@@ -473,7 +480,7 @@ export const Table = <T extends object>({
 					rowSelection={resolvedRowSelection}
 					onChange={handleChangePagination}
 					pagination={finalPagination}
-					scroll={scroll}
+					scroll={normalizedScroll}
 					locale={locale}
 					className={resolvedRootClassName}
 					rootClassName={resolvedRootClassName}

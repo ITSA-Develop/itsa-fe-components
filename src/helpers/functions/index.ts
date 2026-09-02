@@ -427,4 +427,13 @@ export const roundUpDecimal = (value: unknown): number => {
 	}
 }
 
+export const getTableHeight = (viewportHeight: number) => {
+	const MIN_TABLE_HEIGHT = 180;
+	const MAX_TABLE_HEIGHT = 650;
+	const RESERVED_VERTICAL_SPACE = 380;
 
+	return Math.min(
+		MAX_TABLE_HEIGHT,
+		Math.max(MIN_TABLE_HEIGHT, Math.floor(viewportHeight - RESERVED_VERTICAL_SPACE)),
+	);
+};

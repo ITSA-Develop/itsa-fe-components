@@ -1139,6 +1139,10 @@
   max-width: 840px;
 }
 
+.max-w-\[clamp\(80px\2c calc\(\(100vw-320px\)\/4\)\2c 140px\)\]{
+  max-width: clamp(80px,calc((100vw - 320px) / 4),140px);
+}
+
 .max-w-full{
   max-width: 100%;
 }
@@ -1153,6 +1157,10 @@
 
 .flex-shrink-0{
   flex-shrink: 0;
+}
+
+.shrink{
+  flex-shrink: 1;
 }
 
 .shrink-0{
@@ -1928,10 +1936,6 @@
   padding: 0px;
 }
 
-.p-0\.5{
-  padding: 0.125rem;
-}
-
 .p-1{
   padding: 0.25rem;
 }
@@ -2260,6 +2264,10 @@
 
 .italic{
   font-style: italic;
+}
+
+.leading-4{
+  line-height: 1rem;
 }
 
 .leading-7{
@@ -3932,10 +3940,6 @@ body,
     padding: 2rem;
   }
 
-  .md\:p-1{
-    padding: 0.25rem;
-  }
-
   .md\:px-2\.5{
     padding-left: 0.625rem;
     padding-right: 0.625rem;
@@ -4103,6 +4107,15 @@ body,
   white-space: nowrap !important;
 }
 
+.\[\&_\.ant-select-selection-item\]\:\!text-xs .ant-select-selection-item{
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
+}
+
+.\[\&_\.ant-select-selection-item\]\:\!leading-\[30px\] .ant-select-selection-item{
+  line-height: 30px !important;
+}
+
 .\[\&_\.ant-select-selection-item\]\:\!text-white-100 .ant-select-selection-item{
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
@@ -4124,9 +4137,22 @@ body,
   justify-content: center !important;
 }
 
+.\[\&_\.ant-select-selection-placeholder\]\:\!text-xs .ant-select-selection-placeholder{
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
+}
+
+.\[\&_\.ant-select-selection-placeholder\]\:\!leading-\[30px\] .ant-select-selection-placeholder{
+  line-height: 30px !important;
+}
+
 .\[\&_\.ant-select-selection-placeholder\]\:\!text-white-100 .ant-select-selection-placeholder{
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!h-8 .ant-select-selector{
+  height: 2rem !important;
 }
 
 .\[\&_\.ant-select-selector\]\:\!border-primary-700 .ant-select-selector{
@@ -4142,6 +4168,11 @@ body,
 .\[\&_\.ant-select-selector\]\:\!px-0 .ant-select-selector{
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+.\[\&_\.ant-select-selector\]\:\!px-2 .ant-select-selector{
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
 }
 
 .\[\&_\.ant-select-selector\]\:\!shadow-none .ant-select-selector{
