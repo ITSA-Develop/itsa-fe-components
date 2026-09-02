@@ -1,4 +1,4 @@
-import { DEFAULT_PAGINATION_CONFIG, TABLE_SCROLL } from '@/constants';
+import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
@@ -24,7 +24,6 @@ const BaseBodyCell = createBaseBodyCell();
 const DragHeaderCell = createDragTableHeaderCell(BaseHeaderCell);
 const DragBodyCell = createDragTableBodyCell(BaseBodyCell);
 
-const DEFAULT_COLUMN_MIN_WIDTH = 140;
 const ACTIONS_COLUMN_WIDTH = 64;
 const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
 
@@ -62,8 +61,7 @@ export interface ITableProps<T extends object> {
 	heightMobile?: number | string;
 	enableColumnDrag?: boolean;
 	onColumnsOrderChange?: (columns: TStrictTableColumnsType<T>) => void;
-	scrollX?: number | string;
-	scrollY?: number | string;
+	scroll?: AntTableProps<T>['scroll'];
 }
 
 export const Table = <T extends object>({
@@ -91,14 +89,9 @@ export const Table = <T extends object>({
 	showHeader = true,
 	heightMobile = '50vh',
 	enableColumnDrag = false,
-	scrollX = "max-content",
-	scrollY = "calc(100dvh - 390px)",
+	scroll = { x: "max-content", y: "54dvh" },
 	onColumnsOrderChange,
 }: ITableProps<T>) => {
-	const scroll = {
-		x: scrollX,
-		y: scrollY,
-	};
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
@@ -266,44 +259,6 @@ export const Table = <T extends object>({
 		itemsDropdown,
 		showColumnActions,
 	]);
-
-	const getColumnsTotalWidth = (tableColumns: TStrictTableColumnsType<T>) =>
-		tableColumns.reduce((sum, col) => {
-			if (typeof col.width === 'number') return sum + col.width;
-			if (col.key === 'actions') return sum + ACTIONS_COLUMN_WIDTH;
-			return sum + DEFAULT_COLUMN_MIN_WIDTH;
-		}, 0);
-
-	// Calcular el scroll final asegurando que tenga 'x' cuando hay columnas fijas
-	const getFinalScroll = (tableColumns: TStrictTableColumnsType<T>) => {
-		const columnsWithFixed = tableColumns.some(col => col.fixed === 'left' || col.fixed === 'right');
-		const shouldForceScrollX = columnsWithFixed || showColumnActions;
-
-		if (!shouldForceScrollX) {
-			return scroll;
-		}
-
-		// Si hay columnas fijas, asegurar que scroll.x esté definido y sea un valor válido
-		if (scroll != null && typeof scroll === 'object' && 'x' in scroll && scroll.x !== undefined && scroll.x !== null) {
-			return scroll;
-		}
-
-		// Calcular el ancho total de las columnas o usar el valor por defecto
-		const totalWidth = getColumnsTotalWidth(tableColumns);
-
-		// Si scroll es un objeto, hacer merge; si no, crear uno nuevo con el valor por defecto
-		const baseScroll = scroll != null && typeof scroll === 'object' ? scroll : TABLE_SCROLL;
-
-		return {
-			...baseScroll,
-			x:
-				scroll != null && typeof scroll === 'object' && scroll.x !== undefined && scroll.x !== null
-					? scroll.x
-					: totalWidth > 0
-						? totalWidth
-						: TABLE_SCROLL.x,
-		};
-	};
 
 	const getConfirmContent = () => {
 		if (!confirmModalState.action?.confirmDelete || !confirmModalState.record) return '';
@@ -518,7 +473,7 @@ export const Table = <T extends object>({
 					rowSelection={resolvedRowSelection}
 					onChange={handleChangePagination}
 					pagination={finalPagination}
-					scroll={getFinalScroll(tableColumns)}
+					scroll={scroll}
 					locale={locale}
 					className={resolvedRootClassName}
 					rootClassName={resolvedRootClassName}

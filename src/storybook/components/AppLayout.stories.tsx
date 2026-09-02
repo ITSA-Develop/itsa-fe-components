@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import type { StoryObj } from '@storybook/react';
-import { AppLayout } from '../../components/AppLayout';
+import { AppLayout, AppLayoutProps } from '../../components/AppLayout';
 import { useAppLayoutStore } from '../../store';
 import { PERMISSIONS_MOCK } from '../../components/AppLayoutRefactor/mocks/permissions.mock';
-import { IProgram } from '../../interfaces';
+import { IProgram, IUserInformation } from '../../interfaces';
 
 const meta = {
 	title: 'Components/AppLayout',
@@ -23,7 +23,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const defaultArgs = {
+const defaultArgs: AppLayoutProps = {
 	optionsCompany: [
 		{
 			label: 'Empresa 1',
@@ -38,10 +38,9 @@ const defaultArgs = {
 			value: '3',
 		},
 	],
-	notifications: [],
 	loadingAppLayout: false,
 	children: <div>Hello World</div>,
-	appNavigate: () => {},
+	onCloseSession: () => {},
 	menuItemsNavigate: (program: IProgram) => {
 		console.log('menuItemsNavigate', program);
 	},
@@ -49,9 +48,34 @@ const defaultArgs = {
 
 const withPermissions = (Story: React.ComponentType) => {
 	const setPermissions = useAppLayoutStore(state => state.setPermissions);
+	const setUserInformation = useAppLayoutStore(state => state.setUserInformation);
 
 	useEffect(() => {
 		setPermissions(PERMISSIONS_MOCK);
+		const userInfo: IUserInformation = {
+			userId: 1,
+			name: 'Juan Perez',
+			email: 'juan.perez@example.com',
+			roles: [
+				{
+					id: 1,
+					code: 'ADMIN-LPH',
+					name: 'ADMINISTRADOR LPH',
+					moduleId: 30,
+				},
+				{
+					id: 2,
+					code: 'ADMIN-TESORERIA',
+					name: 'ADMINISTRADOR TESORERIA',
+					moduleId: 40,
+				},
+			],
+			identification: '1234567890',
+			identificationType: 'CC',
+			businessLineId: 1,
+			picture: 'https://via.placeholder.com/150',
+		};
+		setUserInformation(userInfo);
 	}, [setPermissions]);
 
 	return <Story />;

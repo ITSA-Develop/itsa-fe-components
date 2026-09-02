@@ -22,19 +22,21 @@ export type {
 
 export interface AppLayoutProps {
   optionsCompany: DefaultOptionType[];
-  // appNavigate: () => void;
   loadingAppLayout: boolean;
+  onCloseSession: () => void;
   children: ReactNode;
   menuItemsNavigate: (program: IProgram) => void;
 }
 
-export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate }: AppLayoutProps) => {
+export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession }: AppLayoutProps) => {
   useAppLayoutSelectionPersistence(optionsCompany, loadingAppLayout);
   return (    <div className="flex h-[100dvh] w-full min-w-0 overflow-hidden">
       <Layout className="h-full min-h-0 w-full min-w-0 md:p-0.5 gap-0.5 md:gap-2">
         <HeaderLayout
           optionsCompany={optionsCompany}
           loadingAppLayout={loadingAppLayout}
+          onCloseSession={onCloseSession}
+        menuItemsNavigate={menuItemsNavigate}
         />
         <SidebarLayout 
           loadingAppLayout={loadingAppLayout}

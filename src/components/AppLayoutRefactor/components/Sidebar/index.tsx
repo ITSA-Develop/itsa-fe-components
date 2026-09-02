@@ -27,7 +27,15 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
 
   const navigateToHome = () => {
     closeDrawer();
-    window.location.href = "/home";
+    const homeProgram: IProgram = {
+      id: 0,
+      name: 'Home',
+      path: '/home',
+      icon: 'home',
+      root: true,
+      roleId: 0,
+    };
+    menuItemsNavigate(homeProgram);
   }
   
   const titleDrawer = () => {
@@ -77,7 +85,7 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
         />
       </div>
     </Drawer>
-    <div className="min-h-0 min-w-0 max-w-full flex-1 overflow-auto rounded-lg bg-white-100">
+    <div className="min-h-0 min-w-0 max-w-full flex-1 overflow-auto rounded-lg bg-white-100 p-2">
       {children}
     </div>
     {footerComponent !== undefined && (

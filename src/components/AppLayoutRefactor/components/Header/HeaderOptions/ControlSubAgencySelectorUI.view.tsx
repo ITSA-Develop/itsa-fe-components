@@ -12,13 +12,14 @@ import {
   SELECT_WRAPPER_STYLE,
   TREE_SELECT_CLASSNAME,
 } from '@/constants';
-import { renderTruncatedHeaderSelectLabel } from '../utils/headerSelectLabel';
+import { formatSubAgencyHeaderSelectLabel } from '../utils/headerSelectLabel';
 
 export interface MultiCompanyTreeNode {
   id: string | number;
   pId: string | number | null;
   value: string;
   title: ReactNode;
+  label?: ReactNode;
   isLeaf?: boolean;
   selectable?: boolean;
   children?: MultiCompanyTreeNode[];
@@ -31,15 +32,30 @@ export interface ControlSubAgencySelectorUIProps {
   loadChildren?: (node: MultiCompanyTreeNode) => Promise<MultiCompanyTreeNode[]>;
 }
 
-const flattenNodes = (nodes: MultiCompanyTreeNode[], parentId?: string | number): MultiCompanyTreeNode[] =>
+const flattenNodes = (
+  nodes: MultiCompanyTreeNode[],
+  parentId?: string | number,
+  parentTitle?: string,
+): MultiCompanyTreeNode[] =>
   nodes.flatMap(({ children, ...node }) => {
+    const nodeTitle = String(node.title ?? '');
     const flatNode: MultiCompanyTreeNode = {
       ...node,
       pId: parentId ?? node.pId,
       selectable: node.isLeaf === true,
-    };  
+      label:
+        node.label ??
+        (node.isLeaf && parentTitle
+          ? formatSubAgencyHeaderSelectLabel(parentTitle, nodeTitle)
+          : undefined),
+    };
 
-    return [flatNode, ...(children ? flattenNodes(children, flatNode.id) : [])];
+    const parentTitleForChildren = node.isLeaf ? parentTitle : nodeTitle;
+
+    return [
+      flatNode,
+      ...(children ? flattenNodes(children, flatNode.id, parentTitleForChildren) : []),
+    ];
   });
 
 const mapAgenciesToTreeNodes = (agencies: IAgency[]): MultiCompanyTreeNode[] =>
@@ -55,6 +71,7 @@ const mapAgenciesToTreeNodes = (agencies: IAgency[]): MultiCompanyTreeNode[] =>
       pId: `agency-${agency.id}`,
       value: `subagency-${agency.id}-${sub.id}`,
       title: sub.name,
+      label: formatSubAgencyHeaderSelectLabel(agency.name, sub.name),
       isLeaf: true,
       selectable: true,
       data: sub,
@@ -85,7 +102,11 @@ export const ControlSubAgencySelectorUI = ({ loadChildren }: ControlSubAgencySel
     const children = await loadChildren(parentNode);
     setTreeData(currentTreeData => {
       const currentValues = new Set(currentTreeData.map(node => node.value));
-      const newNodes = flattenNodes(children, parentNode.id).filter(node => !currentValues.has(node.value));
+      const newNodes = flattenNodes(
+        children,
+        parentNode.id,
+        String(parentNode.title ?? ''),
+      ).filter(node => !currentValues.has(node.value));
 
       return [...currentTreeData, ...newNodes];
     });
@@ -108,10 +129,10 @@ export const ControlSubAgencySelectorUI = ({ loadChildren }: ControlSubAgencySel
     loading: false,
     value: selectedValue,
     onSelect,
-    size: 'large' as const,
+    size: 'middle' as const,
     popupMatchSelectWidth: false,
     styles: POPUP_STYLES,
-    labelRender: renderTruncatedHeaderSelectLabel,
+    treeNodeLabelProp: 'label' as const,
   };
 
   return (

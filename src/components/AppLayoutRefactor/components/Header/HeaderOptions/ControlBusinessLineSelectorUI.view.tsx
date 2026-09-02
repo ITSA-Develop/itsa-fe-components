@@ -13,12 +13,14 @@ import {
 	SELECT_WRAPPER_CLASSNAME,
 	SELECT_WRAPPER_STYLE,
 } from '@/constants';
+import { IProgram } from '@/interfaces';
 
 export interface ControlBusinessLineSelectorUIProps {
 	loadingAppLayout: boolean;
+	menuItemsNavigate: (program: IProgram) => void;
 }
 
-export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false }: ControlBusinessLineSelectorUIProps) => {
+export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false, menuItemsNavigate }: ControlBusinessLineSelectorUIProps) => {
 	const { subAgency, module, selectModule } = useAppLayoutStore();
 
 	const modulesAgency = useMemo(() => subAgency?.modules ?? [], [subAgency]);
@@ -34,8 +36,15 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false }: Cont
 
 	const onSelect = (moduleId: string) => {
 		selectModule(Number(moduleId));
-		//navegar al home
-		window.location.href = '/';
+		const homeProgram: IProgram = {
+			id: 0,
+			name: 'Home',
+			path: '/home',
+			icon: 'home',
+			root: true,
+			roleId: 0,
+		};
+		menuItemsNavigate(homeProgram);
 	};
 
 	const currentModuleValue = module !== undefined ? String(module.id) : undefined;
@@ -51,7 +60,7 @@ export const ControlBusinessLineSelectorUI = ({ loadingAppLayout = false }: Cont
 		options: moduleOptions,
 		onChange: onSelect,
 		value: currentModuleValue,
-		size: 'large' as const,
+		size: 'middle' as const,
 		loading: loadingAppLayout,
 		popupMatchSelectWidth: false,
 		styles: POPUP_STYLES,

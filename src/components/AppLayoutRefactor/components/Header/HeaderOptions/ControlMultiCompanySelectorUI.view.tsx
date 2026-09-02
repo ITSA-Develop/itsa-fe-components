@@ -45,7 +45,7 @@ export const ControlMultiCompanySelectorUI = ({ optionsCompany, loadingAppLayout
     options: optionsCompany,
     onChange: onSelect,
     value: currentCompanyValue,
-    size: 'large' as const,
+    size: 'middle' as const,
     popupMatchSelectWidth: false,
     styles: POPUP_STYLES,
     placeholder: <DeploymentUnitOutlined className="p-2" />,

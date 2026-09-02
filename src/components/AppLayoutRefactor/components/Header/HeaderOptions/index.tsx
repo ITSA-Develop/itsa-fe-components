@@ -1,6 +1,6 @@
 import { MenuProps } from 'antd';
 import { NotificationsUI } from './Notifications/UserNotificationsUI.controller';
-import { IItemNotification } from '@/interfaces';
+import { IItemNotification, IProgram } from '@/interfaces';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import { ControlSidebarUI } from './ControlSidebar.view';
 import { ControlMultiCompanySelectorUI } from './ControlMultiCompanySelectorUI.view';
@@ -12,12 +12,13 @@ import { DefaultOptionType } from 'antd/es/select';
 export interface IHeaderOptionsProps {
 	loadingAppLayout: boolean;
 	optionsCompany: DefaultOptionType[];
-	// appNavigate: () => void;
 	userActions?: MenuProps;
+	onCloseSession: () => void;
 	notifications?: IItemNotification[];
+	menuItemsNavigate: (program: IProgram) => void;
 }
 
-export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, optionsCompany }: IHeaderOptionsProps) => {
+export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, optionsCompany, onCloseSession, menuItemsNavigate }: IHeaderOptionsProps) => {
 	const environment = useEnvironment();
 	return (
 		<div className="flex pl-2 pr-2 h-full min-h-0 min-w-0 flex-row items-center justify-between">
@@ -25,11 +26,11 @@ export const HeaderOptions = ({ userActions, notifications, loadingAppLayout, op
 			<ControlMultiCompanySelectorUI optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} />
 			<div className="flex min-w-0 flex-row gap-1">
 				<div className="flex min-w-0 flex-row gap-1">
-					<ControlBusinessLineSelectorUI loadingAppLayout={loadingAppLayout} />
+					<ControlBusinessLineSelectorUI loadingAppLayout={loadingAppLayout} menuItemsNavigate={menuItemsNavigate} />
 					<ControlSubAgencySelectorUI />
 				</div>
-				<div className="flex shrink-0 flex-row items-center gap-0.5">
-					<ControlUserInformationUI userActions={userActions} />
+				<div className="flex min-w-0 shrink flex-row items-center gap-0.5">
+					<ControlUserInformationUI userActions={userActions} onCloseSession={onCloseSession} />
 					<NotificationsUI notifications={notifications} />
 				</div>
 			</div>

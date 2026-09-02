@@ -9,6 +9,11 @@ export const truncateHeaderSelectLabel = (text: string, maxLength: number): stri
 	return `${text.slice(0, maxLength)}...`;
 };
 
+export const formatSubAgencyHeaderSelectLabel = (agencyName?: string, subAgencyName?: string): string => {
+	if (!agencyName || !subAgencyName) return subAgencyName ?? agencyName ?? '';
+	return `${agencyName} - ${subAgencyName}`;
+};
+
 export const renderTruncatedHeaderSelectLabel: NonNullable<SelectProps['labelRender']> = ({ label }) => {
 	const text = String(label ?? '');
 	return createElement(
