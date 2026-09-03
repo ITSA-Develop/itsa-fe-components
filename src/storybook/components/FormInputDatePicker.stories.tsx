@@ -141,3 +141,19 @@ export const ShowErrorOnSubmit: Story = {
 		</RHFForm>
 	),
 };
+
+export const BirthDate: Story = {
+	name: 'Fecha de nacimiento (sin restricción)',
+	args: {
+		name: 'date',
+		label: 'Fecha de nacimiento',
+		placeholder: 'YYYY-MM-DD',
+		format: EDateMaskFormat.YYYYMMDD,
+		allowAnyDate: true,
+	},
+	render: args => (
+		<RHFForm defaultValues={{ date: undefined }}>
+			<BoundFormInputDatePicker {...args} />
+		</RHFForm>
+	),
+};
