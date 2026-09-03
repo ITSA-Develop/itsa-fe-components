@@ -137,7 +137,7 @@ export const SELECT_WRAPPER_STYLE = {
 export const MOBILE_SELECT_WRAPPER_CLASSNAME = 'block min-w-0 shrink-0 md:hidden';
 export const MOBILE_SELECT_WRAPPER_STYLE = { width: 64 } as const;
 
-export const USER_INFO_WRAPPER_CLASSNAME = 'hidden min-w-0 max-w-[clamp(80px,calc((100vw-320px)/4),140px)] flex-col md:flex';
+export const USER_INFO_WRAPPER_CLASSNAME = 'hidden min-w-0 max-w-[clamp(100px,calc((100vw-360px)/3),220px)] flex-col md:flex';
 
 export const POPUP_STYLES: TreeSelectProps['styles'] = {
 	popup: { root: { minWidth: 220, maxWidth: 'calc(100vw - 24px)', maxHeight: 320, overflow: 'auto' } },

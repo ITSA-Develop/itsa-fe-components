@@ -1,4 +1,4 @@
-import { Button, Dropdown, MenuProps } from 'antd';
+import { Button, Dropdown, MenuProps, Tooltip } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 import { useEncrypt, useSidebarStore } from '@/hooks';
 import { useLegacyAppLayoutStore } from '@/store';
@@ -242,9 +242,13 @@ export const HeaderLayout = ({
 								emptyLabel="Sin agencias asignadas"
 								onChange={handleSetCurrentAgency}
 							/>
-							<div className="flex flex-col">
-								<span className="text-4 whitespace-nowrap">{userName ?? ''}</span>
-								<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap">
+							<div className="flex flex-col min-w-0 max-w-[clamp(100px,calc((100vw-360px)/3),220px)]">
+								<Tooltip title={userName ?? ''} placement="bottom">
+									<span className="text-4 whitespace-nowrap truncate block cursor-pointer" title={userName ?? ''}>
+										{userName ?? ''}
+									</span>
+								</Tooltip>
+								<span className="text-primary-900 font-bold text-end text-xs whitespace-nowrap truncate block" title={userRole?.name ?? ''}>
 									{userRole?.name ?? ''}
 								</span>
 							</div>
