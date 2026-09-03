@@ -3,7 +3,7 @@ import { Menu, MenuProps } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useSidebarStore } from '@/hooks';
 import { findMenuItemByRoute, getProgramActionsbyPath } from '@/helpers/functions';
-import { useAppLayoutStore, useMenuDataStore } from '@/store';
+import { useLegacyAppLayoutStore, useMenuDataStore } from '@/store';
 import { useEffect, useMemo } from 'react';
 export interface MenuOptionsProps {
 	loadingAppLayout: boolean;
@@ -23,13 +23,11 @@ export const MenuOptions = ({
 }: MenuOptionsProps) => {
 	const setCurrentProgram = useSidebarStore(state => state.setCurrentProgram);
 	const setCurrentItemMenu = useMenuDataStore(state => state.setCurrenItemMenu);
-	const currentModule = useAppLayoutStore(state => state.currentModule);
+	const currentModule = useLegacyAppLayoutStore(state => state.currentModule);
 	const localPath = window.location.pathname;
 	const currentPathModule = useMemo(() => findMenuItemByRoute(items, localPath), [items, localPath]);
 	const currentPathKeyString = currentPathModule?.key?.toString() ?? '';
-
-
-
+	
 	useEffect(() => {
 		if (currentPathModule) {
 			setCurrentItemMenu(currentPathModule);

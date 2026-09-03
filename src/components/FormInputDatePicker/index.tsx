@@ -3,7 +3,7 @@ import type { DatePickerProps } from 'antd';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
-import { memo, useId, useState } from 'react';
+import { memo, useEffect, useId, useState } from 'react';
 import dayjs, { type Dayjs, type OpUnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { EDateMaskFormat } from '@/enums';
@@ -81,6 +81,7 @@ export interface IInputProps<TFieldValues extends FieldValues>
 	optional?: boolean;
 	format?: EDateMaskFormat | string;
 	disabled?: boolean;
+	allowAnyDate?: boolean;
 }
 
 const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
@@ -93,8 +94,11 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 	disabled = false,
 	allowClear = true,
 	minuteStep,
+	minDate,
+	maxDate,
 	disabledDate: customDisabledDate,
 	disabledTime: customDisabledTime,
+	allowAnyDate = false,
 	...rest
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
@@ -102,6 +106,12 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 	const [constraintError, setConstraintError] = useState<string>();
 	const resolvedShowTime = getShowTimeConfig(format, minuteStep);
 	const pastDateError = getPastDateError(format);
+
+	useEffect(() => {
+		if (allowAnyDate) {
+			setConstraintError(undefined);
+		}
+	}, [allowAnyDate]);
 
 	const disabledDate: TDisabledDate = (...args) => {
 		const [currentDate] = args;
@@ -134,6 +144,9 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 		};
 	};
 
+	const datePickerDisabledDate = allowAnyDate ? undefined : disabledDate;
+	const datePickerDisabledTime = allowAnyDate ? undefined : disabledTime;
+
 	return (
 		<Controller
 			name={name}
@@ -141,10 +154,12 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 			render={({ field, fieldState }) => {
 				const dateValue = field.value ? dayjs(field.value, format, true) : null;
 				const isStoredValuePast =
-					Boolean(dateValue?.isValid()) && isBeforeCurrentDate(dateValue as Dayjs, format);
+					!allowAnyDate &&
+					Boolean(dateValue?.isValid()) &&
+					isBeforeCurrentDate(dateValue as Dayjs, format);
 				const errorMsg =
 					(fieldState.error?.message as string | undefined) ??
-					constraintError ??
+					(allowAnyDate ? undefined : constraintError) ??
 					(isStoredValuePast ? pastDateError : undefined);
 				return (
 					<div className="flex flex-col">
@@ -160,7 +175,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 							needConfirm={Boolean(resolvedShowTime)}
 							value={dateValue?.isValid() && !isStoredValuePast ? dateValue : null}
 							onChange={(value) => {
-								if (value && isBeforeCurrentDate(value, format)) {
+								if (!allowAnyDate && value && isBeforeCurrentDate(value, format)) {
 									setConstraintError(pastDateError);
 									field.onChange(null);
 									return;
@@ -179,8 +194,10 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 							placeholder={placeholder}
 							allowClear={allowClear}
 							disabled={disabled}
-							disabledDate={disabledDate}
-							disabledTime={disabledTime}
+							{...(maxDate ? { maxDate } : {})}
+							{...(!allowAnyDate && minDate ? { minDate } : {})}
+							{...(datePickerDisabledDate ? { disabledDate: datePickerDisabledDate } : {})}
+							{...(datePickerDisabledTime ? { disabledTime: datePickerDisabledTime } : {})}
 						/>
 						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
 					</div>

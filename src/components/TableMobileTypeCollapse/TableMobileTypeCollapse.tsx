@@ -1,7 +1,7 @@
 import { EActionType } from '@/enums';
 import { disabledActionButton } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useAppLayoutStore } from '@/store';
+import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictTableColumnsType } from '@/types';
 import { LoadingOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Collapse, Empty, Modal, Pagination, Radio, Spin, TablePaginationConfig } from 'antd';
@@ -51,7 +51,7 @@ export const TableMobileTypeCollapse = <T extends object>({
 	selectionMode = 'multiple',
 }: ITableMobileTypeCollapseProps<T>) => {
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const currentAgency = useAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
 	const leadingColumns = columns.slice(0, 2);
 
