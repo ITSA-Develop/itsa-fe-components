@@ -1151,6 +1151,10 @@
   max-width: 36rem;
 }
 
+.max-w-\[clamp\(100px\2c calc\(\(100vw-360px\)\/3\)\2c 220px\)\]{
+  max-width: clamp(100px,calc((100vw - 360px) / 3),220px);
+}
+
 .flex-1{
   flex: 1 1 0%;
 }

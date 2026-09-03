@@ -1,6 +1,6 @@
 import { UserIcon } from '@/assets/icons';
 import { USER_INFO_WRAPPER_CLASSNAME } from '@/constants';
-import { Button, Dropdown, MenuProps } from 'antd';
+import { Button, Dropdown, MenuProps, Tooltip } from 'antd';
 import { useAppLayoutStore } from '../../store';
 import { LogoutOutlined } from '@ant-design/icons';
 
@@ -29,14 +29,16 @@ export const ControlUserInformationUI = ({ userActions = { items: [] }, onCloseS
 				icon: <LogoutOutlined />,
 			},
 		],
-	}
+	};
 
 	return (
 		<div className="flex min-w-0 shrink items-center md:gap-1">
 			<div className={USER_INFO_WRAPPER_CLASSNAME}>
-				<strong className="block truncate whitespace-nowrap text-xs leading-tight text-white-100" title={userName}>
-					{userName}
-				</strong>
+				<Tooltip title={userName} placement="bottom">
+					<strong className="block truncate whitespace-nowrap text-xs leading-tight text-white-100 cursor-pointer" title={userName}>
+						{userName}
+					</strong>
+				</Tooltip>
 				<div className="min-w-0 max-w-full overflow-hidden rounded border border-primary-700 bg-primary-500 px-1 text-primary-900 flex items-center justify-center">
 					<span className="block truncate text-end text-[11px] font-bold leading-4 text-primary-900" title={roleName}>
 						{roleName}
