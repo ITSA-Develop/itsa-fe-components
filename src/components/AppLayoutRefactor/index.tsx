@@ -5,19 +5,20 @@ import { DefaultOptionType } from "antd/es/select";
 import { ReactNode } from "react";
 import { useAppLayoutSelectionPersistence } from "./components/store";
 import { IProgram } from "@/interfaces";
+import { MenuProps } from "antd";
 
 export {
-	useAppLayoutStore,
-	useAppLayoutSelectionPersistence,
-	useSidebarLayoutStore,
-	resolveCompany,
-	resolvePermissionSelection,
+  useAppLayoutStore,
+  useAppLayoutSelectionPersistence,
+  useSidebarLayoutStore,
+  resolveCompany,
+  resolvePermissionSelection,
 } from "./components/store";
 export type {
-	StoredAppLayoutSelection,
-	ResolvedPermissionSelection,
-	AppLayoutStore,
-	SidebarLayoutStore,
+  StoredAppLayoutSelection,
+  ResolvedPermissionSelection,
+  AppLayoutStore,
+  SidebarLayoutStore,
 } from "./components/store";
 
 export interface AppLayoutProps {
@@ -26,25 +27,27 @@ export interface AppLayoutProps {
   onCloseSession: () => void;
   children: ReactNode;
   menuItemsNavigate: (program: IProgram) => void;
+  userActions: MenuProps;
 }
 
-export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession }: AppLayoutProps) => {
+export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession, userActions }: AppLayoutProps) => {
   useAppLayoutSelectionPersistence(optionsCompany, loadingAppLayout);
-  return (    <div className="flex h-[100dvh] w-full min-w-0 overflow-hidden">
-      <Layout className="h-full min-h-0 w-full min-w-0 md:p-0.5 gap-0.5 md:gap-2">
-        <HeaderLayout
-          optionsCompany={optionsCompany}
-          loadingAppLayout={loadingAppLayout}
-          onCloseSession={onCloseSession}
+  return (<div className="flex h-[100dvh] w-full min-w-0 overflow-hidden">
+    <Layout className="h-full min-h-0 w-full min-w-0 md:p-0.5 gap-0.5 md:gap-2">
+      <HeaderLayout
+        optionsCompany={optionsCompany}
+        loadingAppLayout={loadingAppLayout}
+        onCloseSession={onCloseSession}
         menuItemsNavigate={menuItemsNavigate}
-        />
-        <SidebarLayout 
-          loadingAppLayout={loadingAppLayout}
-          menuItemsNavigate={menuItemsNavigate}
-        >
-          {children}
-        </SidebarLayout>
-      </Layout>
-    </div>
+        userActions={userActions}
+      />
+      <SidebarLayout
+        loadingAppLayout={loadingAppLayout}
+        menuItemsNavigate={menuItemsNavigate}
+      >
+        {children}
+      </SidebarLayout>
+    </Layout>
+  </div>
   );
 };

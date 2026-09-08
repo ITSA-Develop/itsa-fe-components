@@ -1139,8 +1139,8 @@
   max-width: 840px;
 }
 
-.max-w-\[clamp\(80px\2c calc\(\(100vw-320px\)\/4\)\2c 140px\)\]{
-  max-width: clamp(80px,calc((100vw - 320px) / 4),140px);
+.max-w-\[clamp\(100px\2c calc\(\(100vw-360px\)\/3\)\2c 220px\)\]{
+  max-width: clamp(100px,calc((100vw - 360px) / 3),220px);
 }
 
 .max-w-full{
@@ -1149,10 +1149,6 @@
 
 .max-w-xl{
   max-width: 36rem;
-}
-
-.max-w-\[clamp\(100px\2c calc\(\(100vw-360px\)\/3\)\2c 220px\)\]{
-  max-width: clamp(100px,calc((100vw - 360px) / 3),220px);
 }
 
 .flex-1{
