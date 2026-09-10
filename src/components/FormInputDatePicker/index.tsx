@@ -3,7 +3,7 @@ import type { DatePickerProps } from 'antd';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
-import { memo, useEffect, useId, useState } from 'react';
+import { memo, useId, useState } from 'react';
 import dayjs, { type Dayjs, type OpUnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { EDateMaskFormat } from '@/enums';
@@ -35,7 +35,7 @@ const getPreviousValues = (currentValue: number) =>
 	Array.from({ length: currentValue }, (_, index) => index);
 
 const getPastTimeConfig = (selectedDate: Dayjs | null, format: string) => {
-	if (!selectedDate || !selectedDate.isSame(dayjs(), 'day')) return {};
+	if (selectedDate === null || !selectedDate.isSame(dayjs(), 'day')) return {};
 
 	const now = dayjs();
 	const includesMinutes = format.includes('mm');
@@ -50,14 +50,6 @@ const getPastTimeConfig = (selectedDate: Dayjs | null, format: string) => {
 				? getPreviousValues(now.second())
 				: [],
 	};
-};
-
-const mergeDisabledValues = (
-	internal?: () => number[],
-	custom?: () => number[],
-) => {
-	if (!internal && !custom) return undefined;
-	return () => Array.from(new Set([...(internal?.() ?? []), ...(custom?.() ?? [])]));
 };
 
 const getShowTimeConfig = (format: string, minuteStep?: TMinuteStep): DatePickerProps['showTime'] => {
@@ -81,7 +73,8 @@ export interface IInputProps<TFieldValues extends FieldValues>
 	optional?: boolean;
 	format?: EDateMaskFormat | string;
 	disabled?: boolean;
-	allowAnyDate?: boolean;
+	/** Permite fechas anteriores. Uso interno para componentes especializados. */
+	allowPastDates?: boolean;
 }
 
 const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
@@ -94,11 +87,9 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 	disabled = false,
 	allowClear = true,
 	minuteStep,
-	minDate,
-	maxDate,
 	disabledDate: customDisabledDate,
 	disabledTime: customDisabledTime,
-	allowAnyDate = false,
+	allowPastDates = false,
 	...rest
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
@@ -107,60 +98,54 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 	const resolvedShowTime = getShowTimeConfig(format, minuteStep);
 	const pastDateError = getPastDateError(format);
 
-	useEffect(() => {
-		if (allowAnyDate) {
-			setConstraintError(undefined);
-		}
-	}, [allowAnyDate]);
-
 	const disabledDate: TDisabledDate = (...args) => {
 		const [currentDate] = args;
-		const isPastDay = currentDate.startOf('day').isBefore(dayjs().startOf('day'));
+		const isPastDay =
+			!allowPastDates && currentDate.startOf('day').isBefore(dayjs().startOf('day'));
 		return isPastDay || Boolean(customDisabledDate?.(...args));
 	};
 
 	const disabledTime: TDisabledTime = (...args) => {
 		const [selectedDate] = args;
-		const internalConfig = getPastTimeConfig(selectedDate, format);
+		const internalConfig = allowPastDates ? {} : getPastTimeConfig(selectedDate, format);
 		const customConfig = customDisabledTime?.(...args) ?? {};
 
 		return {
 			...customConfig,
-			disabledHours: mergeDisabledValues(internalConfig.disabledHours, customConfig.disabledHours),
-			disabledMinutes: (selectedHour: number) =>
-				Array.from(
-					new Set([
-						...(internalConfig.disabledMinutes?.(selectedHour) ?? []),
-						...(customConfig.disabledMinutes?.(selectedHour) ?? []),
-					]),
-				),
-			disabledSeconds: (selectedHour: number, selectedMinute: number) =>
-				Array.from(
-					new Set([
-						...(internalConfig.disabledSeconds?.(selectedHour, selectedMinute) ?? []),
-						...(customConfig.disabledSeconds?.(selectedHour, selectedMinute) ?? []),
-					]),
-				),
+			disabledHours: () => [
+				...(internalConfig.disabledHours?.() ?? []),
+				...(customConfig.disabledHours?.() ?? []),
+			],
+			disabledMinutes: selectedHour => [
+				...(internalConfig.disabledMinutes?.(selectedHour) ?? []),
+				...(customConfig.disabledMinutes?.(selectedHour) ?? []),
+			],
+			disabledSeconds: (selectedHour, selectedMinute) => [
+				...(internalConfig.disabledSeconds?.(selectedHour, selectedMinute) ?? []),
+				...(customConfig.disabledSeconds?.(selectedHour, selectedMinute) ?? []),
+			],
 		};
 	};
-
-	const datePickerDisabledDate = allowAnyDate ? undefined : disabledDate;
-	const datePickerDisabledTime = allowAnyDate ? undefined : disabledTime;
 
 	return (
 		<Controller
 			name={name}
 			control={control}
 			render={({ field, fieldState }) => {
-				const dateValue = field.value ? dayjs(field.value, format, true) : null;
+				const fieldError = fieldState.error?.message as string | undefined;
+				const dateValue =
+					typeof field.value === 'string' && field.value.length > 0
+						? dayjs(field.value, format, true)
+						: null;
 				const isStoredValuePast =
-					!allowAnyDate &&
-					Boolean(dateValue?.isValid()) &&
-					isBeforeCurrentDate(dateValue as Dayjs, format);
+					!allowPastDates &&
+					dateValue?.isValid() === true &&
+					isBeforeCurrentDate(dateValue, format);
 				const errorMsg =
-					(fieldState.error?.message as string | undefined) ??
-					(allowAnyDate ? undefined : constraintError) ??
+					fieldError ??
+					constraintError ??
 					(isStoredValuePast ? pastDateError : undefined);
+				const hasError = typeof errorMsg === 'string' && errorMsg.length > 0;
 				return (
 					<div className="flex flex-col">
 						<FormLabel label={label} htmlFor={id} optional={optional} />
@@ -173,33 +158,35 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 							}}
 							showTime={resolvedShowTime}
 							needConfirm={Boolean(resolvedShowTime)}
-							value={dateValue?.isValid() && !isStoredValuePast ? dateValue : null}
-							onChange={(value) => {
-								if (!allowAnyDate && value && isBeforeCurrentDate(value, format)) {
+							value={dateValue?.isValid() === true && !isStoredValuePast ? dateValue : null}
+							onChange={value => {
+								if (
+									!allowPastDates &&
+									value !== null &&
+									isBeforeCurrentDate(value, format)
+								) {
 									setConstraintError(pastDateError);
 									field.onChange(null);
 									return;
 								}
 
 								setConstraintError(undefined);
-								const formattedValue = value ? value.format(format) : null;
+								const formattedValue = value !== null ? value.format(format) : null;
 								field.onChange(formattedValue);
 							}}
 							onBlur={field.onBlur}
 							ref={field.ref}
 							name={field.name}
-							status={errorMsg ? 'error' : undefined}
-							aria-invalid={!!errorMsg}
-							aria-describedby={errorMsg ? errId : undefined}
+							status={hasError ? 'error' : undefined}
+							aria-invalid={hasError}
+							aria-describedby={hasError ? errId : undefined}
 							placeholder={placeholder}
 							allowClear={allowClear}
 							disabled={disabled}
-							{...(maxDate ? { maxDate } : {})}
-							{...(!allowAnyDate && minDate ? { minDate } : {})}
-							{...(datePickerDisabledDate ? { disabledDate: datePickerDisabledDate } : {})}
-							{...(datePickerDisabledTime ? { disabledTime: datePickerDisabledTime } : {})}
+							disabledDate={disabledDate}
+							disabledTime={disabledTime}
 						/>
-						{errorMsg && <FormLabelError label={errorMsg} id={errId} />}
+						{hasError && <FormLabelError label={errorMsg} id={errId} />}
 					</div>
 				);
 			}}

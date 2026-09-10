@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button, Space } from 'antd';
 import { z } from 'zod';
@@ -137,22 +138,6 @@ export const ShowErrorOnSubmit: Story = {
 	},
 	render: args => (
 		<RHFForm mode="onSubmit">
-			<BoundFormInputDatePicker {...args} />
-		</RHFForm>
-	),
-};
-
-export const BirthDate: Story = {
-	name: 'Fecha de nacimiento (sin restricción)',
-	args: {
-		name: 'date',
-		label: 'Fecha de nacimiento',
-		placeholder: 'YYYY-MM-DD',
-		format: EDateMaskFormat.YYYYMMDD,
-		allowAnyDate: true,
-	},
-	render: args => (
-		<RHFForm defaultValues={{ date: undefined }}>
 			<BoundFormInputDatePicker {...args} />
 		</RHFForm>
 	),
