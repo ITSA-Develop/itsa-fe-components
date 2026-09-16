@@ -89,7 +89,9 @@ export interface AppLayoutStore {
 	userInformation?: IUserInformation;
 	setUserInformation: (userInformation: IUserInformation) => void;
 
-	
+	businessLineId?: number;
+	setBusinessLineId: (businessLineId: number) => void;
+
 	hydrateSelection: (selection: StoredAppLayoutSelection) => void;
 	setPermissions: (permissions: IPermissions) => void;
 	setCompanyOptions: (options: DefaultOptionType[], ready?: boolean) => void;
@@ -111,6 +113,7 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 	currentSubmodule: undefined,
 	currentCompany: undefined,
 	userInformation: undefined,
+	businessLineId: undefined,
 	hydrateSelection: selection => {
 		const state = get();
 		const currentCompany = state.companyOptionsReady
@@ -217,6 +220,10 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 
 	setUserRole: (userRole: IUserRole) => {
 		set({ userRole });
+	},
+
+	setBusinessLineId: (businessLineId: number) => {
+		set({ businessLineId });
 	},
 	
 }));

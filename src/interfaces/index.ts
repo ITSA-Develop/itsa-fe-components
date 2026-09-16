@@ -350,10 +350,16 @@ export interface IUserRole {
 	name: string;
 	moduleId: number;
 }
+
+export interface IUserBusinessLine {
+	id: number;
+	name: string;
+}
+
 export interface IUserInformation {
 	identification: string;
 	identificationType: string;
-	businessLineId: number;
+	businessLines: IUserBusinessLine[];
 	name: string;
 	picture: string;
 	email: string;

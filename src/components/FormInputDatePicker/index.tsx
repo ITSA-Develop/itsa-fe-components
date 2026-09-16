@@ -137,14 +137,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 					typeof field.value === 'string' && field.value.length > 0
 						? dayjs(field.value, format, true)
 						: null;
-				const isStoredValuePast =
-					!allowPastDates &&
-					dateValue?.isValid() === true &&
-					isBeforeCurrentDate(dateValue, format);
-				const errorMsg =
-					fieldError ??
-					constraintError ??
-					(isStoredValuePast ? pastDateError : undefined);
+				const errorMsg = fieldError ?? constraintError;
 				const hasError = typeof errorMsg === 'string' && errorMsg.length > 0;
 				return (
 					<div className="flex flex-col">
@@ -158,7 +151,7 @@ const FormInputDatePickerComponent = <TFieldValues extends FieldValues>({
 							}}
 							showTime={resolvedShowTime}
 							needConfirm={Boolean(resolvedShowTime)}
-							value={dateValue?.isValid() === true && !isStoredValuePast ? dateValue : null}
+							value={dateValue?.isValid() === true ? dateValue : null}
 							onChange={value => {
 								if (
 									!allowPastDates &&

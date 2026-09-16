@@ -2,10 +2,19 @@ import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, getTableHeight, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
+import { useActionsUser, useAppLayoutStore, useLegacyAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Table as AntTable, TableProps as AntTableProps, Button, Dropdown, TablePaginationConfig, Modal, TableProps } from 'antd';
+import {
+	Table as AntTable,
+	TableProps as AntTableProps,
+	Button,
+	Dropdown,
+	TablePaginationConfig,
+	Modal,
+	TableProps,
+	Select,
+} from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
 import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ISorterTable } from '@/interfaces';
@@ -19,6 +28,15 @@ import {
 	TableColumnDragProvider,
 	useTableColumnDrag,
 } from '@/components/Table/TableColumnDrag';
+import {
+	getIsMobileTableView,
+	getNextRowSelection,
+	getTableEmptyContent,
+	isSelectionControlClick,
+	MOBILE_TABLE_MEDIA_QUERY,
+	resolveRowSelection,
+	resolveTableRootClassName,
+} from '@/components/Table/Table.helpers';
 
 const BaseHeaderCell = createBaseHeaderCell();
 const BaseBodyCell = createBaseBodyCell();
@@ -26,12 +44,6 @@ const DragHeaderCell = createDragTableHeaderCell(BaseHeaderCell);
 const DragBodyCell = createDragTableBodyCell(BaseBodyCell);
 
 const ACTIONS_COLUMN_WIDTH = 64;
-const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
-
-const getIsMobileTableView = () => {
-	if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
-	return window.matchMedia(MOBILE_TABLE_MEDIA_QUERY).matches;
-};
 
 export interface ITableProps<T extends object> {
 	columns: TStrictTableColumnsType<T>;
@@ -63,6 +75,7 @@ export interface ITableProps<T extends object> {
 	enableColumnDrag?: boolean;
 	onColumnsOrderChange?: (columns: TStrictTableColumnsType<T>) => void;
 	scroll?: AntTableProps<T>['scroll'];
+	// onChangeBusinessLine?: (businessLineId: number) => void;
 }
 
 export const Table = <T extends object>({
@@ -92,26 +105,25 @@ export const Table = <T extends object>({
 	enableColumnDrag = false,
 	scroll,
 	onColumnsOrderChange,
+	// onChangeBusinessLine,
 }: ITableProps<T>) => {
+	const { userInformation, setBusinessLineId, businessLineId } = useAppLayoutStore();
 	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
 	const { actionsUser } = useActionsUser();
+	const businessLines = userInformation?.businessLines ?? [];
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
 	const finalPagination = paginationConfig ? paginationConfig : false;
 	const showColumnActions = columnActions && columnActions.length > 0;
 	const showPagination = paginationConfig ? true : false;
-	const baseTableScopeClass = 'itsa-table--head-rounded';
-	const resolvedRootClassName = [
-		baseTableScopeClass,
-		'w-full min-w-0 max-w-full',
-		enableColumnDrag ? 'itsa-table--column-drag' : '',
-		refreshDataFunction ? 'itsa-table--with-refresh' : '',
+	const userWithMultipleBusinessLines = businessLines.length > 1;
+	const resolvedRootClassName = resolveTableRootClassName({
+		enableColumnDrag,
+		hasRefresh: Boolean(refreshDataFunction || userWithMultipleBusinessLines),
 		rootClassName,
 		className,
-	]
-		.filter(Boolean)
-		.join(' ');
+	});
 
 	const [confirmModalState, setConfirmModalState] = useState<{
 		open: boolean;
@@ -144,32 +156,35 @@ export const Table = <T extends object>({
 		};
 	}, []);
 
-	const clickAction = useCallback(async (action: ITableColumnAction<T>, record: T) => {
-		const isPermitted = disabledActionButton(action.actionType, actionsUser);
-		if (isPermitted) return;
-		const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : action.disabled ?? false;
-		if (isDisabled) return;
-		if (action.confirmDelete) {
-			setConfirmModalState({
-				open: true,
-				action,
-				record,
-			});
-			return;
-		}
+	const clickAction = useCallback(
+		async (action: ITableColumnAction<T>, record: T) => {
+			const isPermitted = disabledActionButton(action.actionType, actionsUser);
+			if (isPermitted) return;
+			const isDisabled = typeof action.disabled === 'function' ? action.disabled(record) : (action.disabled ?? false);
+			if (isDisabled) return;
+			if (action.confirmDelete) {
+				setConfirmModalState({
+					open: true,
+					action,
+					record,
+				});
+				return;
+			}
 
-		if (action.validateWithApiAction ?? false) {
-			const agencyId = currentAgency?.id;
-			const actionTypeNumber = action.actionType as EActionType;
-			if (actionTypeNumber === undefined || programId === undefined || agencyId === undefined) return;
-			const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
-			if (isValid) {
+			if (action.validateWithApiAction ?? false) {
+				const agencyId = currentAgency?.id;
+				const actionTypeNumber = action.actionType as EActionType;
+				if (actionTypeNumber === undefined || programId === undefined || agencyId === undefined) return;
+				const isValid = await fnApiValidatePermissionAction(actionTypeNumber, programId, agencyId);
+				if (isValid) {
+					action.action(record);
+				}
+			} else {
 				action.action(record);
 			}
-		} else {
-			action.action(record);
-		}
-	}, [currentAgency, programId, fnApiValidatePermissionAction, actionsUser]);
+		},
+		[currentAgency, programId, fnApiValidatePermissionAction, actionsUser],
+	);
 
 	const handleConfirmAction = async () => {
 		const { action, record } = confirmModalState;
@@ -194,39 +209,42 @@ export const Table = <T extends object>({
 		setConfirmModalState({ open: false, action: null, record: null });
 	};
 
-	const itemsDropdown = useCallback((record: T) => {
-		const resultActionsItems = (columnActions || [])
-			.filter(action => {
-				const isDisabled = disabledActionButton(action.actionType, actionsUser);
-				if (isDisabled === true) {
-					return false;
-				}
-				const actionDisabled =
-					typeof action.disabled === 'function' ? action.disabled(record) : action.disabled ?? false;
-				return !actionDisabled;
-			})
-			.map((action, index) => ({
-				label: action.title,
-				key: action.key || `action-${index}`,
-				icon: typeof action.icon === 'function' ? action.icon(record) : action.icon,
-				onClick: () => clickAction(action, record),
-				danger: action.danger,
-			}));
-		if (resultActionsItems.length > 0) {
-			return resultActionsItems;
-		}
+	const itemsDropdown = useCallback(
+		(record: T) => {
+			const resultActionsItems = (columnActions || [])
+				.filter(action => {
+					const isDisabled = disabledActionButton(action.actionType, actionsUser);
+					if (isDisabled === true) {
+						return false;
+					}
+					const actionDisabled =
+						typeof action.disabled === 'function' ? action.disabled(record) : (action.disabled ?? false);
+					return !actionDisabled;
+				})
+				.map((action, index) => ({
+					label: action.title,
+					key: action.key || `action-${index}`,
+					icon: typeof action.icon === 'function' ? action.icon(record) : action.icon,
+					onClick: () => clickAction(action, record),
+					danger: action.danger,
+				}));
+			if (resultActionsItems.length > 0) {
+				return resultActionsItems;
+			}
 
-		return [
-			{
-				label: 'Sin acciones disponibles',
-				key: 'no-actions',
-				icon: <InfoCircleOutlined />,
-				onClick: () => {},
-				danger: false,
-				disabled: true,
-			},
-		];
-	}, [columnActions, actionsUser, clickAction]);
+			return [
+				{
+					label: 'Sin acciones disponibles',
+					key: 'no-actions',
+					icon: <InfoCircleOutlined />,
+					onClick: () => {},
+					danger: false,
+					disabled: true,
+				},
+			];
+		},
+		[columnActions, actionsUser, clickAction],
+	);
 
 	const baseTableColumns = useMemo<TStrictTableColumnsType<T>>(() => {
 		if (!showColumnActions) return columns;
@@ -259,13 +277,7 @@ export const Table = <T extends object>({
 		};
 
 		return [...columns, actionsColumn];
-	}, [
-		columns,
-		getActionsDisabled,
-		getActionsTriggerDisabled,
-		itemsDropdown,
-		showColumnActions,
-	]);
+	}, [columns, getActionsDisabled, getActionsTriggerDisabled, itemsDropdown, showColumnActions]);
 
 	const getConfirmContent = () => {
 		if (!confirmModalState.action?.confirmDelete || !confirmModalState.record) return '';
@@ -328,90 +340,28 @@ export const Table = <T extends object>({
 		[enableColumnDrag, refreshDataFunction],
 	);
 
-	const getRowSelection = (): AntTableProps<T>['rowSelection'] => {
-		if (!rowSelection) return undefined;
-
-		const isSingleSelection = selectionMode === 'single';
-
-		const lastSingleSelectionKey =
-			isSingleSelection &&
-				Array.isArray(rowSelection.selectedRowKeys) &&
-				rowSelection.selectedRowKeys.length > 0
-				? rowSelection.selectedRowKeys[rowSelection.selectedRowKeys.length - 1]
-				: undefined;
-
-		const sanitizedSelectedRowKeys =
-			isSingleSelection && lastSingleSelectionKey !== undefined
-				? [lastSingleSelectionKey]
-				: rowSelection.selectedRowKeys;
-
-		const finalRowSelection: NonNullable<AntTableProps<T>['rowSelection']> = {
-			...rowSelection,
-			selectedRowKeys: sanitizedSelectedRowKeys,
-			type: isSingleSelection ? 'radio' : rowSelection.type ?? 'checkbox',
-		};
-
-		if (isSingleSelection && rowSelection.onChange) {
-			const originalOnChange = rowSelection.onChange;
-			finalRowSelection.onChange = (selectedRowKeys, selectedRows, info) => {
-				const lastKey = selectedRowKeys[selectedRowKeys.length - 1];
-				const lastRow = selectedRows[selectedRows.length - 1];
-
-				if (lastKey === undefined || !lastRow) {
-					originalOnChange([], [], info);
-					return;
-				}
-
-				originalOnChange([lastKey], [lastRow], info);
-			};
-		}
-
-		return finalRowSelection;
-	};
-
-	const resolvedRowSelection = getRowSelection();
-
-	const getRecordKey = (record: T): React.Key | undefined => {
-		if (typeof rowKey === 'function') return rowKey(record);
-		return (record as Record<string, React.Key | undefined>)[rowKey];
-	};
-
-	const isSelectionControlClick = (event: MouseEvent<HTMLElement>) => {
-		const target = event.target as HTMLElement | null;
-		if (!target) return false;
-		return !!target.closest('.ant-checkbox') || !!target.closest('.ant-radio');
-	};
+	const resolvedRowSelection = resolveRowSelection({ rowSelection, selectionMode });
 
 	const handleRowClick = (record: T) => (event: MouseEvent<HTMLElement>) => {
 		if (!resolvedRowSelection) return;
 		if (isSelectionControlClick(event)) return;
 
-		const recordKey = getRecordKey(record);
-		if (recordKey === undefined) return;
-
-		const isSingle = selectionMode === 'single';
-		const currentKeys = (resolvedRowSelection.selectedRowKeys as React.Key[] | undefined) ?? [];
-		const exists = currentKeys.includes(recordKey);
-
-		let nextKeys: React.Key[];
-		if (isSingle) {
-			nextKeys = exists ? [] : [recordKey];
-		} else {
-			nextKeys = exists ? currentKeys.filter(k => k !== recordKey) : [...currentKeys, recordKey];
-		}
-
-		const nextRows = data.filter(item => {
-			const key = getRecordKey(item);
-			return key !== undefined && nextKeys.includes(key);
+		const nextSelection = getNextRowSelection({
+			record,
+			data,
+			rowKey,
+			selectedRowKeys: resolvedRowSelection.selectedRowKeys,
+			selectionMode,
 		});
+		if (!nextSelection) return;
 
+		const { exists, isSingle, nextKeys, nextRows } = nextSelection;
 		resolvedRowSelection.onSelect?.(record, !exists, nextRows, event as unknown as Event);
 		resolvedRowSelection.onChange?.(nextKeys, nextRows, { type: isSingle ? 'single' : 'multiple' });
 	};
 
-	const getMobileEmptyContent = () => {
-		const emptyText = locale?.emptyText;
-		return typeof emptyText === 'function' ? emptyText() : emptyText;
+	const handleChangeBusinessLine = (businessLineId: number) => {
+		setBusinessLineId(businessLineId);
 	};
 
 	if (isMobileTableView) {
@@ -426,7 +376,7 @@ export const Table = <T extends object>({
 				columnActions={columnActions}
 				getActionsDisabled={getActionsDisabled}
 				getActionsTriggerDisabled={getActionsTriggerDisabled}
-				emptyContent={getMobileEmptyContent()}
+				emptyContent={getTableEmptyContent(locale)}
 				refreshDataFunction={refreshDataFunction}
 				showPagination={showPagination}
 				paginationConfig={paginationConfig}
@@ -448,53 +398,68 @@ export const Table = <T extends object>({
 				onDragOver={columnDrag.handleDragOver}
 				activeColumnTitle={columnDrag.activeColumnTitle}
 			>
-			<div
-				className={
-					refreshDataFunction
-						? 'itsa-table-wrapper itsa-table-wrapper--refresh w-full min-w-0 max-w-full overflow-hidden'
-						: 'itsa-table-wrapper w-full min-w-0 max-w-full overflow-hidden'
-				}
-			>
-				{refreshDataFunction && (
-					<div className="itsa-table-refresh-bar">
-						<Button
-							style={{ color: 'gray', border: 'none' }}
-							type="text"
-							onClick={() => refreshDataFunction()}
-							className="itsa-table-refresh-button"
-						>
-							<div className="flex flex-row items-center justify-center gap-1">
-								{loading ? <LoadingOutlined spin={loading} style={{ fontSize: 9 }} /> : <ReloadOutlined style={{ fontSize: 12 }} />}
-								<span className="text-[11px] leading-none">Refrescar</span>
-							</div>
-							
-						</Button>
-					</div>
-				)}
-				<AntTable<T>
-					columns={tableColumns as ColumnsType<T>}
-					dataSource={data}
-					loading={loading}
-					size="small"
-					bordered={bordered}
-					rowSelection={resolvedRowSelection}
-					onChange={handleChangePagination}
-					pagination={finalPagination}
-					scroll={normalizedScroll}
-					locale={locale}
-					className={resolvedRootClassName}
-					rootClassName={resolvedRootClassName}
-					rowClassName={rowClassName}
-					rowKey={rowKey}
-					components={tableComponents}
-					onRow={record => ({
-						onClick: handleRowClick(record),
-					})}
-					expandable={expandable}
-					rowHoverable={rowHoverable}
-					showHeader={showHeader}
-				/>
-			</div>
+				<div
+					className={
+						refreshDataFunction || userWithMultipleBusinessLines
+							? 'itsa-table-wrapper itsa-table-wrapper--refresh w-full min-w-0 max-w-full overflow-hidden'
+							: 'itsa-table-wrapper w-full min-w-0 max-w-full overflow-hidden'
+					}
+				>
+					{(userWithMultipleBusinessLines || refreshDataFunction) && (
+						<div className="itsa-table-refresh-bar" style={{ gap: 8 }}>
+							{userWithMultipleBusinessLines && (
+								<Select
+									options={businessLines.map(businessLine => ({ label: businessLine.name, value: businessLine.id }))}
+									value={businessLineId}
+									onChange={handleChangeBusinessLine}
+									size="small"
+									style={{ minWidth: 220, }}
+									placeholder="Selecciona una línea de negocio"
+								/>
+							)}
+							{refreshDataFunction && (
+								<Button
+									style={{ color: 'gray', border: 'none' }}
+									type="text"
+									onClick={() => refreshDataFunction()}
+									className="itsa-table-refresh-button"
+								>
+									<div className="flex flex-row items-center justify-center gap-1">
+										{loading ? (
+											<LoadingOutlined spin={loading} style={{ fontSize: 9 }} />
+										) : (
+											<ReloadOutlined style={{ fontSize: 12 }} />
+										)}
+										<span className="text-[11px] leading-none">Refrescar</span>
+									</div>
+								</Button>
+							)}
+						</div>
+					)}
+					<AntTable<T>
+						columns={tableColumns as ColumnsType<T>}
+						dataSource={data}
+						loading={loading}
+						size="small"
+						bordered={bordered}
+						rowSelection={resolvedRowSelection}
+						onChange={handleChangePagination}
+						pagination={finalPagination}
+						scroll={normalizedScroll}
+						locale={locale}
+						className={resolvedRootClassName}
+						rootClassName={resolvedRootClassName}
+						rowClassName={rowClassName}
+						rowKey={rowKey}
+						components={tableComponents}
+						onRow={record => ({
+							onClick: handleRowClick(record),
+						})}
+						expandable={expandable}
+						rowHoverable={rowHoverable}
+						showHeader={showHeader}
+					/>
+				</div>
 			</TableColumnDragProvider>
 
 			{confirmModalState.open && (
