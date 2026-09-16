@@ -6,7 +6,7 @@ import { LogoutOutlined } from '@ant-design/icons';
 
 export interface ControlUserInformationUIProps {
 	onCloseSession: () => void;
-	userActions?: MenuProps;
+	userActions: MenuProps;
 }
 
 export const ControlUserInformationUI = ({ userActions = { items: [] }, onCloseSession }: ControlUserInformationUIProps) => {

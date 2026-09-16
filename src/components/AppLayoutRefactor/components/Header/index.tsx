@@ -3,12 +3,14 @@ import { useEnvironment } from "@/hooks/useEnvironment";
 import { DefaultOptionType } from "antd/es/select";
 import { HeaderOptions } from "./HeaderOptions";
 import { IProgram } from "@/interfaces";
+import { MenuProps } from "antd";
 
 export interface HeaderLayoutProps {
 	optionsCompany: DefaultOptionType[];
 	loadingAppLayout: boolean;
 	onCloseSession: () => void;
 	menuItemsNavigate: (program: IProgram) => void;
+	userActions: MenuProps;
 }
 
 export const HeaderLayout = ({
@@ -16,6 +18,7 @@ export const HeaderLayout = ({
 	loadingAppLayout,
 	onCloseSession,
 	menuItemsNavigate,
+	userActions,
 }: HeaderLayoutProps) => {
 	const environment = useEnvironment();
 	return <header className="h-16">
@@ -28,7 +31,13 @@ export const HeaderLayout = ({
 					{renderHeaderEnvironmentWatermark(environment)}
 				</div>
 			)}
-			<HeaderOptions optionsCompany={optionsCompany} loadingAppLayout={loadingAppLayout} onCloseSession={onCloseSession} menuItemsNavigate={menuItemsNavigate} />
+			<HeaderOptions 
+			optionsCompany={optionsCompany}
+			 loadingAppLayout={loadingAppLayout}
+			  onCloseSession={onCloseSession} 
+				menuItemsNavigate={menuItemsNavigate}
+				userActions={userActions}
+				 />
 		</div>
 	</header>
 };

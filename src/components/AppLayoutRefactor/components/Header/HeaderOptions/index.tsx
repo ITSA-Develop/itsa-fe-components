@@ -12,7 +12,7 @@ import { DefaultOptionType } from 'antd/es/select';
 export interface IHeaderOptionsProps {
 	loadingAppLayout: boolean;
 	optionsCompany: DefaultOptionType[];
-	userActions?: MenuProps;
+	userActions: MenuProps;
 	onCloseSession: () => void;
 	notifications?: IItemNotification[];
 	menuItemsNavigate: (program: IProgram) => void;

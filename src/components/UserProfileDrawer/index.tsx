@@ -43,12 +43,12 @@ export const UserProfileDrawer = ({
 			width={400}
 		>
 			{isLoading ? (
-				<div className="flex flex-col items-center gap-4">
+				<div className="flex flex-col items-center gap-4 p-2">
 					<AntSkeleton.Avatar active size={100} />
 					<AntSkeleton active paragraph={{ rows: 4 }} />
 				</div>
 			) : (
-				<div className="flex flex-col gap-4">
+				<div className="flex flex-col gap-2 p-2">
 					<div className="flex flex-col items-center gap-3 pb-4">
 						<Avatar
 							size={100}

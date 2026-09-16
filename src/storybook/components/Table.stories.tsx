@@ -10,8 +10,9 @@ import { Button } from '../../components/Button';
 import { FilterSelect } from '../../components/FilterSelect';
 import { FilterInput } from '../../components/FilterInput';
 import { FilterValue, TableCurrentDataSource } from 'antd/es/table/interface';
-import { ISorterTable } from '../../interfaces';
+import { ISorterTable, IUserInformation } from '../../interfaces';
 import { message } from 'antd';
+import { useAppLayoutStore } from '../../store';
 
 export type ITablePersonData = {
 	id: number;
@@ -316,8 +317,6 @@ const meta: Meta<ITableProps<ITablePersonData>> = {
 		data: sampleData,
 		loading: false,
 		bordered: false,
-		showPagination: true,
-		showColumnActions: true,
 		columnActions: sampleColumnsWithActions,
 		rowKey: 'id',
 	},
@@ -328,14 +327,8 @@ type Story = StoryObj<typeof meta>;
 
 const TableWithPaginationState = () => {
 	const { pagination, onChangePagination } = useTable(DEFAULT_PAGINATION_CONFIG);
-	
 
-	const handleTableChange: ITableProps<ITablePersonData>['onChange'] = (
-		pagination,
-		sorter,
-		filters,
-		extra,
-	) => {
+	const handleTableChange: ITableProps<ITablePersonData>['onChange'] = (pagination, sorter, filters, extra) => {
 		console.log('sorter =========> =>', sorter);
 		newOnChangePagination(pagination, sorter, filters, extra);
 	};
@@ -346,7 +339,7 @@ const TableWithPaginationState = () => {
 		filters?: Record<string, FilterValue | null>,
 		extra?: TableCurrentDataSource<ITablePersonData>,
 	) => {
-		console.log('sorter aaaaaaaaa =>',sorter);
+		console.log('sorter aaaaaaaaa =>', sorter);
 		onChangePagination(pagination, sorter, filters, extra);
 	};
 
@@ -405,11 +398,9 @@ const TableWithPaginationState = () => {
 				data={sampleData}
 				loading={false}
 				bordered={false}
-				showPagination={true}
 				paginationConfig={{ ...pagination, total: sampleData.length }}
 				onChange={handleTableChange}
 				rowKey={'id'}
-				showColumnActions={true}
 				columnActions={sampleColumnsWithActions}
 			/>
 		</div>
@@ -425,7 +416,6 @@ const TableWithSingleSelection = () => {
 			data={sampleData}
 			loading={false}
 			bordered={false}
-			showPagination={false}
 			rowSelection={{
 				selectedRowKeys,
 				hideSelectAll: false,
@@ -463,8 +453,6 @@ const TableWithColumnDrag = () => {
 				data={sampleData.slice(0, 6)}
 				loading={false}
 				bordered={false}
-				showPagination={false}
-				showColumnActions
 				columnActions={sampleColumnsWithActions}
 				enableColumnDrag
 				onColumnsOrderChange={nextColumns => {
@@ -530,7 +518,6 @@ const TableWithRefreshAndHorizontalScroll = () => {
 				data={creditNoteSampleData}
 				loading={loading}
 				bordered={false}
-				showPagination
 				paginationConfig={{ ...pagination, total: creditNoteSampleData.length }}
 				onChange={onChangePagination}
 				rowKey="id"
@@ -539,6 +526,65 @@ const TableWithRefreshAndHorizontalScroll = () => {
 			/>
 		</div>
 	);
+};
+
+const businessLinesUser: IUserInformation = {
+	userId: 1,
+	identification: '0102030405',
+	identificationType: 'Cédula',
+	name: 'María Pérez',
+	picture: '',
+	email: 'maria.perez@itsa.local',
+	roles: [],
+	businessLines: [
+		{ id: 1, name: 'Línea de negocio principal' },
+		{ id: 2, name: 'Línea de negocio corporativa' },
+		{ id: 3, name: 'Línea de negocio internacional' },
+	],
+};
+
+const TableWithBusinessLineSelector = () => {
+	React.useEffect(() => {
+		const previousState = useAppLayoutStore.getState();
+
+		useAppLayoutStore.setState({
+			userInformation: businessLinesUser,
+			businessLineId: businessLinesUser.businessLines[0].id,
+		});
+
+		return () => {
+			useAppLayoutStore.setState({
+				userInformation: previousState.userInformation,
+				businessLineId: previousState.businessLineId,
+			});
+		};
+	}, []);
+
+	return (
+		<div className="h-full flex flex-col p-2">
+			<Table
+				columns={sampleColumns}
+				data={sampleData.slice(0, 6)}
+				loading={false}
+				bordered={false}
+				onChange={() => {}}
+				rowKey="id"
+				refreshDataFunction={() => message.success('Datos actualizados')}
+			/>
+		</div>
+	);
+};
+
+export const WithBusinessLineSelector: Story = {
+	render: () => <TableWithBusinessLineSelector />,
+	parameters: {
+		layout: 'fullscreen',
+		docs: {
+			description: {
+				story: 'Tabla con selector de línea de negocio y acción de refrescar compartiendo la misma barra superior.',
+			},
+		},
+	},
 };
 
 export const WithRefreshAndHorizontalScroll: Story = {
@@ -593,8 +639,6 @@ export const WithPerItemDisabled: Story = {
 			data={sampleData}
 			loading={false}
 			bordered={false}
-			showPagination={false}
-			showColumnActions={true}
 			columnActions={sampleColumnsWithActionsAndDisabled}
 			onChange={() => {}}
 			rowKey={'id'}
@@ -616,8 +660,6 @@ export const WithTriggerDisabledPerRow: Story = {
 			data={sampleData}
 			loading={false}
 			bordered={false}
-			showPagination={false}
-			showColumnActions={true}
 			columnActions={sampleColumnsWithActions}
 			getActionsTriggerDisabled={record => record.age < 30}
 			onChange={() => {}}
@@ -640,8 +682,6 @@ export const WithActionsDisabledPerRow: Story = {
 			data={sampleData}
 			loading={false}
 			bordered={false}
-			showPagination={false}
-			showColumnActions={true}
 			columnActions={sampleColumnsWithActions}
 			getActionsDisabled={record => record.age >= 50}
 			onChange={() => {}}
@@ -676,8 +716,6 @@ export const WithExpandableRows: Story = {
 			data={sampleData.slice(0, 5)}
 			loading={false}
 			bordered={false}
-			showPagination={false}
-			showColumnActions={false}
 			onChange={() => {}}
 			rowKey="id"
 			expandable={{
