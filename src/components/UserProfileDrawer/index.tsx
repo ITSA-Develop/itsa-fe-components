@@ -4,6 +4,7 @@ import { Switch } from '../Switch/Switch';
 
 import type { IUserInformation, IUserRole } from '@/interfaces';
 import { Avatar } from '../Avatar/Avatar';
+import { BusinessLineSelect } from '../BusinessLineSelect';
 import { Divider } from '../Divider/Divider';
 import { Drawer } from '../Drawer/Drawer';
 import { Tag } from '../Tag';
@@ -64,6 +65,9 @@ export const UserProfileDrawer = ({
 								{currentRole.name}
 							</Tag>
 						)}
+						<div className="w-full">
+							<BusinessLineSelect style={{ width: '100%', minWidth: 0 }} />
+						</div>
 					</div>
 
 					<Divider className="my-2" />

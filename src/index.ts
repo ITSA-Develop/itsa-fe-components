@@ -9,6 +9,8 @@ export type { IButtonProps, TButtonColor, TButtonType } from './components/Butto
 export { ButtonAddItem } from './components/ButtonAddItem/';
 export { ButtonAntd } from './components/ButtonAntd/';
 export { ButtonIcon } from './components/ButtonIcon/';
+export { BusinessLineSelect } from './components/BusinessLineSelect';
+export type { IBusinessLineSelectProps } from './components/BusinessLineSelect';
 export { BreadcrumbCustom } from './components/BreadcrumbCustom';
 export { Card } from './components/Card/Card';
 export { Carousel } from './components/Carousel';
