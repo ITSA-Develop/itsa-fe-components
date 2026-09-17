@@ -13,11 +13,11 @@ import {
 	TablePaginationConfig,
 	Modal,
 	TableProps,
-	Select,
 } from 'antd';
 import { ColumnsType, FilterValue, SorterResult, TableCurrentDataSource, TableLocale } from 'antd/es/table/interface';
 import { MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ISorterTable } from '@/interfaces';
+import { BusinessLineSelect } from '@/components/BusinessLineSelect';
 import { TableMobileTypeCollapse } from '@/components/TableMobileTypeCollapse/TableMobileTypeCollapse';
 import { useScreenViewport } from '@/hooks/useScreenViewport';
 import {
@@ -107,7 +107,7 @@ export const Table = <T extends object>({
 	onColumnsOrderChange,
 	// onChangeBusinessLine,
 }: ITableProps<T>) => {
-	const { userInformation, setBusinessLineId, businessLineId } = useAppLayoutStore();
+	const { userInformation } = useAppLayoutStore();
 	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
@@ -360,10 +360,6 @@ export const Table = <T extends object>({
 		resolvedRowSelection.onChange?.(nextKeys, nextRows, { type: isSingle ? 'single' : 'multiple' });
 	};
 
-	const handleChangeBusinessLine = (businessLineId: number) => {
-		setBusinessLineId(businessLineId);
-	};
-
 	if (isMobileTableView) {
 		return (
 			<TableMobileTypeCollapse<T>
@@ -407,22 +403,15 @@ export const Table = <T extends object>({
 				>
 					{(userWithMultipleBusinessLines || refreshDataFunction) && (
 						<div className="itsa-table-refresh-bar" style={{ gap: 8 }}>
-							{userWithMultipleBusinessLines && (
-								<Select
-									options={businessLines.map(businessLine => ({ label: businessLine.name, value: businessLine.id }))}
-									value={businessLineId}
-									onChange={handleChangeBusinessLine}
-									size="small"
-									style={{ minWidth: 220, }}
-									placeholder="Selecciona una línea de negocio"
-								/>
-							)}
+							{userWithMultipleBusinessLines && <BusinessLineSelect />}
 							{refreshDataFunction && (
 								<Button
-									style={{ color: 'gray', border: 'none' }}
-									type="text"
+									// type="primary"
+									className="rounded-lg"
+									size="small"
+									color='gold'
 									onClick={() => refreshDataFunction()}
-									className="itsa-table-refresh-button"
+									// className="itsa-table-refresh-button"
 								>
 									<div className="flex flex-row items-center justify-center gap-1">
 										{loading ? (
