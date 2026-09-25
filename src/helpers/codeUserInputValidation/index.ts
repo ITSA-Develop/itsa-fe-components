@@ -1,8 +1,7 @@
-// import { EUserRoleCodes } from '@/enums';
-import { useLegacyAppLayoutStore } from '@/store';
+import { useAppLayoutStore } from '@/store';
 
 export const codeUserInputValidation = (requiredCodes: string[]) => {
-	const userRole = useLegacyAppLayoutStore.getState().userRole;
+	const userRole = useAppLayoutStore.getState().userRole;
 	const codeUserRole = userRole?.code ?? '';
 	for (const requiredCode of requiredCodes) {
 		if (codeUserRole === requiredCode) {

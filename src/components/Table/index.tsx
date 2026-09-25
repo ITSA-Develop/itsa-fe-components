@@ -2,7 +2,7 @@ import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, getTableHeight, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useAppLayoutStore, useLegacyAppLayoutStore } from '@/store';
+import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import {
@@ -113,7 +113,7 @@ export const Table = <T extends object>({
 	const { userInformation } = useAppLayoutStore();
 	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useAppLayoutStore(state => state.subAgency);
 	const { actionsUser } = useActionsUser();
 	const businessLines = userInformation?.businessLines ?? [];
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
