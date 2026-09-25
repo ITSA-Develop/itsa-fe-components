@@ -5,6 +5,7 @@ import { Radio } from '../../components/Radio/Radio';
 describe('Radio component', () => {
 	it('renders label when provided', () => {
 		const { container } = render(<Radio label="Choose option" options={[{ label: 'Option 1', value: 1 }]} />);
+		expect(container.querySelector('.itsa-radio--default')).toBeInTheDocument();
 		expect(screen.getByText('Choose option')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});

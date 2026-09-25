@@ -51,13 +51,10 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 		set({
 			currentAgency: agency,
 		});
-		// localStorage.setItem(ELocalStorageKeys.agencyId, String(agency.id));
 		setDataEncryptedInStorage(ELocalStorageKeys.agency, String(agency.id), KEY_ENCRYPT);
 	},
 	currentModule: undefined,
 	setCurrentModule: (module: IModule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
-		// localStorage.setItem(ELocalStorageKeys.moduleHomeSelectedId, String(module.id));
-		// localStorage.setItem(ELocalStorageKeys.moduleId, String(module.id));
 		setDataEncryptedInStorage(ELocalStorageKeys.module, String(module.id), KEY_ENCRYPT);
 		setDataEncryptedInStorage(ELocalStorageKeys.moduleHomeSelected, String(module.id), KEY_ENCRYPT);
 		const newSubmodule = module?.submodules?.[0];
@@ -69,7 +66,6 @@ export const useAppLayoutStore = create<AppLayoutStore>(set => ({
 	},
 	currentSubmodule: undefined,
 	setCurrentSubmodule: (submodule: ISubmodule, KEY_ENCRYPT: CryptoJS.lib.WordArray) => {
-		// localStorage.setItem(ELocalStorageKeys.submoduleId, String(submodule.id));
 		setDataEncryptedInStorage(ELocalStorageKeys.submodule, String(submodule.id), KEY_ENCRYPT);
 		set({ currentSubmodule: submodule });
 	},
