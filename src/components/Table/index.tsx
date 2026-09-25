@@ -2,7 +2,7 @@ import { DEFAULT_PAGINATION_CONFIG } from '@/constants';
 import { EActionType } from '@/enums';
 import { disabledActionButton, getTableHeight, parseSorter } from '@/helpers/functions';
 import { useControlActions } from '@/hooks';
-import { useActionsUser, useAppLayoutStore, useLegacyAppLayoutStore } from '@/store';
+import { useActionsUser, useAppLayoutStore } from '@/store';
 import { ITableColumnAction, TStrictColumnType, TStrictTableColumnsType } from '@/types';
 import { InfoCircleOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import {
@@ -29,6 +29,8 @@ import {
 	useTableColumnDrag,
 } from '@/components/Table/TableColumnDrag';
 import {
+	applyColumnWidthConstraints,
+	getColumnsWidthSum,
 	getIsMobileTableView,
 	getNextRowSelection,
 	getTableEmptyContent,
@@ -36,6 +38,7 @@ import {
 	MOBILE_TABLE_MEDIA_QUERY,
 	resolveRowSelection,
 	resolveTableRootClassName,
+	resolveTableScrollX,
 } from '@/components/Table/Table.helpers';
 
 const BaseHeaderCell = createBaseHeaderCell();
@@ -110,7 +113,7 @@ export const Table = <T extends object>({
 	const { userInformation } = useAppLayoutStore();
 	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
-	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useAppLayoutStore(state => state.subAgency);
 	const { actionsUser } = useActionsUser();
 	const businessLines = userInformation?.businessLines ?? [];
 	const [isMobileTableView, setIsMobileTableView] = useState(getIsMobileTableView);
@@ -134,11 +137,6 @@ export const Table = <T extends object>({
 		action: null,
 		record: null,
 	});
-
-	const normalizedScroll = useMemo(() => {
-		if (scroll) return scroll;
-		return { x: 'max-content', y: getTableHeight(viewportHeight) };
-	}, [scroll, viewportHeight]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
@@ -307,7 +305,10 @@ export const Table = <T extends object>({
 		onColumnsOrderChange,
 	});
 
-	const tableColumns = enableColumnDrag ? columnDrag.columnsWithDragMeta : baseTableColumns;
+	const tableColumns = useMemo(
+		() => applyColumnWidthConstraints(enableColumnDrag ? columnDrag.columnsWithDragMeta : baseTableColumns),
+		[enableColumnDrag, columnDrag.columnsWithDragMeta, baseTableColumns],
+	);
 
 	const tableComponents = useMemo(
 		() => ({
@@ -341,6 +342,27 @@ export const Table = <T extends object>({
 	);
 
 	const resolvedRowSelection = resolveRowSelection({ rowSelection, selectionMode });
+
+	const columnsWidthSum = useMemo(
+		() =>
+			getColumnsWidthSum(tableColumns, {
+				hasRowSelection: Boolean(resolvedRowSelection),
+				hasExpandable: Boolean(expandable),
+			}),
+		[tableColumns, resolvedRowSelection, expandable],
+	);
+
+	const normalizedScroll = useMemo(() => {
+		const baseScroll = scroll ?? { x: 'max-content' as const, y: getTableHeight(viewportHeight) };
+		return {
+			...baseScroll,
+			x: resolveTableScrollX({
+				scrollX: baseScroll.x,
+				columnsWidthSum,
+				hasData: data.length > 0,
+			}),
+		};
+	}, [scroll, viewportHeight, columnsWidthSum, data.length]);
 
 	const handleRowClick = (record: T) => (event: MouseEvent<HTMLElement>) => {
 		if (!resolvedRowSelection) return;
@@ -435,6 +457,7 @@ export const Table = <T extends object>({
 						onChange={handleChangePagination}
 						pagination={finalPagination}
 						scroll={normalizedScroll}
+						tableLayout={data.length === 0 && columnsWidthSum > 0 ? 'fixed' : undefined}
 						locale={locale}
 						className={resolvedRootClassName}
 						rootClassName={resolvedRootClassName}

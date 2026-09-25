@@ -975,6 +975,10 @@
   min-height: 40px;
 }
 
+.min-h-\[420px\]{
+  min-height: 420px;
+}
+
 .min-h-\[70px\]{
   min-height: 70px;
 }
@@ -2980,6 +2984,18 @@ body,
 
 .itsa-table-wrapper--refresh .itsa-table--with-refresh .ant-table-thead > tr > th:last-child {
   border-top-right-radius: 0 !important;
+}
+
+/* Empty table: keep specified column widths instead of collapsing to the placeholder row. */
+
+.itsa-table-wrapper .ant-table-empty .ant-table-header table,
+.itsa-table-wrapper .ant-table-empty .ant-table-body table,
+.itsa-table-wrapper .ant-table-empty .ant-table-content table {
+  table-layout: fixed;
+}
+
+.itsa-table-wrapper .ant-table-empty .ant-table-thead > tr > th {
+  white-space: nowrap;
 }
 
 /* Header rounding and container */

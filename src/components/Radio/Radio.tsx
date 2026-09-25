@@ -7,8 +7,8 @@ export interface IRadioProps extends RadioGroupProps {
 	label?: string;
 	variant?: 'default' | undefined;
 }
-export const Radio = ({ label, ...rest }: IRadioProps) => {
-	const { variant, className, rootClassName, ...props } = rest;
+export const Radio = ({ label, variant = 'default', ...rest }: IRadioProps) => {
+	const { className, rootClassName, ...props } = rest;
 	const mergedRootClassName = [
 		rootClassName,
 		variant === 'default' ? 'itsa-radio--default' : undefined,

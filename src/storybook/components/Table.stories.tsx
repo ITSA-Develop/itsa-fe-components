@@ -738,3 +738,162 @@ export const WithExpandableRows: Story = {
 		},
 	},
 };
+
+type InventoryRow = {
+	id: number;
+	agency: string;
+	businessLine: string;
+	total: number;
+	physical: number;
+	transit: number;
+	agreed: number;
+	remaining: number;
+	consignment: number;
+	real: number;
+};
+
+const ColorTitle = ({ color, label }: { color: string; label: string }) => (
+	<span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+		<span className="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+		{label}
+	</span>
+);
+
+const inventoryColumns: TStrictTableColumnsType<InventoryRow> = [
+	{ title: 'Agencia', dataIndex: 'agency', key: 'agency', width: 90 },
+	{ title: 'Línea de negocio', dataIndex: 'businessLine', key: 'businessLine', width: 140 },
+	{ title: <ColorTitle color="#f87171" label="Total" />, dataIndex: 'total', key: 'total', width: 90, align: 'right' },
+	{
+		title: <ColorTitle color="#7dd3fc" label="Física" />,
+		dataIndex: 'physical',
+		key: 'physical',
+		width: 90,
+		align: 'right',
+	},
+	{
+		title: <ColorTitle color="#facc15" label="Tránsito" />,
+		dataIndex: 'transit',
+		key: 'transit',
+		width: 100,
+		align: 'right',
+	},
+	{
+		title: <ColorTitle color="#a16207" label="Acordado" />,
+		dataIndex: 'agreed',
+		key: 'agreed',
+		width: 100,
+		align: 'right',
+	},
+	{
+		title: <ColorTitle color="#c084fc" label="Restante" />,
+		dataIndex: 'remaining',
+		key: 'remaining',
+		width: 100,
+		align: 'right',
+	},
+	{
+		title: <ColorTitle color="#2dd4bf" label="Consignación" />,
+		dataIndex: 'consignment',
+		key: 'consignment',
+		width: 130,
+		align: 'right',
+	},
+	{ title: <ColorTitle color="#4ade80" label="Real" />, dataIndex: 'real', key: 'real', width: 90, align: 'right' },
+];
+
+const inventorySampleData: InventoryRow[] = [
+	{
+		id: 1,
+		agency: 'Quito Norte',
+		businessLine: 'Vehículos livianos',
+		total: 120,
+		physical: 40,
+		transit: 18,
+		agreed: 22,
+		remaining: 15,
+		consignment: 12,
+		real: 13,
+	},
+	{
+		id: 2,
+		agency: 'Guayaquil',
+		businessLine: 'Repuestos',
+		total: 86,
+		physical: 30,
+		transit: 10,
+		agreed: 16,
+		remaining: 12,
+		consignment: 8,
+		real: 10,
+	},
+	{
+		id: 3,
+		agency: 'Cuenca',
+		businessLine: 'Motos',
+		total: 54,
+		physical: 20,
+		transit: 8,
+		agreed: 9,
+		remaining: 7,
+		consignment: 5,
+		real: 5,
+	},
+];
+
+const TableEmptyNarrowContainer = () => {
+	const [hasData, setHasData] = React.useState(false);
+	const [containerWidth, setContainerWidth] = React.useState(480);
+
+	return (
+		<div className="flex flex-col gap-3 p-4 bg-gray-100 min-h-[420px]">
+			<p className="text-sm text-gray-700">
+				Reproduce el caso de una tabla pequeña <strong>sin datos</strong>: las columnas tienen <code>width</code>{' '}
+				explícito y deben mantenerlo (scroll horizontal) en lugar de comprimirse y partir los títulos.
+			</p>
+			<div className="flex flex-wrap items-end gap-4 rounded-md bg-white p-3">
+				<label className="flex flex-col gap-1 text-xs text-gray-600">
+					Ancho del contenedor ({containerWidth}px)
+					<input
+						type="range"
+						min={360}
+						max={1100}
+						step={20}
+						value={containerWidth}
+						onChange={event => setContainerWidth(Number(event.target.value))}
+					/>
+				</label>
+				<label className="flex items-center gap-2 text-sm text-gray-700">
+					<input type="checkbox" checked={hasData} onChange={event => setHasData(event.target.checked)} />
+					Mostrar datos
+				</label>
+			</div>
+			<div
+				className="rounded-xl bg-white p-2 shadow-sm"
+				style={{ width: containerWidth, maxWidth: '100%' }}
+			>
+				<Table<InventoryRow>
+					columns={inventoryColumns}
+					data={hasData ? inventorySampleData : []}
+					loading={false}
+					bordered={false}
+					onChange={() => {}}
+					rowKey="id"
+					paginationConfig={{ ...DEFAULT_PAGINATION_CONFIG, total: hasData ? inventorySampleData.length : 0 }}
+				/>
+			</div>
+		</div>
+	);
+};
+
+export const EmptyNarrowContainer: Story = {
+	render: () => <TableEmptyNarrowContainer />,
+	parameters: {
+		layout: 'fullscreen',
+		docs: {
+			description: {
+				story:
+					'Tabla estrecha con columnas de ancho fijo. Vacía por defecto para validar que el header no se distorsione; activa "Mostrar datos" para comparar con filas.',
+			},
+		},
+	},
+};

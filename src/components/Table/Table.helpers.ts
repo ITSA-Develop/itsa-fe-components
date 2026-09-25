@@ -1,6 +1,7 @@
 import type { TableProps as AntTableProps } from 'antd';
 import type { TableLocale } from 'antd/es/table/interface';
-import type { Key, MouseEvent, ReactNode } from 'react';
+import type { HTMLAttributes, Key, MouseEvent, ReactNode } from 'react';
+import type { TStrictTableColumnsType } from '@/types';
 
 export const MOBILE_TABLE_MEDIA_QUERY = '(max-width: 480px)';
 
@@ -127,3 +128,80 @@ export const getTableEmptyContent = (locale?: TableLocale): ReactNode => {
 	const emptyText = locale?.emptyText;
 	return typeof emptyText === 'function' ? emptyText() : emptyText;
 };
+
+export const TABLE_SELECTION_COLUMN_WIDTH = 32;
+export const TABLE_EXPAND_COLUMN_WIDTH = 48;
+export const TABLE_FALLBACK_COLUMN_WIDTH = 120;
+
+export const getColumnWidthPx = (width?: number | string): number | undefined => {
+	if (typeof width === 'number' && Number.isFinite(width) && width > 0) return width;
+	if (typeof width === 'string' && width.endsWith('px')) {
+		const parsed = Number.parseFloat(width);
+		if (Number.isFinite(parsed) && parsed > 0) return parsed;
+	}
+	return undefined;
+};
+
+export const getColumnsWidthSum = (
+	columns: Array<{ width?: number | string }>,
+	extras: { hasRowSelection?: boolean; hasExpandable?: boolean } = {},
+): number => {
+	const columnsSum = columns.reduce((total, column) => {
+		return total + (getColumnWidthPx(column.width) ?? TABLE_FALLBACK_COLUMN_WIDTH);
+	}, 0);
+
+	return (
+		columnsSum +
+		(extras.hasRowSelection ? TABLE_SELECTION_COLUMN_WIDTH : 0) +
+		(extras.hasExpandable ? TABLE_EXPAND_COLUMN_WIDTH : 0)
+	);
+};
+
+export const resolveTableScrollX = ({
+	scrollX,
+	columnsWidthSum,
+	hasData,
+}: {
+	scrollX?: number | string | true;
+	columnsWidthSum: number;
+	hasData: boolean;
+}): number | string | true | undefined => {
+	if (hasData) return scrollX ?? 'max-content';
+	if (columnsWidthSum <= 0) return scrollX ?? 'max-content';
+	if (typeof scrollX === 'number' && scrollX > 0) return Math.max(scrollX, columnsWidthSum);
+	return columnsWidthSum;
+};
+
+export const applyColumnWidthConstraints = <T extends object>(
+	columns: TStrictTableColumnsType<T>,
+): TStrictTableColumnsType<T> =>
+	columns.map(column => {
+		const widthPx = getColumnWidthPx(column.width);
+		if (widthPx == null) return column;
+
+		const widthStyle = { width: widthPx, minWidth: widthPx };
+
+		return {
+			...column,
+			onHeaderCell: (col, index) => {
+				const extra = (column.onHeaderCell?.(col, index) ?? {}) as HTMLAttributes<HTMLTableCellElement>;
+				return {
+					...extra,
+					style: {
+						...widthStyle,
+						...extra.style,
+					},
+				};
+			},
+			onCell: (record, index) => {
+				const extra = (column.onCell?.(record, index) ?? {}) as HTMLAttributes<HTMLTableCellElement>;
+				return {
+					...extra,
+					style: {
+						...widthStyle,
+						...extra.style,
+					},
+				};
+			},
+		};
+	});

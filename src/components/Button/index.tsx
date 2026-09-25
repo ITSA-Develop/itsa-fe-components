@@ -3,7 +3,7 @@ import { ButtonAntd } from '../ButtonAntd';
 import { ReactNode, useMemo } from 'react';
 import { EActionType } from '@/enums';
 import { isDisabledAction } from '@/helpers/functions';
-import { useActionsUser, useLegacyAppLayoutStore } from '@/store';
+import { useActionsUser, useAppLayoutStore } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
 
 export type TButtonType =
@@ -73,7 +73,7 @@ const getButtonAppearance = (type: TButtonType): TButtonAppearance => {
 
 export const Button = (props: IButtonProps) => {
 	const isOnline = useOnlineStatus();
-	const currentAgency = useLegacyAppLayoutStore(state => state.currentAgency);
+	const currentAgency = useAppLayoutStore(state => state.subAgency);
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
 	const { actionsUser } = useActionsUser();
 	const {

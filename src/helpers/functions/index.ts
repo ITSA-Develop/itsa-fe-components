@@ -1,13 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ELocalStorageKeys } from '@/enums';
 import { EOptionsFilterStatus, EActionType } from '@/enums';
-import { IActions, IAgency, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
+import { IActions, IModule, IProgramActions, ISorterTable, ISubmodule } from '@/interfaces';
 import { TNotificationProps, TExtendedMenuItem } from '@/types';
 import { notification } from 'antd';
 import { dataFromLocalStorage } from '../objects';
 import { SorterResult } from 'antd/es/table/interface';
-import { useLegacyAppLayoutStore } from '@/store';
-// import { act } from 'react';
 
 export const openNotificationWithIcon = ({ type, message, description }: TNotificationProps) => {
 	notification[type]({
@@ -241,52 +239,52 @@ export interface ISorterColumn {
 	order: 'ascend' | 'descend';
 	field: string;
 }
-const normalizePath = (value: string | null | undefined): string => {
-	if (!value) return '';
-	return value.replace(/^\/+|\/+$/g, '').toLowerCase();
-};
+// const normalizePath = (value: string | null | undefined): string => {
+// 	if (!value) return '';
+// 	return value.replace(/^\/+|\/+$/g, '').toLowerCase();
+// };
 
-export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined, path: string): ISubmodule | null => {
-	if (!agencies || !Array.isArray(agencies) || !path) return null;
+// export const findProgramIdByPathFromAgencies = (agencies: IAgency[] | undefined, path: string): ISubmodule | null => {
+// 	if (!agencies || !Array.isArray(agencies) || !path) return null;
 
-	const target = normalizePath(path);
-	if (!target) return null;
+// 	const target = normalizePath(path);
+// 	if (!target) return null;
 
-	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
-		if (!programs) return null;
-		for (const program of programs) {
-			if (normalizePath(program?.name ?? null) === target) {
-				return program;
-			}
-		}
-		return null;
-	};
+// 	const checkPrograms = (programs?: ISubmodule[] | null): ISubmodule | null => {
+// 		if (!programs) return null;
+// 		for (const program of programs) {
+// 			if (normalizePath(program?.name ?? null) === target) {
+// 				return program;
+// 			}
+// 		}
+// 		return null;
+// 	};
 
-	for (const agency of agencies) {
-		const modules = agency?.subAgencies ?? [];
-		for (const mod of modules ?? []) {
-			const foundAtModule = checkPrograms([]);
-			if (foundAtModule !== null) return foundAtModule;
+// 	for (const agency of agencies) {
+// 		const modules = agency?.subAgencies ?? [];
+// 		for (const mod of modules ?? []) {
+// 			const foundAtModule = checkPrograms([]);
+// 			if (foundAtModule !== null) return foundAtModule;
 
-			const submodules = mod?.modules ?? [];
-			for (const sub of submodules ?? []) {
-				const submodules = sub?.submodules ?? [];
-				const foundAtSub = checkPrograms(submodules);
-				if (foundAtSub !== null) return foundAtSub;
+// 			const submodules = mod?.modules ?? [];
+// 			for (const sub of submodules ?? []) {
+// 				const submodules = sub?.submodules ?? [];
+// 				const foundAtSub = checkPrograms(submodules);
+// 				if (foundAtSub !== null) return foundAtSub;
 
-				const foundAtGroup = checkPrograms([]);
-				if (foundAtGroup !== null) return foundAtGroup;
-			}
-		}
-	}
+// 				const foundAtGroup = checkPrograms([]);
+// 				if (foundAtGroup !== null) return foundAtGroup;
+// 			}
+// 		}
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
-export const findProgramIdByPath = (path: string): ISubmodule | null => {
-	const agencies: IAgency[] | undefined = useLegacyAppLayoutStore?.getState?.()?.agencies ?? [];
-	return findProgramIdByPathFromAgencies(agencies, path);
-};
+// export const findProgramIdByPath = (path: string): ISubmodule | null => {
+// 	const agencies: IAgency[] | undefined = useAppLayoutStore?.getState?.()?.agencies ?? [];
+// 	return findProgramIdByPathFromAgencies(agencies, path);
+// };
 
 export const findMenuItemByRoute = (menuItems: TExtendedMenuItem[], route: string): TExtendedMenuItem | null => {
 	if (!Array.isArray(menuItems) || !route) return null;
