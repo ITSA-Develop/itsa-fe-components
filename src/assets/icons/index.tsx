@@ -33,6 +33,8 @@ import EditIcon from './icon-edit.svg?react';
 import EmailIcon from './icon-email.svg?react';
 import EyeIcon from './icon-eye.svg?react';
 import EyeOffIcon from './icon-eye-off.svg?react';
+import EngineIcon from './icon-engine.svg?react';
+import QrIcon from './icon-qr-svgrepo.svg?react';
 import FeriadosIcon from './icon-feriados.svg?react';
 import FilterIcon from './icon-filter.svg?react';
 import FiltersIcon from './icon-filters.svg?react';
@@ -189,6 +191,7 @@ export {
   EditIcon,
   EmailIcon,
   EyeIcon,
+  EngineIcon,
   EyeOffIcon,
   FeriadosIcon,
   FilterIcon,
@@ -251,6 +254,7 @@ export {
   Promo1Icon,
   ProvidenciasIcon,
   PuntosIcon,
+  QrIcon,
   ReclamosIcon,
   RegalosIcon,
   RemoveItemIcon,

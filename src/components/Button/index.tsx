@@ -1,10 +1,13 @@
 import { useControlActions } from '@/hooks';
 import { ButtonAntd } from '../ButtonAntd';
-import { ReactNode, useMemo } from 'react';
+import { Popconfirm } from '../Popconfirm/Popconfirm';
+import { MouseEvent, ReactNode, useMemo } from 'react';
 import { EActionType } from '@/enums';
 import { isDisabledAction } from '@/helpers/functions';
 import { useActionsUser, useAppLayoutStore } from '@/store';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus/useOnlineStatus';
+
+const DEFAULT_CONFIRM_TITLE = 'Confirmar acción';
 
 export type TButtonType =
 	| 'primary'
@@ -45,6 +48,12 @@ export interface IButtonProps {
 	validateWithApiAction?: boolean;
 	loading?: boolean;
 	allowEnterKey?: boolean;
+	/**
+	 * Pide confirmación antes de ejecutar `onClick`.
+	 * `true` muestra el título "Confirmar acción". Un texto o nodo reemplaza ese título.
+	 * Ant Design Button no incluye esta opción; se usa Popconfirm.
+	 */
+	confirm?: boolean | ReactNode;
 }
 
 const colorClasses: Record<TButtonColor, string> = {
@@ -103,6 +112,7 @@ export const Button = (props: IButtonProps) => {
 		onClick,
 		allowEnterKey = false,
 		shape,
+		confirm = false,
 	} = props;
 	const isUnavailableByPropOrNetwork = disabled === true || isOnline === false;
 	const sizeClass = size === 'small' ? 'itsa-btn--sm' : size === 'middle' ? 'itsa-btn--md' : 'itsa-btn--lg';
@@ -144,13 +154,19 @@ export const Button = (props: IButtonProps) => {
 	};
 
 	const appliedClassName = isUnavailableByPropOrNetwork ? disabledClass : className;
+	const confirmEnabled = confirm !== false && confirm !== null && confirm !== undefined;
+	const confirmTitle = confirm === true || confirm === '' ? DEFAULT_CONFIRM_TITLE : confirm;
+
+	const preventNativeSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+	};
 
 	// SOLO ocultar si el usuario no tiene permisos para la acción
 	if ((actionType !== undefined) && isDisabledActionButtonByUserActions) {
 		return null;
 	}
 
-	return (
+	const button = (
 		<ButtonAntd
 			className={appliedClassName}
 			size={size}
@@ -159,7 +175,7 @@ export const Button = (props: IButtonProps) => {
 			danger={resolvedColor === 'danger'}
 			shape={shape}
 			disabled={isUnavailableByPropOrNetwork}
-			onClick={handleClick}
+			onClick={confirmEnabled ? preventNativeSubmit : handleClick}
 			onKeyDown={e => {
 				if (!allowEnterKey && e.key === 'Enter') {
 					e.preventDefault();
@@ -172,5 +188,21 @@ export const Button = (props: IButtonProps) => {
 		>
 			{labelContent}
 		</ButtonAntd>
+	);
+
+	if (!confirmEnabled) {
+		return button;
+	}
+
+	return (
+		<Popconfirm
+			title={confirmTitle}
+			okText="Confirmar"
+			cancelText="Cancelar"
+			onConfirm={handleClick}
+			disabled={isUnavailableByPropOrNetwork}
+		>
+			{button}
+		</Popconfirm>
 	);
 };
