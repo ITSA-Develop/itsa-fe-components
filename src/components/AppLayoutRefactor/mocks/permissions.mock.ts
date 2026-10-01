@@ -750,6 +750,45 @@ export const PERMISSIONS_MOCK: IPermissions = {
 								},
 							],
 						},
+						{
+							id: 53,
+							name: 'IMPORTACIONES',
+							icon: 'ImportsOutlineIcon',
+							submodules: [
+								{
+									id: 93,
+									name: 'OPERACIONES',
+									icon: 'ImportsOutlineIcon',
+									groups: [],
+									programs: [
+										{
+											id: 931,
+											roleId: 51,
+											name: 'GESTIÓN DE IMPORTACIONES',
+											root: true,
+											path: 'imports/management',
+											icon: 'ImportsOutlineIcon',
+										},
+										{
+											id: 932,
+											roleId: 51,
+											name: 'EMBARQUES',
+											root: true,
+											path: 'imports/shipments',
+											icon: 'IconCamion',
+										},
+										{
+											id: 933,
+											roleId: 51,
+											name: 'DOCUMENTOS',
+											root: true,
+											path: 'imports/documents',
+											icon: 'AddListIcon',
+										},
+									],
+								},
+							],
+						},
 					],
 				},
 				{
