@@ -7,6 +7,7 @@ import AddProductIcon from './icon-add-product.svg?react';
 import AddToCartIcon from './icon-add-to-cart.svg?react';
 import AiIcon from './icon-ai.svg?react';
 import AlertIcon from './icon-alert.svg?react';
+import AllTerrainIcon from './icon-all-terrain.svg?react';
 import AppleIcon from './icon-apple.svg?react';
 import ArrowLeftIcon from './icon-arrow-left.svg?react';
 import ArrowRightIcon from './icon-arrow-right.svg?react';
@@ -70,7 +71,7 @@ import MicIcon from './icon-mic.svg?react';
 import Mic1Icon from './icon-mic-1.svg?react';
 import MinusProductIcon from './icon-minus-product.svg?react';
 import MotitoIcon from './icon-motito.svg?react';
-import MotorcyclesOutlineIcon from './icon-motorcycles-outline.svg?react';
+import MotorcyclesOutlineIcon from './icon-moto.svg?react';
 import MotorcyclesBlackIcon from './icon-motorcycles-black.svg?react';
 import MotorcyclesRedIcon from './icon-motorcycles-red.svg?react';
 import NegociosIcon from './icon-negocios.svg?react';
@@ -139,7 +140,7 @@ import UserIcon from './icon-user.svg?react';
 import User2Icon from './icon-user2.svg?react';
 import UserActiveIcon from './icon-user-active.svg?react';
 import UserRoundedSquareIcon from './icon-user-rounded-square.svg?react';
-import VehicleOutlineIcon from './icon-vehicle-outline.svg?react';
+import VehicleOutlineIcon from './icon-vehicle.svg?react';
 import VehicleBlackIcon from './icon-vehicle-black.svg?react';
 import VehicleRedIcon from './icon-vehicle-red.svg?react';
 import WalletIcon from './icon-wallet.svg?react';
@@ -166,6 +167,7 @@ export {
   AddToCartIcon,
   AiIcon,
   AlertIcon,
+  AllTerrainIcon,
   AppleIcon,
   ArrowLeftIcon,
   ArrowRightIcon,

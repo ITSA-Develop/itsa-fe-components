@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import type { StoryObj } from '@storybook/react';
-import { AppLayout, AppLayoutProps } from '../../components/AppLayout';
+import { AppLayout, type AppLayoutProps } from '../../components/AppLayoutRefactor';
 import { useAppLayoutStore } from '../../store';
 import { PERMISSIONS_MOCK } from '../../components/AppLayoutRefactor/mocks/permissions.mock';
 import { IProgram, IUserInformation } from '../../interfaces';
@@ -44,6 +44,7 @@ const defaultArgs: AppLayoutProps = {
 	menuItemsNavigate: (program: IProgram) => {
 		console.log('menuItemsNavigate', program);
 	},
+	userActions: { items: [] },
 };
 
 const withPermissions = (Story: React.ComponentType) => {
@@ -72,7 +73,7 @@ const withPermissions = (Story: React.ComponentType) => {
 			],
 			identification: '1234567890',
 			identificationType: 'CC',
-			businessLineId: 1,
+			businessLines: [{ id: 1, name: 'Business Line 1' }],
 			picture: 'https://via.placeholder.com/150',
 		};
 		setUserInformation(userInfo);

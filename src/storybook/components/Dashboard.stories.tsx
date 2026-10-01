@@ -1,7 +1,7 @@
 import type { StoryObj } from '@storybook/react';
 import type { IProgram } from '../../interfaces';
 import { Dashboard } from '../../components/Dashboard';
-import { AppLayout } from '../../components/AppLayout';
+import { AppLayout } from '../../components/AppLayoutRefactor';
 import { useAppLayoutStore } from '../../store';
 import { PERMISSIONS_MOCK } from '../../components/AppLayoutRefactor/mocks/permissions.mock';
 import { useEffect } from 'react';
@@ -80,9 +80,10 @@ export const WithinAppLayout: Story = {
 		return (
 			<AppLayout
 				optionsCompany={[]}
-				appNavigate={() => {}}
 				loadingAppLayout={false}
+				onCloseSession={() => {}}
 				menuItemsNavigate={args.handleNavigateProgram}
+				userActions={{ items: [] }}
 			>
 				<Dashboard {...args} />
 			</AppLayout>
