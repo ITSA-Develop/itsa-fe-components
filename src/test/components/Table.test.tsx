@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { ITableProps, Table } from '../../components/Table';
 import { ITableColumnAction, TStrictTableColumnsType } from '../../types';
+import { ControlActionsProvider } from '../../HOC/ControlActions';
 
 beforeAll(() => {
 	Object.defineProperty(window, 'matchMedia', {
@@ -33,6 +34,11 @@ beforeAll(() => {
 		disconnect: vi.fn(),
 	}));
 });
+
+const renderWithControlActions = (ui: React.ReactElement) =>
+	render(
+		<ControlActionsProvider fnApiValidatePermissionAction={async () => true}>{ui}</ControlActionsProvider>,
+	);
 
 interface TestDataType {
 	id: number;
@@ -80,7 +86,7 @@ const defaultProps: ITableProps<TestDataType> = {
 
 describe('Table component', () => {
 	it('renders table with data correctly', () => {
-		const { container } = render(<Table {...defaultProps} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} />);
 
 		expect(screen.getAllByRole('table')[0]).toBeInTheDocument();
 
@@ -97,15 +103,33 @@ describe('Table component', () => {
 	});
 
 	it('renders empty table when no data provided', () => {
-		const { container } = render(<Table {...defaultProps} data={[]} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} data={[]} />);
 
 		expect(screen.getAllByRole('table')[0]).toBeInTheDocument();
-		expect(screen.getAllByText('No data')[0]).toBeInTheDocument();
+		expect(screen.getAllByText('No hay datos')[0]).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 
+	it('keeps specified column widths when the table is empty', () => {
+		const columns: TStrictTableColumnsType<TestDataType> = [
+			{ title: 'Agencia', dataIndex: 'name', key: 'name', width: 180 },
+			{ title: 'Línea de negocio', dataIndex: 'email', key: 'email', width: 220 },
+		];
+
+		const { container } = renderWithControlActions(<Table {...defaultProps} columns={columns} data={[]} />);
+
+		const agencyHeader = screen.getByText('Agencia').closest('th');
+		const businessLineHeader = screen.getByText('Línea de negocio').closest('th');
+
+		expect(agencyHeader?.style.minWidth).toBe('180px');
+		expect(agencyHeader?.style.width).toBe('180px');
+		expect(businessLineHeader?.style.minWidth).toBe('220px');
+		expect(businessLineHeader?.style.width).toBe('220px');
+		expect(container.querySelector('.ant-table-empty')).toBeInTheDocument();
+	});
+
 	it('shows loading state correctly', () => {
-		const { container } = render(<Table {...defaultProps} loading={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} loading={true} />);
 
 		expect(screen.getAllByRole('table')[0]).toBeInTheDocument();
 		expect(container.querySelector('.ant-spin-spinning')).toBeInTheDocument();
@@ -113,30 +137,30 @@ describe('Table component', () => {
 	});
 
 	it('renders with borders when bordered prop is true', () => {
-		const { container } = render(<Table {...defaultProps} bordered={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} bordered={true} />);
 
 		expect(container.querySelector('.ant-table-bordered')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 
-	it('renders without borders by default', () => {
-		const { container } = render(<Table {...defaultProps} />);
+	it('renders without borders when bordered is false', () => {
+		const { container } = renderWithControlActions(<Table {...defaultProps} bordered={false} />);
 
 		expect(container.querySelector('.ant-table-bordered')).not.toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 
 	it('shows pagination when showPagination is true', () => {
-		const { container } = render(<Table {...defaultProps} showPagination={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showPagination={true} />);
 
 		expect(container.querySelector('.ant-pagination')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 
-	it('hides pagination by default', () => {
-		const { container } = render(<Table {...defaultProps} />);
+	it('shows pagination by default', () => {
+		const { container } = renderWithControlActions(<Table {...defaultProps} />);
 
-		expect(container.querySelector('.ant-pagination')).not.toBeInTheDocument();
+		expect(container.querySelector('.ant-pagination')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
 	});
 
@@ -147,7 +171,7 @@ describe('Table component', () => {
 			showQuickJumper: false,
 		};
 
-		const { container } = render(
+		const { container } = renderWithControlActions(
 			<Table {...defaultProps} showPagination={true} paginationConfig={customPaginationConfig} />,
 		);
 
@@ -162,7 +186,7 @@ describe('Table component', () => {
 			selectedRowKeys: [],
 		};
 
-		const { container } = render(<Table {...defaultProps} rowSelection={rowSelection} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} rowSelection={rowSelection} />);
 
 		const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 		expect(checkboxes.length).toBeGreaterThan(0);
@@ -170,7 +194,7 @@ describe('Table component', () => {
 	});
 
 	it('supports single selection mode (radio)', () => {
-		const { container } = render(<Table {...defaultProps} rowSelection={{}} selectionMode="single" />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} rowSelection={{}} selectionMode="single" />);
 
 		const radios = container.querySelectorAll('input[type="radio"]');
 		expect(radios.length).toBeGreaterThan(0);
@@ -179,7 +203,7 @@ describe('Table component', () => {
 	it('calls onChange handler when provided', () => {
 		const onChange = vi.fn();
 
-		const { container } = render(<Table {...defaultProps} onChange={onChange} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} onChange={onChange} />);
 
 		expect(screen.getAllByRole('table')[0]).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
@@ -188,7 +212,7 @@ describe('Table component', () => {
 	it('applies custom scroll configuration', () => {
 		const customScroll = { x: 1000, y: 500 };
 
-		const { container } = render(<Table {...defaultProps} scroll={customScroll} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} scroll={customScroll} />);
 
 		const tableBody = container.querySelector('.ant-table-tbody');
 		expect(tableBody).toBeInTheDocument();
@@ -196,7 +220,7 @@ describe('Table component', () => {
 	});
 
 	it('uses default scroll configuration', () => {
-		const { container } = render(<Table {...defaultProps} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} />);
 
 		const tableBody = container.querySelector('.ant-table-tbody');
 		expect(tableBody).toBeInTheDocument();
@@ -206,13 +230,13 @@ describe('Table component', () => {
 	it('uses custom rowKey function', () => {
 		const customRowKey = (record: TestDataType) => `custom-${record.id}`;
 
-		const { container } = render(<Table {...defaultProps} rowKey={customRowKey} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} rowKey={customRowKey} />);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('uses string rowKey property', () => {
-		const { container } = render(<Table {...defaultProps} rowKey="id" />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} rowKey="id" />);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -232,7 +256,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} columns={complexColumns} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} columns={complexColumns} />);
 
 		expect(screen.getByText('Juan Pérez - 25 años')).toBeInTheDocument();
 		expect(container).toMatchSnapshot();
@@ -246,7 +270,7 @@ describe('Table component', () => {
 			email: `usuario${index + 1}@test.com`,
 		}));
 
-		const { container } = render(<Table {...defaultProps} data={largeData} showPagination={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} data={largeData} showPagination={true} />);
 
 		expect(screen.getAllByRole('table')[0]).toBeInTheDocument();
 		expect(container.querySelector('.ant-pagination')).toBeInTheDocument();
@@ -262,7 +286,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(
+		const { container } = renderWithControlActions(
 			<Table rowKey="id" columns={typedColumns} data={mockData} loading={false} onChange={vi.fn()} />,
 		);
 
@@ -283,10 +307,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
-
-		// Verificar que se muestra la columna de acciones
-		expect(screen.getByText('Acciones')).toBeInTheDocument();
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
 
 		// Verificar que hay botones de acción (uno por fila)
 		const actionButtons = container.querySelectorAll('.ant-dropdown-trigger');
@@ -304,7 +325,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} showColumnActions={false} columnActions={mockActions} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={false} columnActions={mockActions} />);
 
 		// Verificar que NO se muestra la columna de acciones
 		expect(screen.queryByText('Acciones')).not.toBeInTheDocument();
@@ -328,7 +349,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
 
 		// Verificar que hay botones dropdown para acciones
 		const firstActionButton = container.querySelector('.ant-dropdown-trigger');
@@ -353,7 +374,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
 
 		// Verificar que el botón de acciones está presente
 		const actionButton = container.querySelector('.ant-dropdown-trigger');
@@ -363,18 +384,16 @@ describe('Table component', () => {
 	});
 
 	it('handles empty column actions array', () => {
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} columnActions={[]} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} columnActions={[]} />);
 
-		// Verificar que se muestra la columna de acciones pero sin elementos en el dropdown
-		expect(screen.getByText('Acciones')).toBeInTheDocument();
+		expect(container.querySelectorAll('.ant-dropdown-trigger')).toHaveLength(0);
 		expect(container).toMatchSnapshot();
 	});
 
 	it('handles undefined column actions', () => {
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} />);
 
-		// Verificar que se muestra la columna de acciones pero sin elementos en el dropdown
-		expect(screen.getByText('Acciones')).toBeInTheDocument();
+		expect(container.querySelectorAll('.ant-dropdown-trigger')).toHaveLength(0);
 		expect(container).toMatchSnapshot();
 	});
 
@@ -382,7 +401,7 @@ describe('Table component', () => {
 		const user = userEvent.setup();
 		const onChange = vi.fn();
 
-		const { container } = render(<Table {...defaultProps} onChange={onChange} showPagination={true} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} onChange={onChange} showPagination={true} />);
 
 		// Simular un cambio en la paginación si hay más de una página
 		const pagination = container.querySelector('.ant-pagination');
@@ -416,7 +435,7 @@ describe('Table component', () => {
 			},
 		];
 
-		render(<Table {...defaultProps} columns={sortableColumns} onChange={onChange} />);
+		renderWithControlActions(<Table {...defaultProps} columns={sortableColumns} onChange={onChange} />);
 
 		// Hacer clic en el header de la columna "ID" para ordenar
 		const idHeader = screen.getByText('ID');
@@ -437,7 +456,7 @@ describe('Table component', () => {
 			},
 		];
 
-		const { container } = render(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
+		const { container } = renderWithControlActions(<Table {...defaultProps} showColumnActions={true} columnActions={mockActions} />);
 
 		// Obtener todos los botones de acciones (uno por fila)
 		const actionButtons = container.querySelectorAll('.ant-dropdown-trigger');

@@ -1,5 +1,5 @@
 import { IUserInformation, IUserRole } from '@/interfaces';
-import { useLegacyAppLayoutStore } from '@/store';
+import { useAppLayoutStore } from '@/store';
 import { useMemo } from 'react';
 
 export interface IUseGetUserInformationProps {
@@ -9,8 +9,8 @@ export interface IUseGetUserInformationProps {
 }
 
 export const useGetUserInformation = (): IUseGetUserInformationProps => {
-	const userInformation = useLegacyAppLayoutStore(state => state.userInformation);
-	const currentModule = useLegacyAppLayoutStore(state => state.currentModule);
+	const userInformation = useAppLayoutStore(state => state.userInformation);
+	const currentModule = useAppLayoutStore(state => state.module);
 
 	const userRole = useMemo((): IUserRole | undefined => {
 		return userInformation?.roles.find(role => role.moduleId === currentModule?.id) ?? undefined;

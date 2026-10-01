@@ -1,20 +1,80 @@
-<svg viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_162270_53818)">
-<path class="primary"  d="M21.6068 21.3275H2.1168C1.7568 21.3275 1.4668 21.0375 1.4668 20.6775V9.24754C1.4668 8.88754 1.7568 8.59753 2.1168 8.59753C2.4768 8.59753 2.7668 8.88754 2.7668 9.24754V20.0275H21.6068C21.9668 20.0275 22.2568 20.3175 22.2568 20.6775C22.2568 21.0375 21.9668 21.3275 21.6068 21.3275Z"/>
-<path class="primary" d="M21.6068 21.3275C21.2468 21.3275 20.9568 21.0375 20.9568 20.6775V9.24754C20.9568 8.88754 21.2468 8.59753 21.6068 8.59753C21.9668 8.59753 22.2568 8.88754 22.2568 9.24754V20.6775C22.2568 21.0375 21.9668 21.3275 21.6068 21.3275Z"/>
-<path class="primary" d="M23.0668 8.2275C22.9468 8.2275 22.8368 8.19751 22.7268 8.12751L11.8568 1.40751L0.9868 8.12751C0.6768 8.31751 0.276793 8.21751 0.0967932 7.91751C-0.0932068 7.60751 0.00679991 7.2075 0.3068 7.0275L11.5168 0.0975C11.7268 -0.0325 11.9968 -0.0325 12.2068 0.0975L23.4168 7.0275C23.7268 7.2175 23.8168 7.61751 23.6268 7.91751C23.5068 8.11751 23.2868 8.2275 23.0768 8.2275H23.0668Z"/>
-<path class="secondary" d="M17.2068 9.26752H6.1768C5.68527 9.26752 5.2868 9.66598 5.2868 10.1575V11.5275C5.2868 12.019 5.68527 12.4175 6.1768 12.4175H17.2068C17.6983 12.4175 18.0968 12.019 18.0968 11.5275V10.1575C18.0968 9.66598 17.6983 9.26752 17.2068 9.26752Z"/>
-<path class="secondary" d="M14.8068 17.9275H8.5668C7.4168 17.9275 6.47681 16.9975 6.47681 15.8375V13.6575H16.8868V15.8375C16.8868 16.9875 15.9568 17.9275 14.7968 17.9275H14.8068Z"/>
-<path class="secondary" d="M10.8668 6.42751C10.9868 5.92751 10.6768 5.42752 10.1868 5.30752C9.68682 5.18752 9.18682 5.49752 9.06682 5.98752L8.36682 8.89751H10.2768L10.8768 6.41752L10.8668 6.42751Z"/>
-<path class="secondary" d="M12.5068 6.42751C12.3868 5.92751 12.6968 5.42752 13.1868 5.30752C13.6868 5.18752 14.1868 5.49752 14.3068 5.98752L15.0068 8.89751H13.0968L12.4968 6.41752L12.5068 6.42751Z"/>
-</g>
-<defs>
-<clipPath id="clip0_162270_53818">
-<rect width="23.726" height="21.3275" fill="white"/>
-</clipPath>
-</defs>
-<style>
-  .primary { fill: var(--icon-default, black); }
-  .secondary { fill: var(--icon-default, #EA3B48); }
-</style>
+<svg class="itsa-lph-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 484 281" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Línea para el hogar">
+  <style>
+    .itsa-lph-icon .body{transition:fill .2s ease}
+    .itsa-lph-icon .line{transition:stroke .2s ease}
+    .itsa-lph-icon .accent,
+    .itsa-lph-icon .accent-fill,
+    .itsa-lph-icon .accent-line{transition:fill .2s ease,stroke .2s ease}
+    button:hover .itsa-lph-icon .body,
+    .itsa-lph-icon:hover .body{fill:#EA3D48}
+    button:hover .itsa-lph-icon .line,
+    .itsa-lph-icon:hover .line{stroke:#EA3D48}
+    button:hover .itsa-lph-icon .accent,
+    .itsa-lph-icon:hover .accent{stroke:#fff}
+    button:hover .itsa-lph-icon .accent-fill,
+    .itsa-lph-icon:hover .accent-fill{fill:#fff}
+    button:hover .itsa-lph-icon .accent-line,
+    .itsa-lph-icon:hover .accent-line{stroke:#EA3D48}
+  </style>
+
+  <!-- Refrigerator -->
+  <g class="body" fill="#374151">
+    <rect x="23" y="23" width="115" height="131" rx="3"/>
+    <rect x="23" y="159" width="115" height="114" rx="3"/>
+    <rect x="22" y="154" width="117" height="5"/>
+  </g>
+  <g fill="none" stroke="white" stroke-width="2">
+    <path d="M35 95 L35 126"/>
+    <path d="M31 109 L39 109"/>
+  </g>
+  <!-- snowflake -->
+  <g class="accent" stroke="#EA3D48" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M80 183 V247 M50 215 H110"/>
+    <path d="M59 194 L101 236 M101 194 L59 236"/>
+    <path d="M80 183 l-5 8 M80 183 l5 8 M80 247 l-5-8 M80 247 l5-8"/>
+    <path d="M50 215 l9-3 M50 215 l9 3 M110 215 l-9-3 M110 215 l-9 3"/>
+    <path d="M59 194 l2 9 M59 194 l9 3 M101 194 l-2 9 M101 194 l-9 3"/>
+    <path d="M59 236 l2-9 M59 236 l9-3 M101 236 l-2-9 M101 236 l-9-3"/>
+  </g>
+
+  <!-- Oven / stove -->
+  <g class="body" fill="#374151">
+    <rect x="149" y="76" width="174" height="199" rx="6"/>
+    <rect x="158" y="73" width="59" height="7" rx="3"/>
+    <rect x="224" y="73" width="84" height="7" rx="3"/>
+    <rect x="151" y="103" width="171" height="6" fill="white"/>
+  </g>
+  <g fill="white">
+    <rect x="166" y="84" width="57" height="15" rx="2"/>
+    <rect x="232" y="84" width="57" height="15" rx="2"/>
+  </g>
+  <g class="body" fill="#374151">
+    <circle cx="248" cy="92" r="5"/>
+    <circle cx="260" cy="92" r="5"/>
+    <circle cx="272" cy="92" r="5"/>
+    <circle cx="284" cy="92" r="5"/>
+  </g>
+  <g fill="none" stroke="white" stroke-width="4" stroke-linecap="round">
+    <path d="M172 137 H294"/>
+    <rect x="169" y="148" width="135" height="109" rx="4"/>
+  </g>
+  <g fill="none" class="line" stroke="#374151" stroke-width="3" stroke-linecap="round">
+    <path d="M179 157 L178 199"/>
+    <path d="M178 157 L229 156"/>
+    <path d="M170 237 H301"/>
+  </g>
+
+  <!-- Washing machine -->
+  <g class="body" fill="#374151">
+    <rect x="335" y="78" width="144" height="196" rx="6"/>
+    <rect x="346" y="83" width="40" height="15" rx="5" fill="white"/>
+  </g>
+  <g fill="white">
+    <circle cx="427" cy="90" r="5"/>
+    <circle cx="440" cy="90" r="5"/>
+    <circle cx="457" cy="90" r="5"/>
+  </g>
+  <circle class="accent" cx="407" cy="199" r="49" fill="none" stroke="#EA3D48" stroke-width="7"/>
+  <circle class="accent-fill" cx="407" cy="199" r="30" fill="#EA3D48"/>
+  <path class="accent-line" d="M379 199 A30 30 0 0 1 409 170" fill="none" stroke="#fff" stroke-width="3"/>
 </svg>

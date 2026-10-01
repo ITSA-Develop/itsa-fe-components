@@ -1,4 +1,4 @@
-import { useAppLayoutStore as useLegacyAppLayoutStore } from './appLayout.store';
+
 import { useScrollStore } from './scroll.store';
 import { useViewportStore } from './viewport.store';
 import { useTreesNodeStore } from './treesNode.store';
@@ -16,7 +16,6 @@ import {
 } from '../components/AppLayoutRefactor/components/store';
 
 export {
-	useLegacyAppLayoutStore,
 	useAppLayoutStore,
 	useAppLayoutSelectionPersistence,
 	useSidebarLayoutStore,

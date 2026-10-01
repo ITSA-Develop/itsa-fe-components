@@ -79,6 +79,33 @@ export const Playground: Story = {
 	},
 };
 
+export const ConfirmBeforeAction: Story = {
+	render: () => (
+		<div className="flex flex-wrap items-center gap-2 p-6">
+			<Button
+				type="primary"
+				label="Guardar"
+				confirm
+				onClick={() => console.log('guardar')}
+			/>
+			<Button
+				type="danger"
+				label="Eliminar"
+				confirm="¿Eliminar este registro?"
+				onClick={() => console.log('eliminar')}
+			/>
+		</div>
+	),
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'`confirm` abre un Popconfirm y ejecuta `onClick` solo al aceptar. Sin título usa "Confirmar acción". Ant Design Button no trae esta opción.',
+			},
+		},
+	},
+};
+
 export const ConfirmActions: Story = {
 	render: () => (
 		<div className="flex flex-col gap-6 p-6">

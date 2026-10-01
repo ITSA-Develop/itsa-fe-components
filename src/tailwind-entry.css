@@ -714,6 +714,17 @@ body,
 	border-top-right-radius: 0 !important;
 }
 
+/* Empty table: keep specified column widths instead of collapsing to the placeholder row. */
+.itsa-table-wrapper .ant-table-empty .ant-table-header table,
+.itsa-table-wrapper .ant-table-empty .ant-table-body table,
+.itsa-table-wrapper .ant-table-empty .ant-table-content table {
+	table-layout: fixed;
+}
+
+.itsa-table-wrapper .ant-table-empty .ant-table-thead > tr > th {
+	white-space: nowrap;
+}
+
 /* Header rounding and container */
 .itsa-table--head-rounded .ant-table-container {
 	border-radius: 0;

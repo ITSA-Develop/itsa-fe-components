@@ -51,7 +51,11 @@ export const ButtonInactiveModule = ({
 		>
 			{getIcon(
 				icon,
-				`
+				icon === 'PickupIcon'
+					? 'w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 shrink-0'
+					: icon === 'LphOutlineIcon'
+						? 'h-6 w-auto max-w-full aspect-[484/281] sm:h-8 md:h-10 lg:h-11 xl:h-12 shrink-0'
+						: `
 				w-6 h-6 
 				sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-11 lg:h-11 xl:w-12 xl:h-12 
 				shrink-0
