@@ -21,17 +21,27 @@ export interface IFormSelectTreeProps<TFieldValues extends FieldValues>
 	placeholder?: string;
 	isLoading?: boolean;
 	disabled?: boolean;
+	allowSelectAnyLevel?: boolean;
 }
 
-const mapOptionsToTreeData = (options: IFormSelectTreeOption[]): TreeSelectProps['treeData'] => {
+const mapOptionsToTreeData = (
+	options: IFormSelectTreeOption[],
+	allowSelectAnyLevel: boolean,
+): TreeSelectProps['treeData'] => {
 	return options.map(option => {
 		const hasChildren = (option.children?.length ?? 0) > 0;
 
 		return {
-			title: option.label,
+			title: hasChildren ? (
+				<span className="box-border block w-full rounded-md bg-primary-50 px-2 py-0.5 font-semibold text-primary-700">
+					{option.label}
+				</span>
+			) : (
+				option.label
+			),
 			value: option.value,
-			selectable: !hasChildren,
-			children: hasChildren ? mapOptionsToTreeData(option.children!) : undefined,
+			selectable: allowSelectAnyLevel || !hasChildren,
+			children: hasChildren ? mapOptionsToTreeData(option.children!, allowSelectAnyLevel) : undefined,
 		};
 	});
 };
@@ -62,12 +72,31 @@ const FormSelectTreeComponent = <TFieldValues extends FieldValues>({
 	placeholder,
 	isLoading,
 	disabled = false,
+	allowSelectAnyLevel = false,
 }: IFormSelectTreeProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
 
-	const treeData = useMemo(() => mapOptionsToTreeData(options), [options]);
+	const treeData = useMemo(
+		() => mapOptionsToTreeData(options, allowSelectAnyLevel),
+		[options, allowSelectAnyLevel],
+	);
 	const leafValues = useMemo(() => collectLeafValues(options), [options]);
+	const labelByValue = useMemo(() => {
+		const labels = new Map<string | number, string>();
+
+		const walk = (nodes: IFormSelectTreeOption[]) => {
+			nodes.forEach(node => {
+				labels.set(node.value, node.label);
+				if ((node.children?.length ?? 0) > 0) {
+					walk(node.children!);
+				}
+			});
+		};
+
+		walk(options);
+		return labels;
+	}, [options]);
 
 	const placeholderUppercase = useMemo(() => {
 		if (placeholder && placeholder.trim().length > 0) {
@@ -82,7 +111,8 @@ const FormSelectTreeComponent = <TFieldValues extends FieldValues>({
 			control={control}
 			render={({ field, fieldState }) => {
 				const errorMsg = fieldState.error?.message;
-				const safeValue = leafValues.includes(field.value) ? field.value : undefined;
+				const safeValue =
+					allowSelectAnyLevel || leafValues.includes(field.value) ? field.value : undefined;
 
 				return (
 					<div className="flex flex-col">
@@ -90,8 +120,11 @@ const FormSelectTreeComponent = <TFieldValues extends FieldValues>({
 						<TreeSelect
 							id={id as string}
 							showSearch
-							treeDefaultExpandAll
-							treeNodeFilterProp="title"
+							filterTreeNode={(input, node) =>
+								(labelByValue.get(node.value as string | number) ?? '')
+									.toLowerCase()
+									.includes(input.trim().toLowerCase())
+							}
 							allowClear={allowClear}
 							value={safeValue}
 							onChange={field.onChange}

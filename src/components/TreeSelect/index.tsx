@@ -11,10 +11,11 @@ const collectSelectableValues = (treeData?: TreeSelectProps['treeData']): (strin
 
 	const walk = (nodes?: NonNullable<TreeSelectProps['treeData']>) => {
 		nodes?.forEach(node => {
+			if (node.selectable !== false) {
+				values.push(node.value as string | number);
+			}
 			if (node.children && node.children.length > 0) {
 				walk(node.children);
-			} else if (node.selectable !== false) {
-				values.push(node.value as string | number);
 			}
 		});
 	};

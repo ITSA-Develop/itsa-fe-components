@@ -59,7 +59,7 @@ const meta: Meta<typeof BoundFormSelectTree> = {
 		docs: {
 			description: {
 				component:
-					'Select en árbol integrado con react-hook-form. Solo permite seleccionar nodos hoja; los nodos con hijos solo se expanden.',
+					'Select en árbol integrado con react-hook-form. Los nodos padre se muestran en color primario. Sin allowSelectAnyLevel solo se pueden elegir los nodos sin hijos.',
 			},
 		},
 	},
@@ -69,6 +69,7 @@ const meta: Meta<typeof BoundFormSelectTree> = {
 		allowClear: { control: 'boolean' },
 		isLoading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
+		allowSelectAnyLevel: { control: 'boolean' },
 	},
 };
 export default meta;
@@ -146,6 +147,23 @@ export const WithDefaultValue: Story = {
 	},
 	render: args => (
 		<RHFForm defaultValues={{ category: 'laptops' }}>
+			<BoundFormSelectTree {...args} />
+		</RHFForm>
+	),
+};
+
+export const AnyLevel: Story = {
+	name: 'Cualquier nivel',
+	args: {
+		name: 'category',
+		label: 'Categoría',
+		placeholder: 'Seleccione una categoría',
+		allowClear: true,
+		options: sampleOptions,
+		allowSelectAnyLevel: true,
+	},
+	render: args => (
+		<RHFForm defaultValues={{ category: undefined as unknown as string }}>
 			<BoundFormSelectTree {...args} />
 		</RHFForm>
 	),
