@@ -304,7 +304,14 @@ export const TableMobileTypeCollapse = <T extends object>({
 					onCancel={handleCancelConfirm}
 					okText={confirmModalState.action?.confirmDelete?.confirmLabel}
 					cancelText={confirmModalState.action?.confirmDelete?.cancelLabel}
-					okButtonProps={{ danger: confirmModalState.action?.danger }}
+					okButtonProps={
+						confirmModalState.action?.danger
+							? { danger: true }
+							: {
+									className: 'itsa-btn itsa-btn--primary',
+									style: { borderColor: 'var(--itsa-primary, #EA3B48)' },
+								}
+					}
 					cancelButtonProps={{ danger: true }}
 				>
 					{getConfirmContent()}

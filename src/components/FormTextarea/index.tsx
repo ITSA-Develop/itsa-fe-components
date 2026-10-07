@@ -72,7 +72,7 @@ const FormTextareaComponent = <TFieldValues extends FieldValues>({
         };
 
         return (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-0">
             <FormLabel label={label} htmlFor={id} />
             <Textarea
               id={id as string}
