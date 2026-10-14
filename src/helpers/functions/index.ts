@@ -154,7 +154,9 @@ export const disabledActionButton = (actionExecute?: EActionType, actions?: IAct
 	return true;
 };
 
-export const isDisabledAction = (actionsPermissions?: IActions, operation?: EActionType) => {
+type TActionPermissionFlags = Pick<IActions, 'allActions' | 'read' | 'create' | 'update' | 'delete'>;
+
+export const isDisabledAction = (actionsPermissions?: TActionPermissionFlags, operation?: EActionType) => {
 
 	if ((operation === undefined) || (actionsPermissions === undefined)) {
 		return false;

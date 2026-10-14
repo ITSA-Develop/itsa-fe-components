@@ -40,6 +40,9 @@ export const PERMISSIONS_ACTIONS: Record<PermissionAction, PermissionAction> = {
 	update: 'update',
 	delete: 'delete',
 	allActions: 'allActions',
+	scopeLevelId: 'scopeLevelId',
+	scopeLevelName: 'scopeLevelName',
+	scopeLevelCode: 'scopeLevelCode',
 };
 
 export const SUBDOMAINS = {
