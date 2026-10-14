@@ -301,3 +301,11 @@ export enum ETreeNodeTypeComponent {
 	select = 'SELECT',
 	crud = 'CRUD',
 }
+
+export enum EScopeLevelCode {
+	NACIONAL = "DT199",
+	AGENCIA = "DT198",
+	SUBAGENCIA = "DT197",
+	PROPIO = "DT196",
+}
+

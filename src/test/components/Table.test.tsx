@@ -164,6 +164,18 @@ describe('Table component', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	it('hides pagination when paginationConfig is explicitly undefined or false', () => {
+		const { container: undefinedContainer } = renderWithControlActions(
+			<Table {...defaultProps} paginationConfig={undefined} />,
+		);
+		const { container: falseContainer } = renderWithControlActions(
+			<Table {...defaultProps} paginationConfig={false} />,
+		);
+
+		expect(undefinedContainer.querySelector('.ant-pagination')).not.toBeInTheDocument();
+		expect(falseContainer.querySelector('.ant-pagination')).not.toBeInTheDocument();
+	});
+
 	it('uses custom pagination config when provided', () => {
 		const customPaginationConfig = {
 			pageSize: 5,

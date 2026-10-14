@@ -82,6 +82,9 @@ export interface IActions {
 	create: boolean;
 	update: boolean;
 	delete: boolean;
+	scopeLevelId: number;
+	scopeLevelName: string;
+	scopeLevelCode: EScopeLevelCode;
 }
 
 export interface ISelectOptionDropdownButton {
@@ -116,7 +119,7 @@ export interface IUserRole {
 // }
 //--------------------------------------------------->
 // TODO: clean up this file after implementations starts
-import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType } from '@/enums';
+import { EAddressType, EEmailType, EPhoneConnectionType, EPhoneType, EScopeLevelCode } from '@/enums';
 import { TDate, TInputOptions, TInputRules, TTextTransform } from '@/types';
 import { SelectProps } from 'antd';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';

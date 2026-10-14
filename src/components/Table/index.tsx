@@ -53,7 +53,7 @@ export interface ITableProps<T extends object> {
 	data: T[];
 	rowKey: Extract<keyof T, string> | ((record: T) => React.Key);
 	loading: boolean;
-	onChange: (
+	onChange?: (
 		pagination?: TablePaginationConfig,
 		sorter?: ISorterTable,
 		filters?: Record<string, FilterValue | null>,
@@ -62,7 +62,7 @@ export interface ITableProps<T extends object> {
 	refreshDataFunction?: () => void;
 	bordered?: boolean;
 	rowSelection?: AntTableProps<T>['rowSelection'];
-	paginationConfig?: TablePaginationConfig;
+	paginationConfig?: TablePaginationConfig | false;
 	selectionMode?: 'single' | 'multiple';
 	columnActions?: ITableColumnAction<T>[];
 	getActionsDisabled?: (record: T) => boolean;
@@ -81,35 +81,38 @@ export interface ITableProps<T extends object> {
 	// onChangeBusinessLine?: (businessLineId: number) => void;
 }
 
-export const Table = <T extends object>({
-	columns,
-	data,
-	rowKey,
-	loading,
-	onChange,
-	bordered = true,
-	className,
-	rowSelection,
-	selectionMode = 'multiple',
-	paginationConfig = DEFAULT_PAGINATION_CONFIG,
-	columnActions,
-	getActionsDisabled,
-	getActionsTriggerDisabled,
-	locale = {
-		emptyText: 'No hay datos',
-	},
-	rowHoverable = true,
-	refreshDataFunction,
-	rowClassName,
-	rootClassName,
-	expandable,
-	showHeader = true,
-	heightMobile = '50vh',
-	enableColumnDrag = false,
-	scroll,
-	onColumnsOrderChange,
-	// onChangeBusinessLine,
-}: ITableProps<T>) => {
+export const Table = <T extends object>(props: ITableProps<T>) => {
+	const hasExplicitPaginationConfig = Object.prototype.hasOwnProperty.call(props, 'paginationConfig');
+	const {
+		columns,
+		data,
+		rowKey,
+		loading,
+		onChange,
+		bordered = true,
+		className,
+		rowSelection,
+		selectionMode = 'multiple',
+		paginationConfig: paginationConfigProp,
+		columnActions,
+		getActionsDisabled,
+		getActionsTriggerDisabled,
+		locale = {
+			emptyText: 'No hay datos',
+		},
+		rowHoverable = true,
+		refreshDataFunction,
+		rowClassName,
+		rootClassName,
+		expandable,
+		showHeader = true,
+		heightMobile = '50vh',
+		enableColumnDrag = false,
+		scroll,
+		onColumnsOrderChange,
+		// onChangeBusinessLine,
+	} = props;
+	const paginationConfig = hasExplicitPaginationConfig ? paginationConfigProp : DEFAULT_PAGINATION_CONFIG;
 	const { userInformation } = useAppLayoutStore();
 	const { height: viewportHeight } = useScreenViewport();
 	const { programId, fnApiValidatePermissionAction } = useControlActions();
@@ -296,7 +299,7 @@ export const Table = <T extends object>({
 			return;
 		}
 		const sorterParsed: ISorterTable = parseSorter(sorter);
-		onChange(pagination, sorterParsed, filters, extra);
+		onChange?.(pagination, sorterParsed, filters, extra);
 	};
 
 	const columnDrag = useTableColumnDrag({
@@ -397,7 +400,7 @@ export const Table = <T extends object>({
 				emptyContent={getTableEmptyContent(locale)}
 				refreshDataFunction={refreshDataFunction}
 				showPagination={showPagination}
-				paginationConfig={paginationConfig}
+				paginationConfig={finalPagination || undefined}
 				onChange={onChange}
 				rowSelection={resolvedRowSelection}
 				selectionMode={selectionMode}
@@ -482,7 +485,14 @@ export const Table = <T extends object>({
 					onCancel={handleCancelConfirm}
 					okText={confirmModalState.action?.confirmDelete?.confirmLabel}
 					cancelText={confirmModalState.action?.confirmDelete?.cancelLabel}
-					okButtonProps={{ danger: confirmModalState.action?.danger }}
+					okButtonProps={
+						confirmModalState.action?.danger
+							? { danger: true }
+							: {
+									className: 'itsa-btn itsa-btn--primary',
+									style: { borderColor: 'var(--itsa-primary, #EA3B48)' },
+								}
+					}
 					cancelButtonProps={{ danger: true }}
 				>
 					{getConfirmContent()}
