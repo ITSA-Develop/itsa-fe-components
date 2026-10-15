@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IActions } from "@/interfaces";
-import { EScopeLevelCode } from "..";
+import { EScopeLevelCode } from "@/enums";
 
 
 
