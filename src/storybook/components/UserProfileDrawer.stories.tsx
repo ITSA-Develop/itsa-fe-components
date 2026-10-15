@@ -33,8 +33,8 @@ const mockUserInformation: IUserInformation = {
 	picture: '',
 	email: 'maria.perez@itsa.local',
 	businessLines: [
-		{ id: 1, name: 'Línea de negocio principal' },
-		{ id: 2, name: 'Línea de negocio corporativa' },
+		{ id: 1, name: 'Línea de negocio principal', code: 'LPH' },
+		{ id: 2, name: 'Línea de negocio corporativa', code: 'COR' },
 	],
 	roles: [
 		{ id: 1, code: 'FO_ADMIN', name: 'Administrador Front', moduleId: 10 },

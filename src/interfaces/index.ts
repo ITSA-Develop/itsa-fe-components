@@ -357,6 +357,7 @@ export interface IUserRole {
 export interface IUserBusinessLine {
 	id: number;
 	name: string;
+	code: string;
 }
 
 export interface IUserInformation {
