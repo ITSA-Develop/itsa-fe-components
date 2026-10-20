@@ -1,3 +1,4 @@
+import { ELineBusinessClientCode } from '@/enums';
 import { IAgency, IModule, IPermissions, ISubAgency, ISubmodule, IUserInformation, IUserRole } from '@/interfaces';
 import { DefaultOptionType } from 'antd/es/select';
 import { create } from 'zustand';
@@ -91,6 +92,8 @@ export interface AppLayoutStore {
 
 	businessLineId?: number;
 	setBusinessLineId: (businessLineId: number) => void;
+	businessLineCode?: ELineBusinessClientCode;
+	setBusinessLineCode: (businessLineCode: ELineBusinessClientCode) => void;
 
 	hydrateSelection: (selection: StoredAppLayoutSelection) => void;
 	setPermissions: (permissions: IPermissions) => void;
@@ -114,6 +117,7 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 	currentCompany: undefined,
 	userInformation: undefined,
 	businessLineId: undefined,
+	businessLineCode: undefined,
 	hydrateSelection: selection => {
 		const state = get();
 		const currentCompany = state.companyOptionsReady
@@ -224,6 +228,10 @@ export const useAppLayoutStore = create<AppLayoutStore>((set, get) => ({
 
 	setBusinessLineId: (businessLineId: number) => {
 		set({ businessLineId });
+	},
+
+	setBusinessLineCode: (businessLineCode: ELineBusinessClientCode) => {
+		set({ businessLineCode });
 	},
 	
 }));

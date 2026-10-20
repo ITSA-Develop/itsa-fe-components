@@ -73,7 +73,7 @@ const withPermissions = (Story: React.ComponentType) => {
 			],
 			identification: '1234567890',
 			identificationType: 'CC',
-			businessLines: [{ id: 1, name: 'Business Line 1' }],
+			businessLines: [{ id: 1, name: 'Business Line 1', code: 'LPH' }],
 			picture: 'https://via.placeholder.com/150',
 		};
 		setUserInformation(userInfo);

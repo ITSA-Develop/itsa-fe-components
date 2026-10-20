@@ -10,7 +10,17 @@ export enum EErrorCodes {
 	INITIAL = 'INITIAL',
 	API_ERROR = 'API_ERROR',
 	OTHERS = 'OTHERS',
-} // this probably would need to be updated depending on implementations
+}
+
+export enum ELineBusinessClientCode {
+	TALLERES = "TA",
+	MOTOS = "MO",
+	LLANTAS = "LL",
+	REPUESTOS = "RE",
+	VEHICULOS = "VE",
+	LINEA_PARA_EL_HOGAR = "EL",
+	DEFAULT = "",
+}
 
 export enum ESize {
 	extraSmall = 'extraSmall',
