@@ -40,19 +40,6 @@ export default {
 			warning: '#F9A825',
 			error: '#D32F2F',
 
-			// DEPRECATED COLORS
-			// tokens - default honey
-			// 'primary-50': '#FFF8EB',
-			// 'primary-100': '#FFEDC6',
-			// 'primary-200': '#FFD888',
-			// 'primary-300': '#FFBE4A',
-			// 'primary-400': '#FFA726',
-			// 'primary-500': '#EF8329',
-			// 'primary-600': '#EB5C29',
-			// 'primary-700': '#B73D06',
-			// 'primary-800': '#942E0C',
-			// 'primary-900': '#7A260D',
-
 			// Primitive colors
 
 			// alpine
