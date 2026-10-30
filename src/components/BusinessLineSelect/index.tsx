@@ -1,6 +1,7 @@
 import { Select } from 'antd';
 import { CSSProperties } from 'react';
 import { useAppLayoutStore } from '@/store';
+import { ELineBusinessClientCode } from '@/enums';
 
 export interface IBusinessLineSelectProps {
 	className?: string;
@@ -13,8 +14,14 @@ export const BusinessLineSelect = ({
 	style,
 	minWidth = 220,
 }: IBusinessLineSelectProps) => {
-	const { userInformation, businessLineId, setBusinessLineId } = useAppLayoutStore();
+	const { userInformation, businessLineId, setBusinessLineId, setBusinessLineCode } = useAppLayoutStore();
 	const businessLines = userInformation?.businessLines ?? [];
+
+	const handleChangeBusinessLine = (businessLineId: number) => {
+		setBusinessLineId(businessLineId);
+		const code = businessLines.find(businessLine => businessLine.id === businessLineId)?.code ?? '';
+		setBusinessLineCode(code as ELineBusinessClientCode);
+	};
 
 	if (businessLines.length <= 1) {
 		return null;
@@ -24,7 +31,7 @@ export const BusinessLineSelect = ({
 		<Select
 			options={businessLines.map(businessLine => ({ label: businessLine.name, value: businessLine.id }))}
 			value={businessLineId}
-			onChange={setBusinessLineId}
+			onChange={handleChangeBusinessLine}
 			size="small"
 			className={className}
 			style={{ minWidth, ...style }}
