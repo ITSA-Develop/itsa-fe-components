@@ -29,24 +29,26 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 	const [expandedIds, setExpandedIds] = React.useState<Set<number>>(() => new Set(defaultExpandedIds ?? []));
 	const prevChildrenCountRef = React.useRef<Map<number, number> | null>(null);
 
-	const buildChildrenCountMap = (nodes: IItemTreeNode[]): Map<number, number> => {
-		const map = new Map<number, number>();
+	const buildChildrenCountMap = (nodes: IItemTreeNode[]): { counts: Map<number, number>; activeIds: Set<number> } => {
+		const counts = new Map<number, number>();
+		const activeIds = new Set<number>();
 		const walk = (n: IItemTreeNode) => {
-			map.set(n.id, n.children?.length ?? 0);
+			counts.set(n.id, n.children?.length ?? 0);
+			if (n.active) activeIds.add(n.id);
 			n.children?.forEach(walk);
 		};
 		nodes.forEach(walk);
-		return map;
+		return { counts, activeIds };
 	};
 
 	useEffect(() => {
-		const currentMap = buildChildrenCountMap(items);
+		const { counts: currentMap, activeIds } = buildChildrenCountMap(items);
 		const prevMap = prevChildrenCountRef.current;
 		if (prevMap) {
 			const parentsToExpand: number[] = [];
 			currentMap.forEach((count, id) => {
 				const prevCount = prevMap.get(id) ?? 0;
-				if (count > prevCount) {
+				if (count > prevCount && activeIds.has(id)) {
 					parentsToExpand.push(id);
 				}
 			});
@@ -77,6 +79,7 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 		onAddChild?.(node);
 	};
 	const handleExpandParent = (node: IItemTreeNode, isExpanded: boolean) => {
+		if (!node.active) return;
 		if (onExpandParent) {
 			onExpandParent(node, !isExpanded);
 		}
@@ -90,18 +93,20 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 		const hoverColor = 'hover:!bg-gray-75';
 		const isExpanded = expandedIds.has(node.id);
 		const hasChildren = (node.children?.length ?? 0) > 0;
+		const canExpand = hasChildren && node.active;
+		const isVisuallyExpanded = canExpand && isExpanded;
 
 		const classNameNode = `nbg w-full min-w-0 ${type === ETreeNodeTypeComponent.select ? 'cursor-pointer' : ''}`;
 
 		return (
 			<div key={node.id} className={classNameNode}>
 				<div
-					className={`${baseBgColor} ${isExpanded ? '!bg-gray-75' : ''} ${borderColor} border rounded-lg p-2 transition-all duration-200 ${hoverColor}`}
+					className={`${baseBgColor} ${isVisuallyExpanded ? '!bg-gray-75' : ''} ${borderColor} border rounded-lg p-2 transition-all duration-200 ${hoverColor}`}
 					style={{ marginLeft: `${level * 32}px` }}
 					onClick={() => onSelectNode?.(node)}
 				>
 					<div className="flex items-center gap-1.5">
-						{hasChildren && (
+						{canExpand && (
 							<ButtonAntd
 								size="small"
 								type="default"
@@ -112,7 +117,7 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 								icon={
 									<RightOutlined
 										style={{
-											transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+											transform: isVisuallyExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
 										}}
 									/>
 								}
@@ -159,7 +164,7 @@ export const TreeNode: React.FC<ITreeNodeProps> = ({
 					</div>
 				</div>
 
-				{node.children && node.children.length > 0 && isExpanded && (
+				{isVisuallyExpanded && (
 					<div className="space-y-1 mt-1">{node.children.map(child => renderNode(child, node.id))}</div>
 				)}
 			</div>

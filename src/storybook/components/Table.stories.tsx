@@ -537,9 +537,9 @@ const businessLinesUser: IUserInformation = {
 	email: 'maria.perez@itsa.local',
 	roles: [],
 	businessLines: [
-		{ id: 1, name: 'Línea de negocio principal' },
-		{ id: 2, name: 'Línea de negocio corporativa' },
-		{ id: 3, name: 'Línea de negocio internacional' },
+		{ id: 1, name: 'Línea de negocio principal', code: 'LPH' },
+		{ id: 2, name: 'Línea de negocio corporativa', code: 'COR' },
+		{ id: 3, name: 'Línea de negocio internacional', code: 'INT' },
 	],
 };
 
