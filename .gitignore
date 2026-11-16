@@ -48,3 +48,4 @@ tmp
 .cursor
 
 /temp
+.env*
