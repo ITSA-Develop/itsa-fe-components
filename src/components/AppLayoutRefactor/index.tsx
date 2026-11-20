@@ -28,9 +28,10 @@ export interface AppLayoutProps {
   children: ReactNode;
   menuItemsNavigate: (program: IProgram) => void;
   userActions: MenuProps;
+  appVersion: string;
 }
 
-export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession, userActions }: AppLayoutProps) => {
+export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession, userActions, appVersion }: AppLayoutProps) => {
   useAppLayoutSelectionPersistence(optionsCompany, loadingAppLayout);
   return (<div className="flex h-[100dvh] w-full min-w-0 overflow-hidden">
     <Layout className="h-full min-h-0 w-full min-w-0 md:p-0.5 gap-0.5 md:gap-2">
@@ -44,6 +45,7 @@ export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItem
       <SidebarLayout
         loadingAppLayout={loadingAppLayout}
         menuItemsNavigate={menuItemsNavigate}
+        appVersion={appVersion}
       >
         {children}
       </SidebarLayout>

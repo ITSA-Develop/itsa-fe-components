@@ -84,6 +84,7 @@ export const WithinAppLayout: Story = {
 				onCloseSession={() => {}}
 				menuItemsNavigate={args.handleNavigateProgram}
 				userActions={{ items: [] }}
+				appVersion="0.1.57"
 			>
 				<Dashboard {...args} />
 			</AppLayout>
