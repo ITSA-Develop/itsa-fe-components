@@ -709,6 +709,49 @@ export const WithColumnDrag: Story = {
 	},
 };
 
+const TableWithRowDrag = () => {
+	const [data, setData] = React.useState(sampleData.slice(0, 6));
+	const [orderKeys, setOrderKeys] = React.useState(() => data.map(row => String(row.id)));
+
+	return (
+		<div className="flex flex-col gap-3 p-2">
+			<p className="text-sm text-gray-600">
+				Arrastra una fila para subir o bajar el registro. Requiere `onDataOrderChange` para persistir el nuevo orden en
+				el estado del padre.
+			</p>
+			<p className="text-xs text-gray-500">
+				Orden actual: <strong>{orderKeys.join(' → ')}</strong>
+			</p>
+			<Table
+				columns={sampleColumns}
+				data={data}
+				loading={false}
+				bordered={false}
+				onChange={() => {}}
+				rowKey="id"
+				enableRowDrag
+				onDataOrderChange={nextData => {
+					setData(nextData);
+					setOrderKeys(nextData.map(row => String(row.id)));
+				}}
+				paginationConfig={false}
+			/>
+		</div>
+	);
+};
+
+export const WithRowDrag: Story = {
+	render: () => <TableWithRowDrag />,
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Reordenamiento vertical de filas (`enableRowDrag` + `onDataOrderChange`), patrón Ant Design con @dnd-kit. Solo en vista escritorio.',
+			},
+		},
+	},
+};
+
 export const WithExpandableRows: Story = {
 	render: () => (
 		<Table

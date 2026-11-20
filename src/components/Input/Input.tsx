@@ -14,6 +14,9 @@ export interface IInputProps extends InputProps {
 	type: string;
 }
 
+const hasAffixOrAddon = (props: Pick<InputProps, 'prefix' | 'suffix' | 'addonBefore' | 'addonAfter' | 'allowClear'>) =>
+	Boolean(props.prefix ?? props.suffix ?? props.addonBefore ?? props.addonAfter ?? props.allowClear);
+
 export const Input = ({
 	ref,
 	showCountCharacters = false,
@@ -21,10 +24,34 @@ export const Input = ({
 	suggestOptions,
 	suggestProps,
 	className,
+	classNames,
+	rootClassName,
 	...rest
 }: IInputProps) => {
-	const mergedClassName = ['w-full rounded-lg max-h-8', className].filter(Boolean).join(' ');
-	const { onChange, value, defaultValue, ...inputRest } = rest;
+	const {
+		onChange,
+		value,
+		defaultValue,
+		prefix,
+		suffix,
+		addonBefore,
+		addonAfter,
+		allowClear,
+		style,
+		...inputRest
+	} = rest;
+
+	const withAffixOrAddon = hasAffixOrAddon({ prefix, suffix, addonBefore, addonAfter, allowClear });
+
+	const joinClass = (...parts: Array<string | undefined>) => parts.filter(Boolean).join(' ');
+
+	const mergedClassName = withAffixOrAddon
+		? joinClass('w-full', className)
+		: joinClass('w-full rounded-lg max-h-8', className);
+
+	const mergedRootClassName = withAffixOrAddon
+		? joinClass('w-full itsa-input--with-affix-or-addon', rootClassName)
+		: rootClassName;
 	// AntD v5 uses `popupClassName` for the dropdown popup.
 	// Keep compatibility if someone passes `dropdownClassName` (older naming) via `suggestProps`.
 	const suggestPopupClassName = (suggestProps as any)?.popupClassName ?? (suggestProps as any)?.dropdownClassName;
@@ -42,10 +69,18 @@ export const Input = ({
 		<AntInput
 			type={type}
 			{...inputRest}
+			prefix={prefix}
+			suffix={suffix}
+			addonBefore={addonBefore}
+			addonAfter={addonAfter}
+			allowClear={allowClear}
 			value={value as any}
 			defaultValue={defaultValue as any}
 			ref={ref}
 			className={mergedClassName}
+			rootClassName={mergedRootClassName}
+			classNames={classNames}
+			style={style}
 			count={{
 				show: showCountCharacters,
 				strategy: txt => String(txt).length,

@@ -1,19 +1,22 @@
 import { ModalResponsive, HeaderButton } from '@/components/ModalResponsive';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 
+export interface ModalEntryType {
+    id?: number;
+    title?: string;
+    content: ReactNode;
+    footer?: ReactNode;
+    onOk?: () => void;
+    onCancel?: () => void;
+    height?: string;
+    width?: string;
+    afterClose?: () => void;
+    closable?: boolean;
+    extraHeaderButtons?: HeaderButton[];
+}
+
 export interface ResponsiveModalContextType {
-    openModal: (params: {
-        content: ReactNode;
-        title?: string;
-        footer?: ReactNode;
-        onOk?: () => void;
-        onCancel?: () => void;
-        height?: string;
-        width?: string;
-        closable?: boolean;
-        afterClose?: () => void;
-        extraHeaderButtons?: HeaderButton[];
-    }) => void;
+    openModal: (params: ModalEntryType) => void;
     closeModal: () => void;
     setBeforeClose: Dispatch<SetStateAction<(() => void) | undefined>>;
 }

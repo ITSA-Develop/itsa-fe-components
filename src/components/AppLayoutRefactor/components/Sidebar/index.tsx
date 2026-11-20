@@ -12,9 +12,10 @@ export interface SidebarLayoutProps {
 	loadingAppLayout: boolean;
   children: ReactNode;
   menuItemsNavigate: (program: IProgram) => void;
+  appVersion: string;
 }
 
-export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProps) => {
+export const SidebarLayout = ({ children, menuItemsNavigate, appVersion }: SidebarLayoutProps) => {
   const { footerComponent } = useAppLayoutFooter();
   const { open, setOpen } = useSidebarLayoutStore();
   const [openKeysMenuOptions, setOpenKeysMenuOptions] = useState<string[]>([]);
@@ -47,7 +48,10 @@ export const SidebarLayout = ({ children, menuItemsNavigate }: SidebarLayoutProp
   }
   
   const footerDrawer = () => {
-    return <div className="flex flex-row justify-end">
+    return <div className="flex flex-row items-center justify-between gap-2">
+      <span className="min-w-0 truncate rounded-xl bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-800">
+        {appVersion}
+      </span>
       <Button icon={<DoubleLeftOutlined className="text-base text-gray-400" />} type="text" size="middle" onClick={closeDrawer}>
       </Button>
     </div>;

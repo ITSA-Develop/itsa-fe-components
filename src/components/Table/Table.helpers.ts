@@ -27,11 +27,13 @@ export const getIsMobileTableView = () => {
 
 export const resolveTableRootClassName = ({
 	enableColumnDrag,
+	enableRowDrag,
 	hasRefresh,
 	rootClassName,
 	className,
 }: {
 	enableColumnDrag: boolean;
+	enableRowDrag?: boolean;
 	hasRefresh: boolean;
 	rootClassName?: string;
 	className?: string;
@@ -40,6 +42,7 @@ export const resolveTableRootClassName = ({
 		'itsa-table--head-rounded',
 		'w-full min-w-0 max-w-full',
 		enableColumnDrag ? 'itsa-table--column-drag' : '',
+		enableRowDrag ? 'itsa-table--row-drag' : '',
 		hasRefresh ? 'itsa-table--with-refresh' : '',
 		rootClassName,
 		className,

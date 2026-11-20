@@ -92,6 +92,12 @@ export const INVENTORY: InventoryItem[] = [
 	{ name: 'FormInputNumber', status: 'implemented', publicApi: true, notes: 'Numérico positivo' },
 	{ name: 'FormTextarea', status: 'implemented', publicApi: true, notes: 'Textarea con transform de texto' },
 	{ name: 'FormSelect', status: 'implemented', publicApi: true, notes: 'Select ligado a RHF' },
+	{
+		name: 'FormIconSelector',
+		status: 'implemented',
+		publicApi: true,
+		notes: 'Selector de iconos Lucide con nombre e icono, ligado a RHF',
+	},
 	{ name: 'FormSelectTree', status: 'implemented', publicApi: true, notes: 'Árbol de selección en formularios' },
 	{ name: 'FormCheckBox', status: 'implemented', publicApi: true, notes: 'Checkbox ligado a RHF' },
 	{ name: 'FormRadio', status: 'implemented', publicApi: true, notes: 'Radio group ligado a RHF' },

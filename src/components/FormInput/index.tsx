@@ -21,6 +21,7 @@ const restoreInputSelection = (input: HTMLInputElement, start: number | null, en
 	});
 };
 
+/** Soporta props de Ant Design Input (`prefix`, `suffix`, `addonBefore`, `addonAfter`, etc.) vía spread al `Input` base. */
 export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
 	name: Path<TFieldValues>;
 	label: string;
@@ -43,6 +44,15 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	autoComplete = 'off',
 	disabled = false,
 	textTransform = 'uppercase',
+	prefix,
+	suffix,
+	addonBefore,
+	addonAfter,
+	allowClear,
+	classNames,
+	rootClassName,
+	style: styleProp,
+	...rest
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -76,9 +86,10 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 					<div className="flex flex-col">
 						<FormLabel label={label} htmlFor={id} />
 						<Input
+							{...rest}
 							id={id as string}
 							type={EInput.text}
-							value={field.value}
+							value={field.value ?? ''}
 							onChange={handleChange}
 							onBlur={handleOnBlur}
 							ref={field.ref}
@@ -90,11 +101,17 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							placeholder={placeholder}
 							autoComplete={autoComplete}
 							disabled={disabled}
-							style={
-								textTransform === 'uppercase' || textTransform === 'lowercase'
-									? undefined
-									: { textTransform }
-							}
+							prefix={prefix}
+							suffix={suffix}
+							addonBefore={addonBefore}
+							addonAfter={addonAfter}
+							allowClear={allowClear}
+							classNames={classNames}
+							rootClassName={rootClassName}
+							style={{
+								...styleProp,
+								...(textTransform !== 'uppercase' && textTransform !== 'lowercase' ? { textTransform } : null),
+							}}
 						/>
 						{validatMsg !== undefined && <FormLabelError label={validatMsg} id={errId} />}
 					</div>

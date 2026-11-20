@@ -21,6 +21,7 @@ const LAYOUT_ARGS = {
 		console.log('menuItemsNavigate', program);
 	},
 	userActions: { items: [{ key: 'logout', label: 'Cerrar sesión' }] },
+	appVersion: '0.1.57',
 };
 
 const LayoutPreview = () => {
