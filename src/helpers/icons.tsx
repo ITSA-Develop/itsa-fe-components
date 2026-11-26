@@ -1,8 +1,7 @@
 import React from 'react';
 import * as Icons from '@/assets/icons';
 import { DynamicIcon, iconNames as lucideIconNames, type IconName as LucideIconName } from 'lucide-react/dynamic';
-
-const DEFAULT_LUCIDE_ICON = 'folder-pen' satisfies LucideIconName;
+import { Folder } from 'lucide-react';
 
 export type IconName = keyof typeof Icons;
 
@@ -32,9 +31,11 @@ const renderLucideIcon = (name: LucideIconName, size?: number | string) => (
 		name={name}
 		size={toLucideSize(size)}
 		strokeWidth={1.75}
-		fallback={() => <span className="block h-4 w-4" />}
+		fallback={() => <Folder size={toLucideSize(size)} strokeWidth={1.75} />}
 	/>
 );
+
+const renderDefaultIcon = (size?: number | string) => <Folder size={toLucideSize(size)} strokeWidth={1.75} />;
 
 export const getIconByName = (name: string | null | undefined, options: GetIconOptions = {}) => {
 	const { className, style, size } = options;
@@ -63,7 +64,7 @@ export const getIconByName = (name: string | null | undefined, options: GetIconO
 			) : IconComponent ? (
 				<IconComponent />
 			) : (
-				renderLucideIcon(DEFAULT_LUCIDE_ICON, size)
+				renderDefaultIcon(size)
 			)}
 		</span>
 	);

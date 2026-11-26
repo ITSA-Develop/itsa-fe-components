@@ -171,6 +171,10 @@ export default {
 					from: { opacity: '0' },
 					to: { opacity: '1' },
 				},
+				contentSwap: {
+					'0%': { opacity: '0', transform: 'translateY(6px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
 			},
 			animation: {
 				ripple: 'ripple 1s linear',
@@ -178,6 +182,7 @@ export default {
 				slideOut: 'slideOut 300ms ease-in forwards',
 				slideInRight: 'slideInRight 0.3s ease-in-out',
 				fadeIn: 'fadeIn 0.3s ease-in-out',
+				contentSwap: 'contentSwap 220ms ease-out',
 			},
 			fontFamily: {
 				sans: ['"Public Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],

@@ -22,7 +22,6 @@ export const MenuItems = ({
   menuItemsNavigate,
 }: MenuItemsProps) => {
   const { module } = useAppLayoutStore();
-
   const { menuItems, programsByKey } = useMemo(() => {
     if (module === undefined) {
       return {
@@ -47,7 +46,7 @@ export const MenuItems = ({
         ...submodule.programs
           .filter(program => program.root)
           .map(program => {
-            const key = `program-${program.id}`;
+            const key = `/${program.path}`;
             programMap.set(key, program);
 
             return {
@@ -94,6 +93,8 @@ export const MenuItems = ({
     }
   }
 
+  console.log('menuItems =>',menuItems);
+
   return <div className="flex max-h-[70dvh] flex-col gap-2 overflow-auto">
     <Menu
       mode={"inline"}
@@ -103,6 +104,7 @@ export const MenuItems = ({
       openKeys={openKeysMenuOptions}
       onOpenChange={onOpenKeysChange}
       onClick={handleMenuClick}
+      
     />
   </div>;
 }

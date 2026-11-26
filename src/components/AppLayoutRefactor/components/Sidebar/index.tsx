@@ -13,9 +13,10 @@ export interface SidebarLayoutProps {
   children: ReactNode;
   menuItemsNavigate: (program: IProgram) => void;
   appVersion: string;
+  currentPathKeyString: string;
 }
 
-export const SidebarLayout = ({ children, menuItemsNavigate, appVersion }: SidebarLayoutProps) => {
+export const SidebarLayout = ({ children, menuItemsNavigate, appVersion, currentPathKeyString }: SidebarLayoutProps) => {
   const { footerComponent } = useAppLayoutFooter();
   const { open, setOpen } = useSidebarLayoutStore();
   const [openKeysMenuOptions, setOpenKeysMenuOptions] = useState<string[]>([]);
@@ -86,6 +87,7 @@ export const SidebarLayout = ({ children, menuItemsNavigate, appVersion }: Sideb
           onOpenKeysChange={setOpenKeysMenuOptions}
           searchTerm={searchTerm}
           menuItemsNavigate={menuItemsNavigate}
+          currentPathKeyString={currentPathKeyString}
         />
       </div>
     </Drawer>

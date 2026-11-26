@@ -52,7 +52,7 @@ const LayoutPreview = () => {
 
 	return (
 		<div className="h-[480px] overflow-auto rounded-lg border border-gray-200">
-			<AppLayout {...LAYOUT_ARGS}>
+			<AppLayout {...LAYOUT_ARGS} currentPathKeyString="/clientes">
 				<div className="flex flex-col gap-3 p-2">
 					<BreadcrumbCustom
 						title="Pantalla de ejemplo"

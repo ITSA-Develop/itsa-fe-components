@@ -29,9 +29,10 @@ export interface AppLayoutProps {
   menuItemsNavigate: (program: IProgram) => void;
   userActions: MenuProps;
   appVersion: string;
+  currentPathKeyString: string;
 }
 
-export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession, userActions, appVersion }: AppLayoutProps) => {
+export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItemsNavigate, onCloseSession, userActions, appVersion, currentPathKeyString }: AppLayoutProps) => {
   useAppLayoutSelectionPersistence(optionsCompany, loadingAppLayout);
   return (<div className="flex h-[100dvh] w-full min-w-0 overflow-hidden">
     <Layout className="h-full min-h-0 w-full min-w-0 md:p-0.5 gap-0.5 md:gap-2">
@@ -46,6 +47,7 @@ export const AppLayout = ({ optionsCompany, loadingAppLayout, children, menuItem
         loadingAppLayout={loadingAppLayout}
         menuItemsNavigate={menuItemsNavigate}
         appVersion={appVersion}
+        currentPathKeyString={currentPathKeyString}
       >
         {children}
       </SidebarLayout>
