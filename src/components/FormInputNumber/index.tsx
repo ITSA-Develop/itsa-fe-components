@@ -9,19 +9,21 @@ import {
 import { FormLabel } from '@/components/FormLabel';
 import { FormLabelError } from '@/components/FormLabelError';
 import { Input } from '@/components/Input/Input';
-import { memo, useEffect, useId, useMemo, useState } from 'react';
+import { memo, useEffect, useId, useMemo, useState, type ReactNode } from 'react';
 import { EInput } from '@/enums';
 import { filterPositiveNumbersOnly, parsePositiveDecimal } from '@/helpers';
 
-export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name'> {
+export interface IInputProps<TFieldValues extends FieldValues> extends Omit<InputProps, 'form' | 'name' | 'prefix' | 'suffix'> {
 	name: Path<TFieldValues>;
 	label: string;
 	showCaracteres?: boolean;
 	control: Control<TFieldValues>;
 	placeholder?: string;
 	disabled?: boolean;
-	suffix?: string;
-	prefix?: string;
+	/** Texto o icono dentro del input, a la izquierda. */
+	prefix?: ReactNode;
+	/** Texto o icono dentro del input, a la derecha. */
+	suffix?: ReactNode;
 }
 
 const formatNumberValue = (value: unknown): string => {
@@ -75,8 +77,9 @@ type FormInputNumberFieldProps<TFieldValues extends FieldValues> = {
 	showCaracteres?: boolean;
 	placeholderUppercase: string;
 	disabled: boolean;
-	prefix?: string;
-	suffix?: string;
+	prefix?: ReactNode;
+	suffix?: ReactNode;
+	inputProps?: Omit<InputProps, 'prefix' | 'suffix' | 'value' | 'onChange' | 'onBlur' | 'name'>;
 };
 
 const FormInputNumberField = <TFieldValues extends FieldValues>({
@@ -89,6 +92,7 @@ const FormInputNumberField = <TFieldValues extends FieldValues>({
 	disabled,
 	prefix,
 	suffix,
+	inputProps,
 }: FormInputNumberFieldProps<TFieldValues>) => {
 	const [displayValue, setDisplayValue] = useState(() => formatNumberValue(field.value));
 	const [isFocused, setIsFocused] = useState(false);
@@ -131,6 +135,7 @@ const FormInputNumberField = <TFieldValues extends FieldValues>({
 
 	return (
 		<Input
+			{...inputProps}
 			id={id}
 			type={EInput.text}
 			inputMode="decimal"
@@ -162,6 +167,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 	disabled = false,
 	suffix,
 	prefix,
+	...inputProps
 }: IInputProps<TFieldValues>) => {
 	const id = useId();
 	const errId = `${id}-error`;
@@ -193,6 +199,7 @@ const FormInputComponent = <TFieldValues extends FieldValues>({
 							disabled={disabled}
 							prefix={prefix}
 							suffix={suffix}
+							inputProps={inputProps}
 						/>
 						{errorMsg !== undefined && <FormLabelError label={errorMsg} id={errId} />}
 					</div>

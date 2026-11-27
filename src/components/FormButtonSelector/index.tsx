@@ -37,9 +37,11 @@ export const FormButtonSelector = <TFieldValues extends FieldValues>({
 
 	const handleOpenModal = () => {
 		openModal({
-			title: 'Selector',
+			id: 0,
+			title: title,
 			content: children,
 			height: 'auto',
+			footer: null,
 		});
 	};
 

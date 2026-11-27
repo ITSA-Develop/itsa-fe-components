@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Icons from '@/assets/icons';
-import { AppstoreOutlined } from '@ant-design/icons';
+import { DynamicIcon, iconNames as lucideIconNames, type IconName as LucideIconName } from 'lucide-react/dynamic';
+import { Folder } from 'lucide-react';
 
 export type IconName = keyof typeof Icons;
 
@@ -13,10 +14,34 @@ interface GetIconOptions {
 	size?: number | string;
 }
 
+const isLucideIconName = (name: string): name is LucideIconName =>
+	(lucideIconNames as readonly string[]).includes(name);
+
+const toLucideSize = (size?: number | string) => {
+	if (typeof size === 'number') return size;
+	if (typeof size === 'string' && size.endsWith('px')) {
+		const parsed = Number.parseFloat(size);
+		if (!Number.isNaN(parsed)) return parsed;
+	}
+	return 16;
+};
+
+const renderLucideIcon = (name: LucideIconName, size?: number | string) => (
+	<DynamicIcon
+		name={name}
+		size={toLucideSize(size)}
+		strokeWidth={1.75}
+		fallback={() => <Folder size={toLucideSize(size)} strokeWidth={1.75} />}
+	/>
+);
+
+const renderDefaultIcon = (size?: number | string) => <Folder size={toLucideSize(size)} strokeWidth={1.75} />;
+
 export const getIconByName = (name: string | null | undefined, options: GetIconOptions = {}) => {
 	const { className, style, size } = options;
 	const iconsMap = Icons as unknown as Record<string, React.ComponentType<any>>;
 	const IconComponent = name ? iconsMap[name] : undefined;
+	const lucideName = name && isLucideIconName(name) ? name : undefined;
 
 	const normalizeSize = (value?: number | string) => {
 		if (value === undefined || value === null) return undefined;
@@ -34,7 +59,13 @@ export const getIconByName = (name: string | null | undefined, options: GetIconO
 
 	return (
 		<span className={className} style={wrapperStyle}>
-			{IconComponent ? <IconComponent /> : <AppstoreOutlined />}
+			{lucideName ? (
+				renderLucideIcon(lucideName, size)
+			) : IconComponent ? (
+				<IconComponent />
+			) : (
+				renderDefaultIcon(size)
+			)}
 		</span>
 	);
 };

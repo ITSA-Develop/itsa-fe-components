@@ -45,6 +45,7 @@ const defaultArgs: AppLayoutProps = {
 		console.log('menuItemsNavigate', program);
 	},
 	userActions: { items: [] },
+	appVersion: '0.1.57',
 };
 
 const withPermissions = (Story: React.ComponentType) => {

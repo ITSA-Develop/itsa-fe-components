@@ -28,6 +28,7 @@ import {
 	TableColumnDragProvider,
 	useTableColumnDrag,
 } from '@/components/Table/TableColumnDrag';
+import { TableRowDragProvider, useTableRowDrag } from '@/components/Table/TableRowDrag';
 import {
 	applyColumnWidthConstraints,
 	getColumnsWidthSum,
@@ -77,6 +78,9 @@ export interface ITableProps<T extends object> {
 	heightMobile?: number | string;
 	enableColumnDrag?: boolean;
 	onColumnsOrderChange?: (columns: TStrictTableColumnsType<T>) => void;
+	/** Arrastra filas verticalmente para reordenar `data` (solo vista escritorio). */
+	enableRowDrag?: boolean;
+	onDataOrderChange?: (data: T[]) => void;
 	scroll?: AntTableProps<T>['scroll'];
 	// onChangeBusinessLine?: (businessLineId: number) => void;
 }
@@ -108,8 +112,10 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 		showHeader = true,
 		heightMobile = '50vh',
 		enableColumnDrag = false,
+		enableRowDrag = false,
 		scroll,
 		onColumnsOrderChange,
+		onDataOrderChange,
 		// onChangeBusinessLine,
 	} = props;
 	const paginationConfig = hasExplicitPaginationConfig ? paginationConfigProp : DEFAULT_PAGINATION_CONFIG;
@@ -124,11 +130,20 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 	const showColumnActions = columnActions && columnActions.length > 0;
 	const showPagination = paginationConfig ? true : false;
 	const userWithMultipleBusinessLines = businessLines.length > 1;
+	const rowDragActive = enableRowDrag && Boolean(onDataOrderChange) && !loading;
 	const resolvedRootClassName = resolveTableRootClassName({
 		enableColumnDrag,
+		enableRowDrag: rowDragActive,
 		hasRefresh: Boolean(refreshDataFunction || userWithMultipleBusinessLines),
 		rootClassName,
 		className,
+	});
+
+	const rowDrag = useTableRowDrag({
+		data,
+		rowKey,
+		enabled: rowDragActive,
+		onDataOrderChange,
 	});
 
 	const [confirmModalState, setConfirmModalState] = useState<{
@@ -334,6 +349,7 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 					: (props: React.HTMLAttributes<HTMLTableCellElement>) => <BaseHeaderCell {...props} />,
 			},
 			body: {
+				...(rowDragActive ? { row: rowDrag.SortableRow } : {}),
 				cell: enableColumnDrag
 					? (props: React.HTMLAttributes<HTMLTableCellElement> & { id?: string; draggable?: boolean }) => (
 							<DragBodyCell {...props} />
@@ -341,7 +357,7 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 					: (props: React.HTMLAttributes<HTMLTableCellElement>) => <BaseBodyCell {...props} />,
 			},
 		}),
-		[enableColumnDrag, refreshDataFunction],
+		[enableColumnDrag, refreshDataFunction, rowDragActive, rowDrag.SortableRow],
 	);
 
 	const resolvedRowSelection = resolveRowSelection({ rowSelection, selectionMode });
@@ -410,6 +426,12 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 
 	return (
 		<>
+			<TableRowDragProvider
+				enabled={rowDragActive}
+				sensors={rowDrag.sensors}
+				sortableRowIds={rowDrag.sortableRowIds}
+				onDragEnd={rowDrag.onDragEnd}
+			>
 			<TableColumnDragProvider
 				enabled={enableColumnDrag}
 				dragIndex={columnDrag.dragIndex}
@@ -476,6 +498,7 @@ export const Table = <T extends object>(props: ITableProps<T>) => {
 					/>
 				</div>
 			</TableColumnDragProvider>
+			</TableRowDragProvider>
 
 			{confirmModalState.open && (
 				<Modal

@@ -264,6 +264,24 @@ describe('FormInputNumber component', () => {
 		expect(input).not.toHaveAttribute('aria-describedby');
 	});
 
+	it('renders addonAfter next to the input', () => {
+		render(
+			<TestFormWrapperWithControl>
+				{(control) => (
+					<FormInput
+						name="testField"
+						label="Días de caducidad"
+						control={control}
+						addonAfter={<span>días</span>}
+					/>
+				)}
+			</TestFormWrapperWithControl>,
+		);
+
+		expect(screen.getByText('días')).toBeInTheDocument();
+		expect(document.querySelector('.ant-input-group-addon')).toHaveTextContent('días');
+	});
+
 	it('passes additional props to the underlying Input component', () => {
 		render(
 			<TestFormWrapperWithControl>

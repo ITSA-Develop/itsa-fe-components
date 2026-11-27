@@ -174,11 +174,13 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 	};
 
 	const buttonSubmodule = (submodule: ISubmodule) => {
+		const iconValue = submodule.icon ?? '';
+		const iconName = iconValue.trim().length > 0 ? iconValue : 'folder';
 		if (submodule.id === currentSubmodule?.id) {
 			return (
 				<ButtonActiveSubmodule
 					name={submodule.name}
-					icon={submodule.icon ?? ''}
+					icon={iconName}
 					onclick={() => {
 						selectSubmodule(submodule.id);
 					}}
@@ -188,7 +190,7 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 		return (
 			<ButtonInactiveSubmodule
 				name={submodule.name}
-				icon={submodule.icon ?? ''}
+				icon={iconName}
 				onclick={() => {
 					selectSubmodule(submodule.id);
 				}}
@@ -254,7 +256,9 @@ export const Home = ({ handleNavigateProgram }: IHomeProps) => {
 				<div className="mt-1.5 sm:mt-2 px-1 sm:px-0">{currentSubmodule && titlePopover(currentSubmodule)}</div>
 
 				<div className="flex-1 min-h-0 w-full pt-1.5 sm:pt-2 pb-1 sm:pb-2 overflow-y-auto">
-					<div className="flex-1 min-h-0">{currentSubmoduleContent}</div>
+					<div key={currentSubmodule?.id ?? 'empty'} className="min-h-0 animate-contentSwap">
+						{currentSubmoduleContent}
+					</div>
 				</div>
 			</div>
 		</div>

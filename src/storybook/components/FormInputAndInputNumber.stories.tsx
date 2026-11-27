@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { CalendarOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -114,6 +115,22 @@ export const ShowErrorOnSubmit: Story = {
 			<BoundFormInput name="name" label="Nombre" placeholder="Deje vacío y envíe" />
 			<BoundFormTextarea name="description" label="Descripción" placeholder="Opcional" showCaracteres />
 			<BoundFormInputNumber name="amount" label="Monto" placeholder="0" />
+		</RHFForm>
+	),
+};
+
+export const WithPrefixSuffixAndAddon: Story = {
+	name: 'Iconos y addon (días)',
+	render: () => (
+		<RHFForm defaultValues={{ name: '30' }}>
+			<BoundFormInput
+				name="name"
+				label="Plazo"
+				placeholder="0"
+				textTransform="none"
+				prefix={<CalendarOutlined />}
+				addonAfter={<span>días</span>}
+			/>
 		</RHFForm>
 	),
 };

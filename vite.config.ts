@@ -31,8 +31,19 @@ export default defineConfig({
 			formats: ['es', 'cjs', 'umd'],
 		},
 		rollupOptions: {
-			external: ['react', 'react-dom'],
-			output: { globals: { react: 'React', 'react-dom': 'ReactDOM' } },
+			external: (id: string) =>
+				id === 'react' ||
+				id === 'react-dom' ||
+				id === 'lucide-react' ||
+				id.startsWith('lucide-react/'),
+			output: {
+				globals: (id: string) => {
+					if (id === 'react') return 'React';
+					if (id === 'react-dom') return 'ReactDOM';
+					if (id === 'lucide-react' || id.startsWith('lucide-react/')) return 'LucideReact';
+					return id;
+				},
+			},
 		},
 	},
 });

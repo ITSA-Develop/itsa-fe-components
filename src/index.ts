@@ -43,6 +43,8 @@ export { FormLayout } from './components/FormLayout/FormLayout';
 export { FormInput } from './components/FormInput';
 export { FormInputNumber } from './components/FormInputNumber';
 export { FormSelect } from './components/FormSelect';
+export { FormIconSelector } from './components/FormIconSelector';
+export type { IFormIconSelectorProps } from './components/FormIconSelector';
 export { FormSelectTree } from './components/FormTreeSelect/FormSelectTree';
 export type { IFormSelectTreeOption, IFormSelectTreeProps } from './components/FormTreeSelect/FormSelectTree';
 export { TreeSelect } from './components/TreeSelect';
