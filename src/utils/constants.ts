@@ -10,8 +10,6 @@ export const newPasswordRequiredQueryParam = 'newPasswordRequired';
 
 export const BASE_COUNTRY = 'ECUADOR';
 
-export const productionDomainLink = 'https://itsa-tomebamba.com'; // TODO: TBD
-
 export const GOOGLE_MAP_ADDRESS_KEYS = {
 	streetNumber: 'street_number',
 	route: 'route',
