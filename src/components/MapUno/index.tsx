@@ -308,8 +308,7 @@ export const Map = ({
 			emitLocationChange(placeObject, addressData);
 		}
 	};
-	//AIzaSyAcS-M2oOvXHEtjeSi41jzuZal6JZn66sw
-	//82446f60eba4a 92316dbec8c
+
 	return (
 		<div className={`relative flex-1 bg-red-300 h-full w-full ${className ?? ''}`} style={containerStyle}>
 			<APIProvider apiKey={googleMapsApiKey} libraries={['places']}>
